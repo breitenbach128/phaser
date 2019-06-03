@@ -217,12 +217,16 @@
         //Collisions
 
         //Gamepad - Input required to start the gamepad.
-        if (this.input.gamepad.total === 0)
-        {
-            return;
+        if (this.input.gamepad.total != 0)
+        {     
+            var pads = this.input.gamepad.gamepads;
+            var pad = pads[0];
+        }else{
+            var pad = {id:1,buttons:[]} //Load with empty values if pad is not valid
+            for(var i=0;i<99;i++){
+                pad.buttons[i]=0;
+            }
         }
-        var pads = this.input.gamepad.gamepads;
-        var pad = pads[0];
       
         if (game.wasd.left.isDown || pad.buttons[14].value == 1) {
             player.body.velocity.x = -mv_speed;
