@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head>    	
+    <script src="/socket.io/socket.io.js"></script>
     <script src="phaser.js"></script>
     <script src="src/preloader.js"></script>
     <script src="src/gamescene.js"></script>
@@ -15,6 +16,7 @@
 <body>
 
     <script>
+    var socket = io();
     var config = {
         type: Phaser.AUTO,
         width: 1280,
