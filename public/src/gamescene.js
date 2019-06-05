@@ -34,35 +34,10 @@ var GameScene = new Phaser.Class({
         this.physics.world.bounds.height = groundLayer.height;
 
         // create the player sprite    
-        player = this.physics.add.sprite(200, 200, 'player'); 
-        player.setBounce(0.0); // our player will bounce from items
-        player.setSize(57, 48, 3, 11);//Xsize,Ysize,Xoffset,YOffset
-        player.setCollideWorldBounds(true); // don't go out of the map
-        player.setActive(true)
-        player.rof = 220;
-        player.hp = 10;
-        // player walk animation
-        this.anims.create({
-            key: 'player-walk',
-            frames: this.anims.generateFrameNumbers('player', { start: 2, end: 4 }),
-            frameRate: 32,
-            repeat: -1
-        });
-        //Player shoot animation
-        this.anims.create({
-            key: 'player-shoot',
-            frames: this.anims.generateFrameNumbers('player', { start: 5, end: 6 }),
-            frameRate: 16,
-            repeat: -1
-        });
-        // idle with only one frame, so repeat is not neaded
-        this.anims.create({
-            key: 'player-idle',
-            frames: this.anims.generateFrameNumbers('player', { start: 0, end: 1 }),
-            frameRate: 2,
-            repeat: -1
-        });
-        //Enemy animations       
+        player = new Solana(this,200,200);
+        bright = new Bright(this,200,500);
+        bright.body.setAllowGravity(false);
+        //Enemy animations - Move to JSON       
         this.anims.create({
             key: 'enemy-idle',
             frames: this.anims.generateFrameNumbers('enemy1', { frames:[0,3] }),
@@ -86,6 +61,24 @@ var GameScene = new Phaser.Class({
             frames: this.anims.generateFrameNumbers('enemy1', { start: 6, end: 10 }),
             frameRate: 6,
             repeat: 0
+        });
+        this.anims.create({
+            key: 'solana-death',
+            frames: this.anims.generateFrameNumbers('solana', { start: 0, end: 1 }),
+            frameRate: 6,
+            repeat: 0
+        });
+        this.anims.create({
+            key: 'solana-walk',
+            frames: this.anims.generateFrameNumbers('solana', { start: 0, end: 1 }),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'bright-walk',
+            frames: this.anims.generateFrameNumbers('bright', { start: 0, end: 1 }),
+            frameRate: 6,
+            repeat: -1
         });
 
         // set bounds so the camera won't go outside the game world
@@ -128,6 +121,7 @@ var GameScene = new Phaser.Class({
         this.physics.add.overlap(player, bullets, damagePlayer);
         //Set Colliders
         this.physics.add.collider(player, groundLayer);
+        this.physics.add.collider(bright, groundLayer);
         this.physics.add.collider(enemies2, groundLayer);
         this.physics.add.collider(enemies, groundLayer);
         this.physics.add.collider(bullets, groundLayer, bulletHitGround);
@@ -188,30 +182,30 @@ var GameScene = new Phaser.Class({
       
         if (game.wasd.left.isDown || pad.buttons[14].value == 1) {
             player.body.velocity.x = -mv_speed;
-            player.anims.play('player-walk', true);
+            player.anims.play('solana-walk', true);
             player.flipX= true; // flip the sprite to the left
         }
         else if (game.wasd.right.isDown || pad.buttons[15].value == 1) {
             player.body.velocity.x = mv_speed;
-            player.anims.play('player-walk', true);
+            player.anims.play('solana-walk', true);
             player.flipX= false; // flip the sprite to the right
         }
         else {
             player.body.velocity.x = 0;
-            player.anims.play('player-idle', true);
+            player.anims.play('solana-walk', true);//Idle
         }
 
-        //Check for shooting 
-        if(game.wasd.shoot.isDown || pad.buttons[0].value == 1){
-            player.anims.play('player-shoot', true);
-            var bullet = bullets.get();
-            if (bullet && (time-lastFired) >  player.rof)//ROF(MS)
-            {
-                bullet.body.setAllowGravity(false)
-                bullet.fire(player.x, player.y,player.flipX,600,1500);
-                lastFired = time;
-            }
-        }  
+        // //Check for shooting 
+        // if(game.wasd.shoot.isDown || pad.buttons[0].value == 1){
+        //     player.anims.play('player-shoot', true);
+        //     var bullet = bullets.get();
+        //     if (bullet && (time-lastFired) >  player.rof)//ROF(MS)
+        //     {
+        //         bullet.body.setAllowGravity(false)
+        //         bullet.fire(player.x, player.y,player.flipX,600,1500);
+        //         lastFired = time;
+        //     }
+        // }  
 
         // If the user wants to jump
         if (((game.wasd.up.isDown) || pad.buttons[2].value == 1) && player.body.onFloor()) {// && Phaser.Time.now > jumpTimer

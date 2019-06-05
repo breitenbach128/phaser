@@ -66,13 +66,14 @@ var Preloader = new Phaser.Class({
 		// sprites
         this.load.atlas('sprites', 'img/spritearray.png', 'img/spritearray.json');
         
-        this.load.tilemapTiledJSON('map1', 'assets/map1.json');
-        this.load.spritesheet('player', 'assets/gunner1.png', {frameWidth: 64, frameHeight: 64});        
+        this.load.tilemapTiledJSON('map1', 'assets/map1.json');       
         this.load.spritesheet('tiles', 'assets/map1_tiles.png', {frameWidth: 32, frameHeight: 32});      
         this.load.spritesheet('enemy1', 'assets/enemy1.png', {frameWidth: 64, frameHeight: 64});       
         this.load.spritesheet('enemy2', 'assets/enemy2.png', {frameWidth: 64, frameHeight: 64});    
         this.load.spritesheet('bullet', 'assets/projectiles.png', {frameWidth: 16, frameHeight: 16});
         this.load.image('impact1', 'assets/particles.png');
+        this.load.spritesheet('solana', 'assets/solana.png', {frameWidth: 64, frameHeight: 80});
+        this.load.spritesheet('bright', 'assets/bright.png', {frameWidth: 64, frameHeight: 64});
 
 		// font
 		this.load.bitmapFont('fontwhite', 'img/fontwhite.png', 'img/fontwhite.xml');
@@ -84,9 +85,9 @@ var Preloader = new Phaser.Class({
 		this.load.audio('btn',  ['snd/btn.mp3', 'snd/btn.ogg']);
 		
 		// !! TESTING !! load the same image 500 times just to slow down the load and test the loading bar
-		for (var i = 0; i < 500; i++) {
-			this.load.image('testloading'+i, 'img/spritearray.png');
-		};
+		// for (var i = 0; i < 500; i++) {
+		// 	this.load.image('testloading'+i, 'img/spritearray.png');
+		// };
 		// !! TESTING !!
 	},
 
