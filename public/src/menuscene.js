@@ -25,9 +25,12 @@ var MainMenu = new Phaser.Class({
 		// add start button
 		this.btnstart = this.addButton(400+80, 400, 'sprites', this.doStart, this, 'btn_play_hl', 'btn_play', 'btn_play_hl', 'btn_play');
 
-		console.log('create is ready');
+        console.log('create is ready');
+        
     },
-	
+    update: function(){
+        
+    },	
 	doStart: function ()
     {
         console.log('menuscene doStart was called!');

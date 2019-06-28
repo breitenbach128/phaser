@@ -74,6 +74,10 @@ var Preloader = new Phaser.Class({
         this.load.image('impact1', 'assets/particles.png');
         this.load.spritesheet('solana', 'assets/solana.png', {frameWidth: 64, frameHeight: 80});
         this.load.spritesheet('bright', 'assets/bright.png', {frameWidth: 64, frameHeight: 64});
+		this.load.image('mask1', 'assets/mask1.png');
+		this.load.image('mask2', 'assets/mask2.png');
+		this.load.image('shadow', 'assets/shadow.png');
+
 
 		// font
 		this.load.bitmapFont('fontwhite', 'img/fontwhite.png', 'img/fontwhite.xml');
@@ -83,6 +87,7 @@ var Preloader = new Phaser.Class({
 		this.load.audio('coin', ['snd/coin.mp3', 'snd/coin.ogg']);
 		this.load.audio('bomb', ['snd/expl.mp3', 'snd/expl.ogg']);
 		this.load.audio('btn',  ['snd/btn.mp3', 'snd/btn.ogg']);
+		this.load.audio('jumpSolana',  ['snd/SFX_Jump_07.wav']);
 		
 		// !! TESTING !! load the same image 500 times just to slow down the load and test the loading bar
 		// for (var i = 0; i < 500; i++) {

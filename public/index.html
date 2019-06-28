@@ -20,7 +20,7 @@
     <script>
     var socket = io();
     var config = {
-        type: Phaser.AUTO,
+        type: Phaser.WEBGL,
         width: 1280,
         height: 1280, 
         input: {
@@ -29,6 +29,7 @@
         physics: {
             default: 'arcade',
             arcade: {
+                debug: true,
                 gravity: { y: 400 }
             }
         },
@@ -36,12 +37,14 @@
     };
 
     //Globals
+    var global_gravity = 400;
     var map;
     var player,bright;
     var mv_speed = 250;
-    var jumpButton,jumpTimer;
+    var prevJumpButtonPressed=false;
+    var jumpTimer;
     var scoreText;
-    var jump_vel = 440;
+    var jump_vel = 300;
     var enemies;
     var enemies2;
     var bullets;
@@ -55,25 +58,7 @@
     function test(){
         console.log("test");
     }
-    function spawnEnemies(){
-        console.log("timer spawner!");
-        if(spawnlayer){
-            var spawns = spawnlayer.objects;
-            if(enemies.countActive() < 10){
-                //Spawn a new enemy every 1 seconds at a random spawner
-                var value = Phaser.Math.Between(0, spawns.length-1);
-                new_enemy = enemies.get();
-                if(new_enemy){
-                    //Setup Enemy
-                    new_enemy.setActive(true);
-                    new_enemy.setVisible(true);
-                    new_enemy.setPosition(spawns[value].x,spawns[value].y);
-                    new_enemy.body.setBounce(0.1);
-                    
-                } 
-            }
-        }   
-    }
+
     function damageEnemy(enemy, bullet) {  
         // only if both enemy and bullet are alive
         if (enemy.active === true && bullet.active === true) {

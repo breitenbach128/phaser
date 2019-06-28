@@ -18,7 +18,8 @@ var GameScene = new Phaser.Class({
 
     create: function ()
     {
-		      
+
+
         //Map the map
         map = this.make.tilemap({key: 'map1'});
         // tiles for the ground layer
@@ -35,6 +36,7 @@ var GameScene = new Phaser.Class({
 
         // create the player sprite    
         player = new Solana(this,200,200);
+        //player.setPipeline('Light2D');
         bright = new Bright(this,200,500);
         bright.body.setAllowGravity(false);
         //Enemy animations - Move to JSON       
@@ -144,8 +146,8 @@ var GameScene = new Phaser.Class({
             } 
         }
        
-        var enemy2 = new enemytest(this,300,200);
-        enemies2.add(enemy2);
+        //var enemy2 = new enemytest(this,300,200);
+        //enemies2.add(enemy2);
 
         //Particles
         emitter0 = this.add.particles('impact1').createEmitter({
@@ -160,15 +162,151 @@ var GameScene = new Phaser.Class({
             gravityY: 800
          });
          
-         spawner = this.time.addEvent({ delay: 5000, callback: spawnEnemies, callbackScope: this, loop: true });
+         //spawner = this.time.addEvent({ delay: 5000, callback: this.spawnEnemies, callbackScope: this, loop: true });
          //timeEventName.remove();spawnEnemies(spawnlayer.objects)
+        //  this.LIGHT_RADIUS = 100;
+        //  // Create the shadow texture
+        //  this.shadowTexture = this.textures.createCanvas('shadow',1280, 1280);
+        //  var ctx = this.shadowTexture.context;
+        //  ctx.globalCompositeOperation = 'multiply';
+        //  ctx.fillRect(0, 0, 1280, 1280);
+        //  this.shadowTexture.refresh();
+        //  // Create an object that will use the bitmap as a texture
+        //  var lightSprite = this.add.image(0, 0, 'shadow');
+ 
+        //  // Set the blend mode to MULTIPLY. This will darken the colors of
+        //  // everything below this sprite.
+        //  lightSprite.blendMode = Phaser.BlendModes.MULTIPLY;
+         
+        // this.graphics = this.add.graphics();
+
+        // // var color = 0xffffff; // diff
+        // // var color = 0x0000ff; // mult
+        // this.graphics.setBlendMode(Phaser.BlendModes.MULTIPLY);
+        // this.graphics.fillStyle(0x000000, .9);    
+        // this.graphics.fillRect(0, 0, 1280, 1280);
+        // this.graphics.fillStyle(0xffffff, .9);
+        // this.graphics.beginPath();
+        // this.graphics.arc(300,400,100, 0, 2 * Math.PI, false);
+        // this.graphics.fill();
+
+        
+        // this.graphics.setBlendMode(Phaser.BlendModes.MULTIPLY);
+        // graphics.setBlendMode(Phaser.BlendModes.SCREEN);
+        // graphics.setBlendMode(Phaser.BlendModes.DIFFERENCE);
+        //this.graphics.generateTexture("shadow1");
+        //this.graphics.destroy();
+        
+        // var image_shadow = this.add.image(0,0,"shadow1");
+
+        // this.graphics2 = this.add.graphics();
+        // this.graphics2.fillStyle(0xffffff, 0);
+        // //this.graphics2.setBlendMode(Phaser.BlendModes.DIFFERENCE);
+        // this.graphics2.beginPath();
+        // this.graphics2.arc(300,400,100, 0, 2 * Math.PI, false);
+        // this.graphics2.fill();
+      
+        
+        // var mask = this.graphics2.createGeometryMask();
+
+        // player.setMask(mask);
+        // image_shadow.setMask(mask); 
+
+        //  var cam1 = this.cameras.add(0, 0, 400, 300);
+        //  cam1.setBackgroundColor('rgba(255, 0, 0, 0.5)');
+
+        
+        // this.lights.enable().setAmbientColor(0x333333);
+        // player.setPipeline('Light2D');
+        // var light = this.lights.addLight(180, 80, 200).setColor(0xffffff).setIntensity(2);
+        // this.input.on('pointermove', function (pointer) {
+        //     light.x = pointer.x;
+        //     light.y = pointer.y;
+        // });
+        // this.spotlight = this.make.sprite({
+        //     x: 400,
+        //     y: 300,
+        //     key: 'mask2',
+        //     add: false
+        // });
+        // var spotlight_mask =  new Phaser.Display.Masks.BitmapMask(this, this.spotlight);
+        // player.setMask(spotlight_mask);
+        // bright.setMask(spotlight_mask);
+
+        console.log(String(Phaser.VERSION));
+
+        
+        
+        // background = this.add.image(640,640,'shadow').setAlpha(.95);
+
+
+      
+
+        // this.img1 = this.make.sprite({
+        //     x: 200,
+        //     y: 200,
+        //     key: 'mask1',
+        //     add: false
+        // });
+
+        // background.mask = new Phaser.Display.Masks.BitmapMask(this, this.img1);
+        // background.mask.invertAlpha = true;
+        //-----------------------------------------
+        // const circle = document.createElement('canvas');
+        // const ctx = circle.getContext('2d');
+        // ctx.fillRect(0,0,1280,1280);
+ 
+    
+        // ctx.save();
+        // ctx.globalCompositeOperation='destination-out';
+        // ctx.beginPath();
+        // ctx.arc(250,250,120, 0, 2 * Math.PI, false);
+        // ctx.fill();
+        // ctx.restore();
+
+        // // Draw the circle using Phaser 3
+        // this.textures.addCanvas('circle', circle);
+        // const circleImage = this.add.image(150, 200, 'circle');
+        // circleImage.alpha = .9;
+        //-----------------------------------------
+        this.shadowTexture = this.textures.createCanvas("canvasShadow", 1280, 1280);
+        
+        this.shadowctx = this.shadowTexture.getContext();
+        this.shadowctx.fillRect(0,0,1280,1280); 
+
+        this.shadowTexture.refresh();
+        var shadTexture = this.add.image(640, 640, 'canvasShadow');
+        shadTexture.alpha = .9;
     },
 
     update: function (time, delta)
     {
+        // this.spotlight.x = player.x;
+        // this.spotlight.y = player.y;
+        //Updates
+        //this.updateShadowTexture();
+        player.update(time,delta);
+        // this.img1.x = player.x;
+        // this.img1.y = player.y;
+
+        //Draw lighting
+        this.shadowctx.fillRect(0,0,1280,1280);     
+        this.shadowctx = this.cutCanvasCircle(250,250,250,this.shadowctx);
+        this.shadowctx = this.cutCanvasCircle(700,200,300,this.shadowctx);
+        this.shadowctx = this.cutCanvasCircle(500,600,150,this.shadowctx);
+        this.shadowctx = this.cutCanvasCircle(player.x,player.y,250,this.shadowctx);
+        this.shadowTexture.refresh();
+
+        //Draw Circle
+        // this.graphics2.clear()
+        // this.graphics2.fillStyle(0xDDDDDD, .2);
+        // this.graphics2.setBlendMode(Phaser.BlendModes.DIFFERENCE);
+        // this.graphics2.beginPath();
+        // this.graphics2.arc(player.x,player.y,200, 0, 2 * Math.PI, false);
+        // this.graphics2.fill();
+
         //Collisions
 
-        //Gamepad - Input required to start the gamepad.
         if (this.input.gamepad.total != 0)
         {     
             var pads = this.input.gamepad.gamepads;
@@ -180,18 +318,18 @@ var GameScene = new Phaser.Class({
             }
         }
       
-        if (game.wasd.left.isDown || pad.buttons[14].value == 1) {
-            player.body.velocity.x = -mv_speed;
+        if ((game.wasd.left.isDown || pad.buttons[14].value == 1)) {
+            player.body.setVelocityX(-mv_speed);
             player.anims.play('solana-walk', true);
             player.flipX= true; // flip the sprite to the left
         }
-        else if (game.wasd.right.isDown || pad.buttons[15].value == 1) {
-            player.body.velocity.x = mv_speed;
+        else if ((game.wasd.right.isDown || pad.buttons[15].value == 1)) {
+            player.body.setVelocityX(mv_speed);
             player.anims.play('solana-walk', true);
             player.flipX= false; // flip the sprite to the right
         }
-        else {
-            player.body.velocity.x = 0;
+        else if(!(game.wasd.right.isDown || pad.buttons[15].value == 1) && !(game.wasd.left.isDown || pad.buttons[14].value == 1)){
+            player.body.setVelocityX(0);
             player.anims.play('solana-walk', true);//Idle
         }
 
@@ -207,21 +345,72 @@ var GameScene = new Phaser.Class({
         //     }
         // }  
 
-        // If the user wants to jump
-        if (((game.wasd.up.isDown) || pad.buttons[2].value == 1) && player.body.onFloor()) {// && Phaser.Time.now > jumpTimer
-            player.body.velocity.y = -jump_vel; 
-            jumpTimer = Phaser.Time.now + 750;
+        // If the user wants to jump - check prev to make sure it is not just being held down       
+        
+        if ((Phaser.Input.Keyboard.JustDown(game.wasd.up) || (pad.buttons[2].pressed && !prevJumpButtonPressed)) && player.jumpReady) {
+            player.jump(jump_vel,mv_speed);            
             //jumpSound.play();
 
         }
-        scoreText.setText("TimeDelta:"+ String(spawner.getRepeatCount())+' : ' + String(enemies.countActive())+":"+String(enemies.getLength())+" : " + String(player.body.onFloor()));
+        prevJumpButtonPressed = pad.buttons[2].pressed;
+
+        scoreText.setText("Debug Text area");
       
     },
-	
+    cutCanvasCircle: function(x,y,radius,ctx){
+        ctx.save();         
+        ctx.globalCompositeOperation='destination-out';
+        ctx.beginPath();
+        ctx.arc(x,y,radius, 0, 2 * Math.PI, false);
+        ctx.fill();
+        ctx.restore();
+
+        return ctx;
+    },
+	updateShadowTexture: function() {
+        // This function updates the shadow texture (this.shadowTexture).
+        // First, it fills the entire texture with a dark shadow color.
+        // Then it draws a white circle centered on the pointer position.
+        // Because the texture is drawn to the screen using the MULTIPLY
+        // blend mode, the dark areas of the texture make all of the colors
+        // underneath it darker, while the white area is unaffected.
+    
+        // Draw shadow
+        this.shadowTexture.context.fillStyle = 'rgb(100, 100, 100)';
+        this.shadowTexture.context.fillRect(0, 0, this.game.width, this.game.height);
+    
+        // Draw circle of light
+        this.shadowTexture.context.beginPath();
+        this.shadowTexture.context.fillStyle = 'rgb(255, 255, 255)';
+        this.shadowTexture.context.arc(this.game.input.activePointer.x, this.game.input.activePointer.y,
+            this.LIGHT_RADIUS, 0, Math.PI*2);
+        this.shadowTexture.context.fill();
+    
+        // This just tells the engine it should update the texture cache
+        this.shadowTexture.dirty = true;
+    },
     doBack: function ()
     {
         
 		this.scene.start('mainmenu');
+    },
+    spawnEnemies(){
+        console.log("timer spawner!");
+        if(spawnlayer){
+            var spawns = spawnlayer.objects;
+            if(enemies.countActive() < 10){
+                //Spawn a new enemy every 1 seconds at a random spawner
+                var value = Phaser.Math.Between(0, spawns.length-1);
+                new_enemy = enemies.get();
+                if(new_enemy){
+                    //Setup Enemy
+                    new_enemy.setActive(true);
+                    new_enemy.setVisible(true);
+                    new_enemy.setPosition(spawns[value].x,spawns[value].y);
+                    new_enemy.body.setBounce(0.1);
+                    
+                } 
+            }
+        }   
     }
-
 });
