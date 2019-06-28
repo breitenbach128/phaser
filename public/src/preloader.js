@@ -76,6 +76,7 @@ var Preloader = new Phaser.Class({
         this.load.spritesheet('bright', 'assets/bright.png', {frameWidth: 64, frameHeight: 64});
 		this.load.image('mask1', 'assets/mask1.png');
 		this.load.image('mask2', 'assets/mask2.png');
+		this.load.image('light1', 'assets/light1.png');
 		this.load.image('shadow', 'assets/shadow.png');
 
 

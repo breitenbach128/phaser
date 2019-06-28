@@ -277,6 +277,11 @@ var GameScene = new Phaser.Class({
         this.shadowTexture.refresh();
         var shadTexture = this.add.image(640, 640, 'canvasShadow');
         shadTexture.alpha = .9;
+
+        var light1 = this.add.image(250,250,'light1');
+        light1.alpha = .5;
+        light1.tint = 0xCCCC00;
+        player.depth = light1.depth+1;
     },
 
     update: function (time, delta)
