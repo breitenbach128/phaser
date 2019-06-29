@@ -16,7 +16,7 @@ var Enemy = new Phaser.Class({
     },
     update: function (time, delta)
     {
-        if(!this.dead){
+        if(!this.dead && player.alive){
             var distanceToPlayer = Phaser.Math.Distance.Between(player.x,player.y,this.x,this.y)
             if(distanceToPlayer < 300+this.aggrorange){
                 if(player.x < this.x){

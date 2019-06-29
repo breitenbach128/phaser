@@ -18,14 +18,23 @@ var GameScene = new Phaser.Class({
 
     create: function ()
     {
+        //Create Background
+        world_background = this.add.tileSprite(512, 256, 2048, 512, 'forest_background');
 
+        // //Map the map
+        // map = this.make.tilemap({key: 'map1'});
+        // // tiles for the ground layer
+        // var Tiles = map.addTilesetImage('map1_tiles','tiles');//called it map1_tiles in tiled
+        // // create the ground layer
+        // groundLayer = map.createDynamicLayer('ground', Tiles, 0, 0);
 
         //Map the map
-        map = this.make.tilemap({key: 'map1'});
+        map = this.make.tilemap({key: 'map2'});
         // tiles for the ground layer
-        var Tiles = map.addTilesetImage('map1_tiles','tiles');//called it map1_tiles in tiled
+        var Tiles = map.addTilesetImage('32Tileset','tiles32');//called it map1_tiles in tiled
         // create the ground layer
-        groundLayer = map.createDynamicLayer('ground', Tiles, 0, 0);
+        groundLayer = map.createDynamicLayer('fg', Tiles, 0, 0);
+        bglayer = map.createStaticLayer('bg', Tiles, 0, 0);
 
         // the player will collide with this layer
         groundLayer.setCollisionByExclusion([-1]);
@@ -35,7 +44,9 @@ var GameScene = new Phaser.Class({
         this.physics.world.bounds.height = groundLayer.height;
 
         // create the player sprite    
-        player = new Solana(this,200,200);
+        player = new Solana(this,128,128);
+        player.body.setSize(32, 44);
+        player.body.setOffset(0,20);
         //player.setPipeline('Light2D');
         bright = new Bright(this,200,500);
         bright.body.setAllowGravity(false);
@@ -60,19 +71,31 @@ var GameScene = new Phaser.Class({
         });
         this.anims.create({
             key: 'enemy-death',
-            frames: this.anims.generateFrameNumbers('enemy1', { start: 6, end: 10 }),
+            frames: this.anims.generateFrameNumbers('enemy1', { start: 0, end: 0 }),
             frameRate: 6,
             repeat: 0
         });
         this.anims.create({
             key: 'solana-death',
-            frames: this.anims.generateFrameNumbers('solana', { start: 0, end: 1 }),
-            frameRate: 6,
+            frames: this.anims.generateFrameNumbers('solana', { frames:[8,9,10,11,12,13,14,15,16] }),
+            frameRate: 4,
             repeat: 0
         });
         this.anims.create({
-            key: 'solana-walk',
+            key: 'solana-idle',
             frames: this.anims.generateFrameNumbers('solana', { start: 0, end: 1 }),
+            frameRate: 2,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'solana-walk',
+            frames: this.anims.generateFrameNumbers('solana', { start: 5, end: 6 }),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'solana-jump',
+            frames: this.anims.generateFrameNumbers('solana', { start: 7, end: 7 }),
             frameRate: 6,
             repeat: -1
         });
@@ -86,16 +109,18 @@ var GameScene = new Phaser.Class({
         // set bounds so the camera won't go outside the game world
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         // make the camera follow the player
-        this.cameras.main.startFollow(player);
+        this.cameras.main.startFollow(player,true,.1,.1,0,0);
         
         // set background color, so the sky is not black    
         this.cameras.main.setBackgroundColor('#ccccff'); 
-        
+        this.cameras.main.setZoom(2);
+
         game.wasd = {
             up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
             left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
             right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
-            shoot: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L)
+            shoot: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L),
+            suicide: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
         };
         scoreText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#000' });
         //groups
@@ -322,22 +347,33 @@ var GameScene = new Phaser.Class({
                 pad.buttons[i]=0;
             }
         }
-      
-        if ((game.wasd.left.isDown || pad.buttons[14].value == 1)) {
-            player.body.setVelocityX(-mv_speed);
-            player.anims.play('solana-walk', true);
-            player.flipX= true; // flip the sprite to the left
-        }
-        else if ((game.wasd.right.isDown || pad.buttons[15].value == 1)) {
-            player.body.setVelocityX(mv_speed);
-            player.anims.play('solana-walk', true);
-            player.flipX= false; // flip the sprite to the right
-        }
-        else if(!(game.wasd.right.isDown || pad.buttons[15].value == 1) && !(game.wasd.left.isDown || pad.buttons[14].value == 1)){
-            player.body.setVelocityX(0);
-            player.anims.play('solana-walk', true);//Idle
-        }
 
+        //Control Player if alive.
+        if(player.alive){
+            if ((game.wasd.left.isDown || pad.buttons[14].value == 1)) {
+                player.body.setVelocityX(-mv_speed);
+                player.anims.play('solana-walk', true);
+                player.flipX= true; // flip the sprite to the left
+            }
+            else if ((game.wasd.right.isDown || pad.buttons[15].value == 1)) {
+                player.body.setVelocityX(mv_speed);
+                player.anims.play('solana-walk', true);
+                player.flipX= false; // flip the sprite to the right
+            }
+            else if(!(game.wasd.right.isDown || pad.buttons[15].value == 1) && !(game.wasd.left.isDown || pad.buttons[14].value == 1)){
+                player.body.setVelocityX(0);
+                player.anims.play('solana-idle', true);//Idle
+            }
+            // If the user wants to jump - check prev to make sure it is not just being held down       
+            
+            if ((Phaser.Input.Keyboard.JustDown(game.wasd.up) || (pad.buttons[2].pressed && !prevJumpButtonPressed)) && player.jumpReady) {
+                player.jump(jump_vel,mv_speed);            
+                //jumpSound.play();
+
+            }
+
+            prevJumpButtonPressed = pad.buttons[2].pressed;
+        }
         // //Check for shooting 
         // if(game.wasd.shoot.isDown || pad.buttons[0].value == 1){
         //     player.anims.play('player-shoot', true);
@@ -349,17 +385,12 @@ var GameScene = new Phaser.Class({
         //         lastFired = time;
         //     }
         // }  
-
-        // If the user wants to jump - check prev to make sure it is not just being held down       
-        
-        if ((Phaser.Input.Keyboard.JustDown(game.wasd.up) || (pad.buttons[2].pressed && !prevJumpButtonPressed)) && player.jumpReady) {
-            player.jump(jump_vel,mv_speed);            
-            //jumpSound.play();
-
-        }
-        prevJumpButtonPressed = pad.buttons[2].pressed;
-
         scoreText.setText("Debug Text area");
+
+        //Suicide to test animation
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.suicide)){
+            player.receiveDamage(1);
+        }
       
     },
     cutCanvasCircle: function(x,y,radius,ctx){
@@ -419,3 +450,64 @@ var GameScene = new Phaser.Class({
         }   
     }
 });
+//External Functions
+function damageEnemy(enemy, bullet) {  
+    // only if both enemy and bullet are alive
+    if (enemy.active === true && bullet.active === true) {
+        //bullet hits
+        bullet.hit();          
+        // decrease the enemy hp with BULLET_DAMAGE
+        enemy.receiveDamage(bullet.damage);
+    }
+}   
+
+function bulletHitGround(bullet,ground){
+    //ground hit particles
+    emitter0.active = true;
+    emitter0.explode(5,bullet.x,bullet.y);
+    //bullet hits
+    bullet.hit();
+}
+function damagePlayer(p,bullet){
+    //bullet hits
+    bullet.hit();
+    //then hurt player
+    p.receiveDamage(1);
+}
+//Gun Object Template
+function Gun(rof,magsize,reloadtime){
+    this.rofct = rof;
+    this.rof  = rof;
+    this.magsize = magsize;
+    this.magsizect = magsize;
+    this.reload = reloadtime;
+    this.reloadct = reloadtime;
+    this.reloading = false;
+    this.ready = true;
+    this.shoot = function(){
+        this.magsizect--;
+        if(this.magsizect <= 0){
+            this.ready = false;
+            this.reloading = true;
+        }
+    }
+    this.update = function(){
+
+        if(this.reloading){
+            this.reloadct--;
+            if(this.reloadct <= 0){
+                this.reloading = false;
+                this.magsizect = magsize;
+                this.reloadct = this.reload;
+            }
+        }else{
+            this.rofct--;
+            if(this.rofct <= 0){
+                this.ready = true;
+                this.rofct = this.rof;
+            }else{
+                this.ready = false;
+            }
+        }
+    }
+}

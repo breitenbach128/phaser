@@ -63,16 +63,21 @@ var Preloader = new Phaser.Class({
 		this.setPreloadSprite(this.loadingbar_fill);
 
 		// now load images, audio etc.
+		//Background
+		this.load.image('forest_background', 'assets/forest_bg.png');
 		// sprites
         this.load.atlas('sprites', 'img/spritearray.png', 'img/spritearray.json');
-        
-        this.load.tilemapTiledJSON('map1', 'assets/map1.json');       
-        this.load.spritesheet('tiles', 'assets/map1_tiles.png', {frameWidth: 32, frameHeight: 32});      
+        //Map Assets
+		this.load.tilemapTiledJSON('map1', 'assets/map1.json');   
+		this.load.tilemapTiledJSON('map2', 'assets/map2_32ts.json');     
+		this.load.spritesheet('tiles', 'assets/map1_tiles.png', {frameWidth: 32, frameHeight: 32});  
+		this.load.spritesheet('tiles32', 'assets/oldTileset32.png', {frameWidth: 32, frameHeight: 32}); 
+		//Entity Assets
         this.load.spritesheet('enemy1', 'assets/enemy1.png', {frameWidth: 64, frameHeight: 64});       
         this.load.spritesheet('enemy2', 'assets/enemy2.png', {frameWidth: 64, frameHeight: 64});    
         this.load.spritesheet('bullet', 'assets/projectiles.png', {frameWidth: 16, frameHeight: 16});
         this.load.image('impact1', 'assets/particles.png');
-        this.load.spritesheet('solana', 'assets/solana.png', {frameWidth: 64, frameHeight: 80});
+        this.load.spritesheet('solana', 'assets/solana.png', {frameWidth: 32, frameHeight: 64});
         this.load.spritesheet('bright', 'assets/bright.png', {frameWidth: 64, frameHeight: 64});
 		this.load.image('mask1', 'assets/mask1.png');
 		this.load.image('mask2', 'assets/mask2.png');

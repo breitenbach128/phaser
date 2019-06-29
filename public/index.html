@@ -54,72 +54,7 @@
     var new_enemy;
     var spawner;
     var spawnlayer;
-    //Functions
-    function test(){
-        console.log("test");
-    }
-
-    function damageEnemy(enemy, bullet) {  
-        // only if both enemy and bullet are alive
-        if (enemy.active === true && bullet.active === true) {
-            // we remove the bullet right away
-            bullet.setActive(false);
-            bullet.setVisible(false);    
-            
-            // decrease the enemy hp with BULLET_DAMAGE
-            enemy.receiveDamage(bullet.damage);
-        }
-    }   
     
-    function bulletHitGround(spr1,spr2){
-        emitter0.active = true;
-        emitter0.explode(5,spr1.x,spr1.y);
-        spr1.hit();
-
-    }
-    function damagePlayer(p,b){
-        emitter0.active = true;
-        emitter0.explode(5,p.x,p.y);
-        p.hp--;
-
-    }
-    //Gun Object Template
-    function Gun(rof,magsize,reloadtime){
-        this.rofct = rof;
-        this.rof  = rof;
-        this.magsize = magsize;
-        this.magsizect = magsize;
-        this.reload = reloadtime;
-        this.reloadct = reloadtime;
-        this.reloading = false;
-        this.ready = true;
-        this.shoot = function(){
-            this.magsizect--;
-            if(this.magsizect <= 0){
-                this.ready = false;
-                this.reloading = true;
-            }
-        }
-        this.update = function(){
-
-            if(this.reloading){
-                this.reloadct--;
-                if(this.reloadct <= 0){
-                    this.reloading = false;
-                    this.magsizect = magsize;
-                    this.reloadct = this.reload;
-                }
-            }else{
-                this.rofct--;
-                if(this.rofct <= 0){
-                    this.ready = true;
-                    this.rofct = this.rof;
-                }else{
-                    this.ready = false;
-                }
-            }
-        }
-    }
     //Game
     var game = new Phaser.Game(config);
 

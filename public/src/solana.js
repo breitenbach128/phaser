@@ -81,8 +81,12 @@ class Solana extends Phaser.GameObjects.Sprite {
         }
 
 
-        this.debug.setPosition(this.x, this.y-64);
-        this.debug.setText("Ground:"+String(this.onGround)+" Wall:"+String(this.onWall)+" jr:"+String(this.jumpReady));
+        this.debug.setPosition(this.x, this.y-128);
+        this.debug.setText("Ground:"+String(this.onGround)
+        +" \nWall:"+String(this.onWall)
+        +" \njr:"+String(this.jumpReady)
+        +" \nhp:"+String(this.hp)+":"+String(this.alive)
+        +" \nAnimKey:"+this.anims.getCurrentKey());
 
     }
 
@@ -101,24 +105,36 @@ class Solana extends Phaser.GameObjects.Sprite {
         
         if(animation.key == 'solana-death'){
             this.setActive(false);
-            this.setVisible(false);
+            //this.setVisible(false);
             this.debug.setVisible(false);
-            this.hp = 1;
-            this.alive = true; 
-        }
-    }
-
-    receiveDamage(damage) {
-        this.hp -= damage;           
-        
-        // if hp drops below 0 we deactivate this enemy
-        if(this.hp <= 0 && !this.dead ) {
-            this.alive = false; 
-                     
-            this.on('animationcomplete',this.death,this);            
-            this.anims.play('solana-death', false);
             
+            console.log("Solanas DEAD!")
         }
+        
+    }
+    resurect(){
+        this.hp = this.max_hp;
+        this.setActive(true);
+        this.setVisible(true);
+        this.debug.setVisible(true);
+        this.alive = true; 
+    }
+    receiveDamage(damage) {
+                
+        if(this.alive){
+            this.hp -= damage; 
+            emitter0.active = true;
+            emitter0.explode(5,this.x,this.y);
+
+            // if hp drops below 0 we deactivate this enemy
+            if(this.hp <= 0) {
+                this.alive = false;                         
+                this.body.setVelocityX(0);
+                this.on('animationcomplete',this.death,this);            
+                this.anims.play('solana-death', false);  
+                console.log("deadly damage recv. Play death anim")              
+            }
+        }   
     }
 }
 
