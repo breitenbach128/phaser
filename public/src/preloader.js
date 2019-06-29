@@ -78,11 +78,14 @@ var Preloader = new Phaser.Class({
         this.load.spritesheet('bullet', 'assets/projectiles.png', {frameWidth: 16, frameHeight: 16});
         this.load.image('impact1', 'assets/particles.png');
         this.load.spritesheet('solana', 'assets/solana.png', {frameWidth: 32, frameHeight: 64});
-        this.load.spritesheet('bright', 'assets/bright.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('bright', 'assets/bright.png', {frameWidth: 48, frameHeight: 48});
+        this.load.spritesheet('soul_light', 'assets/soul_light.png', {frameWidth: 32, frameHeight: 32});
 		this.load.image('mask1', 'assets/mask1.png');
 		this.load.image('mask2', 'assets/mask2.png');
 		this.load.image('light1', 'assets/light1.png');
 		this.load.image('shadow', 'assets/shadow.png');
+		this.load.image('light_crystal', 'assets/light_crystal.png');
+		this.load.image('health_blip', 'assets/health_blip.png');
 
 
 		// font

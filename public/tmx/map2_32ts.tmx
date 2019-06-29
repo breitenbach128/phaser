@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="3">
  <tileset firstgid="1" name="32Tileset" tilewidth="32" tileheight="32" spacing="2" tilecount="851" columns="37">
   <image source="../assets/oldTileset32.png" width="1280" height="800"/>
  </tileset>
@@ -43,6 +43,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,568,157,157,157,121,157,157,157,157,157,157,186,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="2" name="enemies"/>
+ <objectgroup id="2" name="enemies">
+  <object id="1" gid="497" x="865" y="224" width="32" height="32"/>
+  <object id="2" gid="497" x="481" y="224" width="32" height="32"/>
+ </objectgroup>
  <objectgroup id="3" name="spawns"/>
 </map>

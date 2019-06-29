@@ -11,17 +11,21 @@ class Solana extends Phaser.GameObjects.Sprite {
         this.body.setCollideWorldBounds(true);
         this.setActive(true)
         
-        this.hp = 1;
-        this.max_hp = 1;
+        this.hp = 5;
+        this.max_hp = 5;
         this.mv_speed = 300;
         this.onGround = false;
         this.onWall = false;
         this.jumpReady = false;
         this.alive = true;
+        this.inLight = true;
         
         this.debug = scene.add.text(this.x, this.y-16, 'Solana', { fontSize: '12px', fill: '#00FF00' });
         //Sounds
         this.soundJump = game.sound.add('jumpSolana');
+
+
+        
     }
 
     update(time,delta)
@@ -77,17 +81,18 @@ class Solana extends Phaser.GameObjects.Sprite {
             }else{
 
             }
-            
+
         }
 
 
-        this.debug.setPosition(this.x, this.y-128);
+        this.debug.setPosition(this.x, this.y-196);
         this.debug.setText("Ground:"+String(this.onGround)
         +" \nWall:"+String(this.onWall)
         +" \njr:"+String(this.jumpReady)
         +" \nhp:"+String(this.hp)+":"+String(this.alive)
-        +" \nAnimKey:"+this.anims.getCurrentKey());
-
+        +" \nAnimKey:"+this.anims.getCurrentKey()
+        +" \nInLight:"+String(this.inLight));
+        
     }
 
     jump(jumpVel,mvVel){
@@ -122,11 +127,15 @@ class Solana extends Phaser.GameObjects.Sprite {
     receiveDamage(damage) {
                 
         if(this.alive){
+            //Kill Blips
+            this.scene.events.emit('playerHurt');
+            
+            //Remove health
             this.hp -= damage; 
             emitter0.active = true;
             emitter0.explode(5,this.x,this.y);
 
-            // if hp drops below 0 we deactivate this enemy
+            // if hp drops below 0, die
             if(this.hp <= 0) {
                 this.alive = false;                         
                 this.body.setVelocityX(0);

@@ -4,12 +4,15 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="phaser.js"></script>
     <script src="src/preloader.js"></script>
-    <script src="src/gamescene.js"></script>
+    <script src="src/gamescene.js"></script>    
+    <script src="src/hud.js"></script>
     <script src="src/menuscene.js"></script>
     <script src="src/storyboard.js"></script>
     <script src="src/credits.js"></script>
     <script src="src/solana.js"></script>
     <script src="src/bright.js"></script>
+    <script src="src/crystal.js"></script>
+    <script src="src/soullight.js"></script>
     <script src="src/addons.js"></script>
     <script src="src/bullet.js"></script>
     <script src="src/enemy.js"></script>
@@ -29,11 +32,11 @@
         physics: {
             default: 'arcade',
             arcade: {
-                debug: true,
+                debug: false,
                 gravity: { y: 400 }
             }
         },
-        scene: [ Preloader, MainMenu, GameScene ]
+        scene: [ Preloader, MainMenu, GameScene, HudScene ]
     };
 
     //Globals

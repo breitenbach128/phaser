@@ -47,8 +47,10 @@ var GameScene = new Phaser.Class({
         player = new Solana(this,128,128);
         player.body.setSize(32, 44);
         player.body.setOffset(0,20);
+        this.events.emit('playerSetup');
+
         //player.setPipeline('Light2D');
-        bright = new Bright(this,200,500);
+        bright = new Bright(this,256,64);
         bright.body.setAllowGravity(false);
         //Enemy animations - Move to JSON       
         this.anims.create({
@@ -100,12 +102,30 @@ var GameScene = new Phaser.Class({
             repeat: -1
         });
         this.anims.create({
-            key: 'bright-walk',
+            key: 'bright-idle',
             frames: this.anims.generateFrameNumbers('bright', { start: 0, end: 1 }),
             frameRate: 6,
             repeat: -1
         });
-
+        this.anims.create({
+            key: 'bright-sway',
+            frames: this.anims.generateFrameNumbers('bright', { frames:[0,2,3,4,5,6,7,8,9,10,11,0,2,3,18,17,16,15,14,13,12,11] }),
+            frameRate: 12,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'bright-move',
+            frames: this.anims.generateFrameNumbers('bright', { frames:[3,4,5,6,7,8,9,11,12,13,14,15,16,17,18] }),
+            frameRate: 12,
+            repeat: -1
+        });
+        
+        this.anims.create({
+            key: 'soulight-move',
+            frames: this.anims.generateFrameNumbers('soul_light', { frames:[0,1,2] }),
+            frameRate: 12,
+            repeat: -1
+        });
         // set bounds so the camera won't go outside the game world
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         // make the camera follow the player
@@ -120,7 +140,11 @@ var GameScene = new Phaser.Class({
             left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
             right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
             shoot: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L),
-            suicide: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
+            suicide: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
+            bright_move: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
+            bright_sway: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
+            passLight: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
+
         };
         scoreText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#000' });
         //groups
@@ -303,10 +327,20 @@ var GameScene = new Phaser.Class({
         var shadTexture = this.add.image(640, 640, 'canvasShadow');
         shadTexture.alpha = .9;
 
-        var light1 = this.add.image(250,250,'light1');
+        var light1 = this.add.image(256,64,'light1');
         light1.alpha = .5;
         light1.tint = 0xCCCC00;
         player.depth = light1.depth+1;
+        bright.depth = light1.depth+1;
+
+        this.light_crystals = new Array();
+        this.light_crystals.push(new CrystalLamp(this,250,250,150));
+        this.light_crystals.push(new CrystalLamp(this,700,200,150));
+        this.light_crystals.push(new CrystalLamp(this,500,600,150));
+
+        this.soul_light =new SoulLight(this,128,64,player);
+        this.soul_light.anims.play('soulight-move', true);//Idle
+
     },
 
     update: function (time, delta)
@@ -316,15 +350,32 @@ var GameScene = new Phaser.Class({
         //Updates
         //this.updateShadowTexture();
         player.update(time,delta);
+        this.soul_light.update(time,delta);
         // this.img1.x = player.x;
         // this.img1.y = player.y;
 
         //Draw lighting
-        this.shadowctx.fillRect(0,0,1280,1280);     
-        this.shadowctx = this.cutCanvasCircle(250,250,250,this.shadowctx);
-        this.shadowctx = this.cutCanvasCircle(700,200,300,this.shadowctx);
-        this.shadowctx = this.cutCanvasCircle(500,600,150,this.shadowctx);
-        this.shadowctx = this.cutCanvasCircle(player.x,player.y,250,this.shadowctx);
+        this.shadowctx.fillRect(0,0,1280,1280);    
+        
+        //Do Crystal Lamps and Light Checking
+        var player_in_light = false;
+        for(var x = 0;x < this.light_crystals.length;x++){
+            var lamp = this.light_crystals[x];
+            this.shadowctx = this.cutCanvasCircle(lamp.x,lamp.y,lamp.brightness,this.shadowctx);
+            
+            //Check if player is inside at least one light, if not, flag them and damage them every x seconds.
+            if(Phaser.Math.Distance.Between(lamp.x,lamp.y,player.x,player.y) <= lamp.brightness){player_in_light = true;}
+
+        }
+        
+
+        this.shadowctx = this.cutCanvasCircle(this.soul_light.x,this.soul_light.y,this.soul_light.protection_radius,this.shadowctx);
+
+        if(Phaser.Math.Distance.Between(this.soul_light.x,this.soul_light.y,player.x,player.y) <= this.soul_light.protection_radius){player_in_light = true;}
+
+        //is the player outside the light? Do damage!
+        player.inLight = player_in_light;
+
         this.shadowTexture.refresh();
 
         //Draw Circle
@@ -391,6 +442,21 @@ var GameScene = new Phaser.Class({
         if(Phaser.Input.Keyboard.JustDown(game.wasd.suicide)){
             player.receiveDamage(1);
         }
+        //Test bright
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.bright_move)){
+            bright.anims.play('bright-move', true);
+        }
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.bright_sway)){
+            bright.anims.play('bright-sway', true);
+        } 
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight)){
+            if(this.soul_light.ownerid == 1){
+                this.soul_light.passLight(bright,2);
+            }else{
+                this.soul_light.passLight(player,1);
+            }
+        }       
+ 
       
     },
     cutCanvasCircle: function(x,y,radius,ctx){

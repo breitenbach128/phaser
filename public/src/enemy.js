@@ -8,7 +8,7 @@ var Enemy = new Phaser.Class({
         this.hp = 1;
         this.mv_speed = 30+Phaser.Math.Between(-20,20);
         this.aggrorange = Phaser.Math.Between(-100,200)
-        this.gun = new Gun(10,3,10);
+        this.gun = new Gun(30,3,30);
         scene.physics.add.existing(this);
         this.dead = false;
         
