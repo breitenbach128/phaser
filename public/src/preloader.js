@@ -69,7 +69,8 @@ var Preloader = new Phaser.Class({
         this.load.atlas('sprites', 'img/spritearray.png', 'img/spritearray.json');
         //Map Assets
 		this.load.tilemapTiledJSON('map1', 'assets/map1.json');   
-		this.load.tilemapTiledJSON('map2', 'assets/map2_32ts.json');     
+		this.load.tilemapTiledJSON('map2', 'assets/map2_32ts.json'); 
+		this.load.tilemapTiledJSON('map3', 'assets/map3_32ts.json');    
 		this.load.spritesheet('tiles', 'assets/map1_tiles.png', {frameWidth: 32, frameHeight: 32});  
 		this.load.spritesheet('tiles32', 'assets/oldTileset32.png', {frameWidth: 32, frameHeight: 32}); 
 		//Entity Assets
@@ -86,7 +87,11 @@ var Preloader = new Phaser.Class({
 		this.load.image('shadow', 'assets/shadow.png');
 		this.load.image('light_crystal', 'assets/light_crystal.png');
 		this.load.image('health_blip', 'assets/health_blip.png');
-
+		//Shadow Canvas
+		shadow_layer = this.textures.createCanvas("canvasShadow", 1280, 1280);        
+        shadow_context = shadow_layer.getContext();
+        shadow_context.fillRect(0,0,1280,1280); 
+        shadow_layer.refresh();
 
 		// font
 		this.load.bitmapFont('fontwhite', 'img/fontwhite.png', 'img/fontwhite.xml');

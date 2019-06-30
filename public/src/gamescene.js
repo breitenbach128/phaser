@@ -18,6 +18,11 @@ var GameScene = new Phaser.Class({
 
     create: function ()
     {
+        //Refresh/Setup HUD
+        let hud_scene = this.scene.get('UIScene');;
+        hud_scene.updateGameScene();
+       
+
         //Create Background
         world_background = this.add.tileSprite(512, 256, 2048, 512, 'forest_background');
 
@@ -29,7 +34,7 @@ var GameScene = new Phaser.Class({
         // groundLayer = map.createDynamicLayer('ground', Tiles, 0, 0);
 
         //Map the map
-        map = this.make.tilemap({key: 'map2'});
+        map = this.make.tilemap({key: current_map});
         // tiles for the ground layer
         var Tiles = map.addTilesetImage('32Tileset','tiles32');//called it map1_tiles in tiled
         // create the ground layer
@@ -143,7 +148,8 @@ var GameScene = new Phaser.Class({
             suicide: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
             bright_move: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
             bright_sway: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
-            passLight: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
+            passLight: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),
+            restart_scene: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X)
 
         };
         scoreText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#000' });
@@ -318,12 +324,8 @@ var GameScene = new Phaser.Class({
         // const circleImage = this.add.image(150, 200, 'circle');
         // circleImage.alpha = .9;
         //-----------------------------------------
-        this.shadowTexture = this.textures.createCanvas("canvasShadow", 1280, 1280);
         
-        this.shadowctx = this.shadowTexture.getContext();
-        this.shadowctx.fillRect(0,0,1280,1280); 
 
-        this.shadowTexture.refresh();
         var shadTexture = this.add.image(640, 640, 'canvasShadow');
         shadTexture.alpha = .9;
 
@@ -341,6 +343,8 @@ var GameScene = new Phaser.Class({
         this.soul_light =new SoulLight(this,128,64,player);
         this.soul_light.anims.play('soulight-move', true);//Idle
 
+
+        hud_scene.setupHud(player);
     },
 
     update: function (time, delta)
@@ -354,14 +358,14 @@ var GameScene = new Phaser.Class({
         // this.img1.x = player.x;
         // this.img1.y = player.y;
 
-        //Draw lighting
-        this.shadowctx.fillRect(0,0,1280,1280);    
+        //Draw lighting        
+        shadow_context.fillRect(0,0,1280,1280);    
         
         //Do Crystal Lamps and Light Checking
         var player_in_light = false;
         for(var x = 0;x < this.light_crystals.length;x++){
             var lamp = this.light_crystals[x];
-            this.shadowctx = this.cutCanvasCircle(lamp.x,lamp.y,lamp.brightness,this.shadowctx);
+            shadow_context = this.cutCanvasCircle(lamp.x,lamp.y,lamp.brightness,shadow_context);
             
             //Check if player is inside at least one light, if not, flag them and damage them every x seconds.
             if(Phaser.Math.Distance.Between(lamp.x,lamp.y,player.x,player.y) <= lamp.brightness){player_in_light = true;}
@@ -369,14 +373,14 @@ var GameScene = new Phaser.Class({
         }
         
 
-        this.shadowctx = this.cutCanvasCircle(this.soul_light.x,this.soul_light.y,this.soul_light.protection_radius,this.shadowctx);
+        shadow_context = this.cutCanvasCircle(this.soul_light.x,this.soul_light.y,this.soul_light.protection_radius,shadow_context);
 
         if(Phaser.Math.Distance.Between(this.soul_light.x,this.soul_light.y,player.x,player.y) <= this.soul_light.protection_radius){player_in_light = true;}
 
         //is the player outside the light? Do damage!
         player.inLight = player_in_light;
 
-        this.shadowTexture.refresh();
+        shadow_layer.refresh();
 
         //Draw Circle
         // this.graphics2.clear()
@@ -455,7 +459,13 @@ var GameScene = new Phaser.Class({
             }else{
                 this.soul_light.passLight(player,1);
             }
-        }       
+        }  
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.restart_scene)){  
+            if(current_map == "map2"){current_map = "map3"}else{current_map = "map2"};   
+            let hud_scene = this.scene.get('UIScene');;
+            hud_scene.clearHud();       
+            this.scene.restart();
+        }     
  
       
     },
