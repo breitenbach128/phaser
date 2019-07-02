@@ -30,7 +30,7 @@ var Enemy = new Phaser.Class({
                 if (bullet && this.gun.ready)//ROF(MS)
                 {
                     bullet.body.setAllowGravity(false)
-                    bullet.fire(this.x, this.y,!this.flipX,180,800);
+                    bullet.fire(this.x, this.y,!this.flipX,180,0,800);
                     this.gun.shoot();//Decrease mag size. Can leave this out for a constant ROF.
                 }
                 if(this.gun){

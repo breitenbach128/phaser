@@ -9,19 +9,21 @@ var Bullet = new Phaser.Class({
         this.damage = 1;    
         this.lifespan = 0;
         scene.physics.add.existing(this);
+        
     },
 
-    fire: function (x, y, flip, speed, life)
+    fire: function (x, y, flip, speedX,speedY, life)
     {
-        this.speed = speed;
-        
+
         if(flip){
-            this.setPosition(x-64, y);
-            this.speed = this.speed*-1;
+            this.body.setVelocity(-speedX , speedY);
+            this.x = x-64;
         }else{
-            this.setPosition(x+64, y);
+            this.body.setVelocity(speedX , speedY);
+            this.x = x+64;
         }
 
+        this.y = y;
         this.setActive(true);
         this.setVisible(true);
         this.lifespan = life;
@@ -29,15 +31,16 @@ var Bullet = new Phaser.Class({
     hit: function(){
         this.lifespan = 0;
     },
+    bounceOff: function(){
+        //Bounce off of object
+    },
     update: function (time, delta)
     {
-        this.body.velocity.x = this.speed;
+        
         this.lifespan -= 1;
         if (this.lifespan <= 0 && this.active)
         {
             this.destroy();
-            // this.setActive(false);
-            // this.setVisible(false);
         }
 
     }

@@ -82,12 +82,16 @@ var Preloader = new Phaser.Class({
         this.load.spritesheet('bright', 'assets/bright.png', {frameWidth: 48, frameHeight: 48});
         this.load.spritesheet('dark', 'assets/dark.png', {frameWidth: 48, frameHeight: 48});
         this.load.spritesheet('soul_light', 'assets/soul_light.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('mirror', 'assets/mirror.png', {frameWidth: 48, frameHeight: 48});
 		this.load.image('mask1', 'assets/mask1.png');
 		this.load.image('mask2', 'assets/mask2.png');
 		this.load.image('light1', 'assets/light1.png');
 		this.load.image('shadow', 'assets/shadow.png');
 		this.load.image('light_crystal', 'assets/light_crystal.png');
 		this.load.image('health_blip', 'assets/health_blip.png');
+		// - HUD
+		this.load.spritesheet('hud_interaction_control_arrows','assets/hud_interaction_control_arrows.png',{frameWidth: 32, frameHeight: 32});
+
 		//Shadow Canvas
 		shadow_layer = this.textures.createCanvas("canvasShadow", 1280, 1280);        
         shadow_context = shadow_layer.getContext();
@@ -143,3 +147,5 @@ var Preloader = new Phaser.Class({
 
 	}
 });
+
+//Source Credit :https://opengameart.org/content/16x16-platform-tileset

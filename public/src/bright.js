@@ -70,6 +70,22 @@ class Bright extends Phaser.GameObjects.Sprite {
                     this.body.setVelocityX(0);
                     this.anims.play('dark-idle', true);//Idle
                 }
+                if(this.light_status == 0){ //Only if Bright
+                    //Vertical Control
+                    if ((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
+                        this.body.setVelocityY(-this.mv_speed);
+                        this.anims.play('bright-idle', true);
+                    }
+                    else if ((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
+                        this.body.setVelocityY(this.mv_speed);
+                        this.anims.play('bright-idle', true);
+                    }
+                    else if(!(game.wasd.up.isDown || gamePad.buttons[12].value == 1) && !(game.wasd.down.isDown || gamePad.buttons[13].value == 1)){
+                        this.body.setVelocityY(0);
+                        this.anims.play('bright-idle', true);//Idle
+                    }
+                }
+
             }
         }
     }

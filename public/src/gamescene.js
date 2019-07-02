@@ -157,6 +157,7 @@ var GameScene = new Phaser.Class({
         //Configure Controls by simple names
         game.wasd = {
             up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+            down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
             left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
             right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
             shoot: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L),
@@ -217,6 +218,8 @@ var GameScene = new Phaser.Class({
                 
             } 
         }
+        //Spawn Mirrors
+        
        
         //var enemy2 = new enemytest(this,300,200);
         //enemies2.add(enemy2);
