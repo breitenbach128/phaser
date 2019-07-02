@@ -56,7 +56,6 @@ var GameScene = new Phaser.Class({
 
         //player.setPipeline('Light2D');
         bright = new Bright(this,256,64);
-        bright.body.setAllowGravity(false);
         //Enemy animations - Move to JSON       
         this.anims.create({
             key: 'enemy-idle',
@@ -123,8 +122,20 @@ var GameScene = new Phaser.Class({
             frames: this.anims.generateFrameNumbers('bright', { frames:[3,4,5,6,7,8,9,11,12,13,14,15,16,17,18] }),
             frameRate: 12,
             repeat: -1
+        });        
+        this.anims.create({
+            key: 'dark-idle',
+            frames: this.anims.generateFrameNumbers('dark', { frames:[0,1,2,1,0] }),
+            frameRate: 6,
+            repeat: -1
         });
         
+        this.anims.create({
+            key: 'dark-falling',
+            frames: this.anims.generateFrameNumbers('dark', { start: 3, end: 3 }),
+            frameRate: 6,
+            repeat: -1
+        });
         this.anims.create({
             key: 'soulight-move',
             frames: this.anims.generateFrameNumbers('soul_light', { frames:[0,1,2] }),
@@ -139,6 +150,9 @@ var GameScene = new Phaser.Class({
         // set background color, so the sky is not black    
         this.cameras.main.setBackgroundColor('#ccccff'); 
         this.cameras.main.setZoom(2);
+        
+
+        camera_main = this.cameras.main;
 
         game.wasd = {
             up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
@@ -354,6 +368,7 @@ var GameScene = new Phaser.Class({
         //Updates
         //this.updateShadowTexture();
         player.update(time,delta);
+        bright.update(time,delta);
         this.soul_light.update(time,delta);
         // this.img1.x = player.x;
         // this.img1.y = player.y;
@@ -455,9 +470,13 @@ var GameScene = new Phaser.Class({
         } 
         if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight)){
             if(this.soul_light.ownerid == 1){
+                //Owner is Solana, Pass to dark, dark becomes bright.
                 this.soul_light.passLight(bright,2);
+                bright.toBright();
             }else{
+                //Owner is Bright, pass to Solana, become dark.
                 this.soul_light.passLight(player,1);
+                bright.toDark();
             }
         }  
         if(Phaser.Input.Keyboard.JustDown(game.wasd.restart_scene)){  
