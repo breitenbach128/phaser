@@ -33,7 +33,7 @@ class HudScene extends Phaser.Scene {
     }
     updateHud()
     {
-        this.hp_blips[player.hp-1].setVisible(false); 
+        this.hp_blips[solana.hp-1].setVisible(false); 
     }
     updateGameScene ()
     {

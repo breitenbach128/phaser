@@ -13,7 +13,9 @@ class Solana extends Phaser.GameObjects.Sprite {
         
         this.hp = 5;
         this.max_hp = 5;
-        this.mv_speed = 300;
+        this.mv_speed = 220;
+        this.jump_speed = 300;
+        this.prevJumpButtonPressed = false;
         this.onGround = false;
         this.onWall = false;
         this.jumpReady = false;
@@ -80,6 +82,34 @@ class Solana extends Phaser.GameObjects.Sprite {
                 
             }else{
 
+            }
+
+            //Movement Code
+            if(curr_player==players.SOLANA){
+                //Only control if currently the active control object
+                if ((game.wasd.left.isDown || gamePad.buttons[14].value == 1)) {
+                    this.body.setVelocityX(-this.mv_speed);
+                    this.anims.play('solana-walk', true);
+                    this.flipX= true; // flip the sprite to the left
+                }
+                else if ((game.wasd.right.isDown || gamePad.buttons[15].value == 1)) {
+                    this.body.setVelocityX(this.mv_speed);
+                    this.anims.play('solana-walk', true);
+                    this.flipX= false; // flip the sprite to the right
+                }
+                else if(!(game.wasd.right.isDown || gamePad.buttons[15].value == 1) && !(game.wasd.left.isDown || gamePad.buttons[14].value == 1)){
+                    this.body.setVelocityX(0);
+                    this.anims.play('solana-idle', true);//Idle
+                }
+                // If the user wants to jump - check prev to make sure it is not just being held down       
+                
+                if ((Phaser.Input.Keyboard.JustDown(game.wasd.up) || (gamePad.buttons[2].pressed && !this.prevJumpButtonPressed)) && this.jumpReady) {
+                    this.jump(this.jump_speed,solana.mv_speed);            
+                    //jumpSound.play();
+
+                }
+
+                this.prevJumpButtonPressed = gamePad.buttons[2].pressed;
             }
 
         }

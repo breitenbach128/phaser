@@ -1,5 +1,5 @@
 //Main Game Scene
-
+/// <reference path="../../def/phaser.d.ts"/>
 var GameScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -21,8 +21,7 @@ var GameScene = new Phaser.Class({
         //Refresh/Setup HUD
         let hud_scene = this.scene.get('UIScene');;
         hud_scene.updateGameScene();
-       
-
+        
         //Create Background
         world_background = this.add.tileSprite(512, 256, 2048, 512, 'forest_background');
 
@@ -35,26 +34,27 @@ var GameScene = new Phaser.Class({
 
         //Map the map
         map = this.make.tilemap({key: current_map});
+        
         // tiles for the ground layer
         var Tiles = map.addTilesetImage('32Tileset','tiles32');//called it map1_tiles in tiled
         // create the ground layer
         groundLayer = map.createDynamicLayer('fg', Tiles, 0, 0);
         bglayer = map.createStaticLayer('bg', Tiles, 0, 0);
-
-        // the player will collide with this layer
+        
+        // the solana will collide with this layer
         groundLayer.setCollisionByExclusion([-1]);
-    
+        //groundLayer.setCollisionBetween(0, 256);
         // set the boundaries of our game world
         this.physics.world.bounds.width = groundLayer.width;
         this.physics.world.bounds.height = groundLayer.height;
-
-        // create the player sprite    
-        player = new Solana(this,128,128);
-        player.body.setSize(32, 44);
-        player.body.setOffset(0,20);
-        this.events.emit('playerSetup');
-
-        //player.setPipeline('Light2D');
+        
+        // create the solana sprite    
+        solana = new Solana(this,128,128);
+        solana.body.setSize(32, 44);
+        solana.body.setOffset(0,20);
+        this.events.emit('solanaSetup');
+        
+        //solana.setPipeline('Light2D');
         bright = new Bright(this,256,64);
         //Enemy animations - Move to JSON       
         this.anims.create({
@@ -144,16 +144,17 @@ var GameScene = new Phaser.Class({
         });
         // set bounds so the camera won't go outside the game world
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        // make the camera follow the player
-        this.cameras.main.startFollow(player,true,.1,.1,0,0);
+        // make the camera follow the solana
+        this.cameras.main.startFollow(solana,true,.1,.1,0,0);
         
         // set background color, so the sky is not black    
         this.cameras.main.setBackgroundColor('#ccccff'); 
         this.cameras.main.setZoom(2);
         
-
+        
+        
         camera_main = this.cameras.main;
-
+        //Configure Controls by simple names
         game.wasd = {
             up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
             left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
@@ -163,12 +164,14 @@ var GameScene = new Phaser.Class({
             bright_move: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
             bright_sway: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
             passLight: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),
-            restart_scene: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X)
+            restart_scene: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),
+            change_player: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
 
         };
+        //Example Text
         scoreText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#000' });
-        //groups
 
+        //groups
         //Enemies
         enemies = this.physics.add.group({ 
             classType: Enemy,
@@ -189,9 +192,9 @@ var GameScene = new Phaser.Class({
 
         speed = Phaser.Math.GetSpeed(300, 1);
         this.physics.add.overlap(enemies, bullets, damageEnemy);        
-        this.physics.add.overlap(player, bullets, damagePlayer);
+        this.physics.add.overlap(solana, bullets, damageSolana);
         //Set Colliders
-        this.physics.add.collider(player, groundLayer);
+        this.physics.add.collider(solana, groundLayer);
         this.physics.add.collider(bright, groundLayer);
         this.physics.add.collider(enemies2, groundLayer);
         this.physics.add.collider(enemies, groundLayer);
@@ -201,7 +204,7 @@ var GameScene = new Phaser.Class({
         enemylayer = map.getObjectLayer('enemies');
         //Create spawn layer 
         spawnlayer = map.getObjectLayer('spawns');
-
+        //Spawn Enemies from Enemy TMX Object layer
         for(e=0;e<enemylayer.objects.length;e++){
             
             new_enemy = enemies.get();
@@ -218,7 +221,7 @@ var GameScene = new Phaser.Class({
         //var enemy2 = new enemytest(this,300,200);
         //enemies2.add(enemy2);
 
-        //Particles
+        //Particles - Example
         emitter0 = this.add.particles('impact1').createEmitter({
             x: 400,
             y: 300,
@@ -231,169 +234,80 @@ var GameScene = new Phaser.Class({
             gravityY: 800
          });
          
+         //Timer  - Example
          //spawner = this.time.addEvent({ delay: 5000, callback: this.spawnEnemies, callbackScope: this, loop: true });
          //timeEventName.remove();spawnEnemies(spawnlayer.objects)
-        //  this.LIGHT_RADIUS = 100;
-        //  // Create the shadow texture
-        //  this.shadowTexture = this.textures.createCanvas('shadow',1280, 1280);
-        //  var ctx = this.shadowTexture.context;
-        //  ctx.globalCompositeOperation = 'multiply';
-        //  ctx.fillRect(0, 0, 1280, 1280);
-        //  this.shadowTexture.refresh();
-        //  // Create an object that will use the bitmap as a texture
-        //  var lightSprite = this.add.image(0, 0, 'shadow');
- 
-        //  // Set the blend mode to MULTIPLY. This will darken the colors of
-        //  // everything below this sprite.
-        //  lightSprite.blendMode = Phaser.BlendModes.MULTIPLY;
-         
-        // this.graphics = this.add.graphics();
-
-        // // var color = 0xffffff; // diff
-        // // var color = 0x0000ff; // mult
-        // this.graphics.setBlendMode(Phaser.BlendModes.MULTIPLY);
-        // this.graphics.fillStyle(0x000000, .9);    
-        // this.graphics.fillRect(0, 0, 1280, 1280);
-        // this.graphics.fillStyle(0xffffff, .9);
-        // this.graphics.beginPath();
-        // this.graphics.arc(300,400,100, 0, 2 * Math.PI, false);
-        // this.graphics.fill();
-
-        
-        // this.graphics.setBlendMode(Phaser.BlendModes.MULTIPLY);
-        // graphics.setBlendMode(Phaser.BlendModes.SCREEN);
-        // graphics.setBlendMode(Phaser.BlendModes.DIFFERENCE);
-        //this.graphics.generateTexture("shadow1");
-        //this.graphics.destroy();
-        
-        // var image_shadow = this.add.image(0,0,"shadow1");
-
-        // this.graphics2 = this.add.graphics();
-        // this.graphics2.fillStyle(0xffffff, 0);
-        // //this.graphics2.setBlendMode(Phaser.BlendModes.DIFFERENCE);
-        // this.graphics2.beginPath();
-        // this.graphics2.arc(300,400,100, 0, 2 * Math.PI, false);
-        // this.graphics2.fill();
-      
-        
-        // var mask = this.graphics2.createGeometryMask();
-
-        // player.setMask(mask);
-        // image_shadow.setMask(mask); 
-
-        //  var cam1 = this.cameras.add(0, 0, 400, 300);
-        //  cam1.setBackgroundColor('rgba(255, 0, 0, 0.5)');
-
-        
-        // this.lights.enable().setAmbientColor(0x333333);
-        // player.setPipeline('Light2D');
-        // var light = this.lights.addLight(180, 80, 200).setColor(0xffffff).setIntensity(2);
-        // this.input.on('pointermove', function (pointer) {
-        //     light.x = pointer.x;
-        //     light.y = pointer.y;
-        // });
-        // this.spotlight = this.make.sprite({
-        //     x: 400,
-        //     y: 300,
-        //     key: 'mask2',
-        //     add: false
-        // });
-        // var spotlight_mask =  new Phaser.Display.Masks.BitmapMask(this, this.spotlight);
-        // player.setMask(spotlight_mask);
-        // bright.setMask(spotlight_mask);
-
-        console.log(String(Phaser.VERSION));
-
-        
-        
-        // background = this.add.image(640,640,'shadow').setAlpha(.95);
 
 
       
-
-        // this.img1 = this.make.sprite({
-        //     x: 200,
-        //     y: 200,
-        //     key: 'mask1',
-        //     add: false
-        // });
-
-        // background.mask = new Phaser.Display.Masks.BitmapMask(this, this.img1);
-        // background.mask.invertAlpha = true;
-        //-----------------------------------------
-        // const circle = document.createElement('canvas');
-        // const ctx = circle.getContext('2d');
-        // ctx.fillRect(0,0,1280,1280);
- 
-    
-        // ctx.save();
-        // ctx.globalCompositeOperation='destination-out';
-        // ctx.beginPath();
-        // ctx.arc(250,250,120, 0, 2 * Math.PI, false);
-        // ctx.fill();
-        // ctx.restore();
-
-        // // Draw the circle using Phaser 3
-        // this.textures.addCanvas('circle', circle);
-        // const circleImage = this.add.image(150, 200, 'circle');
-        // circleImage.alpha = .9;
-        //-----------------------------------------
         
-
+         //Lightning construct using preloaded cavnas called canvasShadow (See Preloader)
         var shadTexture = this.add.image(640, 640, 'canvasShadow');
         shadTexture.alpha = .9;
 
         var light1 = this.add.image(256,64,'light1');
         light1.alpha = .5;
         light1.tint = 0xCCCC00;
-        player.depth = light1.depth+1;
+        solana.depth = light1.depth+1;
         bright.depth = light1.depth+1;
 
+        //MOve these to a layer in Tiled/TMX
         this.light_crystals = new Array();
         this.light_crystals.push(new CrystalLamp(this,250,250,150));
         this.light_crystals.push(new CrystalLamp(this,700,200,150));
         this.light_crystals.push(new CrystalLamp(this,500,600,150));
 
-        this.soul_light =new SoulLight(this,128,64,player);
+        this.soul_light =new SoulLight(this,128,64,solana);
         this.soul_light.anims.play('soulight-move', true);//Idle
 
 
-        hud_scene.setupHud(player);
+        hud_scene.setupHud(solana);
     },
 
     update: function (time, delta)
     {
-        // this.spotlight.x = player.x;
-        // this.spotlight.y = player.y;
+        //Establish Gamepad - MOve to menu - one time call in the future.
+        if (this.input.gamepad.total != 0)
+        {     
+            var pads = this.input.gamepad.gamepads;
+            gamePad = pads[0];
+        }else{
+            gamePad = {id:1,buttons:[]} //Load with empty values if pad is not valid
+            for(var i=0;i<99;i++){
+                gamePad.buttons[i]=0;
+            }
+        }
+        // this.spotlight.x = solana.x;
+        // this.spotlight.y = solana.y;
         //Updates
         //this.updateShadowTexture();
-        player.update(time,delta);
+        solana.update(time,delta);
         bright.update(time,delta);
         this.soul_light.update(time,delta);
-        // this.img1.x = player.x;
-        // this.img1.y = player.y;
+        // this.img1.x = solana.x;
+        // this.img1.y = solana.y;
 
         //Draw lighting        
         shadow_context.fillRect(0,0,1280,1280);    
         
         //Do Crystal Lamps and Light Checking
-        var player_in_light = false;
+        var solana_in_light = false;
         for(var x = 0;x < this.light_crystals.length;x++){
             var lamp = this.light_crystals[x];
             shadow_context = this.cutCanvasCircle(lamp.x,lamp.y,lamp.brightness,shadow_context);
             
-            //Check if player is inside at least one light, if not, flag them and damage them every x seconds.
-            if(Phaser.Math.Distance.Between(lamp.x,lamp.y,player.x,player.y) <= lamp.brightness){player_in_light = true;}
+            //Check if solana is inside at least one light, if not, flag them and damage them every x seconds.
+            if(Phaser.Math.Distance.Between(lamp.x,lamp.y,solana.x,solana.y) <= lamp.brightness){solana_in_light = true;}
 
         }
         
 
         shadow_context = this.cutCanvasCircle(this.soul_light.x,this.soul_light.y,this.soul_light.protection_radius,shadow_context);
 
-        if(Phaser.Math.Distance.Between(this.soul_light.x,this.soul_light.y,player.x,player.y) <= this.soul_light.protection_radius){player_in_light = true;}
+        if(Phaser.Math.Distance.Between(this.soul_light.x,this.soul_light.y,solana.x,solana.y) <= this.soul_light.protection_radius){solana_in_light = true;}
 
-        //is the player outside the light? Do damage!
-        player.inLight = player_in_light;
+        //is the solana outside the light? Do damage!
+        solana.inLight = solana_in_light;
 
         shadow_layer.refresh();
 
@@ -402,56 +316,22 @@ var GameScene = new Phaser.Class({
         // this.graphics2.fillStyle(0xDDDDDD, .2);
         // this.graphics2.setBlendMode(Phaser.BlendModes.DIFFERENCE);
         // this.graphics2.beginPath();
-        // this.graphics2.arc(player.x,player.y,200, 0, 2 * Math.PI, false);
+        // this.graphics2.arc(solana.x,solana.y,200, 0, 2 * Math.PI, false);
         // this.graphics2.fill();
 
         //Collisions
 
-        if (this.input.gamepad.total != 0)
-        {     
-            var pads = this.input.gamepad.gamepads;
-            var pad = pads[0];
-        }else{
-            var pad = {id:1,buttons:[]} //Load with empty values if pad is not valid
-            for(var i=0;i<99;i++){
-                pad.buttons[i]=0;
-            }
-        }
 
-        //Control Player if alive.
-        if(player.alive){
-            if ((game.wasd.left.isDown || pad.buttons[14].value == 1)) {
-                player.body.setVelocityX(-mv_speed);
-                player.anims.play('solana-walk', true);
-                player.flipX= true; // flip the sprite to the left
-            }
-            else if ((game.wasd.right.isDown || pad.buttons[15].value == 1)) {
-                player.body.setVelocityX(mv_speed);
-                player.anims.play('solana-walk', true);
-                player.flipX= false; // flip the sprite to the right
-            }
-            else if(!(game.wasd.right.isDown || pad.buttons[15].value == 1) && !(game.wasd.left.isDown || pad.buttons[14].value == 1)){
-                player.body.setVelocityX(0);
-                player.anims.play('solana-idle', true);//Idle
-            }
-            // If the user wants to jump - check prev to make sure it is not just being held down       
-            
-            if ((Phaser.Input.Keyboard.JustDown(game.wasd.up) || (pad.buttons[2].pressed && !prevJumpButtonPressed)) && player.jumpReady) {
-                player.jump(jump_vel,mv_speed);            
-                //jumpSound.play();
 
-            }
-
-            prevJumpButtonPressed = pad.buttons[2].pressed;
-        }
+ 
         // //Check for shooting 
         // if(game.wasd.shoot.isDown || pad.buttons[0].value == 1){
-        //     player.anims.play('player-shoot', true);
+        //     solana.anims.play('solana-shoot', true);
         //     var bullet = bullets.get();
-        //     if (bullet && (time-lastFired) >  player.rof)//ROF(MS)
+        //     if (bullet && (time-lastFired) >  solana.rof)//ROF(MS)
         //     {
         //         bullet.body.setAllowGravity(false)
-        //         bullet.fire(player.x, player.y,player.flipX,600,1500);
+        //         bullet.fire(solana.x, solana.y,solana.flipX,600,1500);
         //         lastFired = time;
         //     }
         // }  
@@ -459,7 +339,7 @@ var GameScene = new Phaser.Class({
 
         //Suicide to test animation
         if(Phaser.Input.Keyboard.JustDown(game.wasd.suicide)){
-            player.receiveDamage(1);
+            solana.receiveDamage(1);
         }
         //Test bright
         if(Phaser.Input.Keyboard.JustDown(game.wasd.bright_move)){
@@ -470,12 +350,12 @@ var GameScene = new Phaser.Class({
         } 
         if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight)){
             if(this.soul_light.ownerid == 1){
-                //Owner is Solana, Pass to dark, dark becomes bright.
+                //Owner is solana, Pass to dark, dark becomes bright.
                 this.soul_light.passLight(bright,2);
                 bright.toBright();
             }else{
-                //Owner is Bright, pass to Solana, become dark.
-                this.soul_light.passLight(player,1);
+                //Owner is Bright, pass to solana, become dark.
+                this.soul_light.passLight(solana,1);
                 bright.toDark();
             }
         }  
@@ -485,8 +365,14 @@ var GameScene = new Phaser.Class({
             hud_scene.clearHud();       
             this.scene.restart();
         }     
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.change_player)){
+            this.changePlayer();
+        } 
  
       
+    },
+    changePlayer: function(){
+        curr_player == players.SOLANA ? curr_player=players.BRIGHT : players.SOLANA;
     },
     cutCanvasCircle: function(x,y,radius,ctx){
         ctx.save();         
@@ -563,10 +449,10 @@ function bulletHitGround(bullet,ground){
     //bullet hits
     bullet.hit();
 }
-function damagePlayer(p,bullet){
+function damageSolana(p,bullet){
     //bullet hits
     bullet.hit();
-    //then hurt player
+    //then hurt solana
     p.receiveDamage(1);
 }
 //Gun Object Template

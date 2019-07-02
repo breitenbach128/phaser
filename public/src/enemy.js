@@ -7,7 +7,8 @@ var Enemy = new Phaser.Class({
         Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'enemy1');
         this.hp = 1;
         this.mv_speed = 30+Phaser.Math.Between(-20,20);
-        this.aggrorange = Phaser.Math.Between(-100,200)
+        this.aggroRNG = Phaser.Math.Between(0,100);
+        this.aggroRange = 100;
         this.gun = new Gun(30,3,30);
         scene.physics.add.existing(this);
         this.dead = false;
@@ -16,10 +17,10 @@ var Enemy = new Phaser.Class({
     },
     update: function (time, delta)
     {
-        if(!this.dead && player.alive){
-            var distanceToPlayer = Phaser.Math.Distance.Between(player.x,player.y,this.x,this.y)
-            if(distanceToPlayer < 300+this.aggrorange){
-                if(player.x < this.x){
+        if(!this.dead && solana.alive){
+            var distanceToSolana = Phaser.Math.Distance.Between(solana.x,solana.y,this.x,this.y)
+            if(distanceToSolana < this.aggroRange+this.aggroRNG){
+                if(solana.x < this.x){
                     this.flipX = false;
                 }else{
                     this.flipX = true;
@@ -38,10 +39,10 @@ var Enemy = new Phaser.Class({
             }else{
                 this.anims.play('enemy-idle', true);
             }
-            //Move towards player 
-            if(distanceToPlayer > 500+this.aggrorange){
+            //Move towards solana 
+            if(distanceToSolana > 500+this.aggrorange){
                 this.anims.play('enemy-walk', true);
-                if(player.x < this.x){
+                if(solana.x < this.x){
                     this.body.velocity.x = mv_speed*-1;
                     this.flipX = false;
                 }else{
@@ -55,7 +56,7 @@ var Enemy = new Phaser.Class({
 
 
         this.debug.setPosition(this.x, this.y-64);
-        this.debug.setText("Debug Text");
+        this.debug.setText("AggroRange:"+String(this.aggroRange+this.aggroRNG));
     },
     death: function(animation, frame){
         

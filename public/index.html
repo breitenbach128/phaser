@@ -20,50 +20,67 @@
 </head>
 <body>
 
-    <script>
+    <script>    
     var socket = io();
     var config = {
-        type: Phaser.CANVAS,
+        type: Phaser.WEBGL,
         width: 1280,
         height: 1280, 
+        pixelArt: true,
         input: {
             gamepad: true
         },
         physics: {
             default: 'arcade',
             arcade: {
+                tileBias: 8,
                 debug: true,
                 gravity: { y: 400 }
             }
         },
         scene: [ Preloader, MainMenu, GameScene, HudScene ]
     };
-
+    
     //Globals
+    //Global Game Access
+    var game;
+    //Physics
     var global_gravity = 400;
-    var map;
-    var player,bright;
-    var mv_speed = 250;
-    var prevJumpButtonPressed=false;
-    var jumpTimer;
-    var scoreText;
-    var jump_vel = 300;
-    var enemies;
-    var enemies2;
-    var bullets;
-    var speed;
-    var lastFired = 0;
-    var emitter0;
+    //Tiles
+    var map; 
+    var current_map = "map2";
+    //Game Objects
+    var solana,bright,enemies,enemies2,bullets;    
     var new_enemy;
     var spawner;
     var spawnlayer;
+    //Controls
+    var prevJumpButtonPressed=false;
+    var jumpTimer;
+    var speed;
+    var lastFired = 0;
+    var gamePad;
+    //Particles
+    var emitter0;
+    //HUD
+    var scoreText;
+    //Graphics
     var shadow_layer,shadow_context;
-    var current_map = "map2";
+    //Camera
     var camera_main;
-    
+    //Player Management
+    var isMultiplayer = false;
+    const players  = {
+        SOLANA: 'Solana',
+        BRIGHT: 'Bright'
+    }
+    var curr_player = "Solana";
+
+    //Debug:Version
+    console.log(String(Phaser.VERSION));
     //Game
     var game = new Phaser.Game(config);
-
+    
     </script>
 
 </body>
