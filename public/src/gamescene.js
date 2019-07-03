@@ -38,8 +38,8 @@ var GameScene = new Phaser.Class({
         // tiles for the ground layer
         var Tiles = map.addTilesetImage('32Tileset','tiles32');//called it map1_tiles in tiled
         // create the ground layer
-        groundLayer = map.createDynamicLayer('fg', Tiles, 0, 0);
-        bglayer = map.createStaticLayer('bg', Tiles, 0, 0);
+        let groundLayer = map.createDynamicLayer('fg', Tiles, 0, 0);
+        let bglayer = map.createStaticLayer('bg', Tiles, 0, 0);
         
         // the solana will collide with this layer
         groundLayer.setCollisionByExclusion([-1]);
@@ -189,6 +189,11 @@ var GameScene = new Phaser.Class({
             //maxSize: 50,
             runChildUpdate: true
         });
+        //Mirrors
+        mirrors = this.physics.add.group({ 
+            classType: Mirror,
+            runChildUpdate: true 
+        });
 
 
         speed = Phaser.Math.GetSpeed(300, 1);
@@ -199,12 +204,15 @@ var GameScene = new Phaser.Class({
         this.physics.add.collider(bright, groundLayer);
         this.physics.add.collider(enemies2, groundLayer);
         this.physics.add.collider(enemies, groundLayer);
+        this.physics.add.collider(mirrors, groundLayer);
         this.physics.add.collider(bullets, groundLayer, bulletHitGround);
 
         //Create enemy layer
         enemylayer = map.getObjectLayer('enemies');
         //Create spawn layer 
         spawnlayer = map.getObjectLayer('spawns');
+        //Create mirror Layer
+        let mirrorlayer = map.getObjectLayer('mirrors');
         //Spawn Enemies from Enemy TMX Object layer
         for(e=0;e<enemylayer.objects.length;e++){
             
@@ -219,7 +227,19 @@ var GameScene = new Phaser.Class({
             } 
         }
         //Spawn Mirrors
-        
+        for(e=0;e<mirrorlayer.objects.length;e++){
+            let new_mirror = mirrors.get();
+            if(new_mirror){
+                new_mirror.setActive(true);
+                new_mirror.body.setAllowGravity(false);
+                // new_mirror.body.setSize(48, 16);
+                // new_mirror.body.setOffset(0,16);
+                new_mirror.setPosition(mirrorlayer.objects[e].x+16,mirrorlayer.objects[e].y+16);
+                new_mirror.rotation = mirrorlayer.objects[e].rotation;
+                new_mirror.body.rotation = mirrorlayer.objects[e].rotation;
+                console.log(mirrorlayer.objects[e])
+            }
+        }
        
         //var enemy2 = new enemytest(this,300,200);
         //enemies2.add(enemy2);
@@ -375,7 +395,7 @@ var GameScene = new Phaser.Class({
       
     },
     changePlayer: function(){
-        curr_player == players.SOLANA ? curr_player=players.BRIGHT : players.SOLANA;
+        curr_player == players.SOLANA ? curr_player=players.BRIGHT : curr_player=players.SOLANA;
     },
     cutCanvasCircle: function(x,y,radius,ctx){
         ctx.save();         
