@@ -205,6 +205,7 @@ var GameScene = new Phaser.Class({
         this.physics.add.collider(enemies2, groundLayer);
         this.physics.add.collider(enemies, groundLayer);
         this.physics.add.collider(mirrors, groundLayer);
+        this.physics.add.collider(bullets, mirrors, bulletHitMirror);
         this.physics.add.collider(bullets, groundLayer, bulletHitGround);
 
         //Create enemy layer
@@ -232,11 +233,11 @@ var GameScene = new Phaser.Class({
             if(new_mirror){
                 new_mirror.setActive(true);
                 new_mirror.body.setAllowGravity(false);
+                new_mirror.body.setImmovable(true);
                 // new_mirror.body.setSize(48, 16);
                 // new_mirror.body.setOffset(0,16);
                 new_mirror.setPosition(mirrorlayer.objects[e].x+16,mirrorlayer.objects[e].y+16);
-                new_mirror.rotation = mirrorlayer.objects[e].rotation;
-                new_mirror.body.rotation = mirrorlayer.objects[e].rotation;
+                new_mirror.angle = mirrorlayer.objects[e].rotation;
                 console.log(mirrorlayer.objects[e])
             }
         }
@@ -347,17 +348,18 @@ var GameScene = new Phaser.Class({
 
 
  
-        // //Check for shooting 
-        // if(game.wasd.shoot.isDown || pad.buttons[0].value == 1){
-        //     solana.anims.play('solana-shoot', true);
-        //     var bullet = bullets.get();
-        //     if (bullet && (time-lastFired) >  solana.rof)//ROF(MS)
-        //     {
-        //         bullet.body.setAllowGravity(false)
-        //         bullet.fire(solana.x, solana.y,solana.flipX,600,1500);
-        //         lastFired = time;
-        //     }
-        // }  
+        //Check for shooting 
+        if(game.wasd.shoot.isDown || gamePad.buttons[0].value == 1){
+            solana.anims.play('solana-shoot', true);            
+            if ((time-lastFired) >  240)//ROF(MS)
+            {
+                let bullet = bullets.get();
+                bullet.body.setAllowGravity(false)
+                bullet.fire(solana.x, solana.y, solana.flipX, 200, 0, 64);
+                lastFired = time;
+            }
+        }  
+
         scoreText.setText("Debug Text area");
 
         //Suicide to test animation
@@ -466,17 +468,26 @@ function damageEnemy(enemy, bullet) {
 }   
 
 function bulletHitGround(bullet,ground){
-    //ground hit particles
-    emitter0.active = true;
-    emitter0.explode(5,bullet.x,bullet.y);
-    //bullet hits
-    bullet.hit();
+    if (bullet.active === true){
+        //ground hit particles
+        emitter0.active = true;
+        emitter0.explode(5,bullet.x,bullet.y);
+        //bullet hits
+        bullet.hit();
+    }
+}
+function bulletHitMirror(bullet,m){
+    if (bullet.active === true){
+        bullet.bounceOff(m.angle);
+    }
 }
 function damageSolana(p,bullet){
-    //bullet hits
-    bullet.hit();
-    //then hurt solana
-    p.receiveDamage(1);
+    if (bullet.active === true){
+        //bullet hits
+        bullet.hit();
+        //then hurt solana
+        p.receiveDamage(1);
+    }
 }
 //Gun Object Template
 function Gun(rof,magsize,reloadtime){

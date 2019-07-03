@@ -117,8 +117,10 @@ class Solana extends Phaser.GameObjects.Sprite {
 
         this.debug.setPosition(this.x, this.y-196);
         this.debug.setText("Ground:"+String(this.onGround)
+        +" \nX/Y:"+String(this.x)+":"+String(this.y)
         +" \nWall:"+String(this.onWall)
         +" \njr:"+String(this.jumpReady)
+        +" \nflip:"+String(this.flipX)
         +" \nhp:"+String(this.hp)+":"+String(this.alive)
         +" \nAnimKey:"+this.anims.getCurrentKey()
         +" \nInLight:"+String(this.inLight));
