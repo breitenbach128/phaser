@@ -209,6 +209,11 @@ var GameScene = new Phaser.Class({
             classType: Mirror,
             runChildUpdate: true 
         });
+        //Exits
+        exits = this.physics.add.group({ 
+            classType: Exit,
+            runChildUpdate: true 
+        });
 
 
         speed = Phaser.Math.GetSpeed(300, 1);
@@ -216,6 +221,7 @@ var GameScene = new Phaser.Class({
         this.physics.add.overlap(enemies, bullets, damageEnemy);        
         this.physics.add.overlap(solana, bullets, damageSolana);
         this.physics.add.overlap(solana, mirrors, controlMirror);
+        this.physics.add.overlap(solana, exits, exitLevel);
         //Set Colliders
         this.physics.add.collider(solana, groundLayer);
         this.physics.add.collider(bright, groundLayer);
@@ -231,6 +237,8 @@ var GameScene = new Phaser.Class({
         spawnlayer = map.getObjectLayer('spawns');
         //Create mirror Layer
         let mirrorlayer = map.getObjectLayer('mirrors');
+        //Create exit layer
+        let exitlayer = map.getObjectLayer('exit');
         //Spawn Enemies from Enemy TMX Object layer
         for(e=0;e<enemylayer.objects.length;e++){
             
@@ -251,7 +259,14 @@ var GameScene = new Phaser.Class({
                 new_mirror.setup(mirrorlayer.objects[e].x,mirrorlayer.objects[e].y,mirrorlayer.objects[e].rotation);
             }
         }
-       
+        //Spawn Exits
+        for(e=0;e<exitlayer.objects.length;e++){
+            let new_exit = exits.get();
+            if(new_exit){
+                console.log(exitlayer.objects[e].properties,current_map);
+                new_exit.setup(exitlayer.objects[e].x,exitlayer.objects[e].y,getTileProperties(exitlayer.objects[e].properties));
+            }
+        }
         //var enemy2 = new enemytest(this,300,200);
         //enemies2.add(enemy2);
 
@@ -468,6 +483,13 @@ var GameScene = new Phaser.Class({
     }
 });
 //External Functions
+
+function exitLevel(s, exit) {  
+    // only if both enemy and bullet are alive
+    if (exit.active === true && s.active === true) {
+        exit.exitLevel();
+    }
+} 
 function damageEnemy(enemy, bullet) {  
     // only if both enemy and bullet are alive
     if (enemy.active === true && bullet.active === true) {
@@ -537,6 +559,13 @@ function controlMirror(s,m){
             m.rotateMirror(-2);
         }
     }
+}
+function getTileProperties(propArray){
+    let object = {};
+    propArray.forEach(element => {
+        object[element.name] = element.value;
+    });
+    return object;
 }
 //Gun Object Template
 function Gun(rof,magsize,reloadtime){

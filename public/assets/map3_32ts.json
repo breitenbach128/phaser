@@ -8,7 +8,7 @@
          "name":"bg",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":64,
          "x":0,
          "y":0
@@ -80,23 +80,18 @@
                  "height":96,
                  "id":3,
                  "name":"exit_west",
+                 "properties":[
+                        {
+                         "name":"targetMap",
+                         "type":"string",
+                         "value":"map2"
+                        }],
                  "rotation":0,
                  "type":"exit",
                  "visible":true,
                  "width":64,
                  "x":0,
                  "y":192
-                }, 
-                {
-                 "height":0,
-                 "id":4,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":22,
-                 "y":-87
                 }],
          "opacity":1,
          "type":"objectgroup",

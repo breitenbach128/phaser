@@ -89,6 +89,7 @@ var Preloader = new Phaser.Class({
 		this.load.image('shadow', 'assets/shadow.png');
 		this.load.image('light_crystal', 'assets/light_crystal.png');
 		this.load.image('health_blip', 'assets/health_blip.png');
+		this.load.image('exit', 'assets/exit.png');
 		// - HUD
 		this.load.spritesheet('hud_interaction_control_arrows','assets/hud_interaction_control_arrows.png',{frameWidth: 32, frameHeight: 32});
 
