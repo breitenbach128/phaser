@@ -103,7 +103,7 @@ class Solana extends Phaser.GameObjects.Sprite {
                 }
                 // If the user wants to jump - check prev to make sure it is not just being held down       
                 
-                if ((Phaser.Input.Keyboard.JustDown(game.wasd.up) || (gamePad.buttons[2].pressed && !this.prevJumpButtonPressed)) && this.jumpReady) {
+                if ((Phaser.Input.Keyboard.JustDown(game.wasd.jump) || (gamePad.buttons[2].pressed && !this.prevJumpButtonPressed)) && this.jumpReady) {
                     this.jump(this.jump_speed,solana.mv_speed);            
                     //jumpSound.play();
 

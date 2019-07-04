@@ -161,6 +161,7 @@ var GameScene = new Phaser.Class({
             left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
             right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
             shoot: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L),
+            jump: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J),
             suicide: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
             bright_move: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
             bright_sway: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
@@ -197,8 +198,10 @@ var GameScene = new Phaser.Class({
 
 
         speed = Phaser.Math.GetSpeed(300, 1);
+        //Set Overlaps
         this.physics.add.overlap(enemies, bullets, damageEnemy);        
         this.physics.add.overlap(solana, bullets, damageSolana);
+        this.physics.add.overlap(solana, mirrors, controlMirror);
         //Set Colliders
         this.physics.add.collider(solana, groundLayer);
         this.physics.add.collider(bright, groundLayer);
@@ -231,14 +234,7 @@ var GameScene = new Phaser.Class({
         for(e=0;e<mirrorlayer.objects.length;e++){
             let new_mirror = mirrors.get();
             if(new_mirror){
-                new_mirror.setActive(true);
-                new_mirror.body.setAllowGravity(false);
-                new_mirror.body.setImmovable(true);
-                // new_mirror.body.setSize(48, 16);
-                // new_mirror.body.setOffset(0,16);
-                new_mirror.setPosition(mirrorlayer.objects[e].x+16,mirrorlayer.objects[e].y+16);
-                new_mirror.angle = mirrorlayer.objects[e].rotation;
-                console.log(mirrorlayer.objects[e])
+                new_mirror.setup(mirrorlayer.objects[e].x+16,mirrorlayer.objects[e].y+16,mirrorlayer.objects[e].rotation);
             }
         }
        
@@ -487,6 +483,16 @@ function damageSolana(p,bullet){
         bullet.hit();
         //then hurt solana
         p.receiveDamage(1);
+    }
+}
+function controlMirror(s,m){
+    if(curr_player==players.SOLANA){
+        //Only control if currently the active control object
+        if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
+            m.rotateMirror(2);
+        }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
+            m.rotateMirror(-2);
+        }
     }
 }
 //Gun Object Template
