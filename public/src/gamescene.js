@@ -142,6 +142,20 @@ var GameScene = new Phaser.Class({
             frameRate: 12,
             repeat: -1
         });
+        
+        this.anims.create({
+            key: 'mirror-hit',
+            frames: this.anims.generateFrameNumbers('mirror', { frames:[1,2,3,4] }),
+            frameRate: 24,
+            repeat: 0
+        });
+        
+        this.anims.create({
+            key: 'mirror-idle',
+            frames: this.anims.generateFrameNumbers('mirror', { frames:[0,0] }),
+            frameRate: 1,
+            repeat: -1
+        });
         // set bounds so the camera won't go outside the game world
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         // make the camera follow the solana
@@ -234,7 +248,7 @@ var GameScene = new Phaser.Class({
         for(e=0;e<mirrorlayer.objects.length;e++){
             let new_mirror = mirrors.get();
             if(new_mirror){
-                new_mirror.setup(mirrorlayer.objects[e].x+16,mirrorlayer.objects[e].y+16,mirrorlayer.objects[e].rotation);
+                new_mirror.setup(mirrorlayer.objects[e].x,mirrorlayer.objects[e].y,mirrorlayer.objects[e].rotation);
             }
         }
        
@@ -349,9 +363,10 @@ var GameScene = new Phaser.Class({
             solana.anims.play('solana-shoot', true);            
             if ((time-lastFired) >  240)//ROF(MS)
             {
+                let solanaCenter = solana.getCenter();
                 let bullet = bullets.get();
                 bullet.body.setAllowGravity(false)
-                bullet.fire(solana.x, solana.y, solana.flipX, 200, 0, 64);
+                bullet.fire(solanaCenter.x, solanaCenter.y, solana.flipX, 150, 1,0, 64);
                 lastFired = time;
             }
         }  
@@ -473,8 +488,36 @@ function bulletHitGround(bullet,ground){
     }
 }
 function bulletHitMirror(bullet,m){
-    if (bullet.active === true){
-        bullet.bounceOff(m.angle);
+    if (bullet.active === true && !bullet.bounced){
+        bullet.bounced = true;
+        let bCenter = bullet.getCenter();
+        let mCenter = m.getCenter();
+        //Get angle to mirror from bullet
+        //let angleBetween = Phaser.Math.Angle.Between(mCenter.x,mCenter.y,bCenter.x,bCenter.y);//In radians
+
+        let angleBetween = bullet.body.velocity.angle();
+        //Normalize it to 2pi range
+        angleBetween =  Phaser.Math.Angle.Normalize(angleBetween);
+
+        //Get Reflection angle
+        let angleofReflection = Phaser.Math.DegToRad(m.angle+m.reflectAngle);
+        
+        let angleDiff = (angleBetween - angleofReflection);
+        let angResult = 0;
+        if(angleDiff > 0){
+            angResult = (Math.PI*2) - (angleDiff*2);
+        }else{
+            angResult = (Math.PI*2) + (angleDiff*-1);
+        }
+        
+        angResult = Phaser.Math.Angle.Wrap(angResult)
+
+
+
+        console.log(Phaser.Math.RadToDeg(angleBetween),Phaser.Math.RadToDeg(angleofReflection),Phaser.Math.RadToDeg(angleDiff),Phaser.Math.RadToDeg(angResult));
+        
+        bullet.bounceOff(angResult,m.width,mCenter.x,mCenter.y);
+        m.hit();
     }
 }
 function damageSolana(p,bullet){

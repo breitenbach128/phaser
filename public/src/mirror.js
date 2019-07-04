@@ -9,17 +9,29 @@ var Mirror = new Phaser.Class({
         scene.physics.add.existing(this);
         this.minAngle = 0;
         this.maxAngle = 180;
+        this.reflectAngle = 270;
         
         this.debug = scene.add.text(this.x, this.y-16, 'Mirror', { fontSize: '10px', fill: '#00FF00' });
     },
     setup: function(x,y,angle){
         this.setActive(true);
         this.body.setAllowGravity(false);
-        this.body.setImmovable(true);
+        this.body.setImmovable(true);        
+        this.body.setSize(24, 24);
+        this.body.setOffset(12,12);
         this.setPosition(x,y);
         this.angle = angle;
         this.minAngle = angle - 45;
         this.maxAngle = angle + 45;
+        this.flash = false;
+
+        this.on('animationcomplete',this.mirrorAnimComplete,this); 
+    },
+    hit: function(){
+        if(!this.flash){
+            this.anims.play('mirror-hit', true);//Hit by Light
+            this.flash = true;
+        }
     },
     update: function (time, delta)
     {       
@@ -32,6 +44,9 @@ var Mirror = new Phaser.Class({
 
         if(this.angle > this.maxAngle){ this.angle = this.maxAngle; }
         if(this.angle < this.minAngle){ this.angle = this.minAngle; }
+    },
+    mirrorAnimComplete: function(animation, frame){
+        this.anims.play('mirror-idle', true);//back to idle
+        this.flash = false;
     }
-
 });

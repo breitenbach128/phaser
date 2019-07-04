@@ -8,30 +8,34 @@ var Bullet = new Phaser.Class({
          
         this.damage = 1;    
         this.lifespan = 0;
+        this.bounced = false;
+        this.speed = 0;
+        this.scene = scene;
         scene.physics.add.existing(this);
         
         
     },
 
-    fire: function (x, y, flip, speedX,speedY, life)
+    fire: function (x, y, flip, speed, velx,vely, life)
     {
         
 
         if(flip){
-            this.body.setVelocity(-speedX , speedY);
+            this.body.setVelocity(-velx*speed , vely*speed);
             x = x-64;
         }else{
-            this.body.setVelocity(speedX , speedY);
+            this.body.setVelocity(velx*speed , vely*speed);
             x = x+64;
         }
 
+        this.speed = speed;
         
         this.setPosition(x,y);
         this.setActive(true);
         this.setVisible(true);
         //this.body.setBounce(.5,.5);
         this.lifespan = life;
-        console.log(x, y, flip, speedX,speedY, life);
+        this.bounced = false;
     },
     hit: function(){
         this.lifespan = 0;
@@ -43,9 +47,16 @@ var Bullet = new Phaser.Class({
         this.setActive(false);
         this.setVisible(false);
     },
-    bounceOff: function(mirrorRotation){
+    bounceOff: function(angle,mirrorSize,mirrorX,mirrorY){
         //Bounce off of object
-        console.log("Bounce off",mirrorRotation);
+        console.log("Bounce off",Phaser.Math.RadToDeg(angle));
+        //Set new position
+        // let x = (mirrorSize * Math.sin(angle)) + mirrorX;
+        // let y = (mirrorSize * -Math.cos(angle)) + mirrorY;
+
+        // this.setPosition(x,y);
+        //Apply veloctiy
+        this.scene.physics.velocityFromRotation(angle, this.speed, this.body.velocity);
     },
     update: function (time, delta)
     {
