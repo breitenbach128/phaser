@@ -89,9 +89,12 @@ var Preloader = new Phaser.Class({
 		this.load.image('shadow', 'assets/shadow.png');
 		this.load.image('light_crystal', 'assets/light_crystal.png');
 		this.load.image('health_blip', 'assets/health_blip.png');
+		this.load.image('lever', 'assets/lever.png');
 		this.load.image('exit', 'assets/exit.png');
+		this.load.image('entrance', 'assets/entrance.png');
 		// - HUD
 		this.load.spritesheet('hud_interaction_control_arrows','assets/hud_interaction_control_arrows.png',{frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('hud_energybar1','assets/hud_energybar1.png',{frameWidth: 16, frameHeight: 96});
 
 		//Shadow Canvas
 		shadow_layer = this.textures.createCanvas("canvasShadow", 1280, 1280);        

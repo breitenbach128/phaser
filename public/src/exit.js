@@ -11,13 +11,15 @@ var Exit = new Phaser.Class({
 
         
     },
-    setup: function(x,y,properties){
+    setup: function(x,y,properties,name){
+        this.name = name;
         this.alpha = .6;
         this.triggered = false;
         this.setActive(true);
         this.body.setAllowGravity(false);
         this.setPosition(x,y);
         this.targetMap = properties.targetMap;
+        this.targetExit = properties.targetExit;
     },
     update: function (time, delta)
     {
@@ -25,13 +27,41 @@ var Exit = new Phaser.Class({
 
     },
     exitLevel: function(){
-        if(!this.triggered){
+        if(!this.triggered && this.targetMap != "none" && this.targetExit != "none"){
             current_map = this.targetMap;
+            current_exit = this.targetExit;
             this.triggered = true;
-            let hud_scene = this.scene.scene.get('UIScene');
-            hud_scene.clearHud();       
+            hud.clearHud();       
             this.scene.scene.restart();
         }
     }
+
+});
+
+//Entrance
+var Entrance = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Sprite,
+
+    initialize: function Entrance (scene)
+    {
+        Phaser.GameObjects.Sprite.call(this, scene, -100, -100, 'entrance'); 
+        this.scene = scene;
+        scene.physics.add.existing(this);
+
+        
+    },
+    setup: function(x,y,name){
+        this.name = name;
+        this.alpha = .6;
+        this.setActive(true);
+        this.body.setAllowGravity(false);
+        this.setPosition(x,y);
+    },
+    update: function (time, delta)
+    {
+
+
+    },
 
 });

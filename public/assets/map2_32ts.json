@@ -67,8 +67,13 @@
                 {
                  "height":96,
                  "id":6,
-                 "name":"exit_east",
+                 "name":"east1",
                  "properties":[
+                        {
+                         "name":"targetExit",
+                         "type":"string",
+                         "value":"west1"
+                        }, 
                         {
                          "name":"targetMap",
                          "type":"string",
@@ -77,10 +82,65 @@
                  "rotation":0,
                  "type":"exit",
                  "visible":true,
-                 "width":64,
-                 "x":1216,
-                 "y":192
+                 "width":16,
+                 "x":1280,
+                 "y":0
+                }, 
+                {
+                 "height":96,
+                 "id":10,
+                 "name":"west1",
+                 "properties":[
+                        {
+                         "name":"targetExit",
+                         "type":"string",
+                         "value":"none"
+                        }, 
+                        {
+                         "name":"targetMap",
+                         "type":"string",
+                         "value":"none"
+                        }],
+                 "rotation":0,
+                 "type":"exit",
+                 "visible":true,
+                 "width":16,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "height":32,
+                 "id":11,
+                 "name":"west1",
+                 "rotation":0,
+                 "type":"entrance",
+                 "visible":true,
+                 "width":32,
+                 "x":32,
+                 "y":32
+                }, 
+                {
+                 "height":32,
+                 "id":12,
+                 "name":"east1",
+                 "rotation":0,
+                 "type":"entrance",
+                 "visible":true,
+                 "width":32,
+                 "x":1248,
+                 "y":32
                 }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":10,
+         "name":"triggers",
+         "objects":[],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -122,8 +182,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":10,
+ "nextlayerid":11,
+ "nextobjectid":13,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

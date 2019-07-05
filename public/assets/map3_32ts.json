@@ -79,8 +79,13 @@
                 {
                  "height":96,
                  "id":3,
-                 "name":"exit_west",
+                 "name":"west1",
                  "properties":[
+                        {
+                         "name":"targetExit",
+                         "type":"string",
+                         "value":"east1"
+                        }, 
                         {
                          "name":"targetMap",
                          "type":"string",
@@ -89,10 +94,32 @@
                  "rotation":0,
                  "type":"exit",
                  "visible":true,
-                 "width":64,
+                 "width":16,
                  "x":0,
                  "y":192
+                }, 
+                {
+                 "height":32,
+                 "id":5,
+                 "name":"west1",
+                 "rotation":0,
+                 "type":"entrance",
+                 "visible":true,
+                 "width":32,
+                 "x":32,
+                 "y":224
                 }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":10,
+         "name":"triggers",
+         "objects":[],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -110,8 +137,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":5,
+ "nextlayerid":11,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

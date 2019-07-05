@@ -19,8 +19,8 @@ var GameScene = new Phaser.Class({
     create: function ()
     {
         //Refresh/Setup HUD
-        let hud_scene = this.scene.get('UIScene');;
-        hud_scene.updateGameScene();
+        hud = this.scene.get('UIScene');;
+        hud.updateGameScene();
         
         //Create Background
         world_background = this.add.tileSprite(512, 256, 2048, 512, 'forest_background');
@@ -48,6 +48,7 @@ var GameScene = new Phaser.Class({
         this.physics.world.bounds.width = groundLayer.width;
         this.physics.world.bounds.height = groundLayer.height;
         
+        //CREATE PLAYER ENTITIES
         // create the solana sprite    
         solana = new Solana(this,128,128);
         solana.body.setSize(32, 44);
@@ -56,6 +57,10 @@ var GameScene = new Phaser.Class({
         
         //solana.setPipeline('Light2D');
         bright = new Bright(this,256,64);
+
+        this.soul_light =new SoulLight(this,128,64,solana);
+       
+
         //Enemy animations - Move to JSON       
         this.anims.create({
             key: 'enemy-idle',
@@ -157,10 +162,7 @@ var GameScene = new Phaser.Class({
             repeat: -1
         });
         // set bounds so the camera won't go outside the game world
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        // make the camera follow the solana
-        this.cameras.main.startFollow(solana,true,.1,.1,0,0);
-        
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);        
         // set background color, so the sky is not black    
         this.cameras.main.setBackgroundColor('#ccccff'); 
         this.cameras.main.setZoom(2);
@@ -209,9 +211,19 @@ var GameScene = new Phaser.Class({
             classType: Mirror,
             runChildUpdate: true 
         });
+        //Levers
+        levers = this.physics.add.group({ 
+            classType: TMXLever,
+            runChildUpdate: true 
+        });
         //Exits
         exits = this.physics.add.group({ 
             classType: Exit,
+            runChildUpdate: true 
+        });
+        //Entrances
+        entrances = this.physics.add.group({ 
+            classType: Entrance,
             runChildUpdate: true 
         });
 
@@ -237,6 +249,8 @@ var GameScene = new Phaser.Class({
         spawnlayer = map.getObjectLayer('spawns');
         //Create mirror Layer
         let mirrorlayer = map.getObjectLayer('mirrors');
+        //Create Trigger Layer
+        let triggerlayer = map.getObjectLayer('triggers');
         //Create exit layer
         let exitlayer = map.getObjectLayer('exit');
         //Spawn Enemies from Enemy TMX Object layer
@@ -259,13 +273,34 @@ var GameScene = new Phaser.Class({
                 new_mirror.setup(mirrorlayer.objects[e].x,mirrorlayer.objects[e].y,mirrorlayer.objects[e].rotation);
             }
         }
+        //Spawn Triggers
+        for(e=0;e<triggerlayer.objects.length;e++){
+            //Check for Type first, to determine the GET method used.
+        }
         //Spawn Exits
-        for(e=0;e<exitlayer.objects.length;e++){
-            let new_exit = exits.get();
-            if(new_exit){
-                console.log(exitlayer.objects[e].properties,current_map);
-                new_exit.setup(exitlayer.objects[e].x,exitlayer.objects[e].y,getTileProperties(exitlayer.objects[e].properties));
-            }
+        for(e=0;e<exitlayer.objects.length;e++){  
+            let exitObj;
+            //console.log(exitlayer.objects[e])
+            if(exitlayer.objects[e].type == "entrance"){
+                exitObj = entrances.get();
+                exitObj.setup(exitlayer.objects[e].x+16,exitlayer.objects[e].y+16,exitlayer.objects[e].name);
+                
+                //Re-position player to match entrance to exit they left.
+                if(exitObj.name == current_exit){
+                    
+                    solana.setPosition(exitObj.x,exitObj.y);
+                    bright.setPosition(exitObj.x,exitObj.y-32);
+                    this.soul_light.setPosition(exitObj.x,exitObj.y-32);
+                    
+                    this.cameras.main.centerOn(exitObj.x,exitObj.y);
+                    // make the camera follow the solana
+                    this.cameras.main.startFollow(solana,true,.1,.1,0,0);
+                }
+            }else{
+                exitObj = exits.get();
+                exitObj.setup(exitlayer.objects[e].x+16,exitlayer.objects[e].y+16,getTileProperties(exitlayer.objects[e].properties),exitlayer.objects[e].name);
+                exitObj.setDisplaySize(exitlayer.objects[e].width,exitlayer.objects[e].height);
+            } 
         }
         //var enemy2 = new enemytest(this,300,200);
         //enemies2.add(enemy2);
@@ -286,7 +321,7 @@ var GameScene = new Phaser.Class({
          //Timer  - Example
          //spawner = this.time.addEvent({ delay: 5000, callback: this.spawnEnemies, callbackScope: this, loop: true });
          //timeEventName.remove();spawnEnemies(spawnlayer.objects)
-
+         this.energyTimer = this.time.addEvent({ delay: 200, callback: this.generateEnergy, callbackScope: this, loop: true });
 
       
         
@@ -306,11 +341,11 @@ var GameScene = new Phaser.Class({
         this.light_crystals.push(new CrystalLamp(this,700,200,150));
         this.light_crystals.push(new CrystalLamp(this,500,600,150));
 
-        this.soul_light =new SoulLight(this,128,64,solana);
-        this.soul_light.anims.play('soulight-move', true);//Idle
 
+         //Start soulight play
+         this.soul_light.anims.play('soulight-move', true);//Idle
 
-        hud_scene.setupHud(solana);
+        hud.setupHud(solana);
     },
 
     update: function (time, delta)
@@ -375,14 +410,18 @@ var GameScene = new Phaser.Class({
  
         //Check for shooting 
         if(game.wasd.shoot.isDown || gamePad.buttons[0].value == 1){
-            solana.anims.play('solana-shoot', true);            
-            if ((time-lastFired) >  240)//ROF(MS)
+            solana.anims.play('solana-shoot', true);     
+            let costToFireWeapon = 10;      
+            if ((time-lastFired) >  240 && hud.energy.n > costToFireWeapon)//ROF(MS)
             {
                 let solanaCenter = solana.getCenter();
                 let bullet = bullets.get();
                 bullet.body.setAllowGravity(false)
                 bullet.fire(solanaCenter.x, solanaCenter.y, solana.flipX, 150, 1,0, 64);
                 lastFired = time;
+
+                //Remove Energy for the shooting
+                hud.alterEnergy(-costToFireWeapon);
             }
         }  
 
@@ -411,9 +450,8 @@ var GameScene = new Phaser.Class({
             }
         }  
         if(Phaser.Input.Keyboard.JustDown(game.wasd.restart_scene)){  
-            if(current_map == "map2"){current_map = "map3"}else{current_map = "map2"};   
-            let hud_scene = this.scene.get('UIScene');;
-            hud_scene.clearHud();       
+            if(current_map == "map2"){current_map = "map3"}else{current_map = "map2"}; 
+            hud.clearHud();       
             this.scene.restart();
         }     
         if(Phaser.Input.Keyboard.JustDown(game.wasd.change_player)){
@@ -423,7 +461,17 @@ var GameScene = new Phaser.Class({
       
     },
     changePlayer: function(){
-        curr_player == players.SOLANA ? curr_player=players.BRIGHT : curr_player=players.SOLANA;
+        this.cameras.main.stopFollow();
+       
+        if(curr_player == players.SOLANA){
+            curr_player=players.BRIGHT;
+            this.cameras.main.startFollow(bright,true,.1,.1,0,0); 
+        }else{
+            curr_player=players.SOLANA;
+            this.cameras.main.startFollow(solana,true,.1,.1,0,0);
+        }
+        
+
     },
     cutCanvasCircle: function(x,y,radius,ctx){
         ctx.save();         
@@ -461,6 +509,9 @@ var GameScene = new Phaser.Class({
     {
         
 		this.scene.start('mainmenu');
+    },
+    generateEnergy(){
+        hud.alterEnergy(1);
     },
     spawnEnemies(){
         console.log("timer spawner!");
@@ -536,7 +587,7 @@ function bulletHitMirror(bullet,m){
 
 
 
-        console.log(Phaser.Math.RadToDeg(angleBetween),Phaser.Math.RadToDeg(angleofReflection),Phaser.Math.RadToDeg(angleDiff),Phaser.Math.RadToDeg(angResult));
+        //console.log(Phaser.Math.RadToDeg(angleBetween),Phaser.Math.RadToDeg(angleofReflection),Phaser.Math.RadToDeg(angleDiff),Phaser.Math.RadToDeg(angResult));
         
         bullet.bounceOff(angResult,m.width,mCenter.x,mCenter.y);
         m.hit();

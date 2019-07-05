@@ -49,7 +49,6 @@ var Bullet = new Phaser.Class({
     },
     bounceOff: function(angle,mirrorSize,mirrorX,mirrorY){
         //Bounce off of object
-        console.log("Bounce off",Phaser.Math.RadToDeg(angle));
         //Set new position
         // let x = (mirrorSize * Math.sin(angle)) + mirrorX;
         // let y = (mirrorSize * -Math.cos(angle)) + mirrorY;

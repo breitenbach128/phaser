@@ -161,8 +161,7 @@ class Solana extends Phaser.GameObjects.Sprite {
         if(this.alive){
             //Kill Blips
             this.scene.events.emit('playerHurt');
-            let hud_scene = this.scene.scene.get('UIScene');
-            hud_scene.updateHud();
+            hud.setHealth(this.hp,this.max_hp);
             //Remove health
             this.hp -= damage; 
             emitter0.active = true;
