@@ -238,6 +238,11 @@ var GameScene = new Phaser.Class({
             classType: TMXLever,
             runChildUpdate: true 
         });
+        //Gates
+        gates = this.physics.add.group({ 
+            classType: TMXGate,
+            runChildUpdate: true 
+        });
         //Exits
         exits = this.physics.add.group({ 
             classType: Exit,
@@ -259,6 +264,7 @@ var GameScene = new Phaser.Class({
         this.physics.add.overlap(solana, exits, exitLevel);
         //Set Colliders
         this.physics.add.collider(solana, groundLayer);
+        this.physics.add.collider(solana, gates);
         this.physics.add.collider(bright, groundLayer);
         this.physics.add.collider(enemies2, groundLayer);
         this.physics.add.collider(enemies, groundLayer);
@@ -302,9 +308,14 @@ var GameScene = new Phaser.Class({
             let triggerObj;
             if(triggerlayer.objects[e].type == "lever"){
                 triggerObj = levers.get();
-                triggerObj.setup(triggerlayer.objects[e].x+16,triggerlayer.objects[e].y+16);
+            }else if(triggerlayer.objects[e].type == "gate"){
+                triggerObj = gates.get();
+            }
+            if(triggerObj){
+                triggerObj.setup(triggerlayer.objects[e].x+16,triggerlayer.objects[e].y+16,getTileProperties(triggerlayer.objects[e].properties),triggerlayer.objects[e].name);
             }
         }
+          
         //Spawn Exits
         for(e=0;e<exitlayer.objects.length;e++){  
             let exitObj;
@@ -330,6 +341,23 @@ var GameScene = new Phaser.Class({
                 exitObj.setDisplaySize(exitlayer.objects[e].width,exitlayer.objects[e].height);
             } 
         }
+
+        //SETUP LEVER TARGETS
+        levers.children.each(function(lever) {
+            console.log("levers:",lever.target);
+            if(lever.target.name){
+                if(lever.target.type == "gate"){
+                    //Search all gets
+                    gates.children.each(function(gate) {
+                        console.log("lever had gate target, searching names");
+                        if(gate.name == lever.target.name){
+                            lever.setTarget(gate);
+                        }
+                    },lever);
+                }
+            }
+        }, this);
+
         //var enemy2 = new enemytest(this,300,200);
         //enemies2.add(enemy2);
 

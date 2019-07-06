@@ -145,12 +145,40 @@
                  "height":32,
                  "id":13,
                  "name":"lever1",
+                 "properties":[
+                        {
+                         "name":"targetName",
+                         "type":"string",
+                         "value":"gate1"
+                        }, 
+                        {
+                         "name":"targetType",
+                         "type":"string",
+                         "value":"gate"
+                        }],
                  "rotation":0,
                  "type":"lever",
                  "visible":true,
                  "width":32,
                  "x":352,
                  "y":256
+                }, 
+                {
+                 "height":96,
+                 "id":14,
+                 "name":"gate1",
+                 "properties":[
+                        {
+                         "name":"source",
+                         "type":"string",
+                         "value":"lever1"
+                        }],
+                 "rotation":0,
+                 "type":"gate",
+                 "visible":true,
+                 "width":32,
+                 "x":640,
+                 "y":192
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -194,7 +222,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":14,
+ "nextobjectid":15,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",
