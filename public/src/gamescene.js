@@ -161,6 +161,28 @@ var GameScene = new Phaser.Class({
             frameRate: 1,
             repeat: -1
         });
+        
+        this.anims.create({
+            key: 'lever-idle',
+            frames: this.anims.generateFrameNumbers('lever', { frames:[0,0] }),
+            frameRate: 1,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'lever-operate-0',
+            frames: this.anims.generateFrameNumbers('lever', { frames:[0,1,2,3,4] }),
+            frameRate: 12,
+            repeat: 0
+        });        
+        
+        this.anims.create({
+            key: 'lever-operate-1',
+            frames: this.anims.generateFrameNumbers('lever', { frames:[4,3,2,1,0] }),
+            frameRate: 12,
+            repeat: 0
+        });
+
         // set bounds so the camera won't go outside the game world
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);        
         // set background color, so the sky is not black    
@@ -233,6 +255,7 @@ var GameScene = new Phaser.Class({
         this.physics.add.overlap(enemies, bullets, damageEnemy);        
         this.physics.add.overlap(solana, bullets, damageSolana);
         this.physics.add.overlap(solana, mirrors, controlMirror);
+        this.physics.add.overlap(solana, levers, controlLever);
         this.physics.add.overlap(solana, exits, exitLevel);
         //Set Colliders
         this.physics.add.collider(solana, groundLayer);
@@ -276,6 +299,11 @@ var GameScene = new Phaser.Class({
         //Spawn Triggers
         for(e=0;e<triggerlayer.objects.length;e++){
             //Check for Type first, to determine the GET method used.
+            let triggerObj;
+            if(triggerlayer.objects[e].type == "lever"){
+                triggerObj = levers.get();
+                triggerObj.setup(triggerlayer.objects[e].x+16,triggerlayer.objects[e].y+16);
+            }
         }
         //Spawn Exits
         for(e=0;e<exitlayer.objects.length;e++){  
@@ -608,6 +636,16 @@ function controlMirror(s,m){
             m.rotateMirror(2);
         }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
             m.rotateMirror(-2);
+        }
+    }
+}
+function controlLever(s,l){
+    if(curr_player==players.SOLANA){
+        //Only control if currently the active control object
+        if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
+            l.useLever();
+        }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
+            l.useLever();
         }
     }
 }

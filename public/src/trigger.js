@@ -21,7 +21,7 @@ var TMXLever = new Phaser.Class({
         
         this.debug = scene.add.text(this.x, this.y-16, 'Lever', { fontSize: '10px', fill: '#00FF00' });
     },
-    setup: function(x,y,angle){
+    setup: function(x,y){
         this.setActive(true);
         this.body.setAllowGravity(false);
         this.body.setImmovable(true);  
@@ -32,10 +32,19 @@ var TMXLever = new Phaser.Class({
     update: function (time, delta)
     {       
 
-        this.debug.setPosition(this.x, this.y-196);
-        this.debug.setText("Lever Position:"+String(this.levelPosition));
+        this.debug.setPosition(this.x, this.y-16);
+        this.debug.setText("Lever Position:"+String(this.leverPosition));
     },
     useLever: function(){
+        if(this.anims.isPlaying == false){
+            if(this.leverPosition == 0){
+                this.leverPosition = 1;
+                this.anims.play('lever-operate-1', true); 
+            }else{
+                this.leverPosition = 0;
+                this.anims.play('lever-operate-0', true); 
+            }
+        }
 
     },
 });

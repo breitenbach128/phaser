@@ -140,7 +140,18 @@
          "draworder":"topdown",
          "id":10,
          "name":"triggers",
-         "objects":[],
+         "objects":[
+                {
+                 "height":32,
+                 "id":13,
+                 "name":"lever1",
+                 "rotation":0,
+                 "type":"lever",
+                 "visible":true,
+                 "width":32,
+                 "x":352,
+                 "y":256
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -183,7 +194,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":13,
+ "nextobjectid":14,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",
