@@ -13,12 +13,16 @@ class HudScene extends Phaser.Scene {
 
     create ()
     {
-  
+       
     }
 
     update()
     {
-
+        if(this.speechbubble){
+            this.speechbubble.x = (solana.x+solana.width)*2;
+            this.speechbubble.y = (solana.y-32)*2;
+            this.speechbubble.update();
+        }
     }
     clearHud()
     {
@@ -45,6 +49,9 @@ class HudScene extends Phaser.Scene {
         //Update energy bar values
         this.energy.h = this.energy_bar[1].height;
         this.energy.w = this.energy_bar[1].width;
+        //Add text
+        this.speechbubble = new SpeechBubble(this,solana.x+solana.width,solana.y-32,5000);
+        this.speechbubble.newText("This is a test. Not a great test, but a test none the less");
     }
     alterEnergy(energyChange){
         let n = this.energy.n + energyChange;

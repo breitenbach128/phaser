@@ -16,30 +16,51 @@ Phaser.Scene.prototype.addButton = function(x, y, key, callback, callbackContext
 //Speech Bubble
 class SpeechBubble extends Phaser.GameObjects.Sprite {
 
-    constructor(scene,x,y,brigthness) {
+    constructor(scene,x,y,ttl) {
         super(scene, x,y, "speechbubble")
         this.scene = scene;
 
         this.scene.physics.world.enable(this);
         this.scene.add.existing(this)
-        this.brightness = brigthness;
 		this.body.setAllowGravity(false);
+		this.setActive(true);  
+		//Text on the speech bubble    
+		var tconfig = {
+			x: this.getCenter().x,
+			y: this.getCenter().y-12,
+			text: '',
+			style: {
+			  fontSize: '12px',
+			  fontFamily: 'visitorTT1', 
+			  fontStyle: 'bold',
+			  color: '#000000',
+			  align: 'center',
+			  lineSpacing: 4,
+			}
+		  };
+		this.setScale(3);
+		this.speechtext = scene.make.text(tconfig);
+		this.speechtext.setWordWrapWidth(this.width*3-12, false);
+
+		this.speechtext.setOrigin(0.5);
+		this.speechtext.setX(this.width / 2);
+		this.speechtext.setY(this.height / 2);
+		if(ttl != -1){
+			this.scene.time.addEvent({ delay: ttl, callback: this.timeUp, callbackScope: this, loop: false });
+		}
+	
 		
     }
-
-    create(){
-        
-        this.setActive(true);      
-		this.speechtext = scene.add.text(this.getCenter().x, this.getCenter().y-12, '', { fontSize: '10px', fill: '#00FF00' });
-    }
-
     update()
     {    
-		this.speechtext.setPosition(this.x, this.y-196);
-
+		this.speechtext.setPosition(this.getCenter().x, this.getCenter().y-12);
 	}
 	newText(text){
 		this.speechtext.setText(text);
+	}
+	timeUp(){
+		this.speechtext.destroy();
+		this.destroy();
 	}
 
 }

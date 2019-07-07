@@ -20,9 +20,32 @@
     <script src="src/trigger.js"></script>
     <script src="src/enemy.js"></script>
     <script src="src/enemytest.js"></script>
+
+    <style>
+    @font-face {
+	font-family: 'xirod';
+	src: url('assets/fonts/xirod.eot');
+	src: local('☺'), url('assets/fonts/xirod.woff') format('woff'), url('assets/fonts/xirod.ttf') format('truetype'), url('assets/fonts/xirod.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+    }
+    @font-face {
+        font-family: 'visitorTT1';
+        src: url('assets/fonts/visitor/VisitorTT1BRK.eot');
+        src: local('☺'), url('assets/fonts/visitor/VisitorTT1BRK.woff') format('woff'), url('assets/fonts/visitor/visitor1.ttf') format('truetype'), url('assets/fonts/visitor/VisitorTT1BRK.svg') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+    .fontLoader {
+        position: absolute;
+        left: -1000px;
+        visibility: hidden;
+    }
+    </style>
 </head>
 <body>
-
+    <div class="fontLoader" style="font-family: xirod;">-</div>
+    <div class="fontLoader" style="font-family: visitorTT1;">-</div>
     <script>    
     var socket = io();
     var config = {
@@ -84,6 +107,8 @@
 
     //Debug:Version
     console.log(String(Phaser.VERSION));
+    //Font Preloader
+    
     //Game
     var game = new Phaser.Game(config);
     

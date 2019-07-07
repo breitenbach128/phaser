@@ -426,6 +426,8 @@ var GameScene = new Phaser.Class({
          this.soul_light.anims.play('soulight-move', true);//Idle
 
         hud.setupHud(solana);
+
+
     },
 
     update: function (time, delta)
