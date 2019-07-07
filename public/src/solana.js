@@ -14,6 +14,7 @@ class Solana extends Phaser.GameObjects.Sprite {
         this.hp = 5;
         this.max_hp = 5;
         this.mv_speed = 220;
+        this.mv_direction = {x:0,y:0};
         this.jump_speed = 300;
         this.prevJumpButtonPressed = false;
         this.onGround = false;
@@ -91,15 +92,18 @@ class Solana extends Phaser.GameObjects.Sprite {
                     this.body.setVelocityX(-this.mv_speed);
                     this.anims.play('solana-walk', true);
                     this.flipX= true; // flip the sprite to the left
+                    this.mv_direction.x = -1;
                 }
                 else if ((game.wasd.right.isDown || gamePad.buttons[15].value == 1)) {
                     this.body.setVelocityX(this.mv_speed);
                     this.anims.play('solana-walk', true);
                     this.flipX= false; // flip the sprite to the right
+                    this.mv_direction.x = 1;
                 }
                 else if(!(game.wasd.right.isDown || gamePad.buttons[15].value == 1) && !(game.wasd.left.isDown || gamePad.buttons[14].value == 1)){
                     this.body.setVelocityX(0);
                     this.anims.play('solana-idle', true);//Idle
+                    this.mv_direction.x = 0;
                 }
                 // If the user wants to jump - check prev to make sure it is not just being held down       
                 

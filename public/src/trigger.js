@@ -35,7 +35,11 @@ var TMXLever = new Phaser.Class({
             this.target.name = properties.targetName;
             this.target.type = properties.targetType;
         }
-        console.log("setup",name, properties,this.target);
+        //console.log("setup",name, properties,this.target);
+
+        //Setup Sound
+        this.leverSoundTrigger = game.sound.add('switch1');
+        this.leverSoundNotReady = game.sound.add('switch2');
  
     },
     update: function (time, delta)
@@ -46,7 +50,7 @@ var TMXLever = new Phaser.Class({
     },
     setTarget(targetObject){
         this.target.object = targetObject;
-        console.log("Set target for ", this.name);
+        //console.log("Set target for ", this.name);
     },
     triggerTarget(){
         if(this.target.object != -1){
@@ -57,6 +61,7 @@ var TMXLever = new Phaser.Class({
         if(this.anims.isPlaying == false){
             //Animation is done.
             if(this.target.object != -1 && this.target.object.ready){
+                this.leverSoundTrigger.play();
                 //Target is ready to operate?
                 if(this.leverPosition == 0){
                     this.leverPosition = 1;
@@ -69,7 +74,9 @@ var TMXLever = new Phaser.Class({
                 }
             }else{
                 //Player chunk sound so play knows they can use the lever right now. Make sure sound only plays if not playing.
-                console.log("Lever sound: CHUNK");
+                if(this.leverSoundNotReady.isPlaying == false){
+                    this.leverSoundNotReady.play();
+                }
             }
         }
 
@@ -109,7 +116,7 @@ var TMXGate = new Phaser.Class({
     activateTrigger: function(){
         
         if(this.ready){
-            console.log("Gate not moving: Trigger Gate");
+            //console.log("Gate not moving: Trigger Gate");
             this.ready = false;
 
             if(this.y == this.closedY){
@@ -135,7 +142,80 @@ var TMXGate = new Phaser.Class({
 
     },
     openComplete: function(tween, targets, myGate){
-        console.log("Gate Tween Finished");
+        //console.log("Gate Tween Finished");
         myGate.ready = true;
+    }
+});
+
+var TMXPlate = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Sprite,
+
+    initialize: function TMXPlate (scene)
+    {
+        Phaser.GameObjects.Sprite.call(this, scene, -100, -100, 'pressure_plate');      
+ 
+        scene.physics.add.existing(this);
+        this.scene = scene;
+        
+        this.debug = scene.add.text(this.x, this.y-16, 'Plate', { fontSize: '10px', fill: '#00FF00' });
+    },
+    setup: function(x,y, properties,name){
+        this.setActive(true);
+        this.body.setAllowGravity(false);
+        this.body.setImmovable(true);  
+        this.setPosition(x,y);
+        this.name = name;
+        this.platePosition = 0;
+        this.target = {name: -1,type: -1, object: -1};
+        this.ready = true;
+        if(properties){
+            this.target.name = properties.targetName;
+            this.target.type = properties.targetType;
+        }
+       //console.log("setup",name, properties,this.target);
+ 
+    },
+    update: function (time, delta)
+    {       
+
+        this.debug.setPosition(this.x, this.y-16);
+        this.debug.setText("Plate Position:"+String(this.platePosition));
+    },
+    setTarget(targetObject){
+        this.target.object = targetObject;
+        //console.log("Set target for ", this.name);
+    },
+    triggerTarget(){
+        if(this.target.object != -1){
+            this.target.object.activateTrigger();
+        }
+    },
+    usePlate: function(){
+        if(this.ready == true){
+            this.ready = false;
+            this.plateTimer = this.scene.time.addEvent({ delay: 1000, callback: this.plateComplete, callbackScope: this, loop: false });
+            //Timer is done.
+            if(this.target.object != -1 && this.target.object.ready){
+                //Target is ready to operate?
+                if(this.platePosition == 0){
+                    this.platePosition = 1;
+                    this.setFrame(1);
+                    this.triggerTarget();
+                }else{
+                    this.platePosition = 0;
+                    this.setFrame(0); 
+                    this.triggerTarget();
+                }
+            }else{
+                //Player chunk sound so play knows they can use the lever right now. Make sure sound only plays if not playing.
+                console.log("Plate sound: Tink! Click!");
+            }
+        }
+
+    },
+    plateComplete: function(){
+        //console.log("plate ready again");
+        this.ready = true;
     }
 });

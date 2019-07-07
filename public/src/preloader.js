@@ -84,6 +84,7 @@ var Preloader = new Phaser.Class({
         this.load.spritesheet('soul_light', 'assets/soul_light.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('mirror', 'assets/mirror.png', {frameWidth: 48, frameHeight: 48});
 		this.load.spritesheet('lever', 'assets/lever.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('pressure_plate', 'assets/pressure_plate.png', {frameWidth: 32, frameHeight: 6});
 		this.load.image('mask1', 'assets/mask1.png');
 		this.load.image('mask2', 'assets/mask2.png');
 		this.load.image('light1', 'assets/light1.png');
@@ -112,6 +113,8 @@ var Preloader = new Phaser.Class({
 		this.load.audio('bomb', ['snd/expl.mp3', 'snd/expl.ogg']);
 		this.load.audio('btn',  ['snd/btn.mp3', 'snd/btn.ogg']);
 		this.load.audio('jumpSolana',  ['snd/SFX_Jump_07.wav']);
+		this.load.audio('switch1',  ['snd/switch1.mp3']);
+		this.load.audio('switch2',  ['snd/switch2.mp3']);
 		
 		// !! TESTING !! load the same image 500 times just to slow down the load and test the loading bar
 		// for (var i = 0; i < 500; i++) {

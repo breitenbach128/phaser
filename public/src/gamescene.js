@@ -238,6 +238,11 @@ var GameScene = new Phaser.Class({
             classType: TMXLever,
             runChildUpdate: true 
         });
+        //Pressure Plates
+        plates = this.physics.add.group({ 
+            classType: TMXPlate,
+            runChildUpdate: true 
+        });
         //Gates
         gates = this.physics.add.group({ 
             classType: TMXGate,
@@ -265,6 +270,7 @@ var GameScene = new Phaser.Class({
         //Set Colliders
         this.physics.add.collider(solana, groundLayer);
         this.physics.add.collider(solana, gates);
+        this.physics.add.collider(solana, plates, controlPlate);
         this.physics.add.collider(bright, groundLayer);
         this.physics.add.collider(enemies2, groundLayer);
         this.physics.add.collider(enemies, groundLayer);
@@ -310,9 +316,13 @@ var GameScene = new Phaser.Class({
                 triggerObj = levers.get();
             }else if(triggerlayer.objects[e].type == "gate"){
                 triggerObj = gates.get();
+            }else if(triggerlayer.objects[e].type == "plate"){
+                triggerObj = plates.get();
             }
             if(triggerObj){
-                triggerObj.setup(triggerlayer.objects[e].x+16,triggerlayer.objects[e].y+16,getTileProperties(triggerlayer.objects[e].properties),triggerlayer.objects[e].name);
+                let trig_x_offset = triggerlayer.objects[e].width/2;
+                let trig_y_offset = triggerlayer.objects[e].height/2;
+                triggerObj.setup(triggerlayer.objects[e].x+trig_x_offset,triggerlayer.objects[e].y+trig_y_offset,getTileProperties(triggerlayer.objects[e].properties),triggerlayer.objects[e].name);
             }
         }
           
@@ -343,20 +353,8 @@ var GameScene = new Phaser.Class({
         }
 
         //SETUP LEVER TARGETS
-        levers.children.each(function(lever) {
-            console.log("levers:",lever.target);
-            if(lever.target.name){
-                if(lever.target.type == "gate"){
-                    //Search all gets
-                    gates.children.each(function(gate) {
-                        console.log("lever had gate target, searching names");
-                        if(gate.name == lever.target.name){
-                            lever.setTarget(gate);
-                        }
-                    },lever);
-                }
-            }
-        }, this);
+        setupTriggerTargets(levers,"levers",this);
+        setupTriggerTargets(plates,"plates",this);
 
         //var enemy2 = new enemytest(this,300,200);
         //enemies2.add(enemy2);
@@ -406,6 +404,8 @@ var GameScene = new Phaser.Class({
 
     update: function (time, delta)
     {
+
+
         //Establish Gamepad - MOve to menu - one time call in the future.
         if (this.input.gamepad.total != 0)
         {     
@@ -513,7 +513,13 @@ var GameScene = new Phaser.Class({
         if(Phaser.Input.Keyboard.JustDown(game.wasd.change_player)){
             this.changePlayer();
         } 
- 
+        
+        //Scroll parallax based on movement of bright or solana
+        if(solana.mv_direction.x != 0){
+            //Parallax Background
+            let paraMove = .50*solana.mv_direction.x
+            world_background.tilePositionX -= paraMove;
+        }   
       
     },
     changePlayer: function(){
@@ -590,7 +596,23 @@ var GameScene = new Phaser.Class({
     }
 });
 //External Functions
-
+function setupTriggerTargets(triggerGroup,triggerGroupName,scene){
+    
+    triggerGroup.children.each(function(trigger) {
+        //console.log(triggerGroupName,trigger.target);
+        if(trigger.target.name){
+            if(trigger.target.type == "gate"){
+                //Search all gets
+                gates.children.each(function(gate) {
+                    //console.log("Trigger had gate target, searching names");
+                    if(gate.name == trigger.target.name){
+                        trigger.setTarget(gate);
+                    }
+                },trigger);
+            }
+        }
+    }, this);
+}
 function exitLevel(s, exit) {  
     // only if both enemy and bullet are alive
     if (exit.active === true && s.active === true) {
@@ -675,6 +697,17 @@ function controlLever(s,l){
         }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
             l.useLever();
         }
+    }
+}
+function controlPlate(s,pl){
+    //Only Trigger if solan is hitting it from above
+   
+    if(pl.body.touching.up && pl.ready){
+        pl.usePlate();
+    }
+    if((pl.body.touching.left &&  s.mv_direction.x > 0) || (pl.body.touching.right && s.mv_direction.x < 0)){
+        //Climb up
+        s.body.setVelocityY(-75);
     }
 }
 function getTileProperties(propArray){

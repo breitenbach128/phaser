@@ -179,6 +179,28 @@
                  "width":32,
                  "x":640,
                  "y":192
+                }, 
+                {
+                 "height":6,
+                 "id":15,
+                 "name":"plate1",
+                 "properties":[
+                        {
+                         "name":"targetName",
+                         "type":"string",
+                         "value":"gate1"
+                        }, 
+                        {
+                         "name":"targetType",
+                         "type":"string",
+                         "value":"gate"
+                        }],
+                 "rotation":0,
+                 "type":"plate",
+                 "visible":true,
+                 "width":32,
+                 "x":480,
+                 "y":282
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -212,8 +234,8 @@
                  "type":"mirror",
                  "visible":true,
                  "width":48,
-                 "x":491,
-                 "y":271
+                 "x":1036.33333333333,
+                 "y":272.333333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -222,7 +244,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":15,
+ "nextobjectid":16,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",
