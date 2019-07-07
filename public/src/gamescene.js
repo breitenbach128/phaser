@@ -23,7 +23,7 @@ var GameScene = new Phaser.Class({
         hud.updateGameScene();
         
         //Create Background
-        world_background = this.add.tileSprite(512, 256, 2048, 512, 'forest_background');
+        world_background = this.add.tileSprite(512, 256, 4096, 512, 'forest_background');
 
         // //Map the map
         // map = this.make.tilemap({key: 'map1'});
@@ -183,6 +183,12 @@ var GameScene = new Phaser.Class({
             repeat: 0
         });
 
+        this.anims.create({
+            key: 'button-activate',
+            frames: this.anims.generateFrameNumbers('tmxbutton', { frames:[4,3,2,1,0] }),
+            frameRate: 12,
+            repeat: 0
+        });
         // set bounds so the camera won't go outside the game world
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);        
         // set background color, so the sky is not black    
@@ -243,6 +249,16 @@ var GameScene = new Phaser.Class({
             classType: TMXPlate,
             runChildUpdate: true 
         });
+        //Pressure Plates
+        buttons = this.physics.add.group({ 
+            classType: TMXButton,
+            runChildUpdate: true 
+        });
+        //Zones
+        triggerzones = this.physics.add.group({ 
+            classType: TMXZone,
+            runChildUpdate: true 
+        });
         //Gates
         gates = this.physics.add.group({ 
             classType: TMXGate,
@@ -266,7 +282,9 @@ var GameScene = new Phaser.Class({
         this.physics.add.overlap(solana, bullets, damageSolana);
         this.physics.add.overlap(solana, mirrors, controlMirror);
         this.physics.add.overlap(solana, levers, controlLever);
+        this.physics.add.overlap(solana, buttons, controlButton);
         this.physics.add.overlap(solana, exits, exitLevel);
+        this.physics.add.overlap(solana, triggerzones, touchZone);
         //Set Colliders
         this.physics.add.collider(solana, groundLayer);
         this.physics.add.collider(solana, gates);
@@ -312,12 +330,18 @@ var GameScene = new Phaser.Class({
         for(e=0;e<triggerlayer.objects.length;e++){
             //Check for Type first, to determine the GET method used.
             let triggerObj;
+            
             if(triggerlayer.objects[e].type == "lever"){
                 triggerObj = levers.get();
             }else if(triggerlayer.objects[e].type == "gate"){
                 triggerObj = gates.get();
             }else if(triggerlayer.objects[e].type == "plate"){
                 triggerObj = plates.get();
+            }else if(triggerlayer.objects[e].type == "button"){
+                triggerObj = buttons.get();
+            }else if(triggerlayer.objects[e].type == "zone"){
+                triggerObj = triggerzones.get();
+                triggerObj.setDisplaySize(triggerlayer.objects[e].width, triggerlayer.objects[e].height);
             }
             if(triggerObj){
                 let trig_x_offset = triggerlayer.objects[e].width/2;
@@ -355,6 +379,8 @@ var GameScene = new Phaser.Class({
         //SETUP LEVER TARGETS
         setupTriggerTargets(levers,"levers",this);
         setupTriggerTargets(plates,"plates",this);
+        setupTriggerTargets(buttons,"buttons",this);
+        setupTriggerTargets(triggerzones,"zones",this);
 
         //var enemy2 = new enemytest(this,300,200);
         //enemies2.add(enemy2);
@@ -518,7 +544,7 @@ var GameScene = new Phaser.Class({
         if(solana.mv_direction.x != 0){
             //Parallax Background
             let paraMove = .50*solana.mv_direction.x
-            world_background.tilePositionX -= paraMove;
+            world_background.tilePositionX += paraMove;
         }   
       
     },
@@ -710,7 +736,17 @@ function controlPlate(s,pl){
         s.body.setVelocityY(-75);
     }
 }
-function getTileProperties(propArray){
+function controlButton(s,b){
+    if(curr_player==players.SOLANA){
+        if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
+            b.useButton();
+        }
+    }
+}
+function touchZone(s,z){
+    z.enterZone();
+}
+function getTileProperties(propArray){    
     let object = {};
     propArray.forEach(element => {
         object[element.name] = element.value;

@@ -111,7 +111,7 @@ var TMXGate = new Phaser.Class({
     {       
 
         this.debug.setPosition(this.x, this.y-16);
-        this.debug.setText("Gate Position:"+String(this.gatePosition));
+        this.debug.setText("Gate Position:"+String(this.y));
     },
     activateTrigger: function(){
         
@@ -217,5 +217,131 @@ var TMXPlate = new Phaser.Class({
     plateComplete: function(){
         //console.log("plate ready again");
         this.ready = true;
+    }
+});
+var TMXButton = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Sprite,
+
+    initialize: function TMXButton (scene)
+    {
+        Phaser.GameObjects.Sprite.call(this, scene, -100, -100, 'tmxbutton');      
+ 
+        scene.physics.add.existing(this);
+        this.scene = scene;
+        
+        this.debug = scene.add.text(this.x, this.y-16, 'TMXButton', { fontSize: '10px', fill: '#00FF00' });
+    },
+    setup: function(x,y, properties,name){
+        this.setActive(true);
+        this.body.setAllowGravity(false);
+        this.body.setImmovable(true);  
+        this.setPosition(x,y);
+        this.name = name;
+        this.buttonPosition = 0;
+        this.target = {name: -1,type: -1, object: -1};
+        this.ready = true;
+        if(properties){
+            this.target.name = properties.targetName;
+            this.target.type = properties.targetType;
+        }
+       //console.log("setup",name, properties,this.target);
+ 
+    },
+    update: function (time, delta)
+    {       
+
+        this.debug.setPosition(this.x, this.y-16);
+        this.debug.setText("Button Position:"+String(this.platePosition));
+    },
+    setTarget(targetObject){
+        this.target.object = targetObject;
+        //console.log("Set target for ", this.name);
+    },
+    triggerTarget(){
+        if(this.target.object != -1){
+            this.target.object.activateTrigger();
+        }
+    },
+    useButton: function(){
+        if(this.anims.isPlaying == false){
+            //Animation is done.
+            if(this.target.object != -1 && this.target.object.ready){
+                //Target is ready to operate?
+                if(this.buttonPosition == 0){
+                    this.buttonPosition = 1;
+                    this.anims.play('button-activate', true); 
+                    this.anims.stopOnFrame(this.anims.getTotalFrames()-1);
+                    this.triggerTarget();
+                }else{
+                    this.buttonPosition = 0;
+                    this.anims.playReverse('button-activate', true); 
+                    this.anims.stopOnFrame(0);
+                    this.triggerTarget();
+                }
+            }else{
+                //Click to let them know they have to wait.
+            }
+        }
+
+    }
+});
+var TMXZone = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Sprite,
+
+    initialize: function TMXZone (scene)
+    {
+        Phaser.GameObjects.Sprite.call(this, scene, -100, -100, 'triggerzone');      
+ 
+        scene.physics.add.existing(this);
+        this.scene = scene;
+        
+        this.debug = scene.add.text(this.x, this.y-16, 'Zone', { fontSize: '10px', fill: '#00FF00' });
+    },
+    setup: function(x,y, properties,name){
+        this.setActive(true);
+        this.body.setAllowGravity(false);
+        this.body.setImmovable(true);  
+        this.setPosition(x,y);
+        this.alpha = .3;
+        this.name = name;
+        this.target = {name: -1,type: -1, object: -1};
+        this.ready = true;
+        this.zonedata = {type:'trigger',value:0};
+        //Zones can do certain things.
+        //
+        if(properties){
+            this.target.name = properties.targetName;
+            this.target.type = properties.targetType;
+            this.zonedata.type = properties.zoneType;
+            this.zonedata.value = properties.zoneValue;
+
+        }
+       //console.log("setup",name, properties,this.target);
+ 
+    },
+    update: function (time, delta)
+    {       
+
+        this.debug.setPosition(this.x, this.y-16);
+        this.debug.setText("Zone Status:"+String(this.name));
+    },
+    setTarget(targetObject){
+        this.target.object = targetObject;
+        //console.log("Set target for ", this.name);
+    },
+    triggerTarget(){
+        if(this.target.object != -1){
+            this.target.object.activateTrigger();
+        }
+    },
+    enterZone: function(){
+        if(this.ready == true){
+            this.ready = false;
+            this.triggerTarget();
+            console.log("Zone Entered",this.name);
+        }
+
     }
 });

@@ -85,6 +85,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('mirror', 'assets/mirror.png', {frameWidth: 48, frameHeight: 48});
 		this.load.spritesheet('lever', 'assets/lever.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('pressure_plate', 'assets/pressure_plate.png', {frameWidth: 32, frameHeight: 6});
+		this.load.spritesheet('tmxbutton', 'assets/tmxbutton.png', {frameWidth: 16, frameHeight: 16});
 		this.load.image('mask1', 'assets/mask1.png');
 		this.load.image('mask2', 'assets/mask2.png');
 		this.load.image('light1', 'assets/light1.png');
@@ -94,6 +95,8 @@ var Preloader = new Phaser.Class({
 		this.load.image('exit', 'assets/exit.png');
 		this.load.image('entrance', 'assets/entrance.png');
 		this.load.image('gate', 'assets/gate.png');
+		this.load.image('triggerzone', 'assets/triggerzone.png');
+		this.load.image('speechbubble', 'assets/speechBubble.png');
 		// - HUD
 		this.load.spritesheet('hud_interaction_control_arrows','assets/hud_interaction_control_arrows.png',{frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('hud_energybar1','assets/hud_energybar1.png',{frameWidth: 16, frameHeight: 96});
