@@ -22,6 +22,7 @@ class Solana extends Phaser.GameObjects.Sprite {
         this.jumpReady = false;
         this.alive = true;
         this.inLight = true;
+
         
         this.debug = scene.add.text(this.x, this.y-16, 'Solana', { fontSize: '10px', fill: '#00FF00' });
         //Sounds
@@ -100,17 +101,21 @@ class Solana extends Phaser.GameObjects.Sprite {
             //Movement Code
             if(curr_player==players.SOLANA){
                 //Only control if currently the active control object
-                if ((game.wasd.left.isDown || gamePad.buttons[14].value == 1) && this.jumpLock == false) {
+                let control_left = (game.wasd.left.isDown || gamePad.buttons[14].value == 1);
+                let control_right = (game.wasd.right.isDown || gamePad.buttons[15].value == 1);
+
+                if (control_left && this.jumpLock == false) {
                     if(this.onWall){
-                        this.body.setVelocityX(-1);
-                        this.flipX= false;
+                            this.body.setVelocityX(-1);
+                            this.flipX= false;
                     }else{
-                        this.body.setVelocityX(-this.mv_speed);
-                        this.flipX= true; // flip the sprite to the left
+                            this.body.setVelocityX(-this.mv_speed);
+                            this.flipX= true; // flip the sprite to the left
                     }
                     this.mv_direction.x = -1;
                 }
-                else if ((game.wasd.right.isDown || gamePad.buttons[15].value == 1) && this.jumpLock == false) {
+                else if (control_right && this.jumpLock == false) {
+                  
                     if(this.onWall){
                         this.body.setVelocityX(1);
                         this.flipX= true;
@@ -118,12 +123,15 @@ class Solana extends Phaser.GameObjects.Sprite {
                         this.body.setVelocityX(this.mv_speed);                    
                         this.flipX= false; // flip the sprite to the right
                     }
+            
                     this.mv_direction.x = 1;
                 }
-                else if(!(game.wasd.right.isDown || gamePad.buttons[15].value == 1) && !(game.wasd.left.isDown || gamePad.buttons[14].value == 1)){
-                    this.body.setVelocityX(0);                    
-                    this.mv_direction.x = 0;
+                else if(!control_right && !control_left){
+
+                    this.body.setVelocityX(0);                   
+                    this.mv_direction.x = 0; 
                 }
+
                 // If the user wants to jump - check prev to make sure it is not just being held down       
                 if(this.mv_direction.x == 0){
                     this.anims.play('solana-idle', true);//Idle
