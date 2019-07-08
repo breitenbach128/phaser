@@ -11,7 +11,7 @@ class SoulLight extends Phaser.GameObjects.Sprite {
         this.owner = owner;
         this.ownerid = 1;
         this.create();
-        this.debug = scene.add.text(this.x, this.y-16, 'SoulLight', { fontSize: '12px', fill: '#00FF00' });
+        this.debug = scene.add.text(this.x, this.y-16, 'SoulLight', { fontSize: '10px', fill: '#00FF00' });
     }
 
     create(){
@@ -49,12 +49,8 @@ class SoulLight extends Phaser.GameObjects.Sprite {
             this.passing = true;
         }
 
-        this.debug.setPosition(this.x, this.y-128);
-        this.debug.setText("X:"+String(this.x)
-        +" \nY:"+String(this.y)
-        +" \nOwnerX:"+String(this.owner.x)
-        +" \nOwnerY:"+String(this.owner.y)
-        +" \nPassing:"+String(this.passing)
+        this.debug.setPosition(this.x+16, this.y-32);
+        this.debug.setText("Passing:"+String(this.passing)
         +" \nSpeed:"+String(this.move_speed));
 
         if(this.passing){

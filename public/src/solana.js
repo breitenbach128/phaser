@@ -23,12 +23,18 @@ class Solana extends Phaser.GameObjects.Sprite {
         this.alive = true;
         this.inLight = true;
         
-        this.debug = scene.add.text(this.x, this.y-16, 'Solana', { fontSize: '12px', fill: '#00FF00' });
+        this.debug = scene.add.text(this.x, this.y-16, 'Solana', { fontSize: '10px', fill: '#00FF00' });
         //Sounds
         this.soundJump = game.sound.add('jumpSolana');
 
+        //JumpTimer
+        this.jumpTimer = this.scene.time.addEvent({ delay: 100, callback: this.forgiveJump, callbackScope: this, loop: false });
+        this.jumpTimerRunning = false;
+        this.jumpLock = false;
+        this.jumpLockTimer;
 
-        
+        //Custom additional gravity
+        this.body.setGravityY(300);
     }
 
     update(time,delta)
@@ -47,13 +53,15 @@ class Solana extends Phaser.GameObjects.Sprite {
             if(this.body.blocked.right && !this.body.blocked.down){
     
                 // Solana on a wall
-                this.onWall = true;
+                this.onWall = true;                
+                this.flipX= true;
             }
     
             // same concept applies to the left
             if(this.body.blocked.left && this.body.blocked.down){
                
-                this.onGround = true;
+                this.onGround = true;                
+                this.flipX= false;
 
             }
             if(this.body.blocked.left && !this.body.blocked.down){
@@ -70,17 +78,21 @@ class Solana extends Phaser.GameObjects.Sprite {
                 this.onGround = false;
             }
 
-            //Check Jumop ready
+            //Check Jump ready
             if(this.onGround || this.onWall){
                 this.jumpReady = true;
-            }else{
-                this.jumpReady = false;
+            }else{  
+                //Add Jump Forgiveness of 100ms  
+                if(this.jumpTimerRunning == false){
+                    this.jumpTimer = this.scene.time.addEvent({ delay: 100, callback: this.forgiveJump, callbackScope: this, loop: false });
+                    this.jumpTimerRunning = true;         
+                }   
+                
             }
 
             //Slow Descent if on Wall
             if(this.onWall){
                 this.body.setVelocityY(0);
-                
             }else{
 
             }
@@ -88,25 +100,38 @@ class Solana extends Phaser.GameObjects.Sprite {
             //Movement Code
             if(curr_player==players.SOLANA){
                 //Only control if currently the active control object
-                if ((game.wasd.left.isDown || gamePad.buttons[14].value == 1)) {
-                    this.body.setVelocityX(-this.mv_speed);
-                    this.anims.play('solana-walk', true);
-                    this.flipX= true; // flip the sprite to the left
+                if ((game.wasd.left.isDown || gamePad.buttons[14].value == 1) && this.jumpLock == false) {
+                    if(this.onWall){
+                        this.body.setVelocityX(-1);
+                        this.flipX= false;
+                    }else{
+                        this.body.setVelocityX(-this.mv_speed);
+                        this.flipX= true; // flip the sprite to the left
+                    }
                     this.mv_direction.x = -1;
                 }
-                else if ((game.wasd.right.isDown || gamePad.buttons[15].value == 1)) {
-                    this.body.setVelocityX(this.mv_speed);
-                    this.anims.play('solana-walk', true);
-                    this.flipX= false; // flip the sprite to the right
+                else if ((game.wasd.right.isDown || gamePad.buttons[15].value == 1) && this.jumpLock == false) {
+                    if(this.onWall){
+                        this.body.setVelocityX(1);
+                        this.flipX= true;
+                    }else{
+                        this.body.setVelocityX(this.mv_speed);                    
+                        this.flipX= false; // flip the sprite to the right
+                    }
                     this.mv_direction.x = 1;
                 }
                 else if(!(game.wasd.right.isDown || gamePad.buttons[15].value == 1) && !(game.wasd.left.isDown || gamePad.buttons[14].value == 1)){
-                    this.body.setVelocityX(0);
-                    this.anims.play('solana-idle', true);//Idle
+                    this.body.setVelocityX(0);                    
                     this.mv_direction.x = 0;
                 }
                 // If the user wants to jump - check prev to make sure it is not just being held down       
-                
+                if(this.mv_direction.x == 0){
+                    this.anims.play('solana-idle', true);//Idle
+                }else{
+                    this.anims.play('solana-walk', true);
+                }
+
+
                 if ((Phaser.Input.Keyboard.JustDown(game.wasd.jump) || (gamePad.buttons[2].pressed && !this.prevJumpButtonPressed)) && this.jumpReady) {
                     this.jump(this.jump_speed,solana.mv_speed);            
                     //jumpSound.play();
@@ -119,24 +144,32 @@ class Solana extends Phaser.GameObjects.Sprite {
         }
 
 
-        this.debug.setPosition(this.x, this.y-196);
+        this.debug.setPosition(this.x+32, this.y-64);
         this.debug.setText("Ground:"+String(this.onGround)
-        +" \nX/Y:"+String(this.x)+":"+String(this.y)
-        +" \nWall:"+String(this.onWall)
+        +" \Velocity:"+String(this.body.velocity.x)+":"+String(this.body.velocity.y)
+        +" \nWall L:"+String(this.body.blocked.left)+" R:"+String(this.body.blocked.right)
         +" \njr:"+String(this.jumpReady)
         +" \nflip:"+String(this.flipX)
-        +" \nhp:"+String(this.hp)+":"+String(this.alive)
-        +" \nAnimKey:"+this.anims.getCurrentKey()
         +" \nInLight:"+String(this.inLight));
         
     }
-
+    jumpLockReset(){
+        this.jumpLock = false;
+    }
+    forgiveJump(){
+        this.jumpReady = false;
+        this.jumpTimerRunning = false; 
+    }
     jump(jumpVel,mvVel){
         if(this.body.blocked.right){
             this.body.setVelocityX(-mvVel);
+            this.jumpLock = true;
+            this.jumpLockTimer = this.scene.time.addEvent({ delay: 400, callback: this.jumpLockReset, callbackScope: this, loop: false });
         }
         if(this.body.blocked.left){
             this.body.setVelocityX(mvVel);
+            this.jumpLock = true;
+            this.jumpLockTimer = this.scene.time.addEvent({ delay: 400, callback: this.jumpLockReset, callbackScope: this, loop: false });
         }
         this.body.setVelocityY(-jumpVel);
         this.soundJump.play();
