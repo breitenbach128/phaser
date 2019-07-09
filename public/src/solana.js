@@ -132,7 +132,7 @@ class Solana extends Phaser.GameObjects.Sprite {
                     this.mv_direction.x = 0; 
                 }
 
-                // If the user wants to jump - check prev to make sure it is not just being held down       
+                       
                 if(this.mv_direction.x == 0){
                     this.anims.play('solana-idle', true);//Idle
                 }else{
@@ -145,7 +145,7 @@ class Solana extends Phaser.GameObjects.Sprite {
                     //jumpSound.play();
 
                 }
-
+                // If the user wants to jump - check prev to make sure it is not just being held down
                 this.prevJumpButtonPressed = gamePad.buttons[2].pressed;
             }
 
