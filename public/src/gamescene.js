@@ -223,11 +223,6 @@ var GameScene = new Phaser.Class({
             classType: Enemy,
             runChildUpdate: true 
         });
-        //Enemiestest
-        enemies2 = this.physics.add.group({ 
-            classType: enemytest,
-            runChildUpdate: true 
-        });
         //Bullets
         bullets = this.physics.add.group({
             classType: Bullet,
@@ -290,7 +285,6 @@ var GameScene = new Phaser.Class({
         this.physics.add.collider(solana, gates);
         this.physics.add.collider(solana, plates, controlPlate);
         this.physics.add.collider(bright, groundLayer);
-        this.physics.add.collider(enemies2, groundLayer);
         this.physics.add.collider(enemies, groundLayer);
         this.physics.add.collider(mirrors, groundLayer);
         this.physics.add.collider(bullets, mirrors, bulletHitMirror);

@@ -64,42 +64,39 @@ var Preloader = new Phaser.Class({
 
 		// now load images, audio etc.
 		//Background
-		this.load.image('forest_background', 'assets/forest_bg.png');
+		this.load.image('forest_background', 'assets/world/forest_bg.png');
 		// sprites
         this.load.atlas('sprites', 'img/spritearray.png', 'img/spritearray.json');
-        //Map Assets
-		this.load.tilemapTiledJSON('map1', 'assets/map1.json');   
-		this.load.tilemapTiledJSON('map2', 'assets/map2_32ts.json'); 
-		this.load.tilemapTiledJSON('map3', 'assets/map3_32ts.json');    
-		this.load.spritesheet('tiles', 'assets/map1_tiles.png', {frameWidth: 32, frameHeight: 32});  
-		this.load.spritesheet('tiles32', 'assets/oldTileset32.png', {frameWidth: 32, frameHeight: 32}); 
+        //Map Assets  
+		this.load.tilemapTiledJSON('map2', 'assets/world/map2_32ts.json'); 
+		this.load.tilemapTiledJSON('map3', 'assets/world/map3_32ts.json');    
+		this.load.spritesheet('tiles32', 'assets/world/oldTileset32.png', {frameWidth: 32, frameHeight: 32}); 
 		//Entity Assets
-        this.load.spritesheet('enemy1', 'assets/enemy1.png', {frameWidth: 64, frameHeight: 64});       
-        this.load.spritesheet('enemy2', 'assets/enemy2.png', {frameWidth: 64, frameHeight: 64});    
-        this.load.spritesheet('bullet', 'assets/projectiles.png', {frameWidth: 16, frameHeight: 16});
-        this.load.image('impact1', 'assets/particles.png');
-        this.load.spritesheet('solana', 'assets/solana.png', {frameWidth: 32, frameHeight: 64});
-        this.load.spritesheet('bright', 'assets/bright.png', {frameWidth: 48, frameHeight: 48});
-        this.load.spritesheet('dark', 'assets/dark.png', {frameWidth: 48, frameHeight: 48});
-        this.load.spritesheet('soul_light', 'assets/soul_light.png', {frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('mirror', 'assets/mirror.png', {frameWidth: 48, frameHeight: 48});
-		this.load.spritesheet('lever', 'assets/lever.png', {frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('pressure_plate', 'assets/pressure_plate.png', {frameWidth: 32, frameHeight: 6});
-		this.load.spritesheet('tmxbutton', 'assets/tmxbutton.png', {frameWidth: 16, frameHeight: 16});
-		this.load.image('mask1', 'assets/mask1.png');
-		this.load.image('mask2', 'assets/mask2.png');
-		this.load.image('light1', 'assets/light1.png');
-		this.load.image('shadow', 'assets/shadow.png');
-		this.load.image('light_crystal', 'assets/light_crystal.png');
-		this.load.image('health_blip', 'assets/health_blip.png');
-		this.load.image('exit', 'assets/exit.png');
-		this.load.image('entrance', 'assets/entrance.png');
-		this.load.image('gate', 'assets/gate.png');
-		this.load.image('triggerzone', 'assets/triggerzone.png');
-		this.load.image('speechbubble', 'assets/speechBubble.png');
+        this.load.spritesheet('enemy1', 'assets/characters/enemy1.png', {frameWidth: 64, frameHeight: 64});    
+        this.load.spritesheet('bullet', 'assets/objects/projectiles.png', {frameWidth: 16, frameHeight: 16});
+        this.load.image('impact1', 'assets/effects/particles.png');
+        this.load.spritesheet('solana', 'assets/characters/solana.png', {frameWidth: 32, frameHeight: 64});
+        this.load.spritesheet('bright', 'assets/characters/bright.png', {frameWidth: 48, frameHeight: 48});
+        this.load.spritesheet('dark', 'assets/characters/dark.png', {frameWidth: 48, frameHeight: 48});
+        this.load.spritesheet('soul_light', 'assets/characters/soul_light.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('mirror', 'assets/objects/mirror.png', {frameWidth: 48, frameHeight: 48});
+		this.load.spritesheet('lever', 'assets/objects/lever.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('pressure_plate', 'assets/objects/pressure_plate.png', {frameWidth: 32, frameHeight: 6});
+		this.load.spritesheet('tmxbutton', 'assets/objects/tmxbutton.png', {frameWidth: 16, frameHeight: 16});
+		this.load.image('mask1', 'assets/objects/mask1.png');
+		this.load.image('mask2', 'assets/objects/mask2.png');
+		this.load.image('light1', 'assets/objects/light1.png');
+		this.load.image('shadow', 'assets/world/shadow.png');
+		this.load.image('light_crystal', 'assets/objects/light_crystal.png');
+		this.load.image('health_blip', 'assets/hud/health_blip.png');
+		this.load.image('exit', 'assets/objects/exit.png');
+		this.load.image('entrance', 'assets/objects/entrance.png');
+		this.load.image('gate', 'assets/objects/gate.png');
+		this.load.image('triggerzone', 'assets/objects/triggerzone.png');
+		this.load.image('speechbubble', 'assets/hud/speechBubble.png');
 		// - HUD
-		this.load.spritesheet('hud_interaction_control_arrows','assets/hud_interaction_control_arrows.png',{frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('hud_energybar1','assets/hud_energybar1.png',{frameWidth: 16, frameHeight: 96});
+		this.load.spritesheet('hud_interaction_control_arrows','assets/hud/hud_interaction_control_arrows.png',{frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('hud_energybar1','assets/hud/hud_energybar1.png',{frameWidth: 16, frameHeight: 96});
 
 		//Shadow Canvas
 		shadow_layer = this.textures.createCanvas("canvasShadow", 1280, 1280);        
