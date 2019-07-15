@@ -17,6 +17,11 @@ class Solana {
           left: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.5, { isSensor: true }),
           right: Bodies.rectangle(w * 0.35, 0, 2, h * 0.5, { isSensor: true })
         };
+        this.sensors.bottom.label = "SOLANA_BOTTOM";
+        this.sensors.left.label = "SOLANA_LEFT";
+        this.sensors.right.label = "SOLANA_RIGHT";
+        this.touching = {up:0,down:0,left:0,right:0};
+
         const compoundBody = Body.create({
           parts: [mainBody, this.sensors.bottom, this.sensors.left, this.sensors.right],
           //parts: [mainBody],
@@ -30,6 +35,8 @@ class Solana {
 
         this.sprite
           .setExistingBody(compoundBody)
+          .setCollisionCategory(CATEGORY.SOLANA)
+          .setScale(1)
           .setFixedRotation() // Sets inertia to infinity so the player can't rotate
           .setPosition(config.x, config.y);
 
@@ -175,9 +182,9 @@ class Solana {
 
 
         this.debug.setPosition(this.sprite.x+32, this.sprite.y+64);
-        this.debug.setText("Ground:"+String(this.onGround)
+        this.debug.setText("Ground:"+String(this.touching.down)
         +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(this.sprite.body.velocity.y)
-        //+" \nWall L:"+String(this.sprite.body.blocked.left)+" R:"+String(this.sprite.body.blocked.right)
+        +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right)
         +" \njr:"+String(this.jumpReady)
         +" \nflip:"+String(this.flipX)
         +" \nInLight:"+String(this.inLight));

@@ -1,18 +1,37 @@
-var Exit = new Phaser.Class({
+class Exit extends Phaser.Physics.Matter.Sprite{
+    
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'exit', 0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
 
-    Extends: Phaser.GameObjects.Sprite,
+        this.setActive(true);
 
-    initialize: function Exit (scene)
-    {
-        Phaser.GameObjects.Sprite.call(this, scene, -100, -100, 'exit');         
+        this.sprite = this;
 
-        this.scene = scene;       
-        this.sprite = scene.matter.add.sprite(this);
-        this.sprite.setIgnoreGravity(true);
-
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody =  Bodies.rectangle(0, 0, w, h,{ isSensor: true });
         
-    },
-    setup: function(x,y,properties,name){
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.02,
+            friction: 0.1
+        });
+
+        this.sprite
+        .setExistingBody(compoundBody)
+        .setPosition(x, y)
+        .setStatic(true)
+        .setFixedRotation() // Sets inertia to infinity so the player can't rotate
+        .setIgnoreGravity(true)
+        .setVisible(false);    
+
+
+    }
+    setup(x,y,properties,name){
         this.name = name;
         this.alpha = .6;
         this.triggered = false;
@@ -20,13 +39,13 @@ var Exit = new Phaser.Class({
         this.setPosition(x,y);
         this.targetMap = properties.targetMap;
         this.targetExit = properties.targetExit;
-    },
-    update: function (time, delta)
+    }
+    update(time, delta)
     {
 
 
-    },
-    exitLevel: function(){
+    }
+    exitLevel(){
         if(!this.triggered && this.targetMap != "none" && this.targetExit != "none"){
             current_map = this.targetMap;
             current_exit = this.targetExit;
@@ -36,7 +55,7 @@ var Exit = new Phaser.Class({
         }
     }
 
-});
+};
 
 //Entrance
 var Entrance = new Phaser.Class({

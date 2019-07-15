@@ -21,11 +21,13 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
             parts: [mainBody],
             frictionStatic: 0,
             frictionAir: 0.00,
-            friction: 0.1
+            friction: 0.1,
+            restitution : 0.7
         });
 
         this.sprite
         .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.BULLET)
         .setPosition(x, y)
         .setScale(.5)
         .setIgnoreGravity(true);

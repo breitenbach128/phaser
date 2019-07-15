@@ -26,6 +26,8 @@ var GameScene = new Phaser.Class({
         //Create Background
         world_background = this.add.tileSprite(512, 256, 4096, 512, 'forest_background');
 
+       
+   
         // //Map the map
         // map = this.make.tilemap({key: 'map1'});
         // // tiles for the ground layer
@@ -318,6 +320,10 @@ var GameScene = new Phaser.Class({
             bright.touching.up = 0;
             bright.touching.down = 0;
             //Add Solana checks for being on a wall or on the ground.
+            solana.touching.left = 0;
+            solana.touching.right = 0;
+            solana.touching.up = 0;
+            solana.touching.down = 0;
         });
 
         this.matterCollision.addOnCollideActive({
@@ -329,6 +335,28 @@ var GameScene = new Phaser.Class({
                 // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
                 if (gameObjectB.properties.collides){
                     bright.touching.down++;
+                }                
+              }
+            }
+        });
+
+        this.matterCollision.addOnCollideActive({
+            objectA:[solana.sensors.bottom,solana.sensors.left,solana.sensors.right],
+            callback: eventData => {
+              const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+             
+              if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
+                // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
+                if (gameObjectB.properties.collides){
+                    if(bodyA.label == "SOLANA_BOTTOM"){
+                        solana.touching.down++;
+                    }
+                    if(bodyA.label == "SOLANA_RIGHT"){
+                        solana.touching.right++;
+                    }
+                    if(bodyA.label == "SOLANA_LEFT"){
+                        solana.touching.left++;
+                    }
                 }                
               }
             }
@@ -366,6 +394,25 @@ var GameScene = new Phaser.Class({
                 if(curr_player==players.SOLANA){
 
                     gameObjectB.usePlate();
+
+                }
+              }
+              if (gameObjectB !== undefined && gameObjectB instanceof MirrorSensor) {
+                if(curr_player==players.SOLANA){
+                    console.log("TOUCHING MIRROR SENSOR");
+                    //Only control if currently the active control object
+                    if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
+                        gameObjectB.parent.rotateMirror(2);
+                    }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
+                        gameObjectB.parent.rotateMirror(-2);
+                    }
+                }
+              }
+              if (gameObjectB !== undefined && gameObjectB instanceof Exit) {
+                //Solana Touching a lever?
+                if(curr_player==players.SOLANA){
+
+                    gameObjectB.exitLevel();
 
                 }
               }
