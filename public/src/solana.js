@@ -46,7 +46,7 @@ class Solana {
         this.max_hp = 5;
         this.mv_speed = 6;
         this.mv_direction = {x:0,y:0};
-        this.jump_speed = 4;
+        this.jump_speed = 6;
         this.prevJumpButtonPressed = false;
         this.onGround = false;
         this.onWall = false;
@@ -64,6 +64,7 @@ class Solana {
         this.jumpTimerRunning = false;
         this.jumpLock = false;
         this.jumpLockTimer;
+        this.kickOff = this.mv_speed;
 
       }
 
@@ -73,59 +74,37 @@ class Solana {
 
             //Detection Code for Jumping
 
-            // // Solana on the ground and touching a wall on the right
-            // if(this.sprite.body.blocked.right && this.sprite.body.blocked.down){
+            if(this.touching.left > 0 ||  this.touching.right > 0){
+                this.onWall = true;
+            }else{
+                this.onWall = false;
+            }
+
+            //Ground Check
+            if(this.touching.down > 0){
+                this.onGround = true;
+            }else{
+                this.onGround = false;
+            }
+
+            //Check Jump ready
+            if(this.onGround || this.onWall){
+                this.jumpReady = true;
+            }else{  
+                //Add Jump Forgiveness of 100ms  
+                if(this.jumpTimerRunning == false){
+                    this.jumpTimer = this.scene.time.addEvent({ delay: 100, callback: this.forgiveJump, callbackScope: this, loop: false });
+                    this.jumpTimerRunning = true;         
+                }   
                 
-            //     this.onGround = true;
-            // }
-    
-            // // Solana NOT on the ground and touching a wall on the right
-            // if(this.sprite.body.blocked.right && !this.sprite.body.blocked.down){
-    
-            //     // Solana on a wall
-            //     this.onWall = true;                
-            //     this.flipX= true;
-            // }
-    
-            // // same concept applies to the left
-            // if(this.sprite.body.blocked.left && this.sprite.body.blocked.down){
-               
-            //     this.onGround = true;                
-            //     this.flipX= false;
+            }
 
-            // }
-            // if(this.sprite.body.blocked.left && !this.sprite.body.blocked.down){
-            //     this.onWall = true;
-            // }
-            // //Check for Walls
-            // if(!this.sprite.body.blocked.left && !this.sprite.body.blocked.right){
-            //     this.onWall = false;
-            // }
-            // //Final on Ground Check
-            // if(this.body.blocked.down){
-            //     this.onGround = true;
-            // }else{
-            //     this.onGround = false;
-            // }
+            //Slow Descent if on Wall
+            if(this.onWall){
+                this.sprite.setVelocityY(0);
+            }else{
 
-            // //Check Jump ready
-            // if(this.onGround || this.onWall){
-            //     this.jumpReady = true;
-            // }else{  
-            //     //Add Jump Forgiveness of 100ms  
-            //     if(this.jumpTimerRunning == false){
-            //         this.jumpTimer = this.scene.time.addEvent({ delay: 100, callback: this.forgiveJump, callbackScope: this, loop: false });
-            //         this.jumpTimerRunning = true;         
-            //     }   
-                
-            // }
-
-            // //Slow Descent if on Wall
-            // if(this.onWall){
-            //     this.body.setVelocityY(0);
-            // }else{
-
-            // }
+            }
 
             //Movement Code
             if(curr_player==players.SOLANA){
@@ -134,33 +113,28 @@ class Solana {
                 let control_right = (game.wasd.right.isDown || gamePad.buttons[15].value == 1);
 
                 if (control_left && this.jumpLock == false) {
-                    if(this.onWall){
-                            this.sprite.setVelocityX(-1);
-                            this.sprite.flipX= false;
-                    }else{
-                            this.sprite.setVelocityX(-this.mv_speed);
-                            this.sprite.flipX= true; // flip the sprite to the left
-                    }
+
+                    this.sprite.setVelocityX(-this.mv_speed);
+                    this.sprite.flipX= true; // flip the sprite to the left
+                    
                     this.mv_direction.x = -1;
                 }
                 else if (control_right && this.jumpLock == false) {
-                  
-                    if(this.onWall){
-                        this.sprite.setVelocityX(1);
-                        this.sprite.flipX= true;
-                    }else{
-                        this.sprite.setVelocityX(this.mv_speed);                    
-                        this.sprite.flipX= false; // flip the sprite to the right
-                    }
+
+                    this.sprite.setVelocityX(this.mv_speed);                    
+                    this.sprite.flipX= false; // flip the sprite to the right                 
             
                     this.mv_direction.x = 1;
                 }
-                else if(!control_right && !control_left){
+                else if(!control_right && !control_left && this.jumpLock == false){
 
                     this.sprite.setVelocityX(0);                   
                     this.mv_direction.x = 0; 
                 }
 
+                if(this.jumpLock){
+                    this.sprite.setVelocityX(this.kickOff);
+                }
                        
                 if(this.mv_direction.x == 0){
                     this.sprite.anims.play('solana-idle', true);//Idle
@@ -168,10 +142,9 @@ class Solana {
                     this.sprite.anims.play('solana-walk', true);
                 }
 
-                this.jumpReady = true;
+                
                 if ((Phaser.Input.Keyboard.JustDown(game.wasd.jump) || (gamePad.buttons[2].pressed && !this.prevJumpButtonPressed)) && this.jumpReady) {
-                    this.jump(this.jump_speed,solana.mv_speed);            
-                    //jumpSound.play();
+                    this.jump(this.jump_speed,this.mv_speed);   
 
                 }
                 // If the user wants to jump - check prev to make sure it is not just being held down
@@ -192,22 +165,26 @@ class Solana {
     }
     jumpLockReset(){
         this.jumpLock = false;
+        console.log("JumpLock Reset");
     }
     forgiveJump(){
         this.jumpReady = false;
         this.jumpTimerRunning = false; 
     }
     jump(jumpVel,mvVel){
-        // if(this.sprite.body.blocked.right){
-        //     this.sprite.setVelocityX(-mvVel);
-        //     this.jumpLock = true;
-        //     this.jumpLockTimer = this.scene.time.addEvent({ delay: 400, callback: this.jumpLockReset, callbackScope: this, loop: false });
-        // }
-        // if(this.body.blocked.left){
-        //     this.bospritedy.setVelocityX(mvVel);
-        //     this.jumpLock = true;
-        //     this.jumpLockTimer = this.scene.time.addEvent({ delay: 400, callback: this.jumpLockReset, callbackScope: this, loop: false });
-        // }
+        if(this.touching.left > 0){
+            this.sprite.setVelocityX(mvVel);
+            this.jumpLock = true;
+            this.kickOff = mvVel;
+            this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
+        }
+        if(this.touching.right > 0){
+            this.sprite.setVelocityX(-mvVel);
+            this.jumpLock = true;
+            this.kickOff = -mvVel;
+            this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
+        }
+        //Make vertical jump weaker if on wall
         this.sprite.setVelocityY(-jumpVel);
         this.soundJump.play();
     }
