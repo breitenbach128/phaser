@@ -6,8 +6,9 @@ var Exit = new Phaser.Class({
     {
         Phaser.GameObjects.Sprite.call(this, scene, -100, -100, 'exit');         
 
-        this.scene = scene;
-        scene.physics.add.existing(this);
+        this.scene = scene;       
+        this.sprite = scene.matter.add.sprite(this);
+        this.sprite.setIgnoreGravity(true);
 
         
     },
@@ -16,7 +17,6 @@ var Exit = new Phaser.Class({
         this.alpha = .6;
         this.triggered = false;
         this.setActive(true);
-        this.body.setAllowGravity(false);
         this.setPosition(x,y);
         this.targetMap = properties.targetMap;
         this.targetExit = properties.targetExit;
@@ -46,8 +46,9 @@ var Entrance = new Phaser.Class({
     initialize: function Entrance (scene)
     {
         Phaser.GameObjects.Sprite.call(this, scene, -100, -100, 'entrance'); 
-        this.scene = scene;
-        scene.physics.add.existing(this);
+        this.scene = scene;        
+        this.sprite = scene.matter.add.sprite(this);
+        this.sprite.setIgnoreGravity(true);
 
         
     },
@@ -55,7 +56,6 @@ var Entrance = new Phaser.Class({
         this.name = name;
         this.alpha = .6;
         this.setActive(true);
-        this.body.setAllowGravity(false);
         this.setPosition(x,y);
     },
     update: function (time, delta)

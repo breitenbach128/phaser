@@ -9,23 +9,44 @@
 // TMX Destructable: Can be destroyed to reveal new areas or secrets.
 // TMX Gate: A door that lifts up to allow access to another area.
 
-var TMXLever = new Phaser.Class({
+class TMXLever extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'lever', 0)
+        this.scene = config.scene;
+        // Create the physics-based sprite that we will move around and animate
+        scene.matter.world.add(this);
+        // config.scene.sys.displayList.add(this);
+        // config.scene.sys.updateList.add(this);
+        scene.add.existing(this); // This adds to the two listings of update and display.
 
-    Extends: Phaser.GameObjects.Sprite,
-
-    initialize: function TMXLever (scene)
-    {
-        Phaser.GameObjects.Sprite.call(this, scene, -100, -100, 'lever');      
- 
-        scene.physics.add.existing(this);
-  
-        
-        this.debug = scene.add.text(this.x, this.y-16, 'Lever', { fontSize: '10px', fill: '#00FF00' });
-    },
-    setup: function(x,y, properties,name){
         this.setActive(true);
-        this.body.setAllowGravity(false);
-        this.body.setImmovable(true);  
+
+        this.sprite = this;
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody =  Bodies.rectangle(0, 0, w, h, { isSensor: true });
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.02,
+            friction: 0.1
+        });
+
+        this.sprite
+        .setExistingBody(compoundBody)
+        .setPosition(x, y)
+        .setFixedRotation() // Sets inertia to infinity so the player can't rotate
+        .setIgnoreGravity(true);    
+
+        this.debug = scene.add.text(this.x, this.y-16, 'Lever', { fontSize: '10px', fill: '#00FF00' });             
+
+
+    }
+    setup(x,y, properties,name){
+        this.setActive(true);
+        this.sprite.setIgnoreGravity(true);
         this.setPosition(x,y);
         this.name = name;
         this.leverPosition = 0;
@@ -41,23 +62,23 @@ var TMXLever = new Phaser.Class({
         this.leverSoundTrigger = game.sound.add('switch1');
         this.leverSoundNotReady = game.sound.add('switch2');
  
-    },
-    update: function (time, delta)
+    }
+    update(time, delta)
     {       
 
         this.debug.setPosition(this.x, this.y-16);
         this.debug.setText("Lever Position:"+String(this.leverPosition));
-    },
+    }
     setTarget(targetObject){
         this.target.object = targetObject;
         //console.log("Set target for ", this.name);
-    },
+    }
     triggerTarget(){
         if(this.target.object != -1){
             this.target.object.activateTrigger();
         }
-    },
-    useLever: function(){
+    }
+    useLever(){
         if(this.anims.isPlaying == false){
             //Animation is done.
             if(this.target.object != -1 && this.target.object.ready){
@@ -80,40 +101,62 @@ var TMXLever = new Phaser.Class({
             }
         }
 
-    },
-});
+    }
+};
 
-var TMXGate = new Phaser.Class({
-
-    Extends: Phaser.GameObjects.Sprite,
-
-    initialize: function TMXGate (scene)
-    {
-        Phaser.GameObjects.Sprite.call(this, scene, -100, -100, 'gate');      
- 
-        scene.physics.add.existing(this);
+class TMXGate extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'gate', 0)
         this.scene = scene;
-        
-        this.debug = scene.add.text(this.x, this.y-16, 'gate', { fontSize: '10px', fill: '#00FF00' });
-    },
-    setup: function(x,y, properties,name){
+        // Create the physics-based sprite that we will move around and animate
+        scene.matter.world.add(this);
+        // config.scene.sys.displayList.add(this);
+        // config.scene.sys.updateList.add(this);
+        scene.add.existing(this); // This adds to the two listings of update and display.
+
         this.setActive(true);
-        this.body.setAllowGravity(false);
-        this.body.setImmovable(true);  
+
+        this.sprite = this;
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody =  Bodies.rectangle(0, 0, w, h);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.02,
+            friction: 0.1
+        });
+
+        this.sprite
+        .setExistingBody(compoundBody)
+        .setPosition(x, y)
+        .setFixedRotation() // Sets inertia to infinity so the player can't rotate
+        .setStatic(true)
+        .setIgnoreGravity(true);    
+
+        this.debug = scene.add.text(this.x, this.y-16, 'gate', { fontSize: '10px', fill: '#00FF00' });             
+
+
+    }
+    setup(x,y, properties,name){
+        this.setActive(true);
+        
         this.setPosition(x,y);
         this.name = name;
         this.closedY = y;
         this.openY = y - this.height;
         this.ready = true;
  
-    },
-    update: function (time, delta)
+    }
+    update(time, delta)
     {       
 
         this.debug.setPosition(this.x, this.y-16);
         this.debug.setText("Gate Position:"+String(this.y));
-    },
-    activateTrigger: function(){
+    }
+    activateTrigger(){
         
         if(this.ready){
             //console.log("Gate not moving: Trigger Gate");
@@ -140,30 +183,51 @@ var TMXGate = new Phaser.Class({
             }            
         }
 
-    },
-    openComplete: function(tween, targets, myGate){
+    }
+    openComplete(tween, targets, myGate){
         //console.log("Gate Tween Finished");
         myGate.ready = true;
     }
-});
+};
 
-var TMXPlate = new Phaser.Class({
-
-    Extends: Phaser.GameObjects.Sprite,
-
-    initialize: function TMXPlate (scene)
-    {
-        Phaser.GameObjects.Sprite.call(this, scene, -100, -100, 'pressure_plate');      
- 
-        scene.physics.add.existing(this);
+class TMXPlate extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'pressure_plate', 0)
         this.scene = scene;
-        
-        this.debug = scene.add.text(this.x, this.y-16, 'Plate', { fontSize: '10px', fill: '#00FF00' });
-    },
-    setup: function(x,y, properties,name){
+        // Create the physics-based sprite that we will move around and animate
+        scene.matter.world.add(this);
+        // config.scene.sys.displayList.add(this);
+        // config.scene.sys.updateList.add(this);
+        scene.add.existing(this); // This adds to the two listings of update and display.
+
         this.setActive(true);
-        this.body.setAllowGravity(false);
-        this.body.setImmovable(true);  
+
+        this.sprite = this;
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody =  Bodies.rectangle(0, 0, w, h);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.02,
+            friction: 0.1
+        });
+
+        this.sprite
+        .setExistingBody(compoundBody)
+        .setPosition(x, y)
+        .setFixedRotation() // Sets inertia to infinity so the player can't rotate
+        .setStatic(true)
+        .setIgnoreGravity(true);    
+
+        this.debug = scene.add.text(this.x, this.y-16, 'plate', { fontSize: '10px', fill: '#00FF00' });             
+
+
+    }
+    setup(x,y, properties,name){
+        this.setActive(true); 
         this.setPosition(x,y);
         this.name = name;
         this.platePosition = 0;
@@ -175,23 +239,23 @@ var TMXPlate = new Phaser.Class({
         }
        //console.log("setup",name, properties,this.target);
  
-    },
-    update: function (time, delta)
+    }
+    update(time, delta)
     {       
 
         this.debug.setPosition(this.x, this.y-16);
         this.debug.setText("Plate Position:"+String(this.platePosition));
-    },
+    }
     setTarget(targetObject){
         this.target.object = targetObject;
         //console.log("Set target for ", this.name);
-    },
+    }
     triggerTarget(){
         if(this.target.object != -1){
             this.target.object.activateTrigger();
         }
-    },
-    usePlate: function(){
+    }
+    usePlate(){
         if(this.ready == true){
             this.ready = false;
             this.plateTimer = this.scene.time.addEvent({ delay: 1000, callback: this.plateComplete, callbackScope: this, loop: false });
@@ -213,29 +277,50 @@ var TMXPlate = new Phaser.Class({
             }
         }
 
-    },
-    plateComplete: function(){
+    }
+    plateComplete(){
         //console.log("plate ready again");
         this.ready = true;
     }
-});
-var TMXButton = new Phaser.Class({
-
-    Extends: Phaser.GameObjects.Sprite,
-
-    initialize: function TMXButton (scene)
-    {
-        Phaser.GameObjects.Sprite.call(this, scene, -100, -100, 'tmxbutton');      
- 
-        scene.physics.add.existing(this);
+};
+class TMXButton extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'tmxbutton', 0)
         this.scene = scene;
-        
-        this.debug = scene.add.text(this.x, this.y-16, 'TMXButton', { fontSize: '10px', fill: '#00FF00' });
-    },
-    setup: function(x,y, properties,name){
+        // Create the physics-based sprite that we will move around and animate
+        scene.matter.world.add(this);
+        // config.scene.sys.displayList.add(this);
+        // config.scene.sys.updateList.add(this);
+        scene.add.existing(this); // This adds to the two listings of update and display.
+
         this.setActive(true);
-        this.body.setAllowGravity(false);
-        this.body.setImmovable(true);  
+
+        this.sprite = this;
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody =  Bodies.rectangle(0, 0, w, h, { isSensor: true });
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.02,
+            friction: 0.1
+        });
+
+        this.sprite
+        .setExistingBody(compoundBody)
+        .setPosition(x, y)
+        .setFixedRotation() // Sets inertia to infinity so the player can't rotate
+        .setStatic(true)
+        .setIgnoreGravity(true);    
+
+        this.debug = scene.add.text(this.x, this.y-16, 'TMXButton', { fontSize: '10px', fill: '#00FF00' });             
+
+
+    }
+    setup(x,y, properties,name){
+        this.setActive(true);
         this.setPosition(x,y);
         this.name = name;
         this.buttonPosition = 0;
@@ -247,23 +332,23 @@ var TMXButton = new Phaser.Class({
         }
        //console.log("setup",name, properties,this.target);
  
-    },
-    update: function (time, delta)
+    }
+    update(time, delta)
     {       
 
         this.debug.setPosition(this.x, this.y-16);
         this.debug.setText("Button Position:"+String(this.platePosition));
-    },
+    }
     setTarget(targetObject){
         this.target.object = targetObject;
         //console.log("Set target for ", this.name);
-    },
+    }
     triggerTarget(){
         if(this.target.object != -1){
             this.target.object.activateTrigger();
         }
-    },
-    useButton: function(){
+    }
+    useButton(){
         if(this.anims.isPlaying == false){
             //Animation is done.
             if(this.target.object != -1 && this.target.object.ready){
@@ -285,24 +370,45 @@ var TMXButton = new Phaser.Class({
         }
 
     }
-});
-var TMXZone = new Phaser.Class({
-
-    Extends: Phaser.GameObjects.Sprite,
-
-    initialize: function TMXZone (scene)
-    {
-        Phaser.GameObjects.Sprite.call(this, scene, -100, -100, 'triggerzone');      
- 
-        scene.physics.add.existing(this);
+};
+class TMXZone extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'triggerzone', 0)
         this.scene = scene;
-        
-        this.debug = scene.add.text(this.x, this.y-16, 'Zone', { fontSize: '10px', fill: '#00FF00' });
-    },
-    setup: function(x,y, properties,name){
+        // Create the physics-based sprite that we will move around and animate
+        scene.matter.world.add(this);
+        // config.scene.sys.displayList.add(this);
+        // config.scene.sys.updateList.add(this);
+        scene.add.existing(this); // This adds to the two listings of update and display.
+
         this.setActive(true);
-        this.body.setAllowGravity(false);
-        this.body.setImmovable(true);  
+
+        this.sprite = this;
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody =  Bodies.rectangle(0, 0, w, h, { isSensor: true });
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.02,
+            friction: 0.1
+        });
+
+        this.sprite
+        .setExistingBody(compoundBody)
+        .setPosition(x, y)
+        .setFixedRotation() // Sets inertia to infinity so the player can't rotate
+        .setStatic(true)
+        .setIgnoreGravity(true);    
+
+        this.debug = scene.add.text(this.x, this.y-16, 'Zone', { fontSize: '10px', fill: '#00FF00' });             
+
+
+    }
+    setup(x,y, properties,name){
+        this.setActive(true);
         this.setPosition(x,y);
         this.alpha = .3;
         this.name = name;
@@ -320,23 +426,23 @@ var TMXZone = new Phaser.Class({
         }
        //console.log("setup",name, properties,this.target);
  
-    },
-    update: function (time, delta)
+    }
+    update(time, delta)
     {       
 
         this.debug.setPosition(this.x, this.y-16);
         this.debug.setText("Zone Status:"+String(this.name));
-    },
+    }
     setTarget(targetObject){
         this.target.object = targetObject;
         //console.log("Set target for ", this.name);
-    },
+    }
     triggerTarget(){
         if(this.target.object != -1){
             this.target.object.activateTrigger();
         }
-    },
-    enterZone: function(){
+    }
+    enterZone(){
         if(this.ready == true){
             this.ready = false;
             this.triggerTarget();
@@ -344,4 +450,4 @@ var TMXZone = new Phaser.Class({
         }
 
     }
-});
+};

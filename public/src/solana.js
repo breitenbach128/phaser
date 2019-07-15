@@ -1,21 +1,45 @@
-class Solana extends Phaser.GameObjects.Sprite {
+class Solana {
+    constructor(config) {
+        this.scene = config.scene;
+        // Create the physics-based sprite that we will move around and animate
+        this.sprite = this.scene.matter.add.sprite(config.x, config.y, config.sprite, config.frame);
 
-    constructor(scene,x,y) {
-        super(scene, x,y, "solana")
-        this.scene = scene;
-
-        this.scene.physics.world.enable(this);
-        this.scene.add.existing(this)
-
-        //this.body.setBounce(1, 1);
-        this.body.setCollideWorldBounds(true);
-        this.setActive(true)
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         
+        const { width: w, height: h } = this.sprite;
+        //const mainBody = Bodies.rectangle(0, 0, w * 0.6, h, { chamfer: { radius: 10 } });
+        
+
+        const mainBody = Bodies.rectangle(0, 0, w * 0.6, h-12);
+        
+        this.sensors = {
+          bottom: Bodies.rectangle(0, h*0.5-6, w * 0.25, 2, { isSensor: true }),
+          left: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.5, { isSensor: true }),
+          right: Bodies.rectangle(w * 0.35, 0, 2, h * 0.5, { isSensor: true })
+        };
+        const compoundBody = Body.create({
+          parts: [mainBody, this.sensors.bottom, this.sensors.left, this.sensors.right],
+          //parts: [mainBody],
+          frictionStatic: 0,
+          frictionAir: 0.02,
+          friction: 0.1
+        });
+       //Fix the draw offsets for the compound sprite.
+        compoundBody.render.sprite.xOffset = .5;
+        compoundBody.render.sprite.yOffset = .60;
+
+        this.sprite
+          .setExistingBody(compoundBody)
+          .setFixedRotation() // Sets inertia to infinity so the player can't rotate
+          .setPosition(config.x, config.y);
+
+        //this.sprite.setIgnoreGravity(true);
+        //Custom Properties
         this.hp = 5;
         this.max_hp = 5;
-        this.mv_speed = 220;
+        this.mv_speed = 6;
         this.mv_direction = {x:0,y:0};
-        this.jump_speed = 300;
+        this.jump_speed = 4;
         this.prevJumpButtonPressed = false;
         this.onGround = false;
         this.onWall = false;
@@ -23,8 +47,8 @@ class Solana extends Phaser.GameObjects.Sprite {
         this.alive = true;
         this.inLight = true;
 
-        
-        this.debug = scene.add.text(this.x, this.y-16, 'Solana', { fontSize: '10px', fill: '#00FF00' });
+
+        this.debug = this.scene.add.text(this.x, this.y-16, 'Solana', { fontSize: '10px', fill: '#00FF00' });
         //Sounds
         this.soundJump = game.sound.add('jumpSolana');
 
@@ -34,9 +58,7 @@ class Solana extends Phaser.GameObjects.Sprite {
         this.jumpLock = false;
         this.jumpLockTimer;
 
-        //Custom additional gravity
-        this.body.setGravityY(300);
-    }
+      }
 
     update(time,delta)
     {
@@ -44,59 +66,59 @@ class Solana extends Phaser.GameObjects.Sprite {
 
             //Detection Code for Jumping
 
-            // Solana on the ground and touching a wall on the right
-            if(this.body.blocked.right && this.body.blocked.down){
+            // // Solana on the ground and touching a wall on the right
+            // if(this.sprite.body.blocked.right && this.sprite.body.blocked.down){
                 
-                this.onGround = true;
-            }
+            //     this.onGround = true;
+            // }
     
-            // Solana NOT on the ground and touching a wall on the right
-            if(this.body.blocked.right && !this.body.blocked.down){
+            // // Solana NOT on the ground and touching a wall on the right
+            // if(this.sprite.body.blocked.right && !this.sprite.body.blocked.down){
     
-                // Solana on a wall
-                this.onWall = true;                
-                this.flipX= true;
-            }
+            //     // Solana on a wall
+            //     this.onWall = true;                
+            //     this.flipX= true;
+            // }
     
-            // same concept applies to the left
-            if(this.body.blocked.left && this.body.blocked.down){
+            // // same concept applies to the left
+            // if(this.sprite.body.blocked.left && this.sprite.body.blocked.down){
                
-                this.onGround = true;                
-                this.flipX= false;
+            //     this.onGround = true;                
+            //     this.flipX= false;
 
-            }
-            if(this.body.blocked.left && !this.body.blocked.down){
-                this.onWall = true;
-            }
-            //Check for Walls
-            if(!this.body.blocked.left && !this.body.blocked.right){
-                this.onWall = false;
-            }
-            //Final on Ground Check
-            if(this.body.blocked.down){
-                this.onGround = true;
-            }else{
-                this.onGround = false;
-            }
+            // }
+            // if(this.sprite.body.blocked.left && !this.sprite.body.blocked.down){
+            //     this.onWall = true;
+            // }
+            // //Check for Walls
+            // if(!this.sprite.body.blocked.left && !this.sprite.body.blocked.right){
+            //     this.onWall = false;
+            // }
+            // //Final on Ground Check
+            // if(this.body.blocked.down){
+            //     this.onGround = true;
+            // }else{
+            //     this.onGround = false;
+            // }
 
-            //Check Jump ready
-            if(this.onGround || this.onWall){
-                this.jumpReady = true;
-            }else{  
-                //Add Jump Forgiveness of 100ms  
-                if(this.jumpTimerRunning == false){
-                    this.jumpTimer = this.scene.time.addEvent({ delay: 100, callback: this.forgiveJump, callbackScope: this, loop: false });
-                    this.jumpTimerRunning = true;         
-                }   
+            // //Check Jump ready
+            // if(this.onGround || this.onWall){
+            //     this.jumpReady = true;
+            // }else{  
+            //     //Add Jump Forgiveness of 100ms  
+            //     if(this.jumpTimerRunning == false){
+            //         this.jumpTimer = this.scene.time.addEvent({ delay: 100, callback: this.forgiveJump, callbackScope: this, loop: false });
+            //         this.jumpTimerRunning = true;         
+            //     }   
                 
-            }
+            // }
 
-            //Slow Descent if on Wall
-            if(this.onWall){
-                this.body.setVelocityY(0);
-            }else{
+            // //Slow Descent if on Wall
+            // if(this.onWall){
+            //     this.body.setVelocityY(0);
+            // }else{
 
-            }
+            // }
 
             //Movement Code
             if(curr_player==players.SOLANA){
@@ -106,40 +128,40 @@ class Solana extends Phaser.GameObjects.Sprite {
 
                 if (control_left && this.jumpLock == false) {
                     if(this.onWall){
-                            this.body.setVelocityX(-1);
-                            this.flipX= false;
+                            this.sprite.setVelocityX(-1);
+                            this.sprite.flipX= false;
                     }else{
-                            this.body.setVelocityX(-this.mv_speed);
-                            this.flipX= true; // flip the sprite to the left
+                            this.sprite.setVelocityX(-this.mv_speed);
+                            this.sprite.flipX= true; // flip the sprite to the left
                     }
                     this.mv_direction.x = -1;
                 }
                 else if (control_right && this.jumpLock == false) {
                   
                     if(this.onWall){
-                        this.body.setVelocityX(1);
-                        this.flipX= true;
+                        this.sprite.setVelocityX(1);
+                        this.sprite.flipX= true;
                     }else{
-                        this.body.setVelocityX(this.mv_speed);                    
-                        this.flipX= false; // flip the sprite to the right
+                        this.sprite.setVelocityX(this.mv_speed);                    
+                        this.sprite.flipX= false; // flip the sprite to the right
                     }
             
                     this.mv_direction.x = 1;
                 }
                 else if(!control_right && !control_left){
 
-                    this.body.setVelocityX(0);                   
+                    this.sprite.setVelocityX(0);                   
                     this.mv_direction.x = 0; 
                 }
 
                        
                 if(this.mv_direction.x == 0){
-                    this.anims.play('solana-idle', true);//Idle
+                    this.sprite.anims.play('solana-idle', true);//Idle
                 }else{
-                    this.anims.play('solana-walk', true);
+                    this.sprite.anims.play('solana-walk', true);
                 }
 
-
+                this.jumpReady = true;
                 if ((Phaser.Input.Keyboard.JustDown(game.wasd.jump) || (gamePad.buttons[2].pressed && !this.prevJumpButtonPressed)) && this.jumpReady) {
                     this.jump(this.jump_speed,solana.mv_speed);            
                     //jumpSound.play();
@@ -152,10 +174,10 @@ class Solana extends Phaser.GameObjects.Sprite {
         }
 
 
-        this.debug.setPosition(this.x+32, this.y-64);
+        this.debug.setPosition(this.sprite.x+32, this.sprite.y+64);
         this.debug.setText("Ground:"+String(this.onGround)
-        +" \Velocity:"+String(this.body.velocity.x)+":"+String(this.body.velocity.y)
-        +" \nWall L:"+String(this.body.blocked.left)+" R:"+String(this.body.blocked.right)
+        +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(this.sprite.body.velocity.y)
+        //+" \nWall L:"+String(this.sprite.body.blocked.left)+" R:"+String(this.sprite.body.blocked.right)
         +" \njr:"+String(this.jumpReady)
         +" \nflip:"+String(this.flipX)
         +" \nInLight:"+String(this.inLight));
@@ -169,17 +191,17 @@ class Solana extends Phaser.GameObjects.Sprite {
         this.jumpTimerRunning = false; 
     }
     jump(jumpVel,mvVel){
-        if(this.body.blocked.right){
-            this.body.setVelocityX(-mvVel);
-            this.jumpLock = true;
-            this.jumpLockTimer = this.scene.time.addEvent({ delay: 400, callback: this.jumpLockReset, callbackScope: this, loop: false });
-        }
-        if(this.body.blocked.left){
-            this.body.setVelocityX(mvVel);
-            this.jumpLock = true;
-            this.jumpLockTimer = this.scene.time.addEvent({ delay: 400, callback: this.jumpLockReset, callbackScope: this, loop: false });
-        }
-        this.body.setVelocityY(-jumpVel);
+        // if(this.sprite.body.blocked.right){
+        //     this.sprite.setVelocityX(-mvVel);
+        //     this.jumpLock = true;
+        //     this.jumpLockTimer = this.scene.time.addEvent({ delay: 400, callback: this.jumpLockReset, callbackScope: this, loop: false });
+        // }
+        // if(this.body.blocked.left){
+        //     this.bospritedy.setVelocityX(mvVel);
+        //     this.jumpLock = true;
+        //     this.jumpLockTimer = this.scene.time.addEvent({ delay: 400, callback: this.jumpLockReset, callbackScope: this, loop: false });
+        // }
+        this.sprite.setVelocityY(-jumpVel);
         this.soundJump.play();
     }
 
@@ -223,4 +245,3 @@ class Solana extends Phaser.GameObjects.Sprite {
         }   
     }
 }
-

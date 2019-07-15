@@ -3,6 +3,7 @@
 <head>    	
     <script src="/socket.io/socket.io.js"></script>
     <script src="phaser.js"></script>
+    <script src="src/phaser-matter-collision-plugin.js"></script>
     <script src="src/preloader.js"></script>
     <script src="src/gamescene.js"></script>    
     <script src="src/hud.js"></script>
@@ -56,13 +57,26 @@
             gamepad: true
         },
         physics: {
-            default: 'arcade',
+            default: 'matter',
             arcade: {
                 tileBias: 8,
                 debug: true,
                 gravity: { y: 400 }
+            },
+            matter: {
+                gravity: { y: 1 }
             }
         },
+        // Install the scene plugin
+        plugins: {
+            scene: [
+            {
+                plugin: PhaserMatterCollisionPlugin, // The plugin class
+                key: "matterCollision", // Where to store in Scene.Systems, e.g. scene.sys.matterCollision
+                mapping: "matterCollision" // Where to store in the Scene, e.g. scene.matterCollision
+            }
+            ]
+        }, 
         scene: [ Preloader, MainMenu, GameScene, HudScene ]
     };
     

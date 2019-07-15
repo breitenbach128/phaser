@@ -6,7 +6,8 @@ var Mirror = new Phaser.Class({
     {
         Phaser.GameObjects.Sprite.call(this, scene, -100, -100, 'mirror');      
  
-        scene.physics.add.existing(this);
+        this.sprite = scene.matter.add.sprite(this);
+
         this.minAngle = 0;
         this.maxAngle = 180;
         this.reflectAngle = 270;
@@ -15,10 +16,7 @@ var Mirror = new Phaser.Class({
     },
     setup: function(x,y,angle){
         this.setActive(true);
-        this.body.setAllowGravity(false);
-        this.body.setImmovable(true);        
-        this.body.setSize(24, 24);
-        this.body.setOffset(12,12);
+        this.sprite.setIgnoreGravity(true);
         this.setPosition(x,y);
         this.angle = angle;
         this.minAngle = angle - 45;

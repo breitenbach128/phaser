@@ -1,5 +1,6 @@
 //Main Game Scene
 /// <reference path="../../def/phaser.d.ts"/>
+
 var GameScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -37,28 +38,34 @@ var GameScene = new Phaser.Class({
         
         // tiles for the ground layer
         var Tiles = map.addTilesetImage('32Tileset','tiles32');//called it map1_tiles in tiled
+        var CollisionTiles = map.addTilesetImage('collision','collisions32');//called it map1_tiles in tiled
         // create the ground layer
         let groundLayer = map.createDynamicLayer('fg', Tiles, 0, 0);
         let bglayer = map.createStaticLayer('bg', Tiles, 0, 0);
-        
+
+        let collisionLayer = map.createDynamicLayer('collision', CollisionTiles, 0, 0);
+
+        collisionLayer.setCollisionByProperty({ collides: true });
         // the solana will collide with this layer
-        groundLayer.setCollisionByExclusion([-1]);
+        //groundLayer.setCollisionByExclusion([-1]);
         //groundLayer.setCollisionBetween(0, 256);
         // set the boundaries of our game world
-        this.physics.world.bounds.width = groundLayer.width;
-        this.physics.world.bounds.height = groundLayer.height;
+        this.matter.world.convertTilemapLayer(collisionLayer);
+        this.matter.world.setBounds(map.widthInPixels, map.heightInPixels);
+        //Draw Debug
         
+        this.matter.world.createDebugGraphic();
+        this.matter.world.drawDebug = true;
+
         //CREATE PLAYER ENTITIES
         // create the solana sprite    
-        solana = new Solana(this,128,128);
-        solana.body.setSize(32, 44);
-        solana.body.setOffset(0,20);
-        this.events.emit('solanaSetup');
+        solana = new Solana({scene: this, x:128,y:128,sprite:'solana',frame:0});
+        //this.events.emit('solanaSetup');
         
-        //solana.setPipeline('Light2D');
-        bright = new Bright(this,256,64);
 
-        this.soul_light =new SoulLight(this,128,64,solana);
+        bright = new Bright({scene: this, x:128,y:96,sprite:'bright',frame:0});
+
+        this.soul_light =new SoulLight({scene: this, x:128,y:96,sprite:'bright',frame:0},solana);
        
 
         //Enemy animations - Move to JSON       
@@ -219,76 +226,163 @@ var GameScene = new Phaser.Class({
 
         //groups
         //Enemies
-        enemies = this.physics.add.group({ 
+        enemies = this.add.group({ 
             classType: Enemy,
             runChildUpdate: true 
         });
         //Bullets
-        bullets = this.physics.add.group({
+        bullets = this.add.group({
             classType: Bullet,
             //maxSize: 50,
             runChildUpdate: true
         });
         //Mirrors
-        mirrors = this.physics.add.group({ 
+        mirrors = this.add.group({ 
             classType: Mirror,
             runChildUpdate: true 
         });
         //Levers
-        levers = this.physics.add.group({ 
+        levers = this.add.group({ 
             classType: TMXLever,
             runChildUpdate: true 
         });
         //Pressure Plates
-        plates = this.physics.add.group({ 
+        plates = this.add.group({ 
             classType: TMXPlate,
             runChildUpdate: true 
         });
         //Pressure Plates
-        buttons = this.physics.add.group({ 
+        buttons = this.add.group({ 
             classType: TMXButton,
             runChildUpdate: true 
         });
         //Zones
-        triggerzones = this.physics.add.group({ 
+        triggerzones = this.add.group({ 
             classType: TMXZone,
             runChildUpdate: true 
         });
         //Gates
-        gates = this.physics.add.group({ 
+        gates = this.add.group({ 
             classType: TMXGate,
             runChildUpdate: true 
         });
         //Exits
-        exits = this.physics.add.group({ 
+        exits = this.add.group({ 
             classType: Exit,
             runChildUpdate: true 
         });
         //Entrances
-        entrances = this.physics.add.group({ 
+        entrances = this.add.group({ 
             classType: Entrance,
             runChildUpdate: true 
         });
 
 
         speed = Phaser.Math.GetSpeed(300, 1);
-        //Set Overlaps
-        this.physics.add.overlap(enemies, bullets, damageEnemy);        
-        this.physics.add.overlap(solana, bullets, damageSolana);
-        this.physics.add.overlap(solana, mirrors, controlMirror);
-        this.physics.add.overlap(solana, levers, controlLever);
-        this.physics.add.overlap(solana, buttons, controlButton);
-        this.physics.add.overlap(solana, exits, exitLevel);
-        this.physics.add.overlap(solana, triggerzones, touchZone);
-        //Set Colliders
-        this.physics.add.collider(solana, groundLayer);
-        this.physics.add.collider(solana, gates);
-        this.physics.add.collider(solana, plates, controlPlate);
-        this.physics.add.collider(bright, groundLayer);
-        this.physics.add.collider(enemies, groundLayer);
-        this.physics.add.collider(mirrors, groundLayer);
-        this.physics.add.collider(bullets, mirrors, bulletHitMirror);
-        this.physics.add.collider(bullets, groundLayer, bulletHitGround);
+        // //Set Overlaps
+        // this.physics.add.overlap(enemies, bullets, damageEnemy);        
+        // this.physics.add.overlap(solana, bullets, damageSolana);
+        // this.physics.add.overlap(solana, mirrors, controlMirror);
+        // this.physics.add.overlap(solana, levers, controlLever);
+        // this.physics.add.overlap(solana, buttons, controlButton);
+        // this.physics.add.overlap(solana, exits, exitLevel);
+        // this.physics.add.overlap(solana, triggerzones, touchZone);
+        // //Set Colliders
+        // this.physics.add.collider(solana, groundLayer);
+        // this.physics.add.collider(solana, collisionLayer);
+        // this.physics.add.collider(solana, gates);
+        // this.physics.add.collider(solana, plates, controlPlate);
+        // this.physics.add.collider(bright, groundLayer);
+        // this.physics.add.collider(enemies, groundLayer);
+        // this.physics.add.collider(mirrors, groundLayer);
+        // this.physics.add.collider(bullets, mirrors, bulletHitMirror);
+        // this.physics.add.collider(bullets, groundLayer, bulletHitGround);
+
+        //New Physics Implementation for Collision and Sensors
+        // this.matterCollision.addOnCollideStart({
+        //     objectA: bright,
+        //     objectB: trapDoor,
+        //     callback: function(eventData) {
+        //       // This function will be invoked any time the player and trap door collide
+        //       const { bodyA, bodyB, gameObjectA, gameObjectB, pair } = eventData;
+        //       // bodyA & bodyB are the Matter bodies of the player and door respectively
+        //       // gameObjectA & gameObjectB are the player and door respectively
+        //       // pair is the raw Matter pair data
+        //     },
+        //     context: this // Context to apply to the callback function
+        // });
+        //Reset any check properties BEFORE the update checks.
+        this.matter.world.on('beforeupdate', function (event) {
+            bright.touching.left = 0;
+            bright.touching.right = 0;
+            bright.touching.up = 0;
+            bright.touching.down = 0;
+            //Add Solana checks for being on a wall or on the ground.
+        });
+
+        this.matterCollision.addOnCollideActive({
+            objectA: bright.sensors.bottom,
+            callback: eventData => {
+              const { bodyB, gameObjectB } = eventData;
+                
+              if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
+                // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
+                if (gameObjectB.properties.collides){
+                    bright.touching.down++;
+                }                
+              }
+            }
+        });
+
+        this.matterCollision.addOnCollideActive({
+            objectA: solana.sprite,
+            callback: eventData => {
+              const { bodyB, gameObjectB } = eventData;
+                
+              if (gameObjectB !== undefined && gameObjectB instanceof TMXLever) {
+                //Solana Touching a lever?
+                if(curr_player==players.SOLANA){
+                    //Only control if currently the active control object
+                    if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
+                        gameObjectB.useLever();
+                    }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
+                        gameObjectB.useLever();
+                    }
+                }
+              }
+              if (gameObjectB !== undefined && gameObjectB instanceof TMXButton) {
+                //Solana Touching a lever?
+                if(curr_player==players.SOLANA){
+                    //Only control if currently the active control object
+                    if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
+                        gameObjectB.useButton();
+                    }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
+                        gameObjectB.useButton();
+                    }
+                }
+              }
+              if (gameObjectB !== undefined && gameObjectB instanceof TMXPlate) {
+                //Solana Touching a lever?
+                if(curr_player==players.SOLANA){
+
+                    gameObjectB.usePlate();
+
+                }
+              }
+            }
+        });
+
+        // this.matterCollision.addOnCollideStart({
+        //     objectA: bright.sensors.bottom,
+        //     callback: eventData => {
+        //       const { bodyB, gameObjectB } = eventData;
+                
+        //       if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
+        //         // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
+        //         if (gameObjectB.properties.collides){console.log("bright hit a tile");}                
+        //       }
+        //     }
+        // });
 
         //Create enemy layer
         enemylayer = map.getObjectLayer('enemies');
@@ -309,7 +403,7 @@ var GameScene = new Phaser.Class({
                 new_enemy.setActive(true);
                 new_enemy.setVisible(true);
                 new_enemy.setPosition(enemylayer.objects[e].x,enemylayer.objects[e].y);
-                new_enemy.body.setBounce(0.1);
+                
                 
             } 
         }
@@ -325,8 +419,9 @@ var GameScene = new Phaser.Class({
             //Check for Type first, to determine the GET method used.
             let triggerObj;
             
-            if(triggerlayer.objects[e].type == "lever"){
-                triggerObj = levers.get();
+            if(triggerlayer.objects[e].type == "lever"){  
+                triggerObj = new TMXLever(this,mirrorlayer.objects[e].x,mirrorlayer.objects[e].y);             
+                levers.add(triggerObj);
             }else if(triggerlayer.objects[e].type == "gate"){
                 triggerObj = gates.get();
             }else if(triggerlayer.objects[e].type == "plate"){
@@ -355,13 +450,13 @@ var GameScene = new Phaser.Class({
                 //Re-position player to match entrance to exit they left.
                 if(exitObj.name == current_exit){
                     
-                    solana.setPosition(exitObj.x,exitObj.y);
-                    bright.setPosition(exitObj.x,exitObj.y-32);
-                    this.soul_light.setPosition(exitObj.x,exitObj.y-32);
+                    solana.sprite.setPosition(exitObj.x,exitObj.y);
+                    bright.sprite.setPosition(exitObj.x,exitObj.y-32);
+                    this.soul_light.sprite.setPosition(exitObj.x,exitObj.y-32);
                     
                     this.cameras.main.centerOn(exitObj.x,exitObj.y);
                     // make the camera follow the solana
-                    this.cameras.main.startFollow(solana,true,.1,.1,0,0);
+                    this.cameras.main.startFollow(solana.sprite,true,.1,.1,0,0);
                 }
             }else{
                 exitObj = exits.get();
@@ -375,9 +470,6 @@ var GameScene = new Phaser.Class({
         setupTriggerTargets(plates,"plates",this);
         setupTriggerTargets(buttons,"buttons",this);
         setupTriggerTargets(triggerzones,"zones",this);
-
-        //var enemy2 = new enemytest(this,300,200);
-        //enemies2.add(enemy2);
 
         //Particles - Example
         emitter0 = this.add.particles('impact1').createEmitter({
@@ -417,7 +509,7 @@ var GameScene = new Phaser.Class({
 
 
          //Start soulight play
-         this.soul_light.anims.play('soulight-move', true);//Idle
+         this.soul_light.sprite.anims.play('soulight-move', true);//Idle
 
         hud.setupHud(solana);
 
@@ -459,14 +551,14 @@ var GameScene = new Phaser.Class({
             shadow_context = this.cutCanvasCircle(lamp.x,lamp.y,lamp.brightness,shadow_context);
             
             //Check if solana is inside at least one light, if not, flag them and damage them every x seconds.
-            if(Phaser.Math.Distance.Between(lamp.x,lamp.y,solana.x,solana.y) <= lamp.brightness){solana_in_light = true;}
+            if(Phaser.Math.Distance.Between(lamp.x,lamp.y,solana.sprite.x,solana.sprite.y) <= lamp.brightness){solana_in_light = true;}
 
         }
         
 
-        shadow_context = this.cutCanvasCircle(this.soul_light.x,this.soul_light.y,this.soul_light.protection_radius,shadow_context);
+        shadow_context = this.cutCanvasCircle(this.soul_light.sprite.x,this.soul_light.sprite.y,this.soul_light.protection_radius,shadow_context);
 
-        if(Phaser.Math.Distance.Between(this.soul_light.x,this.soul_light.y,solana.x,solana.y) <= this.soul_light.protection_radius){solana_in_light = true;}
+        if(Phaser.Math.Distance.Between(this.soul_light.sprite.x,this.soul_light.y,solana.sprite.x,solana.sprite.y) <= this.soul_light.protection_radius){solana_in_light = true;}
 
         //is the solana outside the light? Do damage!
         solana.inLight = solana_in_light;
@@ -488,14 +580,18 @@ var GameScene = new Phaser.Class({
  
         //Check for shooting 
         if(game.wasd.shoot.isDown || gamePad.buttons[0].value == 1){
-            solana.anims.play('solana-shoot', true);     
+            solana.sprite.anims.play('solana-shoot', true);     
             let costToFireWeapon = 10;      
             if ((time-lastFired) >  240 && hud.energy.n > costToFireWeapon)//ROF(MS)
             {
-                let solanaCenter = solana.getCenter();
+                let solanaCenter = solana.sprite.getCenter();
                 let bullet = bullets.get();
-                bullet.body.setAllowGravity(false)
-                bullet.fire(solanaCenter.x, solanaCenter.y, solana.flipX, 150, 1,0, 64);
+                if(solana.sprite.flipX){
+                    bullet.fire(solanaCenter.x-18, solanaCenter.y+12, -6, 0, 150);
+                }else{
+                    bullet.fire(solanaCenter.x+18, solanaCenter.y+12, 6, 0, 150);
+                }
+
                 lastFired = time;
 
                 //Remove Energy for the shooting
@@ -519,11 +615,11 @@ var GameScene = new Phaser.Class({
         if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight)){
             if(this.soul_light.ownerid == 1){
                 //Owner is solana, Pass to dark, dark becomes bright.
-                this.soul_light.passLight(bright,2);
+                this.soul_light.passLight(bright.sprite,2);
                 bright.toBright();
             }else{
                 //Owner is Bright, pass to solana, become dark.
-                this.soul_light.passLight(solana,1);
+                this.soul_light.passLight(solana.sprite,1);
                 bright.toDark();
             }
         }  
@@ -549,10 +645,10 @@ var GameScene = new Phaser.Class({
        
         if(curr_player == players.SOLANA){
             curr_player=players.BRIGHT;
-            this.cameras.main.startFollow(bright,true,.1,.1,0,0); 
+            this.cameras.main.startFollow(bright.sprite,true,.1,.1,0,0); 
         }else{
             curr_player=players.SOLANA;
-            this.cameras.main.startFollow(solana,true,.1,.1,0,0);
+            this.cameras.main.startFollow(solana.sprite,true,.1,.1,0,0);
         }
         
 

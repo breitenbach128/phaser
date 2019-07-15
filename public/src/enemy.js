@@ -10,7 +10,7 @@ var Enemy = new Phaser.Class({
         this.aggroRNG = Phaser.Math.Between(0,100);
         this.aggroRange = 100;
         this.gun = new Gun(30,3,30);
-        scene.physics.add.existing(this);
+        this.sprite = scene.matter.add.sprite(this);
         this.dead = false;
         
         this.debug = scene.add.text(this.x, this.y-16, 'debug', { fontSize: '12px', fill: '#00FF00' });
@@ -29,7 +29,7 @@ var Enemy = new Phaser.Class({
                 var bullet = bullets.get();
                 if (bullet && this.gun.ready)//ROF(MS)
                 {
-                    bullet.body.setAllowGravity(false)
+                    
                     bullet.fire(this.x, this.y,!this.flipX,180,1,0,800);
                     this.gun.shoot();//Decrease mag size. Can leave this out for a constant ROF.
                 }
@@ -43,14 +43,14 @@ var Enemy = new Phaser.Class({
             if(distanceToSolana > 500+this.aggrorange){
                 this.anims.play('enemy-walk', true);
                 if(solana.x < this.x){
-                    this.body.velocity.x = mv_speed*-1;
+                    this.sprite.setVelocityX(mv_speed*-1);
                     this.flipX = false;
                 }else{
-                    this.body.velocity.x = mv_speed;
+                    this.sprite.setVelocityX(mv_speed);
                     this.flipX = true;
                 }
             }else{
-                this.body.velocity.x = 0;
+                this.sprite.setVelocityX(0);
             }
         }
 

@@ -1,53 +1,64 @@
-var Bullet = new Phaser.Class({
+class Bullet extends Phaser.Physics.Matter.Sprite{
 
-    Extends: Phaser.GameObjects.Sprite,
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'bullet', 0)
+        this.scene = scene;
+        // Create the physics-based sprite that we will move around and animate
+        scene.matter.world.add(this);
+        // config.scene.sys.displayList.add(this);
+        // config.scene.sys.updateList.add(this);
+        scene.add.existing(this); // This adds to the two listings of update and display.
 
-    initialize: function Bullet (scene)
-    {
-        Phaser.GameObjects.Sprite.call(this, scene, -100, -100, 'bullet');
-         
+        this.setActive(true);
+
+        this.sprite = this;
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody =  Bodies.rectangle(0, 0, w, h);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.00,
+            friction: 0.1
+        });
+
+        this.sprite
+        .setExistingBody(compoundBody)
+        .setPosition(x, y)
+        .setScale(.5)
+        .setIgnoreGravity(true);
+                    
         this.damage = 1;    
         this.lifespan = 0;
         this.bounced = false;
-        this.speed = 0;
-        this.scene = scene;
-        scene.physics.add.existing(this);
-        
-        
-    },
-
-    fire: function (x, y, flip, speed, velx,vely, life)
-    {
-        
-
-        if(flip){
-            this.body.setVelocity(-velx*speed , vely*speed);
-            x = x-64;
-        }else{
-            this.body.setVelocity(velx*speed , vely*speed);
-            x = x+64;
-        }
-
-        this.speed = speed;
-        
+    }
+    fire(x, y, xV, yV, life)
+    {       
         this.setPosition(x,y);
         this.setActive(true);
         this.setVisible(true);
-        //this.body.setBounce(.5,.5);
+
         this.lifespan = life;
         this.bounced = false;
-    },
-    hit: function(){
+
+        //this.applyForce({x:xV,y:yV})
+        this.setVelocity(xV,yV);
+
+    }
+    hit(){
         this.lifespan = 0;
         this.kill();
-    },
-    kill: function(){       
-        this.body.setVelocity(0,0);
-        this.setPosition(-100,-100);
+    }
+    kill(){       
+        this.sprite.setVelocity(0,0);
+        this.setPosition(-1000,-1000);
         this.setActive(false);
         this.setVisible(false);
-    },
-    bounceOff: function(angle,mirrorSize,mirrorX,mirrorY){
+        //mayeb toggle static on and off for the kill and fire 
+    }
+    bounceOff(angle,mirrorSize,mirrorX,mirrorY){
         //Bounce off of object
         //Set new position
         // let x = (mirrorSize * Math.sin(angle)) + mirrorX;
@@ -55,9 +66,9 @@ var Bullet = new Phaser.Class({
 
         // this.setPosition(x,y);
         //Apply veloctiy
-        this.scene.physics.velocityFromRotation(angle, this.speed, this.body.velocity);
-    },
-    update: function (time, delta)
+        this.scene.physics.velocityFromRotation(angle, this.velocity.x, this.body.velocity);
+    }
+    update(time, delta)
     {
         if(this.active){
         this.lifespan--;
@@ -69,4 +80,4 @@ var Bullet = new Phaser.Class({
 
     }
 
-});
+};

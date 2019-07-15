@@ -1,47 +1,58 @@
-class Bright extends Phaser.GameObjects.Sprite {
+class Bright {
+    constructor(config) {
+        this.scene = config.scene;
+        // Create the physics-based sprite that we will move around and animate
+        this.sprite = this.scene.matter.add.sprite(config.x, config.y, config.sprite, config.frame);
+    
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody = Bodies.circle(0,0,w*.18);
 
-    constructor(scene,x,y) {
-        super(scene, x,y, "bright")
-        this.scene = scene;
-
-        this.scene.physics.world.enable(this);
-        this.scene.add.existing(this)
-        this.create();
-    }
-
-    create(){
-        this.body.setBounce(0, 0);
-        this.body.setCollideWorldBounds(true);
-        this.setActive(true)
-        
-        this.body.setSize(16, 16);
-        this.body.setOffset(16,16);
-        this.body.setAllowGravity(false);
-
+        this.sensors = {
+          bottom: Bodies.rectangle(0, h * 0.18, w * 0.22, 2, { isSensor: true }),
+          top: Bodies.rectangle(0, -h * 0.18, w * 0.22, 2, { isSensor: true }),
+          left: Bodies.rectangle(-w * 0.18, 0, 2, h * 0.22, { isSensor: true }),
+          right: Bodies.rectangle(w * 0.18, 0, 2, h * 0.22, { isSensor: true })
+        };
+        const compoundBody = Body.create({
+          parts: [mainBody, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
+          frictionStatic: 0,
+          frictionAir: 0.02,
+          friction: 0.1
+        });
+        this.sprite
+          .setExistingBody(compoundBody)
+          .setScale(2)
+          //.setFixedRotation() // Sets inertia to infinity so the player can't rotate
+          .setPosition(config.x, config.y)
+          .setIgnoreGravity(true);
+          
+        //Custom properties
         this.light_status = 0;//0 - Bright, 1 - Dark;
         this.hp = 1;
         this.max_hp = 1;
-        this.mv_speed = 110;
+        this.mv_speed = 3;
         this.alive = true;
         this.falling = false;
-        this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { fontSize: '12px', fill: '#00FF00' });
+        this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { fontSize: '10px', fill: '#00FF00' });
+        this.touching = {up:0,down:0,left:0,right:0};
     }
 
     update()
     {
             if(this.alive){
 
-            this.debug.setPosition(this.x, this.y-64);
-            this.debug.setText("Debug Text");
+            this.debug.setPosition(this.sprite.x, this.sprite.y-64);
+            this.debug.setText("On ground:"+String(this.touching.down));
             //Do Dark Updates
             if(this.light_status == 1){
-                if(!this.body.onFloor() && this.body.velocity.y > 30){
+                if(this.touching.down == 0 && this.sprite.body.velocity.y > 30){
                     //Falling, so change animation
-                    this.anims.play('dark-falling', false);
+                    this.sprite.anims.play('dark-falling', false);
                     this.falling = true;
                 }else{
                     //On ground now.
-                    this.anims.play('dark-idle', false);
+                    this.sprite.anims.play('dark-idle', false);
                     if(this.falling){
                         //If I was falling, shake the camera.
                         camera_main.shake(80,.005);
@@ -54,35 +65,49 @@ class Bright extends Phaser.GameObjects.Sprite {
             //Movement Code
             if(curr_player==players.BRIGHT){
                 //Only control if currently the active control object
-                if ((game.wasd.left.isDown || gamePad.buttons[14].value == 1)) {
-                    this.body.setVelocityX(-this.mv_speed);
-                    this.anims.play('dark-idle', true);
-                    this.flipX= true; // flip the sprite to the left
-                    this.rotation-=.1;
+                let control_left = (game.wasd.left.isDown || gamePad.buttons[14].value == 1);
+                let control_right = (game.wasd.right.isDown || gamePad.buttons[15].value == 1);
+                let control_up = (game.wasd.up.isDown || gamePad.buttons[12].value == 1);
+                let control_down = (game.wasd.down.isDown || gamePad.buttons[13].value == 1);
+
+                if (control_left) {
+                    if(this.light_status == 0){
+                        this.sprite.setVelocityX(-this.mv_speed);
+                        this.sprite.anims.play('bright-idle', true);
+                        this.flipX= true; // flip the sprite to the left
+                    }else{                        
+                        this.sprite.anims.play('dark-idle', true);
+                        this.sprite.setAngularVelocity(-.2);
+                    }
                 }
-                else if ((game.wasd.right.isDown || gamePad.buttons[15].value == 1)) {
-                    this.body.setVelocityX(this.mv_speed);
-                    this.anims.play('dark-idle', true);
-                    this.flipX= false; // flip the sprite to the right
-                    this.rotation+=.1;
+                else if (control_right) {
+                    if(this.light_status == 0){
+                        this.sprite.setVelocityX(this.mv_speed);
+                        this.flipX= false; // flip the sprite to the right
+                    }else{                        
+                        this.sprite.anims.play('dark-idle', true);
+                        this.sprite.setAngularVelocity(.2);
+                    }
                 }
-                else if(!(game.wasd.right.isDown || gamePad.buttons[15].value == 1) && !(game.wasd.left.isDown || gamePad.buttons[14].value == 1)){
-                    this.body.setVelocityX(0);
-                    this.anims.play('dark-idle', true);//Idle
+                else if(!control_left && !control_right){
+                    this.sprite.setVelocityX(0);
+                    this.sprite.setAngularVelocity(0);
+                    this.sprite.anims.play('dark-idle', true);//Idle
                 }
+
                 if(this.light_status == 0){ //Only if Bright
                     //Vertical Control
-                    if ((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
-                        this.body.setVelocityY(-this.mv_speed);
-                        this.anims.play('bright-idle', true);
+                    if (control_up) {
+                        this.sprite.setVelocityY(-this.mv_speed);
+                        this.sprite.anims.play('bright-idle', true);
                     }
-                    else if ((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
-                        this.body.setVelocityY(this.mv_speed);
-                        this.anims.play('bright-idle', true);
+                    else if (control_down) {
+                        this.sprite.setVelocityY(this.mv_speed);
+                        this.sprite.anims.play('bright-idle', true);
                     }
-                    else if(!(game.wasd.up.isDown || gamePad.buttons[12].value == 1) && !(game.wasd.down.isDown || gamePad.buttons[13].value == 1)){
-                        this.body.setVelocityY(0);
-                        this.anims.play('bright-idle', true);//Idle
+                    else if(!control_up && !control_down){
+                        this.sprite.setVelocityY(0);
+                        this.sprite.anims.play('bright-idle', true);//Idle
                     }
                 }
 
@@ -92,17 +117,16 @@ class Bright extends Phaser.GameObjects.Sprite {
 
     toDark(){
         this.light_status = 1;
-        this.setTexture('dark');
-        this.anims.play('dark-idle', false);
-        this.body.setAllowGravity(true);
-        this.body.setGravityY(600);
+        this.sprite.setTexture('dark');
+        this.sprite.anims.play('dark-idle', false);
+        this.sprite.setIgnoreGravity(false);
     }
     toBright(){
         this.light_status = 0;
-        this.setTexture('bright');
-        this.anims.play('bright-idle', false);
-        this.body.setAllowGravity(false);
-        this.body.setGravityY(0);
+        this.sprite.setTexture('bright');
+        this.sprite.anims.play('bright-idle', false);
+        this.sprite.setIgnoreGravity(true);
+        this.sprite.setAngle(0);
     }
 
     death(animation, frame){
@@ -122,8 +146,8 @@ class Bright extends Phaser.GameObjects.Sprite {
         if(this.hp <= 0 && !this.dead ) {
             this.alive = false; 
                      
-            this.on('animationcomplete',this.death,this);            
-            this.anims.play('bright-walk', false);
+            this.sprite.on('animationcomplete',this.death,this);            
+            this.sprite.anims.play('bright-walk', false);
             
         }
     }
