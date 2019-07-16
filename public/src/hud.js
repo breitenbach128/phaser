@@ -21,7 +21,8 @@ class HudScene extends Phaser.Scene {
                 this.speechbubble.update();
             }
             this.debug.setText("CameraX:"+String(Math.round(camera_main.worldView.x))
-            +"\nCameraY:" + String(Math.round(camera_main.worldView.y)));
+            +"\nCameraY:" + String(Math.round(camera_main.worldView.y))
+            +"\nSolanaXdiff:"+String(solana.mv_Xdiff));
         }
     }
     clearHud()

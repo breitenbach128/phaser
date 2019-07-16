@@ -24,7 +24,7 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
             friction: 0.1,
             restitution : 0.7
         });
-
+        compoundBody.label = "BULLET";
         this.sprite
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.BULLET)

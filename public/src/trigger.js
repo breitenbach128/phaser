@@ -424,6 +424,11 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             this.zonedata.value = properties.zoneValue;
 
         }
+        //Types:
+        //Trigger: Triggers a target
+        //Hurt: Hurts the player
+        //Force: Sends a force to a player
+        //Teleport: Teleports the player via transform
        //console.log("setup",name, properties,this.target);
  
     }
@@ -443,6 +448,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         }
     }
     enterZone(){
+        //Do something base on zome type
         if(this.ready == true){
             this.ready = false;
             this.triggerTarget();

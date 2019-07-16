@@ -14,7 +14,6 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         
 
         const mainBody = Bodies.rectangle(0, 0, w * 0.6, h-12);
-        
         this.sensors = {
           bottom: Bodies.rectangle(0, h*0.5-6, w * 0.25, 2, { isSensor: true }),
           left: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.5, { isSensor: true }),
@@ -35,6 +34,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
        //Fix the draw offsets for the compound sprite.
         compoundBody.render.sprite.xOffset = .5;
         compoundBody.render.sprite.yOffset = .60;
+        compoundBody.label = "SOLANA";
 
         this.sprite
           .setExistingBody(compoundBody)
@@ -49,6 +49,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.max_hp = 5;
         this.mv_speed = 6;
         this.mv_direction = {x:0,y:0};
+        this.prev_position = {x:0,y:0};
+        this.mv_Xdiff = 0;
         this.jump_speed = 6;
         this.prevJumpButtonPressed = false;
         this.onGround = false;
@@ -111,20 +113,22 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
             //Movement Code
             if(curr_player==players.SOLANA){
+                //Reduce Air Control
+                let mv = this.onGround ? this.mv_speed : this.mv_speed*.75;
                 //Only control if currently the active control object
                 let control_left = (game.wasd.left.isDown || gamePad.buttons[14].value == 1);
                 let control_right = (game.wasd.right.isDown || gamePad.buttons[15].value == 1);
-
+                let control_shoot = (game.wasd.shoot.isDown || gamePad.buttons[0].value == 1);
                 if (control_left && this.jumpLock == false) {
 
-                    this.sprite.setVelocityX(-this.mv_speed);
+                    this.sprite.setVelocityX(-mv);
                     this.sprite.flipX= true; // flip the sprite to the left
                     
                     this.mv_direction.x = -1;
                 }
                 else if (control_right && this.jumpLock == false) {
 
-                    this.sprite.setVelocityX(this.mv_speed);                    
+                    this.sprite.setVelocityX(mv);         
                     this.sprite.flipX= false; // flip the sprite to the right                 
             
                     this.mv_direction.x = 1;
@@ -152,6 +156,26 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 }
                 // If the user wants to jump - check prev to make sure it is not just being held down
                 this.prevJumpButtonPressed = gamePad.buttons[2].pressed;
+
+                //Check for shooting 
+                if(control_shoot){
+                    solana.sprite.anims.play('solana-shoot', true);     
+                    let costToFireWeapon = 10;      
+                    if ((time-lastFired) >  240 && hud.energy.n > costToFireWeapon)//ROF(MS)
+                    {
+                        let solanaCenter = solana.sprite.getCenter();
+                        let bullet = bullets.get();
+                        if(solana.sprite.flipX){
+                            bullet.fire(solanaCenter.x-18, solanaCenter.y+12, -6, 0, 150);
+                        }else{
+                            bullet.fire(solanaCenter.x+18, solanaCenter.y+12, 6, 0, 150);
+                        }
+
+                        lastFired = time;
+                        //Remove Energy for the shooting
+                        hud.alterEnergy(-costToFireWeapon);
+                    }
+                }  
             }
 
         }
@@ -164,6 +188,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         +" \njr:"+String(this.jumpReady)
         +" \njlck:"+String(this.jumpLock)
         +" \nInLight:"+String(this.inLight));
+
+        //DO THIS LAST
+        this.mv_Xdiff = Math.round(this.x - this.prev_position.x);
+        this.prev_position.x = this.x;
+        this.prev_position.y = this.y;
         
     }
     jumpLockReset(){
@@ -190,7 +219,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
             jumpVel = (jumpVel/2);
         }   
-       
+        //this.applyForce({x:0,y:-.025});
         this.sprite.setVelocityY(-jumpVel);
         
         this.soundJump.play();

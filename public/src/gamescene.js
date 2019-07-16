@@ -61,175 +61,40 @@ var GameScene = new Phaser.Class({
         
         this.matter.world.createDebugGraphic();
         this.matter.world.drawDebug = true;
+        //Add Labels for tile bodies for easier collision management
+        collisionLayer.forEachTile(function (tile) {
+            // In Tiled, the platform tiles have been given a "type" property which is a string
+            //if (tile.properties.type === 'lava' || tile.properties.type === 'spike')
+            //{
+                if(tile.physics.matterBody){
+                    tile.physics.matterBody.body.label = 'SOLID';
+                }
+               
+            //}
+        });
 
         //CREATE PLAYER ENTITIES
         // create the solana sprite    
-        solana = new Solana(this,128,128);
-        //this.events.emit('solanaSetup');
-        
-
-        bright = new Bright({scene: this, x:128,y:96,sprite:'bright',frame:0});
-
+        solana = new Solana(this,128,128);  
+        bright = new Bright(this,128,96);
         this.soul_light =new SoulLight({scene: this, x:128,y:96,sprite:'bright',frame:0},solana);
-       
+        //Emit Events
+        //this.events.emit('solanaSetup'); 
 
-        //Enemy animations - Move to JSON       
-        this.anims.create({
-            key: 'enemy-idle',
-            frames: this.anims.generateFrameNumbers('enemy1', { frames:[0,3] }),
-            frameRate: 3,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'enemy-walk',
-            frames: this.anims.generateFrameNumbers('enemy1', { start: 1, end: 2 }),
-            frameRate: 24,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'enemy-shoot',
-            frames: this.anims.generateFrameNumbers('enemy1', { frames:[5,5,4,5]}),
-            frameRate: 8,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'enemy-death',
-            frames: this.anims.generateFrameNumbers('enemy1', { start: 0, end: 0 }),
-            frameRate: 6,
-            repeat: 0
-        });
-        this.anims.create({
-            key: 'solana-death',
-            frames: this.anims.generateFrameNumbers('solana', { frames:[8,9,10,11,12,13,14,15,16] }),
-            frameRate: 4,
-            repeat: 0
-        });
-        this.anims.create({
-            key: 'solana-idle',
-            frames: this.anims.generateFrameNumbers('solana', { start: 0, end: 1 }),
-            frameRate: 2,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'solana-walk',
-            frames: this.anims.generateFrameNumbers('solana', { start: 5, end: 6 }),
-            frameRate: 6,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'solana-jump',
-            frames: this.anims.generateFrameNumbers('solana', { start: 7, end: 7 }),
-            frameRate: 6,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'bright-idle',
-            frames: this.anims.generateFrameNumbers('bright', { start: 0, end: 1 }),
-            frameRate: 6,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'bright-sway',
-            frames: this.anims.generateFrameNumbers('bright', { frames:[0,2,3,4,5,6,7,8,9,10,11,0,2,3,18,17,16,15,14,13,12,11] }),
-            frameRate: 12,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'bright-move',
-            frames: this.anims.generateFrameNumbers('bright', { frames:[3,4,5,6,7,8,9,11,12,13,14,15,16,17,18] }),
-            frameRate: 12,
-            repeat: -1
-        });        
-        this.anims.create({
-            key: 'dark-idle',
-            frames: this.anims.generateFrameNumbers('dark', { frames:[0,1,2,1,0] }),
-            frameRate: 6,
-            repeat: -1
-        });
-        
-        this.anims.create({
-            key: 'dark-falling',
-            frames: this.anims.generateFrameNumbers('dark', { start: 3, end: 3 }),
-            frameRate: 6,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'soulight-move',
-            frames: this.anims.generateFrameNumbers('soul_light', { frames:[0,1,2] }),
-            frameRate: 12,
-            repeat: -1
-        });
-        
-        this.anims.create({
-            key: 'mirror-hit',
-            frames: this.anims.generateFrameNumbers('mirror', { frames:[1,2,3,4] }),
-            frameRate: 24,
-            repeat: 0
-        });
-        
-        this.anims.create({
-            key: 'mirror-idle',
-            frames: this.anims.generateFrameNumbers('mirror', { frames:[0,0] }),
-            frameRate: 1,
-            repeat: -1
-        });
-        
-        this.anims.create({
-            key: 'lever-idle',
-            frames: this.anims.generateFrameNumbers('lever', { frames:[0,0] }),
-            frameRate: 1,
-            repeat: -1
-        });
+        //Animations - Move to JSON       
+        createAnimations(this);
 
-        this.anims.create({
-            key: 'lever-operate-0',
-            frames: this.anims.generateFrameNumbers('lever', { frames:[0,1,2,3,4] }),
-            frameRate: 12,
-            repeat: 0
-        });        
-        
-        this.anims.create({
-            key: 'lever-operate-1',
-            frames: this.anims.generateFrameNumbers('lever', { frames:[4,3,2,1,0] }),
-            frameRate: 12,
-            repeat: 0
-        });
-
-        this.anims.create({
-            key: 'button-activate',
-            frames: this.anims.generateFrameNumbers('tmxbutton', { frames:[4,3,2,1,0] }),
-            frameRate: 12,
-            repeat: 0
-        });
-        // set bounds so the camera won't go outside the game world
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);        
-        // set background color, so the sky is not black    
+        //Create Camera        
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);  
         this.cameras.main.setBackgroundColor('#ccccff'); 
         this.cameras.main.setZoom(2);
-        
-        
-        
         camera_main = this.cameras.main;
-        //console.log(camera_main)
-        //Configure Controls by simple names
-        game.wasd = {
-            up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
-            down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
-            left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
-            right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
-            shoot: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L),
-            jump: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J),
-            suicide: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
-            bright_move: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-            bright_sway: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
-            passLight: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),
-            restart_scene: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),
-            change_player: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
 
-        };
+        //Controls
+        createControls(this);
 
 
-        //groups
+        //GROUPS
         //Enemies
         enemies = this.add.group({ 
             classType: Enemy,
@@ -284,154 +149,7 @@ var GameScene = new Phaser.Class({
 
 
         speed = Phaser.Math.GetSpeed(300, 1);
-        // //Set Overlaps
-        // this.physics.add.overlap(enemies, bullets, damageEnemy);        
-        // this.physics.add.overlap(solana, bullets, damageSolana);
-        // this.physics.add.overlap(solana, mirrors, controlMirror);
-        // this.physics.add.overlap(solana, levers, controlLever);
-        // this.physics.add.overlap(solana, buttons, controlButton);
-        // this.physics.add.overlap(solana, exits, exitLevel);
-        // this.physics.add.overlap(solana, triggerzones, touchZone);
-        // //Set Colliders
-        // this.physics.add.collider(solana, groundLayer);
-        // this.physics.add.collider(solana, collisionLayer);
-        // this.physics.add.collider(solana, gates);
-        // this.physics.add.collider(solana, plates, controlPlate);
-        // this.physics.add.collider(bright, groundLayer);
-        // this.physics.add.collider(enemies, groundLayer);
-        // this.physics.add.collider(mirrors, groundLayer);
-        // this.physics.add.collider(bullets, mirrors, bulletHitMirror);
-        // this.physics.add.collider(bullets, groundLayer, bulletHitGround);
-
-        //New Physics Implementation for Collision and Sensors
-        // this.matterCollision.addOnCollideStart({
-        //     objectA: bright,
-        //     objectB: trapDoor,
-        //     callback: function(eventData) {
-        //       // This function will be invoked any time the player and trap door collide
-        //       const { bodyA, bodyB, gameObjectA, gameObjectB, pair } = eventData;
-        //       // bodyA & bodyB are the Matter bodies of the player and door respectively
-        //       // gameObjectA & gameObjectB are the player and door respectively
-        //       // pair is the raw Matter pair data
-        //     },
-        //     context: this // Context to apply to the callback function
-        // });
-        //Reset any check properties BEFORE the update checks.
-        this.matter.world.on('beforeupdate', function (event) {
-            bright.touching.left = 0;
-            bright.touching.right = 0;
-            bright.touching.up = 0;
-            bright.touching.down = 0;
-            //Add Solana checks for being on a wall or on the ground.
-            solana.touching.left = 0;
-            solana.touching.right = 0;
-            solana.touching.up = 0;
-            solana.touching.down = 0;
-        });
-
-        this.matterCollision.addOnCollideActive({
-            objectA: bright.sensors.bottom,
-            callback: eventData => {
-              const { bodyB, gameObjectB } = eventData;
-                
-              if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
-                // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
-                if (gameObjectB.properties.collides){
-                    bright.touching.down++;
-                }                
-              }
-            }
-        });
-
-        this.matterCollision.addOnCollideActive({
-            objectA:[solana.sensors.bottom,solana.sensors.left,solana.sensors.right],
-            callback: eventData => {
-              const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
-             
-              if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
-                // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
-                if (gameObjectB.properties.collides){
-                    if(bodyA.label == "SOLANA_BOTTOM"){
-                        solana.touching.down++;
-                    }
-                    if(bodyA.label == "SOLANA_RIGHT"){
-                        solana.touching.right++;
-                    }
-                    if(bodyA.label == "SOLANA_LEFT"){
-                        solana.touching.left++;
-                    }
-                }                
-              }
-            }
-        });
-
-        this.matterCollision.addOnCollideActive({
-            objectA: solana.sprite,
-            callback: eventData => {
-              const { bodyB, gameObjectB } = eventData;
-                
-              if (gameObjectB !== undefined && gameObjectB instanceof TMXLever) {
-                //Solana Touching a lever?
-                if(curr_player==players.SOLANA){
-                    //Only control if currently the active control object
-                    if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
-                        gameObjectB.useLever();
-                    }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
-                        gameObjectB.useLever();
-                    }
-                }
-              }
-              if (gameObjectB !== undefined && gameObjectB instanceof TMXButton) {
-                //Solana Touching a lever?
-                if(curr_player==players.SOLANA){
-                    //Only control if currently the active control object
-                    if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
-                        gameObjectB.useButton();
-                    }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
-                        gameObjectB.useButton();
-                    }
-                }
-              }
-              if (gameObjectB !== undefined && gameObjectB instanceof TMXPlate) {
-                //Solana Touching a lever?
-                if(curr_player==players.SOLANA){
-
-                    gameObjectB.usePlate();
-
-                }
-              }
-              if (gameObjectB !== undefined && gameObjectB instanceof MirrorSensor) {
-                if(curr_player==players.SOLANA){
-                    //Only control if currently the active control object
-                    if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
-                        gameObjectB.parent.rotateMirror(2);
-                    }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
-                        gameObjectB.parent.rotateMirror(-2);
-                    }
-                }
-              }
-              if (gameObjectB !== undefined && gameObjectB instanceof Exit) {
-                //Solana Touching a lever?
-                if(curr_player==players.SOLANA){
-
-                    gameObjectB.exitLevel();
-
-                }
-              }
-            }
-        });
-
-        // this.matterCollision.addOnCollideStart({
-        //     objectA: bright.sensors.bottom,
-        //     callback: eventData => {
-        //       const { bodyB, gameObjectB } = eventData;
-                
-        //       if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
-        //         // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
-        //         if (gameObjectB.properties.collides){console.log("bright hit a tile");}                
-        //       }
-        //     }
-        // });
+       
 
         //Create enemy layer
         enemylayer = map.getObjectLayer('enemies');
@@ -565,6 +283,173 @@ var GameScene = new Phaser.Class({
 
         solana.sprite.setDepth(999);
 
+        //*********************************//
+        // PHYSICS IMPLEMENTATION          //
+        //  -Generate all detection        //
+        //*********************************//
+
+        //New Physics Implementation for Collision and Sensors
+        // this.matterCollision.addOnCollideStart({
+        //     objectA: bright,
+        //     objectB: trapDoor,
+        //     callback: function(eventData) {
+        //       // This function will be invoked any time the player and trap door collide
+        //       const { bodyA, bodyB, gameObjectA, gameObjectB, pair } = eventData;
+        //       // bodyA & bodyB are the Matter bodies of the player and door respectively
+        //       // gameObjectA & gameObjectB are the player and door respectively
+        //       // pair is the raw Matter pair data
+        //     },
+        //     context: this // Context to apply to the callback function
+        // });
+        //Reset any check properties BEFORE the update checks.
+        this.matter.world.on('beforeupdate', function (event) {
+            bright.touching.left = 0;
+            bright.touching.right = 0;
+            bright.touching.up = 0;
+            bright.touching.down = 0;
+            //Add Solana checks for being on a wall or on the ground.
+            solana.touching.left = 0;
+            solana.touching.right = 0;
+            solana.touching.up = 0;
+            solana.touching.down = 0;
+        });
+
+        this.matterCollision.addOnCollideActive({
+            objectA: bright.sensors.bottom,
+            callback: eventData => {
+              const { bodyB, gameObjectB } = eventData;
+                
+              if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
+                // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
+                if (gameObjectB.properties.collides){
+                    bright.touching.down++;
+                }                
+              }
+            }
+        });
+
+        this.matterCollision.addOnCollideActive({
+            objectA:[solana.sensors.bottom,solana.sensors.left,solana.sensors.right],
+            callback: eventData => {
+              const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+             
+              if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
+                // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
+                if (gameObjectB.properties.collides){
+                    if(bodyA.label == "SOLANA_BOTTOM"){
+                        solana.touching.down++;
+                    }
+                    if(bodyA.label == "SOLANA_RIGHT"){
+                        solana.touching.right++;
+                    }
+                    if(bodyA.label == "SOLANA_LEFT"){
+                        solana.touching.left++;
+                    }
+                }                
+              }
+            }
+        });
+
+        this.matterCollision.addOnCollideActive({
+            objectA: solana.sprite,
+            callback: eventData => {
+              const { bodyB, gameObjectB } = eventData;
+                
+              if (gameObjectB !== undefined && gameObjectB instanceof TMXLever) {
+                //Solana Touching a lever?
+                if(curr_player==players.SOLANA){
+                    //Only control if currently the active control object
+                    if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
+                        gameObjectB.useLever();
+                    }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
+                        gameObjectB.useLever();
+                    }
+                }
+              }
+              if (gameObjectB !== undefined && gameObjectB instanceof TMXButton) {
+                //Solana Touching a lever?
+                if(curr_player==players.SOLANA){
+                    //Only control if currently the active control object
+                    if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
+                        gameObjectB.useButton();
+                    }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
+                        gameObjectB.useButton();
+                    }
+                }
+              }
+              if (gameObjectB !== undefined && gameObjectB instanceof TMXPlate) {
+                //Solana Touching a lever?
+                if(curr_player==players.SOLANA){
+
+                    gameObjectB.usePlate();
+
+                }
+              }
+              if (gameObjectB !== undefined && gameObjectB instanceof MirrorSensor) {
+                if(curr_player==players.SOLANA){
+                    //Only control if currently the active control object
+                    if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
+                        gameObjectB.parent.rotateMirror(2);
+                    }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
+                        gameObjectB.parent.rotateMirror(-2);
+                    }
+                }
+              }
+              if (gameObjectB !== undefined && gameObjectB instanceof Exit) {
+                //Solana Touching a lever?
+                if(curr_player==players.SOLANA){
+
+                    gameObjectB.exitLevel();
+
+                }
+              }
+              if (gameObjectB !== undefined && gameObjectB instanceof TMXZone) {
+                //Solana Touching a lever?
+                if(curr_player==players.SOLANA){
+
+                    gameObjectB.enterZone();
+
+                }
+              }
+            }
+        });
+
+        this.matter.world.on('collisionstart', function (event) {
+            for (var i = 0; i < event.pairs.length; i++) {
+                var bodyA = getRootBody(event.pairs[i].bodyA);
+                var bodyB = getRootBody(event.pairs[i].bodyB);
+                var GameObjectA =  bodyA.gameObject;
+                var GameObjectB =  bodyB.gameObject;
+                //Between Bullets and Ground
+                if ((bodyA.label === 'BULLET' && bodyB.label === 'SOLID') || (bodyA.label === 'SOLID' && bodyB.label === 'BULLET')) {
+                    //Get Bullet Object and run hit function
+                    const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;
+                    const bulletObj = bulletBody.gameObject;
+                    emitter0.active = true;
+                    emitter0.explode(5,bulletObj.x,bulletObj.y);
+                    bulletObj.hit();
+                }
+                //Between Bullets and Solana
+                if ((bodyA.label === 'BULLET' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'BULLET')) {
+                    //Get Bullet Object and run hit function
+                    let bulletObj = GameObjectB;
+                    let solanaObj = GameObjectA;
+                    if(bodyA.label === 'BULLET'){
+                        bulletObj = GameObjectA;
+                        solanaObj = GameObjectB;
+                    }
+
+                    if (bulletObj.active === true){
+                        //bullet hits
+                        bulletObj.hit();
+                        //then hurt solana
+                        solanaObj.receiveDamage(1);
+                    }  
+
+                }
+            }
+        }, this);
+
     },
 
     update: function (time, delta)
@@ -582,15 +467,11 @@ var GameScene = new Phaser.Class({
                 gamePad.buttons[i]=0;
             }
         }
-        // this.spotlight.x = solana.x;
-        // this.spotlight.y = solana.y;
+
         //Updates
-        //this.updateShadowTexture();
         solana.update(time,delta);
         bright.update(time,delta);
         this.soul_light.update(time,delta);
-        // this.img1.x = solana.x;
-        // this.img1.y = solana.y;
 
         //Draw lighting        
         shadow_context.fillRect(0,0,1280,1280);    
@@ -615,33 +496,6 @@ var GameScene = new Phaser.Class({
         solana.inLight = solana_in_light;
 
         shadow_layer.refresh();
-
-
-        //Collisions
-
-
-
- 
-        //Check for shooting 
-        if(game.wasd.shoot.isDown || gamePad.buttons[0].value == 1){
-            solana.sprite.anims.play('solana-shoot', true);     
-            let costToFireWeapon = 10;      
-            if ((time-lastFired) >  240 && hud.energy.n > costToFireWeapon)//ROF(MS)
-            {
-                let solanaCenter = solana.sprite.getCenter();
-                let bullet = bullets.get();
-                if(solana.sprite.flipX){
-                    bullet.fire(solanaCenter.x-18, solanaCenter.y+12, -6, 0, 150);
-                }else{
-                    bullet.fire(solanaCenter.x+18, solanaCenter.y+12, 6, 0, 150);
-                }
-
-                lastFired = time;
-
-                //Remove Energy for the shooting
-                hud.alterEnergy(-costToFireWeapon);
-            }
-        }  
 
 
         //Suicide to test animation
@@ -676,9 +530,9 @@ var GameScene = new Phaser.Class({
         } 
         
         //Scroll parallax based on movement of bright or solana
-        if(solana.mv_direction.x != 0){
+        if(solana.mv_Xdiff != 0){
             //Parallax Background
-            let paraMove = .50*solana.mv_direction.x
+            let paraMove = solana.mv_Xdiff < 0 ? -.50 : .50;
             world_background.tilePositionX += paraMove;
         }   
       
@@ -832,61 +686,21 @@ function bulletHitMirror(bullet,m){
         m.hit();
     }
 }
-function damageSolana(p,bullet){
-    if (bullet.active === true){
-        //bullet hits
-        bullet.hit();
-        //then hurt solana
-        p.receiveDamage(1);
-    }
-}
-function controlMirror(s,m){
-    if(curr_player==players.SOLANA){
-        //Only control if currently the active control object
-        if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
-            m.rotateMirror(2);
-        }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
-            m.rotateMirror(-2);
-        }
-    }
-}
-function controlLever(s,l){
-    if(curr_player==players.SOLANA){
-        //Only control if currently the active control object
-        if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
-            l.useLever();
-        }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
-            l.useLever();
-        }
-    }
-}
-function controlPlate(s,pl){
-    //Only Trigger if solan is hitting it from above
-   
-    if(pl.body.touching.up && pl.ready){
-        pl.usePlate();
-    }
-    if((pl.body.touching.left &&  s.mv_direction.x > 0) || (pl.body.touching.right && s.mv_direction.x < 0)){
-        //Climb up
-        s.body.setVelocityY(-75);
-    }
-}
-function controlButton(s,b){
-    if(curr_player==players.SOLANA){
-        if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
-            b.useButton();
-        }
-    }
-}
-function touchZone(s,z){
-    z.enterZone();
-}
 function getTileProperties(propArray){    
     let object = {};
     propArray.forEach(element => {
         object[element.name] = element.value;
     });
     return object;
+}
+function getRootBody(body) {
+    if (body.parent === body) {
+        return body;
+    }
+    while (body.parent !== body) {
+        body = body.parent;
+    }
+    return body;
 }
 //Gun Object Template
 function Gun(rof,magsize,reloadtime){
@@ -924,4 +738,151 @@ function Gun(rof,magsize,reloadtime){
             }
         }
     }
+}
+function createControls(scene){
+    //Configure Controls by simple names
+    game.wasd = {
+        up: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+        down: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+        left: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+        right: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+        shoot: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L),
+        jump: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J),
+        suicide: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
+        bright_move: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
+        bright_sway: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
+        passLight: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),
+        restart_scene: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),
+        change_player: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
+
+    };
+}
+function createAnimations(scene){
+    scene.anims.create({
+        key: 'enemy-idle',
+        frames: scene.anims.generateFrameNumbers('enemy1', { frames:[0,3] }),
+        frameRate: 3,
+        repeat: -1
+    });
+    scene.anims.create({
+        key: 'enemy-walk',
+        frames: scene.anims.generateFrameNumbers('enemy1', { start: 1, end: 2 }),
+        frameRate: 24,
+        repeat: -1
+    });
+    scene.anims.create({
+        key: 'enemy-shoot',
+        frames: scene.anims.generateFrameNumbers('enemy1', { frames:[5,5,4,5]}),
+        frameRate: 8,
+        repeat: -1
+    });
+    scene.anims.create({
+        key: 'enemy-death',
+        frames: scene.anims.generateFrameNumbers('enemy1', { start: 0, end: 0 }),
+        frameRate: 6,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'solana-death',
+        frames: scene.anims.generateFrameNumbers('solana', { frames:[8,9,10,11,12,13,14,15,16] }),
+        frameRate: 4,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'solana-idle',
+        frames: scene.anims.generateFrameNumbers('solana', { start: 0, end: 1 }),
+        frameRate: 2,
+        repeat: -1
+    });
+    scene.anims.create({
+        key: 'solana-walk',
+        frames: scene.anims.generateFrameNumbers('solana', { start: 5, end: 6 }),
+        frameRate: 6,
+        repeat: -1
+    });
+    scene.anims.create({
+        key: 'solana-jump',
+        frames: scene.anims.generateFrameNumbers('solana', { start: 7, end: 7 }),
+        frameRate: 6,
+        repeat: -1
+    });
+    scene.anims.create({
+        key: 'bright-idle',
+        frames: scene.anims.generateFrameNumbers('bright', { start: 0, end: 1 }),
+        frameRate: 6,
+        repeat: -1
+    });
+    scene.anims.create({
+        key: 'bright-sway',
+        frames: scene.anims.generateFrameNumbers('bright', { frames:[0,2,3,4,5,6,7,8,9,10,11,0,2,3,18,17,16,15,14,13,12,11] }),
+        frameRate: 12,
+        repeat: -1
+    });
+    scene.anims.create({
+        key: 'bright-move',
+        frames: scene.anims.generateFrameNumbers('bright', { frames:[3,4,5,6,7,8,9,11,12,13,14,15,16,17,18] }),
+        frameRate: 12,
+        repeat: -1
+    });        
+    scene.anims.create({
+        key: 'dark-idle',
+        frames: scene.anims.generateFrameNumbers('dark', { frames:[0,1,2,1,0] }),
+        frameRate: 6,
+        repeat: -1
+    });
+    
+    scene.anims.create({
+        key: 'dark-falling',
+        frames: scene.anims.generateFrameNumbers('dark', { start: 3, end: 3 }),
+        frameRate: 6,
+        repeat: -1
+    });
+    scene.anims.create({
+        key: 'soulight-move',
+        frames: scene.anims.generateFrameNumbers('soul_light', { frames:[0,1,2] }),
+        frameRate: 12,
+        repeat: -1
+    });
+    
+    scene.anims.create({
+        key: 'mirror-hit',
+        frames: scene.anims.generateFrameNumbers('mirror', { frames:[1,2,3,4] }),
+        frameRate: 24,
+        repeat: 0
+    });
+    
+    scene.anims.create({
+        key: 'mirror-idle',
+        frames: scene.anims.generateFrameNumbers('mirror', { frames:[0,0] }),
+        frameRate: 1,
+        repeat: -1
+    });
+    
+    scene.anims.create({
+        key: 'lever-idle',
+        frames: scene.anims.generateFrameNumbers('lever', { frames:[0,0] }),
+        frameRate: 1,
+        repeat: -1
+    });
+
+    scene.anims.create({
+        key: 'lever-operate-0',
+        frames: scene.anims.generateFrameNumbers('lever', { frames:[0,1,2,3,4] }),
+        frameRate: 12,
+        repeat: 0
+    });        
+    
+    scene.anims.create({
+        key: 'lever-operate-1',
+        frames: scene.anims.generateFrameNumbers('lever', { frames:[4,3,2,1,0] }),
+        frameRate: 12,
+        repeat: 0
+    });
+
+    scene.anims.create({
+        key: 'button-activate',
+        frames: scene.anims.generateFrameNumbers('tmxbutton', { frames:[4,3,2,1,0] }),
+        frameRate: 12,
+        repeat: 0
+    });
 }

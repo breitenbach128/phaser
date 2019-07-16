@@ -1,8 +1,11 @@
-class Bright {
-    constructor(config) {
-        this.scene = config.scene;
-        // Create the physics-based sprite that we will move around and animate
-        this.sprite = this.scene.matter.add.sprite(config.x, config.y, config.sprite, config.frame);
+class Bright extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'bright', 0)
+        this.scene = scene;       
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+        this.setActive(true);
+        this.sprite = this;
     
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
