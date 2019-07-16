@@ -415,6 +415,9 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         this.target = {name: -1,type: -1, object: -1};
         this.ready = true;
         this.zonedata = {type:'trigger',value:0};
+        this.allowReset = false;
+        this.resetDelay = 100;
+        this.resetTimer = -1;
         //Zones can do certain things.
         //
         if(properties){
@@ -422,10 +425,11 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             this.target.type = properties.targetType;
             this.zonedata.type = properties.zoneType;
             this.zonedata.value = properties.zoneValue;
-
+            this.allowReset = properties.allowReset;
+            this.resetDelay =properties.resetDelay;
         }
         //Types:
-        //Trigger: Triggers a target
+        //Target: Triggers a target
         //Hurt: Hurts the player
         //Force: Sends a force to a player
         //Teleport: Teleports the player via transform
@@ -442,17 +446,39 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         this.target.object = targetObject;
         //console.log("Set target for ", this.name);
     }
+    triggerReset(){
+        this.ready  = true;
+    }
     triggerTarget(){
         if(this.target.object != -1){
             this.target.object.activateTrigger();
         }
     }
-    enterZone(){
+    enterZone(obj){
         //Do something base on zome type
         if(this.ready == true){
             this.ready = false;
-            this.triggerTarget();
-            console.log("Zone Entered",this.name);
+
+            if(this.zonedata.type == "target"){
+                this.triggerTarget();
+            }
+            if(this.zonedata.type == "hurt"){
+                let hurtParse = JSON.parse(this.zonedata.value);
+                obj.receiveDamage(hurtParse.damage);
+            }
+            if(this.zonedata.type == "force"){
+                let vectorParse = JSON.parse(this.zonedata.value);
+                obj.getThrown(vectorParse.x,vectorParse.y,vectorParse.time);
+            }
+            if(this.zonedata.type == "teleport"){
+                let positionParse = JSON.parse(this.zonedata.value)
+                obj.setPosition(positionParse.x,positionParse.y);
+            }
+
+            if(this.allowReset){
+                this.resetTimer = this.scene.time.addEvent({ delay: this.resetDelay, callback: this.triggerReset, callbackScope: this, loop: false });
+            }
+         
         }
 
     }

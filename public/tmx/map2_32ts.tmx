@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="20">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="22">
  <tileset firstgid="1" name="32Tileset" tilewidth="32" tileheight="32" spacing="2" tilecount="851" columns="37">
   <image source="../assets/world/oldTileset32.png" width="1280" height="800"/>
  </tileset>
@@ -179,7 +179,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,387,0,0,0,0,0,0,0,0,0,0,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,387,0,0,0,0,0,0,0,0,0,0,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,498,498,498,498,498,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,0,0,0,0,0,0,0,0,0,0,0,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,
 76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,0,0,0,0,0,0,0,0,0,0,0,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,
@@ -273,21 +273,45 @@
     <property name="targetType" value="gate"/>
    </properties>
   </object>
-  <object id="17" name="zone1" type="zone" x="736" y="224" width="64" height="64">
+  <object id="17" name="zone1" type="zone" x="1472" y="272" width="160" height="16">
    <properties>
+    <property name="allowReset" type="bool" value="true"/>
+    <property name="resetDelay" type="int" value="300"/>
     <property name="targetName" value="gate1"/>
     <property name="targetType" value="gate"/>
+    <property name="zoneType" value="hurt"/>
+    <property name="zoneValue" value="{&quot;damage&quot;:1}"/>
    </properties>
   </object>
-  <object id="19" name="gate2" type="gate" x="1120" y="192" width="32" height="96">
+  <object id="19" name="gate2" type="gate" x="1056" y="192" width="32" height="96">
    <properties>
     <property name="source" value="plate1"/>
+   </properties>
+  </object>
+  <object id="20" name="zone2" type="zone" x="672" y="384" width="96" height="96">
+   <properties>
+    <property name="allowReset" type="bool" value="true"/>
+    <property name="resetDelay" type="int" value="300"/>
+    <property name="targetName" value="gate1"/>
+    <property name="targetType" value="gate"/>
+    <property name="zoneType" value="teleport"/>
+    <property name="zoneValue" value="{&quot;x&quot;:1260,&quot;y&quot;:32}"/>
+   </properties>
+  </object>
+  <object id="21" name="zone2" type="zone" x="1152" y="192" width="64" height="96">
+   <properties>
+    <property name="allowReset" type="bool" value="true"/>
+    <property name="resetDelay" type="int" value="300"/>
+    <property name="targetName" value="gate1"/>
+    <property name="targetType" value="gate"/>
+    <property name="zoneType" value="force"/>
+    <property name="zoneValue" value="{&quot;x&quot;: 0 ,&quot;y&quot;: -0.05, &quot;time&quot;: 300}"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="9" name="mirrors">
   <object id="8" name="mirror" type="mirror" gid="534" x="186" y="262.5" width="48" height="16" rotation="45"/>
-  <object id="9" name="mirror" type="mirror" gid="534" x="1677.33" y="270.333" width="48" height="16" rotation="-45"/>
+  <object id="9" name="mirror" type="mirror" gid="534" x="1696" y="288" width="48" height="48"/>
   <object id="18" name="mirror" type="mirror" gid="534" x="1421.5" y="55.25" width="48" height="16" rotation="-135"/>
  </objectgroup>
 </map>

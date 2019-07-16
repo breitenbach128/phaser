@@ -177,8 +177,10 @@ var GameScene = new Phaser.Class({
         //Spawn Mirrors
         for(e=0;e<mirrorlayer.objects.length;e++){
             let new_mirror = mirrors.get();
+            let trig_x_offset = new_mirror.width/2;
+            let trig_y_offset = new_mirror.height/2;
             if(new_mirror){
-                new_mirror.setup(mirrorlayer.objects[e].x,mirrorlayer.objects[e].y,mirrorlayer.objects[e].rotation);
+                new_mirror.setup(mirrorlayer.objects[e].x-trig_x_offset,mirrorlayer.objects[e].y-trig_y_offset,mirrorlayer.objects[e].rotation);
             }
         }
         //Spawn Triggers
@@ -250,7 +252,18 @@ var GameScene = new Phaser.Class({
             lifespan: 200,
             gravityY: 800
          });
-         
+         emitter_blood = this.add.particles('impact1').createEmitter({
+            x: 400,
+            y: 300,
+            speed: { min: -300, max: 300 },
+            angle: { min: 0, max: 360 },
+            scale: { start: 0.3, end: 0.05 },
+            blendMode: 'NORMAL',
+            active: false,
+            lifespan: 300,
+            gravityY: 600,
+            tint: "#FF0000"
+         });
          //Timer  - Example
          //spawner = this.time.addEvent({ delay: 5000, callback: this.spawnEnemies, callbackScope: this, loop: true });
          //timeEventName.remove();spawnEnemies(spawnlayer.objects)
@@ -407,7 +420,7 @@ var GameScene = new Phaser.Class({
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA){
 
-                    gameObjectB.enterZone();
+                    gameObjectB.enterZone(solana);
 
                 }
               }

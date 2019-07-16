@@ -119,6 +119,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 let control_left = (game.wasd.left.isDown || gamePad.buttons[14].value == 1);
                 let control_right = (game.wasd.right.isDown || gamePad.buttons[15].value == 1);
                 let control_shoot = (game.wasd.shoot.isDown || gamePad.buttons[0].value == 1);
+                let control_jump = (Phaser.Input.Keyboard.JustDown(game.wasd.jump) || gamePad.buttons[2].pressed);
                 if (control_left && this.jumpLock == false) {
 
                     this.sprite.setVelocityX(-mv);
@@ -150,7 +151,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 }
 
                 
-                if ((Phaser.Input.Keyboard.JustDown(game.wasd.jump) || (gamePad.buttons[2].pressed && !this.prevJumpButtonPressed)) && this.jumpReady) {
+                if (control_jump && !this.prevJumpButtonPressed && this.jumpReady) {
                     this.jump(this.jump_speed,this.mv_speed);   
 
                 }
@@ -202,6 +203,12 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.jumpReady = false;
         this.jumpTimerRunning = false; 
     }
+    getThrown(xVel,yVel,time){
+        //this.jumpLock = true;
+        //this.applyForce({x:0,y:-.025});//forces are VERY SMALL. .001 is a small force. .05 is huge.
+        //this.jumpLockTimer = this.scene.time.addEvent({ delay: time, callback: this.jumpLockReset, callbackScope: this, loop: false });
+        this.sprite.setVelocityY(yVel*200);        
+    }
     jump(jumpVel,mvVel){
         //Make vertical jump weaker if on wall
         
@@ -251,8 +258,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             hud.setHealth(this.hp,this.max_hp);
             //Remove health
             this.hp -= damage; 
-            emitter0.active = true;
-            emitter0.explode(5,this.x,this.y);
+            emitter_blood.active = true;
+            emitter_blood.explode(24,this.x,this.y);
 
             // if hp drops below 0, die
             if(this.hp <= 0) {
