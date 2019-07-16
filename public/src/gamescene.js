@@ -19,6 +19,9 @@ var GameScene = new Phaser.Class({
 
     create: function ()
     {
+        //Setup Global
+        playScene = this;
+        
         //Refresh/Setup HUD
         hud = this.scene.get('UIScene');;
         hud.updateGameScene();
@@ -61,7 +64,7 @@ var GameScene = new Phaser.Class({
 
         //CREATE PLAYER ENTITIES
         // create the solana sprite    
-        solana = new Solana({scene: this, x:128,y:128,sprite:'solana',frame:0});
+        solana = new Solana(this,128,128);
         //this.events.emit('solanaSetup');
         
 
@@ -207,6 +210,7 @@ var GameScene = new Phaser.Class({
         
         
         camera_main = this.cameras.main;
+        //console.log(camera_main)
         //Configure Controls by simple names
         game.wasd = {
             up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
@@ -223,8 +227,7 @@ var GameScene = new Phaser.Class({
             change_player: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
 
         };
-        //Example Text
-        scoreText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#000' });
+
 
         //groups
         //Enemies
@@ -399,7 +402,6 @@ var GameScene = new Phaser.Class({
               }
               if (gameObjectB !== undefined && gameObjectB instanceof MirrorSensor) {
                 if(curr_player==players.SOLANA){
-                    console.log("TOUCHING MIRROR SENSOR");
                     //Only control if currently the active control object
                     if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
                         gameObjectB.parent.rotateMirror(2);
@@ -545,8 +547,9 @@ var GameScene = new Phaser.Class({
         var light1 = this.add.image(256,64,'light1');
         light1.alpha = .5;
         light1.tint = 0xCCCC00;
-        solana.depth = light1.depth+1;
-        bright.depth = light1.depth+1;
+
+        solana.z = light1.z+1;
+        bright.z = light1.z+1;
 
         //MOve these to a layer in Tiled/TMX
         this.light_crystals = new Array();
@@ -560,6 +563,7 @@ var GameScene = new Phaser.Class({
 
         hud.setupHud(solana);
 
+        solana.sprite.setDepth(999);
 
     },
 
@@ -612,13 +616,6 @@ var GameScene = new Phaser.Class({
 
         shadow_layer.refresh();
 
-        //Draw Circle
-        // this.graphics2.clear()
-        // this.graphics2.fillStyle(0xDDDDDD, .2);
-        // this.graphics2.setBlendMode(Phaser.BlendModes.DIFFERENCE);
-        // this.graphics2.beginPath();
-        // this.graphics2.arc(solana.x,solana.y,200, 0, 2 * Math.PI, false);
-        // this.graphics2.fill();
 
         //Collisions
 
@@ -646,7 +643,6 @@ var GameScene = new Phaser.Class({
             }
         }  
 
-        scoreText.setText("Debug Text area");
 
         //Suicide to test animation
         if(Phaser.Input.Keyboard.JustDown(game.wasd.suicide)){

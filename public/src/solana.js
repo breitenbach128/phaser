@@ -1,8 +1,11 @@
-class Solana {
-    constructor(config) {
-        this.scene = config.scene;
-        // Create the physics-based sprite that we will move around and animate
-        this.sprite = this.scene.matter.add.sprite(config.x, config.y, config.sprite, config.frame);
+class Solana extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'solana', 0)
+        this.scene = scene;       
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+        this.setActive(true);
+        this.sprite = this;
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         
@@ -55,7 +58,7 @@ class Solana {
         this.inLight = true;
 
 
-        this.debug = this.scene.add.text(this.x, this.y-16, 'Solana', { fontSize: '10px', fill: '#00FF00' });
+        this.debug = this.scene.add.text(this.x, this.y-16, 'Solana', { fontSize: '10px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
         //Sounds
         this.soundJump = game.sound.add('jumpSolana');
 
@@ -156,36 +159,40 @@ class Solana {
 
         this.debug.setPosition(this.sprite.x+32, this.sprite.y+64);
         this.debug.setText("Ground:"+String(this.touching.down)
-        +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(this.sprite.body.velocity.y)
+        +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(Math.round(this.sprite.body.velocity.y))
         +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right)
         +" \njr:"+String(this.jumpReady)
-        +" \nflip:"+String(this.flipX)
+        +" \njlck:"+String(this.jumpLock)
         +" \nInLight:"+String(this.inLight));
         
     }
     jumpLockReset(){
         this.jumpLock = false;
-        console.log("JumpLock Reset");
     }
     forgiveJump(){
         this.jumpReady = false;
         this.jumpTimerRunning = false; 
     }
     jump(jumpVel,mvVel){
+        //Make vertical jump weaker if on wall
+        
         if(this.touching.left > 0){
             this.sprite.setVelocityX(mvVel);
             this.jumpLock = true;
             this.kickOff = mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
+            jumpVel = (jumpVel/2);
         }
         if(this.touching.right > 0){
             this.sprite.setVelocityX(-mvVel);
             this.jumpLock = true;
             this.kickOff = -mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
-        }
-        //Make vertical jump weaker if on wall
+            jumpVel = (jumpVel/2);
+        }   
+       
         this.sprite.setVelocityY(-jumpVel);
+        
         this.soundJump.play();
     }
 
@@ -221,9 +228,9 @@ class Solana {
             // if hp drops below 0, die
             if(this.hp <= 0) {
                 this.alive = false;                         
-                this.body.setVelocityX(0);
-                this.on('animationcomplete',this.death,this);            
-                this.anims.play('solana-death', false);  
+                this.sprite.setVelocityX(0);
+                this.sprite.on('animationcomplete',this.death,this);            
+                this.sprite.anims.play('solana-death', false);  
                 console.log("deadly damage recv. Play death anim")              
             }
         }   

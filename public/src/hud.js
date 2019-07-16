@@ -8,20 +8,20 @@ class HudScene extends Phaser.Scene {
         this.energy_bar = [];
         this.ready = false;
         this.energy = {n:100,max:100,h:100,w:16};
-        this.create();
-    }
 
-    create ()
-    {
-       
     }
 
     update()
     {
-        if(this.speechbubble){
-            this.speechbubble.x = (solana.x+solana.width)*2;
-            this.speechbubble.y = (solana.y-32)*2;
-            this.speechbubble.update();
+        if(this.ready){   
+            
+            if(this.speechbubble){
+                this.speechbubble.x = (solana.x+32)*2-camera_main.worldView.x*2;
+                this.speechbubble.y = (solana.y-64)*2-camera_main.worldView.y*2;
+                this.speechbubble.update();
+            }
+            this.debug.setText("CameraX:"+String(Math.round(camera_main.worldView.x))
+            +"\nCameraY:" + String(Math.round(camera_main.worldView.y)));
         }
     }
     clearHud()
@@ -50,8 +50,12 @@ class HudScene extends Phaser.Scene {
         this.energy.h = this.energy_bar[1].height;
         this.energy.w = this.energy_bar[1].width;
         //Add text
-        this.speechbubble = new SpeechBubble(this,solana.x+solana.width,solana.y-32,5000);
+        this.speechbubble = new SpeechBubble(this,0,0,95000);
         this.speechbubble.newText("This is a test. Not a great test, but a test none the less");
+        //DEBUG
+        this.debug = this.add.text(16, 16, 'DEBUG-HUD', { fontSize: '32px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
+        
+  
     }
     alterEnergy(energyChange){
         let n = this.energy.n + energyChange;
@@ -71,6 +75,12 @@ class HudScene extends Phaser.Scene {
         for(var h = 0;h < hp-1;h++){
             this.hp_blips[h].setVisible(true); 
         }
+    }
+    createDialog(){
+        //A JSON style format for dialog.
+        // Requires: Talker Object (for X,Y). TTL for Bubble, and Text.
+        //Object pooling would work well here. Just reuse bubble objects and set text
+        //All Push button to speed up.
     }
     updateGameScene ()
     {
