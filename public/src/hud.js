@@ -8,21 +8,18 @@ class HudScene extends Phaser.Scene {
         this.energy_bar = [];
         this.ready = false;
         this.energy = {n:100,max:100,h:100,w:16};
-
+        this.dialogueArea;
     }
 
     update()
     {
         if(this.ready){   
             
-            if(this.speechbubble){
-                this.speechbubble.x = (solana.x+32)*2-camera_main.worldView.x*2;
-                this.speechbubble.y = (solana.y-64)*2-camera_main.worldView.y*2;
-                this.speechbubble.update();
-            }
             this.debug.setText("CameraX:"+String(Math.round(camera_main.worldView.x))
             +"\nCameraY:" + String(Math.round(camera_main.worldView.y))
             +"\nSolanaXdiff:"+String(solana.mv_Xdiff));
+
+            this.dialogueArea.update();
         }
     }
     clearHud()
@@ -50,9 +47,12 @@ class HudScene extends Phaser.Scene {
         //Update energy bar values
         this.energy.h = this.energy_bar[1].height;
         this.energy.w = this.energy_bar[1].width;
-        //Add text
-        this.speechbubble = new SpeechBubble(this,0,0,95000);
-        this.speechbubble.newText("This is a test. Not a great test, but a test none the less");
+        //Add test dialogue
+        let dialogueChain = [{speaker:player,ttl:2000,text:"Block1 Test"},
+        {speaker:player,ttl:2000,text:"Block2 Test"},
+        {speaker:player,ttl:2000,text:"Block3 Test"},];
+        this.dialogueArea = new Dialogue(this,dialogueChain);
+        this.dialogueArea.start();
         //DEBUG
         this.debug = this.add.text(16, 16, 'DEBUG-HUD', { fontSize: '32px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
         
@@ -82,6 +82,8 @@ class HudScene extends Phaser.Scene {
         // Requires: Talker Object (for X,Y). TTL for Bubble, and Text.
         //Object pooling would work well here. Just reuse bubble objects and set text
         //All Push button to speed up.
+
+
     }
     updateGameScene ()
     {
