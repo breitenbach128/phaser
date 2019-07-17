@@ -70,7 +70,7 @@ class Dialogue {
 	}
 	start(){
 		this.isRunning = true;
-		console.log("startdialogue",this.chain, this.chain.length);
+		
 		let speaker = this.chain[this.curr].speaker;
 		let text = this.chain[this.curr].text;
 		let ttl = this.chain[this.curr].ttl;
@@ -89,12 +89,19 @@ class Dialogue {
 		let i = this.curr;
 		let speaker = this.chain[i].speaker;
 		let worldScale=2;
-		let xO = 32;
-		let yO = -64;
-		//Adjust for real HUD position offset from camera movement and scale
-		this.bubbles[i].x = (speaker.x+xO)*worldScale-camera_main.worldView.x*worldScale;
-		this.bubbles[i].y = (speaker.y+yO)*worldScale-camera_main.worldView.y*worldScale;
-		this.bubbles[i].update();
+		let xO = 54;
+		let yO = -40;
+		if(speaker != undefined && this.bubbles != undefined){
+			
+			this.bubbles[i].flipX = speaker.flipX;
+			if(speaker.flipX){
+				xO = -speaker.width-20;
+			}
+			//Adjust for real HUD position offset from camera movement and scale
+			this.bubbles[i].x = (speaker.x+xO-camera_main.worldView.x)*worldScale;
+			this.bubbles[i].y = (speaker.y+yO-camera_main.worldView.y)*worldScale;
+			this.bubbles[i].update();
+		}
 	}
 	nextSpeech(){		
 		if(this.curr < this.chain.length-1){
@@ -112,6 +119,7 @@ class Dialogue {
 
 	}
 	destroyDialoge(){
+		this.isRunning = false;
 		this.bubbles.forEach(function(e){
 			e.timeUp();
 		});

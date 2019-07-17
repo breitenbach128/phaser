@@ -48,9 +48,9 @@ class HudScene extends Phaser.Scene {
         this.energy.h = this.energy_bar[1].height;
         this.energy.w = this.energy_bar[1].width;
         //Add test dialogue
-        let dialogueChain = [{speaker:player,ttl:2000,text:"Block1 Test"},
-        {speaker:player,ttl:2000,text:"Block2 Test"},
-        {speaker:player,ttl:2000,text:"Block3 Test"},];
+        let dialogueChain = [{speaker:player,ttl:3000,text:"How did I get here?"},
+        {speaker:player,ttl:2000,text:"Why is everything so dark."},
+        {speaker:player,ttl:5000,text:"I can switch to Bright by pressing K."}];
         this.dialogueArea = new Dialogue(this,dialogueChain);
         this.dialogueArea.start();
         //DEBUG

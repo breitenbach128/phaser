@@ -8,6 +8,7 @@
 // TMX Pressure: Buttons that are only affected by pushing on them. Dark can drop from above to trigger pressure plats.
 // TMX Destructable: Can be destroyed to reveal new areas or secrets.
 // TMX Gate: A door that lifts up to allow access to another area.
+// TMX Platform: A platform that can move along a path. Can be triggered, or trigger other effects.
 
 class TMXLever extends Phaser.Physics.Matter.Sprite{
     constructor(scene,x,y) {
@@ -481,5 +482,96 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
          
         }
 
+    }
+};
+class TMXPlatform extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'platform_160x16', 0)
+        this.scene = scene;
+        // Create the physics-based sprite that we will move around and animate
+        scene.matter.world.add(this);
+        // config.scene.sys.displayList.add(this);
+        // config.scene.sys.updateList.add(this);
+        scene.add.existing(this); // This adds to the two listings of update and display.
+
+        this.setActive(true);
+
+        this.sprite = this;
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody =  Bodies.rectangle(0, 0, w, h);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.02,
+            friction: 0.1
+        });
+
+        this.sprite
+        .setExistingBody(compoundBody)
+        .setPosition(x, y)
+        .setFixedRotation() // Sets inertia to infinity so the player can't rotate
+        .setStatic(true)
+        .setIgnoreGravity(true);    
+
+        this.debug = scene.add.text(this.x, this.y-16, 'platform', { fontSize: '10px', fill: '#00FF00' });             
+
+
+    }
+    setup(x,y, properties,name){
+        this.setActive(true); 
+        this.setPosition(x,y);
+        this.name = name;
+        this.platformPosition = 0;
+        this.target = {name: -1,type: -1, object: -1};
+        this.ready = true;
+        if(properties){
+            this.target.name = properties.targetName;
+            this.target.type = properties.targetType;
+        }
+       //console.log("setup",name, properties,this.target);
+ 
+    }
+    update(time, delta)
+    {       
+
+        this.debug.setPosition(this.x, this.y-16);
+        this.debug.setText("Plate Position:"+String(this.platePosition));
+    }
+    setTarget(targetObject){
+        this.target.object = targetObject;
+        //console.log("Set target for ", this.name);
+    }
+    triggerTarget(){
+        if(this.target.object != -1){
+            this.target.object.activateTrigger();
+        }
+    }
+    usePlatform(){
+        if(this.ready == true){
+            this.ready = false;
+            this.plateTimer = this.scene.time.addEvent({ delay: 1000, callback: this.plateComplete, callbackScope: this, loop: false });
+            //Timer is done.
+            if(this.target.object != -1 && this.target.object.ready){
+                //Target is ready to operate?
+                if(this.platePosition == 0){
+                    this.platePosition = 1;
+                    this.triggerTarget();
+                }else{
+                    this.platePosition = 0;
+                    this.triggerTarget();
+                }
+            }else{
+                //Player chunk sound so play knows they can use the lever right now. Make sure sound only plays if not playing.
+                console.log("Platform sound: Tink! Click!");
+            }
+        }
+
+    }
+    plateComplete(){
+        //console.log("plate ready again");
+        this.ready = true;
     }
 };

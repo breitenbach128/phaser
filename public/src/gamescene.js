@@ -49,7 +49,7 @@ var GameScene = new Phaser.Class({
         let bglayer = map.createStaticLayer('bg', Tiles, 0, 0);
 
         let collisionLayer = map.createDynamicLayer('collision', CollisionTiles, 0, 0);
-
+        collisionLayer.setVisible(false);
         collisionLayer.setCollisionByProperty({ collides: true });
         // the solana will collide with this layer
         //groundLayer.setCollisionByExclusion([-1]);
@@ -121,7 +121,12 @@ var GameScene = new Phaser.Class({
             classType: TMXPlate,
             runChildUpdate: true 
         });
-        //Pressure Plates
+        //Platforms 
+        platforms = this.add.group({ 
+            classType: TMXPlatform,
+            runChildUpdate: true 
+        });
+        //Buttons 
         buttons = this.add.group({ 
             classType: TMXButton,
             runChildUpdate: true 
@@ -195,6 +200,8 @@ var GameScene = new Phaser.Class({
                 triggerObj = gates.get();
             }else if(triggerlayer.objects[e].type == "plate"){
                 triggerObj = plates.get();
+            }else if(triggerlayer.objects[e].type == "platform"){
+                triggerObj = platforms.get();
             }else if(triggerlayer.objects[e].type == "button"){
                 triggerObj = buttons.get();
             }else if(triggerlayer.objects[e].type == "zone"){
@@ -239,6 +246,7 @@ var GameScene = new Phaser.Class({
         setupTriggerTargets(plates,"plates",this);
         setupTriggerTargets(buttons,"buttons",this);
         setupTriggerTargets(triggerzones,"zones",this);
+        setupTriggerTargets(platforms,"platforms",this);
 
         //Particles - Example
         emitter0 = this.add.particles('impact1').createEmitter({
@@ -294,7 +302,8 @@ var GameScene = new Phaser.Class({
 
         hud.setupHud(solana);
 
-        solana.sprite.setDepth(999);
+        solana.setDepth(DEPTH_LAYERS.FRONT);
+        bright.setDepth(DEPTH_LAYERS.FRONT);
 
         //*********************************//
         // PHYSICS IMPLEMENTATION          //
@@ -359,6 +368,19 @@ var GameScene = new Phaser.Class({
                         solana.touching.left++;
                     }
                 }                
+              }
+              if (gameObjectB !== undefined && gameObjectB instanceof TMXPlatform) {   
+                //handle plaform jumping allowance             
+                if(bodyA.label == "SOLANA_BOTTOM"){
+                    solana.touching.down++;
+                }
+                if(bodyA.label == "SOLANA_RIGHT"){
+                    solana.touching.right++;
+                }
+                if(bodyA.label == "SOLANA_LEFT"){
+                    solana.touching.left++;
+                }
+                              
               }
             }
         });
@@ -701,6 +723,7 @@ function bulletHitMirror(bullet,m){
 }
 function getTileProperties(propArray){    
     let object = {};
+    if(propArray == undefined){return;}
     propArray.forEach(element => {
         object[element.name] = element.value;
     });
