@@ -1,3 +1,4 @@
+//When enemies are hit, they lose globs of oily shadow, of varying size, that fly off of them.
 var Enemy = new Phaser.Class({
  
     Extends: Phaser.GameObjects.Sprite,

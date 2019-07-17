@@ -141,7 +141,7 @@
         {
          "draworder":"topdown",
          "id":9,
-         "name":"mirrors",
+         "name":"objects",
          "objects":[],
          "opacity":1,
          "type":"objectgroup",
@@ -159,7 +159,7 @@
         {
          "columns":37,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/Arcarde\/phaser\/public\/assets\/world\/oldTileset32.png",
+         "image":"oldTileset32.png",
          "imageheight":800,
          "imagewidth":1280,
          "margin":0,
@@ -172,7 +172,7 @@
         {
          "columns":6,
          "firstgid":852,
-         "image":"..\/..\/..\/..\/Arcarde\/phaser\/public\/tmx\/map_collision.png",
+         "image":"..\/..\/tmx\/map_collision.png",
          "imageheight":192,
          "imagewidth":192,
          "margin":0,

@@ -19,6 +19,7 @@
     <script src="src/addons.js"></script>
     <script src="src/bullet.js"></script>
     <script src="src/mirror.js"></script>
+    <script src="src/barrier.js"></script>
     <script src="src/Exit.js"></script>
     <script src="src/trigger.js"></script>
     <script src="src/enemy.js"></script>
@@ -95,7 +96,11 @@
     var current_exit = "west1";
     var world_background;
     //Game Objects
-    var solana,bright,enemies,bullets,mirrors,exits,entrances,levers,gates,plates,buttons,triggerzones,platforms;    
+    var solana,
+    bright,enemies,bullets,
+    mirrors,exits,entrances,
+    levers,gates,plates,buttons,
+    triggerzones,platforms,barriers;    
     var new_enemy;
     var spawner;
     var spawnlayer;
@@ -124,7 +129,8 @@
         SOLANA: 2,
         BRIGHT: 4,
         BULLET: 8,
-        MIRROR: 16
+        MIRROR: 16,
+        BARRIER: 32,
     }
     const DEPTH_LAYERS = {
         BG: 10,

@@ -1,4 +1,6 @@
-class CrystalLamp extends Phaser.Physics.Matter.Image {
+//Crystals can be charged with solar blasts to light up for a short period. They slowly get dimmer.
+//Fireflies can be gathered to gain light and are attracted to solana.
+class CrystalLamp extends Phaser.Physics.Matter.Image {1
     constructor(scene,x,y,brigthness) {
         super(scene.matter.world, x, y, 'light_crystal', 0);
         this.scene = scene;

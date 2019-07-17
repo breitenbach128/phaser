@@ -111,6 +111,11 @@ var GameScene = new Phaser.Class({
             classType: Mirror,
             runChildUpdate: true 
         });
+        //Barriers
+        barriers = this.add.group({ 
+            classType: Barrier,
+            runChildUpdate: true 
+        });
         //Levers
         levers = this.add.group({ 
             classType: TMXLever,
@@ -161,7 +166,7 @@ var GameScene = new Phaser.Class({
         //Create spawn layer 
         spawnlayer = map.getObjectLayer('spawns');
         //Create mirror Layer
-        let mirrorlayer = map.getObjectLayer('mirrors');
+        let objectlayer = map.getObjectLayer('objects');
         //Create Trigger Layer
         let triggerlayer = map.getObjectLayer('triggers');
         //Create exit layer
@@ -180,12 +185,22 @@ var GameScene = new Phaser.Class({
             } 
         }
         //Spawn Mirrors
-        for(e=0;e<mirrorlayer.objects.length;e++){
-            let new_mirror = mirrors.get();
-            let trig_x_offset = new_mirror.width/2;
-            let trig_y_offset = new_mirror.height/2;
-            if(new_mirror){
-                new_mirror.setup(mirrorlayer.objects[e].x-trig_x_offset,mirrorlayer.objects[e].y-trig_y_offset,mirrorlayer.objects[e].rotation);
+        for(e=0;e<objectlayer.objects.length;e++){
+            let mapObject;
+            let x_offset = 0;
+            let y_offset = 0;
+            if(objectlayer.objects[e].type == "mirror"){  
+                mapObject = mirrors.get();
+                x_offset = mapObject.width/2;
+                y_offset = mapObject.height/2;
+            }else if(objectlayer.objects[e].type == "window"){  
+                mapObject = barriers.get(-1000,-1000,"tmxwindow",0,true);
+                x_offset = -mapObject.width/2;
+                y_offset = mapObject.height/2;
+            }
+
+            if(mapObject){ 
+                mapObject.setup(objectlayer.objects[e].x-x_offset,objectlayer.objects[e].y-y_offset,objectlayer.objects[e].rotation);
             }
         }
         //Spawn Triggers
@@ -194,7 +209,7 @@ var GameScene = new Phaser.Class({
             let triggerObj;
             
             if(triggerlayer.objects[e].type == "lever"){  
-                triggerObj = new TMXLever(this,mirrorlayer.objects[e].x,mirrorlayer.objects[e].y);             
+                triggerObj = new TMXLever(this,triggerlayer.objects[e].x,triggerlayer.objects[e].y);             
                 levers.add(triggerObj);
             }else if(triggerlayer.objects[e].type == "gate"){
                 triggerObj = gates.get();
