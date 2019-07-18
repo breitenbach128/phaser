@@ -18,8 +18,9 @@ class HudScene extends Phaser.Scene {
             this.debug.setText("CameraX:"+String(Math.round(camera_main.worldView.x))
             +"\nCameraY:" + String(Math.round(camera_main.worldView.y))
             +"\nSolanaXdiff:"+String(solana.mv_Xdiff));
-
-            this.dialogueArea.update();
+            if(this.dialogueArea.isRunning){
+                this.dialogueArea.update();
+            }
         }
     }
     clearHud()
@@ -33,6 +34,7 @@ class HudScene extends Phaser.Scene {
             this.energy_bar[h].destroy();
         }  
         this.energy_bar = [];
+        this.dialogueArea.destroyDialogue();
     }
     setupHud(player)
     {
@@ -49,14 +51,15 @@ class HudScene extends Phaser.Scene {
         this.energy.w = this.energy_bar[1].width;
         //Add test dialogue
         let dialogueChain = [{speaker:player,ttl:3000,text:"How did I get here?"},
-        {speaker:player,ttl:2000,text:"Why is everything so dark."},
+        {speaker:player,ttl:2000,text:"Why is everything so dark?"},
         {speaker:player,ttl:5000,text:"I can switch to Bright by pressing K."}];
         this.dialogueArea = new Dialogue(this,dialogueChain);
         this.dialogueArea.start();
         //DEBUG
-        this.debug = this.add.text(16, 16, 'DEBUG-HUD', { fontSize: '32px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
-        
-  
+        this.debug = this.add.text(48, 16, 'DEBUG-HUD', { fontSize: '32px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
+
+        let inventory = new Inventory(this);
+
     }
     alterEnergy(energyChange){
         let n = this.energy.n + energyChange;

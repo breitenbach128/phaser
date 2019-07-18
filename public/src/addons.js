@@ -67,6 +67,7 @@ class Dialogue {
 		this.curr = 0;
 		this.isRunning = false;
 		this.bubbles = [];
+		this.timer;
 	}
 	start(){
 		this.isRunning = true;
@@ -74,11 +75,11 @@ class Dialogue {
 		let speaker = this.chain[this.curr].speaker;
 		let text = this.chain[this.curr].text;
 		let ttl = this.chain[this.curr].ttl;
-		if(speaker && text && ttl){
+		if(speaker != undefined && text && ttl){
 			this.bubbles.push(new SpeechBubble(this.scene,speaker.x,speaker.y,ttl));
 			this.bubbles[this.bubbles.length-1].newText(text);
 			//Set Progress Time
-			this.scene.time.addEvent({ delay: ttl, callback: this.nextSpeech, callbackScope: this, loop: false });
+			this.timer = this.scene.time.addEvent({ delay: ttl, callback: this.nextSpeech, callbackScope: this, loop: false });
 		}else{
 			//ERROR
 			console.log("Error: Missing Speaker Data for Dialogue");
@@ -107,18 +108,20 @@ class Dialogue {
 		if(this.curr < this.chain.length-1){
 			//Move Current offscreen //IDEA (setup to ONLY do this if the speaker is the same)
 			this.bubbles[this.curr].x = -1000;
-			this.bubbles[this.curr].y = -1000;
+			this.bubbles[this.curr].y = -1000;			
+			this.bubbles[this.curr].update();
 			//Increase index to next
 			this.curr++;
 			//Start the next dialogue
 			this.start();
 		}else{
 			//Speech Over
-			this.destroyDialoge();
+			this.destroyDialogue();
 		}
 
 	}
-	destroyDialoge(){
+	destroyDialogue(){
+		this.timer.remove();
 		this.isRunning = false;
 		this.bubbles.forEach(function(e){
 			e.timeUp();

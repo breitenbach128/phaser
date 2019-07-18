@@ -1,15 +1,10 @@
 class Mirror extends Phaser.Physics.Matter.Sprite{
     constructor(scene,x,y) {
         super(scene.matter.world, x, y, 'mirror', 0)
-        this.scene = scene;
-        // Create the physics-based sprite that we will move around and animate
+        this.scene = scene;       
         scene.matter.world.add(this);
-        // config.scene.sys.displayList.add(this);
-        // config.scene.sys.updateList.add(this);
-        scene.add.existing(this); // This adds to the two listings of update and display.
-
+        scene.add.existing(this); 
         this.setActive(true);
-
         this.sprite = this;
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules

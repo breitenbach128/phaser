@@ -85,6 +85,10 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('pressure_plate', 'assets/objects/pressure_plate.png', {frameWidth: 32, frameHeight: 6});
 		this.load.spritesheet('tmxbutton', 'assets/objects/tmxbutton.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('platform_160x16', 'assets/objects/platform_160x16.png', {frameWidth: 160, frameHeight: 16});
+		this.load.spritesheet('gameitems', 'assets/objects/gameitems.png', {frameWidth: 32, frameHeight: 32});
+		//Abilities
+		this.load.spritesheet('ability_solarblast', 'assets/objects/ability_solarblast.png', {frameWidth: 16, frameHeight: 16});
+		
 		this.load.image('mask1', 'assets/objects/mask1.png');
 		this.load.image('mask2', 'assets/objects/mask2.png');
 		this.load.image('light1', 'assets/objects/light1.png');
