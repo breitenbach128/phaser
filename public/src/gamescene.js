@@ -362,7 +362,7 @@ var GameScene = new Phaser.Class({
             callback: eventData => {
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 
-              if (gameObjectB !== undefined && (gameObjectB instanceof Phaser.Tilemaps.Tile || gameObjectB instanceof TMXPlatform)) {
+              if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
                 // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
                 if (gameObjectB.properties.collides){
                     if(bodyA.label == "BRIGHT_BOTTOM"){
@@ -377,8 +377,24 @@ var GameScene = new Phaser.Class({
                     if(bodyA.label == "BRIGHT_TOP"){
                         bright.touching.up++;
                     }
-                }                
+                } 
               }
+              if (gameObjectB !== undefined && gameObjectB instanceof TMXPlatform) {   
+                
+                //handle plaform jumping allowance             
+                if(bodyA.label == "BRIGHT_BOTTOM"){
+                    bright.touching.down++;
+                }
+                if(bodyA.label == "BRIGHT_RIGHT"){
+                    bright.touching.right++;
+                }
+                if(bodyA.label == "BRIGHT_LEFT"){
+                    bright.touching.left++;
+                }
+                if(bodyA.label == "BRIGHT_TOP"){
+                    bright.touching.up++;
+                }                         
+              } 
             }
         });
 
@@ -411,8 +427,7 @@ var GameScene = new Phaser.Class({
                 }
                 if(bodyA.label == "SOLANA_LEFT"){
                     solana.touching.left++;
-                }
-                              
+                }                              
               }
             }
         });
