@@ -65,8 +65,10 @@ var Preloader = new Phaser.Class({
 		// now load images, audio etc.
 		//Background
 		this.load.image('forest_background', 'assets/world/forest_bg.png');
-		// sprites
+		// Menu
         this.load.atlas('sprites', 'img/spritearray.png', 'img/spritearray.json');
+        this.load.image('Title1', 'img/Title1.png');
+        this.load.image('button_sun', 'img/sun1.png');
         //Map Assets  
 		this.load.tilemapTiledJSON('map2', 'assets/world/map2_32ts.json'); 
 		this.load.tilemapTiledJSON('map3', 'assets/world/map3_32ts.json');    

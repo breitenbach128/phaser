@@ -20,12 +20,15 @@ var MainMenu = new Phaser.Class({
 
 		// add logo
 		//this.sys.config.backgroundColor = '#f3cca3';
-        var logo = this.add.sprite(400, 200, 'sprites', 'phaser3');
-		
-		// add start button
-		this.btnstart = this.addButton(400+80, 400, 'sprites', this.doStart, this, 'btn_play_hl', 'btn_play', 'btn_play_hl', 'btn_play');
+        //var logo = this.add.sprite(400, 200, 'sprites', 'phaser3');
+        
+        let title = this.add.sprite(0, 0, 'Title1');
+        title.setPosition(game.canvas.width/2,title.height+128);
 
-        console.log('create is ready');
+		// add start button
+        //this.btnstart = this.addButton(0, 0, 'sprites', this.doStart, this, 'btn_play_hl', 'btn_play', 'btn_play_hl', 'btn_play');
+        this.btnstart = this.addButton(0, 0, 'button_sun', this.doStart, this, 0, 0, 0, 0);
+        this.btnstart.setPosition(game.canvas.width/2,400);
         
     },
     update: function(){
@@ -33,7 +36,6 @@ var MainMenu = new Phaser.Class({
     },	
 	doStart: function ()
     {
-        console.log('menuscene doStart was called!');
 		this.scene.start('gamescene');
     }
 
