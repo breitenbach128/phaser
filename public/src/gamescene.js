@@ -352,14 +352,25 @@ var GameScene = new Phaser.Class({
         });
 
         this.matterCollision.addOnCollideActive({
-            objectA: bright.sensors.bottom,
+            objectA: [bright.sensors.bottom,bright.sensors.left,bright.sensors.right,bright.sensors.top],
             callback: eventData => {
-              const { bodyB, gameObjectB } = eventData;
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 
               if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
                 // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
                 if (gameObjectB.properties.collides){
-                    bright.touching.down++;
+                    if(bodyA.label == "BRIGHT_BOTTOM"){
+                        bright.touching.down++;
+                    }
+                    if(bodyA.label == "BRIGHT_RIGHT"){
+                        bright.touching.right++;
+                    }
+                    if(bodyA.label == "BRIGHT_LEFT"){
+                        bright.touching.left++;
+                    }
+                    if(bodyA.label == "BRIGHT_TOP"){
+                        bright.touching.up++;
+                    }
                 }                
               }
             }

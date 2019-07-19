@@ -14,21 +14,24 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
         const compoundBody = Body.create({
             parts: [mainBody],
             frictionStatic: 0,
-            frictionAir: 0.02,
-            friction: 0.1
+            frictionAir: 0.08,
+            friction: 0.1,
+            restitution: 0,
+            density: 0.009,
+            label: "mirror"
         });
 
         this.sprite
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.MIRROR)
-        .setCollidesWith([ CATEGORY.BULLET ])
+        .setCollidesWith([ CATEGORY.BULLET, CATEGORY.DARK ])
         .setPosition(x, y)
-        .setStatic(true)
-        .setFixedRotation() // Sets inertia to infinity so the player can't rotate
+        //.setStatic(true)
+        //.setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setIgnoreGravity(true)
         .setVisible(false);    
 
-        
+        //Mirror Sensor for Solana Interaction
         this.sensor = new MirrorSensor(this,x,y);
 
 
@@ -44,6 +47,16 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
 
         this.setPosition(x,y);
         this.sensor.setPosition(x,y);
+        //Mirror Constraint for pivoting
+        let rotation_constraint = Phaser.Physics.Matter.Matter.Constraint.create(
+            {
+              pointA: { x: this.x, y: this.y },
+              bodyB: this.sprite.body,
+              length: 0,
+              stiffness: 0.5
+            }
+          );
+        this.scene.matter.world.add(rotation_constraint);
 
         this.angle = angle;
         this.minAngle = angle - 45;
@@ -63,12 +76,12 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
 
         this.debug.setPosition(this.x, this.y-196);
         this.debug.setText("Angle:"+String(this.angle));
+        //Check Rotation Constraints
+        if(this.angle > this.maxAngle){ this.angle = this.maxAngle; }
+        if(this.angle < this.minAngle){ this.angle = this.minAngle; }
     }
     rotateMirror(x){
         this.angle+=x;
-
-        if(this.angle > this.maxAngle){ this.angle = this.maxAngle; }
-        if(this.angle < this.minAngle){ this.angle = this.minAngle; }
     }
     mirrorAnimComplete(animation, frame){
         this.anims.play('mirror-idle', true);//back to idle

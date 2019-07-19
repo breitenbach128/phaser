@@ -19,39 +19,56 @@ class Bright extends Phaser.Physics.Matter.Sprite{
           left: Bodies.rectangle(-w * 0.18, 0, 2, h * 0.22, { isSensor: true }),
           right: Bodies.rectangle(w * 0.18, 0, 2, h * 0.22, { isSensor: true })
         };
+        this.sensors.bottom.label = "BRIGHT_BOTTOM";
+        this.sensors.top.label = "BRIGHT_TOP";
+        this.sensors.left.label = "BRIGHT_LEFT";
+        this.sensors.right.label = "BRIGHT_RIGHT";
+
         const compoundBody = Body.create({
           parts: [mainBody, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
           frictionStatic: 0,
           frictionAir: 0.02,
-          friction: 0.1
+          friction: 0.1,
+          restitution: 0,
+          density: 0.009,
+          label: "bright"
         });
         this.sprite
-          .setExistingBody(compoundBody)
-          .setScale(2)
-          //.setFixedRotation() // Sets inertia to infinity so the player can't rotate
-          .setPosition(config.x, config.y)
-          .setIgnoreGravity(true);
+        .setExistingBody(compoundBody)          
+        .setCollisionCategory(CATEGORY.BRIGHT)
+        .setScale(2)
+        //.setFixedRotation() // Sets inertia to infinity so the player can't rotate
+        .setPosition(config.x, config.y)
+        .setIgnoreGravity(true);
           
         //Custom properties
         this.light_status = 0;//0 - Bright, 1 - Dark;
         this.hp = 1;
         this.max_hp = 1;
         this.mv_speed = 3;
+        this.jump_speed = 6;
         this.alive = true;
         this.falling = false;
         this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { fontSize: '10px', fill: '#00FF00' });
         this.touching = {up:0,down:0,left:0,right:0};
+        this.airTime = 0;//For Camera Shake
     }
 
     update()
     {
             if(this.alive){
 
+            if(this.touching.up==0 && this.touching.down == 0 && this.touching.left == 0 && this.touching.right == 0){
+                this.airTime++;
+            }else{
+                this.airTime=0;
+            };
+
             this.debug.setPosition(this.sprite.x, this.sprite.y-64);
-            this.debug.setText("On ground:"+String(this.touching.down));
+            this.debug.setText("Air Time:"+String(this.airTime));
             //Do Dark Updates
             if(this.light_status == 1){
-                if(this.touching.down == 0 && this.sprite.body.velocity.y > 30){
+                if(this.touching.down == 0 && this.airTime > 40){
                     //Falling, so change animation
                     this.sprite.anims.play('dark-falling', false);
                     this.falling = true;
@@ -74,6 +91,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 let control_right = (game.wasd.right.isDown || gamePad.buttons[15].value == 1);
                 let control_up = (game.wasd.up.isDown || gamePad.buttons[12].value == 1);
                 let control_down = (game.wasd.down.isDown || gamePad.buttons[13].value == 1);
+                let control_jump = (Phaser.Input.Keyboard.JustDown(game.wasd.jump) || gamePad.buttons[2].pressed);
 
                 if (control_left) {
                     if(this.light_status == 0){
@@ -98,6 +116,10 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     this.sprite.setVelocityX(0);
                     this.sprite.setAngularVelocity(0);
                     this.sprite.anims.play('dark-idle', true);//Idle
+                }
+                //Dark Jump
+                if(this.light_status == 1 && control_jump && this.airTime ==  0){
+                    this.sprite.setVelocityY(-this.jump_speed);
                 }
 
                 if(this.light_status == 0){ //Only if Bright
@@ -125,6 +147,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite.setTexture('dark');
         this.sprite.anims.play('dark-idle', false);
         this.sprite.setIgnoreGravity(false);
+        this.sprite.setCollisionCategory(CATEGORY.DARK);
     }
     toBright(){
         this.light_status = 0;
@@ -132,6 +155,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite.anims.play('bright-idle', false);
         this.sprite.setIgnoreGravity(true);
         this.sprite.setAngle(0);
+        this.sprite.setCollisionCategory(CATEGORY.BRIGHT);
     }
 
     death(animation, frame){
