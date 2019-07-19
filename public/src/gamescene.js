@@ -95,6 +95,11 @@ var GameScene = new Phaser.Class({
 
 
         //GROUPS
+        //SolarBlasts
+        ab_solarblasts = this.add.group({ 
+            classType: SolarBlast,
+            runChildUpdate: true 
+        });
         //Enemies
         enemies = this.add.group({ 
             classType: Enemy,
@@ -311,6 +316,7 @@ var GameScene = new Phaser.Class({
         this.light_crystals.push(new CrystalLamp(this,700,200,150));
         this.light_crystals.push(new CrystalLamp(this,500,600,150));
 
+        let newitem = new EquipItem(this,320,192,'gameitems',0);
 
          //Start soulight play
          this.soul_light.sprite.anims.play('soulight-move', true);//Idle
@@ -356,7 +362,7 @@ var GameScene = new Phaser.Class({
             callback: eventData => {
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 
-              if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
+              if (gameObjectB !== undefined && (gameObjectB instanceof Phaser.Tilemaps.Tile || gameObjectB instanceof TMXPlatform)) {
                 // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
                 if (gameObjectB.properties.collides){
                     if(bodyA.label == "BRIGHT_BOTTOM"){
@@ -472,6 +478,14 @@ var GameScene = new Phaser.Class({
 
                 }
               }
+              if (gameObjectB !== undefined && gameObjectB instanceof EquipItem) {
+                //Solana Touching a lever?
+                if(curr_player==players.SOLANA){
+
+                    gameObjectB.equipTo(solana);
+
+                }
+              }
             }
         });
 
@@ -508,6 +522,13 @@ var GameScene = new Phaser.Class({
                     }  
 
                 }
+                //Catch any non-event projectiles and destory them if they hit anything else they would not interact with.
+                if (bodyA.label === 'BULLET' || bodyB.label === 'BULLET'){const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;const bulletObj = bulletBody.gameObject;bulletObj.hit();};
+                if (bodyA.label === 'ABILITY-SOLAR-BLAST' || bodyB.label === 'ABILITY-SOLAR-BLAST'){ 
+                    const bulletBody = bodyA.label === 'ABILITY-SOLAR-BLAST' ? bodyA : bodyB;
+                    const bulletObj = bulletBody.gameObject;
+                    bulletObj.hit();
+                };
             }
         }, this);
 
@@ -946,5 +967,12 @@ function createAnimations(scene){
         frames: scene.anims.generateFrameNumbers('tmxbutton', { frames:[4,3,2,1,0] }),
         frameRate: 12,
         repeat: 0
+    });
+
+    scene.anims.create({
+        key: 'ability-solar-blast-shoot',
+        frames: scene.anims.generateFrameNumbers('ability_solarblast', { frames:[0,1,2,3,4] }),
+        frameRate: 24,
+        repeat: -1
     });
 }

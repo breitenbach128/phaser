@@ -9,6 +9,7 @@ class HudScene extends Phaser.Scene {
         this.ready = false;
         this.energy = {n:100,max:100,h:100,w:16};
         this.dialogueArea;
+        this.inventory;
     }
 
     update()
@@ -58,7 +59,7 @@ class HudScene extends Phaser.Scene {
         //DEBUG
         this.debug = this.add.text(48, 16, 'DEBUG-HUD', { fontSize: '32px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
 
-        let inventory = new Inventory(this);
+        this.inventory = new Inventory(this);
 
     }
     alterEnergy(energyChange){

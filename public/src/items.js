@@ -39,12 +39,13 @@ class Inventory {
             });
         }
     }
-    equipItem(){
-
+    equipItem(id){
+        this.list[id].equiped = true;
+        this.list[id].item.clearTint();
     }
 }
 
-class EquipItem extends Phaser.Physics.Matter.Image {1
+class EquipItem extends Phaser.Physics.Matter.Image {
     constructor(scene,x,y,texture,frame) {
         super(scene.matter.world, x, y, texture, frame);
         this.scene = scene;
@@ -64,7 +65,8 @@ class EquipItem extends Phaser.Physics.Matter.Image {1
             parts: [mainBody],
             frictionStatic: 0,
             frictionAir: 0.02,
-            friction: 0.1
+            friction: 0.1,
+            label: "equipableItem"
         });
 
         this
@@ -75,7 +77,7 @@ class EquipItem extends Phaser.Physics.Matter.Image {1
         .setIgnoreGravity(true)
         .setVisible(true);  
 
-        this.brightness = brigthness;
+        this.equipmentId = frame;
     }
 
     create(){
@@ -89,4 +91,9 @@ class EquipItem extends Phaser.Physics.Matter.Image {1
 
     }
 
+    equipTo(entity){
+        entity.equipItem(this.equipmentId);
+        hud.inventory.equipItem(this.equipmentId);
+        this.destroy();
+    }
 }

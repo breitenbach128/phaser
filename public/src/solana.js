@@ -58,7 +58,12 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.jumpReady = false;
         this.alive = true;
         this.inLight = true;
-
+        this.equipment = [
+            {id:0,name:"Wand",lvl:0,equiped:false},
+            {id:1,name:"Crown",lvl:0,equiped:false},
+            {id:2,name:"Wings",lvl:0,equiped:false},
+            {id:3,name:"Belt",lvl:0,equiped:false}
+        ];
 
         this.debug = this.scene.add.text(this.x, this.y-16, 'Solana', { fontSize: '10px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
         //Sounds
@@ -159,17 +164,17 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 this.prevJumpButtonPressed = gamePad.buttons[2].pressed;
 
                 //Check for shooting 
-                if(control_shoot){
+                if(control_shoot && this.equipment[0].equiped){
                     solana.sprite.anims.play('solana-shoot', true);     
                     let costToFireWeapon = 10;      
                     if ((time-lastFired) >  240 && hud.energy.n > costToFireWeapon)//ROF(MS)
                     {
                         let solanaCenter = solana.sprite.getCenter();
-                        let bullet = bullets.get();
+                        let blast = ab_solarblasts.get();
                         if(solana.sprite.flipX){
-                            bullet.fire(solanaCenter.x-18, solanaCenter.y+12, -6, 0, 150);
+                            blast.fire(solanaCenter.x-18, solanaCenter.y+12, -6, 0, 150);
                         }else{
-                            bullet.fire(solanaCenter.x+18, solanaCenter.y+12, 6, 0, 150);
+                            blast.fire(solanaCenter.x+18, solanaCenter.y+12, 6, 0, 150);
                         }
 
                         lastFired = time;
@@ -249,6 +254,9 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.setVisible(true);
         this.debug.setVisible(true);
         this.alive = true; 
+    }
+    equipItem(id){
+        this.equipment[id].equiped = true;
     }
     receiveDamage(damage) {
                 
