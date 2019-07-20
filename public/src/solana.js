@@ -27,9 +27,9 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         const compoundBody = Body.create({
           parts: [mainBody, this.sensors.bottom, this.sensors.left, this.sensors.right],
           //parts: [mainBody],
-          frictionStatic: 0,
+          frictionStatic: 0.1,
           frictionAir: 0.02,
-          friction: 0.01,
+          friction: 0.7,
           restitution: 0.05
         });
        //Fix the draw offsets for the compound sprite.
@@ -147,7 +147,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 }
                 else if(!control_right && !control_left && this.jumpLock == false){
 
-                    this.sprite.setVelocityX(0);                   
+                    //This is fucking with friction and platform movement.
+
+                    if(!this.onGround){this.sprite.setVelocityX(0)};  
+
                     this.mv_direction.x = 0; 
                 }
 

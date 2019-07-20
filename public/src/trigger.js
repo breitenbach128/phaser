@@ -506,7 +506,8 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
             parts: [mainBody],
             frictionStatic: 0,
             frictionAir: 0.02,
-            friction: 0.1
+            friction: 1,//Was 0.1
+            label: 'PLATFORM'
         });
 
         this.sprite
@@ -532,13 +533,20 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
             this.target.type = properties.targetType;
         }
        //console.log("setup",name, properties,this.target);
+       this.setPath() // test tween
+       this.prev = {x:x,y:y};
  
     }
     update(time, delta)
     {       
 
         this.debug.setPosition(this.x, this.y-16);
-        this.debug.setText("Plate Position:"+String(this.platePosition));
+        this.debug.setText(this.name
+            +"\nVel: X:"+String(this.body.velocity.x)+" Y:" + String(this.body.velocity.y));
+        // body is static so must manually update velocity for friction to work
+        this.setVelocityX((this.x - this.prev.x));
+        this.prev.x = this.x;
+        this.prev.y = this.y
     }
     setTarget(targetObject){
         this.target.object = targetObject;
@@ -550,31 +558,37 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         }
     }
     setPath(){
-        
+        //For each coord in the array, start tweening to at a specific time. The coord array contains
+        // x, y, time objects for each tween
+
+        //test tween
+        let tween = this.scene.tweens.add({
+            targets: this,
+            x: this.x+50,               // '+=100'
+            y: this.y,               // '+=100'
+            ease: 'Linear',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+            duration: 6000,
+            repeat: -1,            // -1: infinity
+            yoyo: true,
+            hold: 1000
+        });
+
     }
     usePlatform(){
         if(this.ready == true){
-            this.ready = false;
+            this.ready = false;            
             this.plateTimer = this.scene.time.addEvent({ delay: 1000, callback: this.plateComplete, callbackScope: this, loop: false });
             //Timer is done.
             if(this.target.object != -1 && this.target.object.ready){
-                //Target is ready to operate?
-                if(this.platePosition == 0){
-                    this.platePosition = 1;
-                    this.triggerTarget();
-                }else{
-                    this.platePosition = 0;
-                    this.triggerTarget();
-                }
+                this.triggerTarget();
             }else{
-                //Player chunk sound so play knows they can use the lever right now. Make sure sound only plays if not playing.
-                console.log("Platform sound: Tink! Click!");
+                //Target not ready
             }
         }
 
     }
     plateComplete(){
         //console.log("plate ready again");
-        this.ready = true;
+        //this.ready = true;
     }
 };

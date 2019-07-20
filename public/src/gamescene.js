@@ -69,7 +69,7 @@ var GameScene = new Phaser.Class({
                 if(tile.physics.matterBody){
                     tile.physics.matterBody.body.label = 'SOLID';
                     tile.physics.matterBody.setCollisionCategory(CATEGORY.GROUND);
-                    //tile.physics.matterBody.setFriction(0,0);
+                    tile.physics.matterBody.setFriction(.9,0);
                 }
                
             //}
@@ -438,7 +438,10 @@ var GameScene = new Phaser.Class({
                 }
                 if(bodyA.label == "SOLANA_LEFT"){
                     solana.touching.left++;
-                }                              
+                }
+                //Modify her velocity for 100% friction from the object
+                // solana.body.velocity.x+= gameObjectB.body.velocity.x;                             
+                // solana.body.velocity.y+= gameObjectB.body.velocity.y;                             
               }
             }
         });
