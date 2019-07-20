@@ -29,7 +29,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
           //parts: [mainBody],
           frictionStatic: 0,
           frictionAir: 0.02,
-          friction: 0.1
+          friction: 0.05
         });
        //Fix the draw offsets for the compound sprite.
         compoundBody.render.sprite.xOffset = .5;
@@ -81,10 +81,15 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     update(time,delta)
     {
         if(this.alive){
+            //Only control if currently the active control object
+            let control_left = (game.wasd.left.isDown || gamePad.buttons[14].value == 1);
+            let control_right = (game.wasd.right.isDown || gamePad.buttons[15].value == 1);
+            let control_shoot = (game.wasd.shoot.isDown || gamePad.buttons[0].value == 1);
+            let control_jump = (Phaser.Input.Keyboard.JustDown(game.wasd.jump) || gamePad.buttons[2].pressed);
 
             //Detection Code for Jumping
 
-            if(this.touching.left > 0 ||  this.touching.right > 0){
+            if((this.touching.left > 0 ||  this.touching.right > 0) && (control_right || control_left)){
                 this.onWall = true;
             }else{
                 this.onWall = false;
@@ -120,11 +125,6 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             if(curr_player==players.SOLANA){
                 //Reduce Air Control
                 let mv = this.onGround ? this.mv_speed : this.mv_speed*.75;
-                //Only control if currently the active control object
-                let control_left = (game.wasd.left.isDown || gamePad.buttons[14].value == 1);
-                let control_right = (game.wasd.right.isDown || gamePad.buttons[15].value == 1);
-                let control_shoot = (game.wasd.shoot.isDown || gamePad.buttons[0].value == 1);
-                let control_jump = (Phaser.Input.Keyboard.JustDown(game.wasd.jump) || gamePad.buttons[2].pressed);
                 if (control_left && this.jumpLock == false) {
 
                     this.sprite.setVelocityX(-mv);
@@ -217,14 +217,14 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     jump(jumpVel,mvVel){
         //Make vertical jump weaker if on wall
         
-        if(this.touching.left > 0){
+        if(this.touching.left > 0 && !this.onGround){
             this.sprite.setVelocityX(mvVel);
             this.jumpLock = true;
             this.kickOff = mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
             jumpVel = (jumpVel/2);
         }
-        if(this.touching.right > 0){
+        if(this.touching.right > 0 && !this.onGround){
             this.sprite.setVelocityX(-mvVel);
             this.jumpLock = true;
             this.kickOff = -mvVel;
