@@ -13,7 +13,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //const mainBody = Bodies.rectangle(0, 0, w * 0.6, h, { chamfer: { radius: 10 } });
         
 
-        const mainBody = Bodies.rectangle(0, 0, w * 0.6, h-12);
+        const mainBody = Bodies.rectangle(0, 0, w * 0.6, h-12, { chamfer: { radius: 5 } });
         this.sensors = {
           bottom: Bodies.rectangle(0, h*0.5-6, w * 0.25, 2, { isSensor: true }),
           left: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.75, { isSensor: true }),
@@ -29,7 +29,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
           //parts: [mainBody],
           frictionStatic: 0,
           frictionAir: 0.02,
-          friction: 0.05
+          friction: 0.01,
+          restitution: 0.05
         });
        //Fix the draw offsets for the compound sprite.
         compoundBody.render.sprite.xOffset = .5;
@@ -118,7 +119,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             }
 
             //Slow Descent if on Wall
-            if(this.onWall && this.velocity >= 0){
+            if(this.onWall && this.body.velocity.y >= 0){
+            //if(this.onWall && this.mv_Ydiff >= 0){
                 this.setVelocityY(0);
             }else{
 
@@ -191,9 +193,9 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         }
 
 
-        this.debug.setPosition(this.sprite.x+32, this.sprite.y+64);
+        this.debug.setPosition(this.sprite.x+16, this.sprite.y-64);
         this.debug.setText("Ground:"+String(this.touching.down)
-        +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(Math.round(this.sprite.body.velocity.y))
+        +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(this.sprite.body.velocity.y)
         +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right) + " oW:"+String(this.onWall)
         +" \njr:"+String(this.jumpReady)
         +" \njlck:"+String(this.jumpLock)
