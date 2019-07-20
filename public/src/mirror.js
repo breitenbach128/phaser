@@ -18,7 +18,7 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
             friction: 0.1,
             restitution: 0,
             density: 0.009,
-            label: "mirror"
+            label: "MIRROR"
         });
 
         this.sprite

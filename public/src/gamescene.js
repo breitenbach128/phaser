@@ -68,6 +68,7 @@ var GameScene = new Phaser.Class({
             //{
                 if(tile.physics.matterBody){
                     tile.physics.matterBody.body.label = 'SOLID';
+                    tile.physics.matterBody.setCollisionCategory(CATEGORY.GROUND);
                 }
                
             //}
@@ -537,6 +538,22 @@ var GameScene = new Phaser.Class({
                     }  
 
                 }
+                if ((bodyA.label === 'ABILITY-SOLAR-BLAST' && bodyB.label === 'MIRROR') || (bodyA.label === 'MIRROR' && bodyB.label === 'ABILITY-SOLAR-BLAST')) {
+                    //Break out of loop to allow normal physics hits
+                    continue;
+                }
+                if ((bodyA.label === 'ABILITY-SOLAR-BLAST' && bodyB.label === 'CRYSTAL_LAMP') || (bodyA.label === 'CRYSTAL_LAMP' && bodyB.label === 'ABILITY-SOLAR-BLAST')) {
+                    console.log("blast hit lamp");
+                    let bulletObj = GameObjectB;
+                    let lampObj = GameObjectA;
+                    if(bodyA.label === 'ABILITY-SOLAR-BLAST'){
+                        bulletObj = GameObjectA;
+                        lampObj = GameObjectB;
+                    }
+                    bulletObj.hit();
+                    lampObj.turnOn();
+
+                }
                 //Catch any non-event projectiles and destory them if they hit anything else they would not interact with.
                 if (bodyA.label === 'BULLET' || bodyB.label === 'BULLET'){const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;const bulletObj = bulletBody.gameObject;bulletObj.hit();};
                 if (bodyA.label === 'ABILITY-SOLAR-BLAST' || bodyB.label === 'ABILITY-SOLAR-BLAST'){ 
@@ -989,5 +1006,26 @@ function createAnimations(scene){
         frames: scene.anims.generateFrameNumbers('ability_solarblast', { frames:[0,1,2,3,4] }),
         frameRate: 24,
         repeat: -1
+    });
+    
+    scene.anims.create({
+        key: 'lamp-flicker',
+        frames: scene.anims.generateFrameNumbers('light_crystal', { frames:[0,1] }),
+        frameRate: 24,
+        repeat: -1
+    });
+
+    scene.anims.create({
+        key: 'lamp-turn-on',
+        frames: scene.anims.generateFrameNumbers('light_crystal', { frames:[4,3,2,1,0] }),
+        frameRate: 24,
+        repeat: 0
+    });
+
+    scene.anims.create({
+        key: 'lamp-turn-off',
+        frames: scene.anims.generateFrameNumbers('light_crystal', { frames:[0,1,2,3,4] }),
+        frameRate: 24,
+        repeat: 0
     });
 }

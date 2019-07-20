@@ -30,7 +30,7 @@ class SolarBlast extends Phaser.Physics.Matter.Sprite{
         //Bodies
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; 
         const { width: w, height: h } = this;
-        const mainBody =  Bodies.rectangle(0, 0, w, h);
+        const mainBody =  Bodies.circle(0,0,w*.40);
         const compoundBody = Body.create({
             parts: [mainBody],
             frictionStatic: 0,
@@ -39,7 +39,9 @@ class SolarBlast extends Phaser.Physics.Matter.Sprite{
             restitution : 0.7,
             label: "ABILITY-SOLAR-BLAST"
         });
-        this.setExistingBody(compoundBody).setCollisionCategory(CATEGORY.BULLET).setPosition(x, y).setScale(.5).setIgnoreGravity(true);
+        this.setExistingBody(compoundBody).setCollisionCategory(CATEGORY.BULLET)
+        .setCollidesWith([ CATEGORY.MIRROR, CATEGORY.GROUND, CATEGORY.SOLID ]).setPosition(x, y)
+        .setScale(.5).setIgnoreGravity(true);
         //Custom Props
         this.damage = 1;    
         this.lifespan = 0;

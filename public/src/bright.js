@@ -65,7 +65,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             };
 
             this.debug.setPosition(this.sprite.x, this.sprite.y-64);
-            this.debug.setText("Air Time:"+String(this.airTime));
+            this.debug.setText("Air Time:"+String(this.airTime)
+            +"\nAng:"+String(this.angle));
             //Do Dark Updates
             if(this.light_status == 1){
                 if(this.touching.down == 0 && this.airTime > 40){
@@ -154,10 +155,20 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite.setTexture('bright');
         this.sprite.anims.play('bright-idle', false);
         this.sprite.setIgnoreGravity(true);
-        this.sprite.setAngle(0);
         this.sprite.setCollisionCategory(CATEGORY.BRIGHT);
+        //Tween back to straight up
+        this.scene.tweens.add({
+            targets: this,
+            angle: 0,
+            ease: 'Power1',
+            duration: 1000,
+            onComplete: this.reAlignBright,
+            onCompleteParams: [ this ]
+        });
     }
+    reAlignBright(){
 
+    }
     death(animation, frame){
         
         if(animation.key == 'bright-walk'){
