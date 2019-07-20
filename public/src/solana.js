@@ -115,7 +115,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             }
 
             //Slow Descent if on Wall
-            if(this.onWall){
+            if(this.onWall && this.sprite.velocity >= 0){
                 this.sprite.setVelocityY(0);
             }else{
 
