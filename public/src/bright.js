@@ -119,7 +119,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     this.sprite.anims.play('dark-idle', true);//Idle
                 }
                 //Dark Jump
+                if(control_jump){console.log("Dark jump button");}
                 if(this.light_status == 1 && control_jump && this.airTime ==  0){
+                    console.log("Dark jump");
                     this.sprite.setVelocityY(-this.jump_speed);
                 }
 

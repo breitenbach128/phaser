@@ -16,8 +16,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         const mainBody = Bodies.rectangle(0, 0, w * 0.6, h-12);
         this.sensors = {
           bottom: Bodies.rectangle(0, h*0.5-6, w * 0.25, 2, { isSensor: true }),
-          left: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.5, { isSensor: true }),
-          right: Bodies.rectangle(w * 0.35, 0, 2, h * 0.5, { isSensor: true })
+          left: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.75, { isSensor: true }),
+          right: Bodies.rectangle(w * 0.35, 0, 2, h * 0.75, { isSensor: true })
         };
         this.sensors.bottom.label = "SOLANA_BOTTOM";
         this.sensors.left.label = "SOLANA_LEFT";
@@ -47,10 +47,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //Custom Properties
         this.hp = 5;
         this.max_hp = 5;
-        this.mv_speed = 6;
+        this.mv_speed = 4;
         this.mv_direction = {x:0,y:0};
         this.prev_position = {x:0,y:0};
         this.mv_Xdiff = 0;
+        this.mv_Ydiff = 0;
         this.jump_speed = 6;
         this.prevJumpButtonPressed = false;
         this.onGround = false;
@@ -70,7 +71,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.soundJump = game.sound.add('jumpSolana');
 
         //JumpTimer
-        this.jumpTimer = this.scene.time.addEvent({ delay: 100, callback: this.forgiveJump, callbackScope: this, loop: false });
+        this.jumpTimer = this.scene.time.addEvent({ delay: 10, callback: this.forgiveJump, callbackScope: this, loop: false });
         this.jumpTimerRunning = false;
         this.jumpLock = false;
         this.jumpLockTimer;
@@ -85,11 +86,13 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             let control_left = (game.wasd.left.isDown || gamePad.buttons[14].value == 1);
             let control_right = (game.wasd.right.isDown || gamePad.buttons[15].value == 1);
             let control_shoot = (game.wasd.shoot.isDown || gamePad.buttons[0].value == 1);
-            let control_jump = (Phaser.Input.Keyboard.JustDown(game.wasd.jump) || gamePad.buttons[2].pressed);
+            
 
             //Detection Code for Jumping
 
-            if((this.touching.left > 0 ||  this.touching.right > 0) && (control_right || control_left)){
+            if(this.touching.left > 0 && control_left){                
+                this.onWall = true;
+            }else if(this.touching.right > 0 && control_right){
                 this.onWall = true;
             }else{
                 this.onWall = false;
@@ -115,8 +118,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             }
 
             //Slow Descent if on Wall
-            if(this.onWall && this.sprite.velocity >= 0){
-                this.sprite.setVelocityY(0);
+            if(this.onWall && this.velocity >= 0){
+                this.setVelocityY(0);
             }else{
 
             }
@@ -124,6 +127,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             //Movement Code
             if(curr_player==players.SOLANA){
                 //Reduce Air Control
+                let control_jump = (Phaser.Input.Keyboard.JustDown(game.wasd.jump) || gamePad.buttons[2].pressed);
                 let mv = this.onGround ? this.mv_speed : this.mv_speed*.75;
                 if (control_left && this.jumpLock == false) {
 
@@ -190,13 +194,14 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.debug.setPosition(this.sprite.x+32, this.sprite.y+64);
         this.debug.setText("Ground:"+String(this.touching.down)
         +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(Math.round(this.sprite.body.velocity.y))
-        +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right)
+        +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right) + " oW:"+String(this.onWall)
         +" \njr:"+String(this.jumpReady)
         +" \njlck:"+String(this.jumpLock)
         +" \nInLight:"+String(this.inLight));
 
         //DO THIS LAST
         this.mv_Xdiff = Math.round(this.x - this.prev_position.x);
+        this.mv_Ydiff = Math.round(this.y - this.prev_position.y);
         this.prev_position.x = this.x;
         this.prev_position.y = this.y;
         

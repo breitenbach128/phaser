@@ -69,7 +69,7 @@ var GameScene = new Phaser.Class({
                 if(tile.physics.matterBody){
                     tile.physics.matterBody.body.label = 'SOLID';
                     tile.physics.matterBody.setCollisionCategory(CATEGORY.GROUND);
-                    tile.physics.matterBody.setFriction(0,0);
+                    //tile.physics.matterBody.setFriction(0,0);
                 }
                
             //}

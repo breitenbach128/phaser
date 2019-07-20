@@ -18,7 +18,7 @@ class HudScene extends Phaser.Scene {
             
             this.debug.setText("CameraX:"+String(Math.round(camera_main.worldView.x))
             +"\nCameraY:" + String(Math.round(camera_main.worldView.y))
-            +"\nSolanaXdiff:"+String(solana.mv_Xdiff));
+            +"\nSolanadiff: X:"+String(solana.mv_Xdiff)+"Y:"+String(solana.mv_Ydiff));
             if(this.dialogueArea.isRunning){
                 this.dialogueArea.update();
             }
