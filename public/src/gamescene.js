@@ -421,7 +421,11 @@ var GameScene = new Phaser.Class({
                     }
                 }                
               }
-              if (gameObjectB !== undefined && gameObjectB instanceof TMXPlatform) {   
+              //Allow Jumping off of objects
+              if (gameObjectB !== undefined &&
+                (gameObjectB instanceof TMXPlatform
+                || gameObjectB instanceof Barrier
+                || gameObjectB instanceof TMXGate)) {   
                 //handle plaform jumping allowance             
                 if(bodyA.label == "SOLANA_BOTTOM"){
                     solana.touching.down++;
