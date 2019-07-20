@@ -222,14 +222,14 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.jumpLock = true;
             this.kickOff = mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
-            jumpVel = (jumpVel/2);
+            
         }
         if(this.touching.right > 0 && !this.onGround){
             this.sprite.setVelocityX(-mvVel);
             this.jumpLock = true;
             this.kickOff = -mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
-            jumpVel = (jumpVel/2);
+            
         }   
         //this.applyForce({x:0,y:-.025});
         this.sprite.setVelocityY(-jumpVel);

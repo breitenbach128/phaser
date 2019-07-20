@@ -69,6 +69,7 @@ var GameScene = new Phaser.Class({
                 if(tile.physics.matterBody){
                     tile.physics.matterBody.body.label = 'SOLID';
                     tile.physics.matterBody.setCollisionCategory(CATEGORY.GROUND);
+                    tile.physics.matterBody.setFriction(0,0);
                 }
                
             //}
@@ -412,9 +413,11 @@ var GameScene = new Phaser.Class({
                     }
                     if(bodyA.label == "SOLANA_RIGHT"){
                         solana.touching.right++;
+                        solana.x--;
                     }
                     if(bodyA.label == "SOLANA_LEFT"){
                         solana.touching.left++;
+                        solana.x++;
                     }
                 }                
               }
