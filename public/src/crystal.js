@@ -34,7 +34,7 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
         .setVisible(true);  
 
         this.brightness = 0;
-        this.max_brightness = brightness;
+        this.max_brightness = this.brightness;
     }
 
     create(){
@@ -52,7 +52,7 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
     }
     update()
     {
-
+        //Count brightness by animation frame? Might look good.
     }
 
 }
