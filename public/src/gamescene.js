@@ -521,6 +521,21 @@ var GameScene = new Phaser.Class({
                 var bodyB = getRootBody(event.pairs[i].bodyB);
                 var GameObjectA =  bodyA.gameObject;
                 var GameObjectB =  bodyB.gameObject;
+                //Between Solana and Enemies
+                if ((bodyA.label === 'ENEMY' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'ENEMY')) {
+                    console.log("ENEMY/SOLANA Collision");
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'ENEMY');
+                    if (!gObjs[0].dead){
+                        //Need Damage invul timer
+                        //gObjs[1].receiveDamage(1);
+                        
+                        if(gObjs[1].x < gObjs[0].x){
+                            gObjs[1].setVelocity(-4,-4);
+                        }else{
+                            gObjs[1].setVelocity(4,-4);
+                        }
+                    }  
+                }
                 //Between Bullets and Ground
                 if ((bodyA.label === 'BULLET' && bodyB.label === 'SOLID') || (bodyA.label === 'SOLID' && bodyB.label === 'BULLET')) {
                     //Get Bullet Object and run hit function
@@ -532,19 +547,27 @@ var GameScene = new Phaser.Class({
                 }
                 //Between Bullets and Solana
                 if ((bodyA.label === 'BULLET' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'BULLET')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'BULLET');
+                    if (gObjs[0].active){
+                        gObjs[0].hit();
+                        gObjs[1].receiveDamage(1);
+                    }  
+                }
+                //Between Solar blast and Enemies
+                if ((bodyA.label === 'ABILITY-SOLAR-BLAST' && bodyB.label === 'ENEMY') || (bodyA.label === 'ENEMY' && bodyB.label === 'ABILITY-SOLAR-BLAST')) {
                     //Get Bullet Object and run hit function
                     let bulletObj = GameObjectB;
-                    let solanaObj = GameObjectA;
+                    let enemyObj = GameObjectA;
                     if(bodyA.label === 'BULLET'){
                         bulletObj = GameObjectA;
-                        solanaObj = GameObjectB;
+                        enemyObj = GameObjectB;
                     }
 
                     if (bulletObj.active === true){
                         //bullet hits
                         bulletObj.hit();
                         //then hurt solana
-                        solanaObj.receiveDamage(1);
+                        enemyObj.receiveDamage(1);
                     }  
 
                 }
@@ -827,6 +850,20 @@ function getRootBody(body) {
     }
     return body;
 }
+function getGameObjectBylabel(bodyA,bodyB,label){
+    //Returns the game objects for the bodies in an array. The first matches the label
+    let objArray = [];
+
+    if(bodyA.label === label){
+        objArray.push(bodyA.gameObject);
+        objArray.push(bodyB.gameObject);
+    }else{
+        objArray.push(bodyB.gameObject);
+        objArray.push(bodyA.gameObject);
+    }
+
+    return objArray;
+}
 //Gun Object Template
 function Gun(rof,magsize,reloadtime){
     this.rofct = rof;
@@ -885,19 +922,19 @@ function createControls(scene){
 function createAnimations(scene){
     scene.anims.create({
         key: 'enemy-idle',
-        frames: scene.anims.generateFrameNumbers('enemy1', { frames:[0,3] }),
+        frames: scene.anims.generateFrameNumbers('enemy1', { frames:[0] }),
         frameRate: 3,
         repeat: -1
     });
     scene.anims.create({
         key: 'enemy-walk',
-        frames: scene.anims.generateFrameNumbers('enemy1', { start: 1, end: 2 }),
-        frameRate: 24,
+        frames: scene.anims.generateFrameNumbers('enemy1', { frames:[0,1,2,3] }),
+        frameRate: 10,
         repeat: -1
     });
     scene.anims.create({
         key: 'enemy-shoot',
-        frames: scene.anims.generateFrameNumbers('enemy1', { frames:[5,5,4,5]}),
+        frames: scene.anims.generateFrameNumbers('enemy1', { frames:[1]}),
         frameRate: 8,
         repeat: -1
     });

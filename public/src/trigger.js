@@ -549,6 +549,9 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
             this.target.object.activateTrigger();
         }
     }
+    setPath(){
+        
+    }
     usePlatform(){
         if(this.ready == true){
             this.ready = false;

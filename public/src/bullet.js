@@ -30,7 +30,7 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
         .setCollisionCategory(CATEGORY.BULLET)
         .setPosition(x, y)
         .setScale(.5)
-        .setIgnoreGravity(true);
+        .setIgnoreGravity(false);
                     
         this.damage = 1;    
         this.lifespan = 0;

@@ -40,7 +40,7 @@ class SolarBlast extends Phaser.Physics.Matter.Sprite{
             label: "ABILITY-SOLAR-BLAST"
         });
         this.setExistingBody(compoundBody).setCollisionCategory(CATEGORY.BULLET)
-        .setCollidesWith([ CATEGORY.MIRROR, CATEGORY.GROUND, CATEGORY.SOLID ]).setPosition(x, y)
+        .setCollidesWith([ CATEGORY.MIRROR, CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.ENEMY ]).setPosition(x, y)
         .setScale(.5).setIgnoreGravity(true);
         //Custom Props
         this.damage = 1;    
