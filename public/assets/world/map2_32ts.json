@@ -383,11 +383,34 @@
                  "height":16,
                  "id":22,
                  "name":"platform1",
+                 "properties":[
+                        {
+                         "name":"path",
+                         "type":"string",
+                         "value":"[{\"x\":0,\"y\":0,\"t\":0,\"h\":0},{\"x\":150,\"y\":0,\"t\":2000,\"h\":0},{\"x\":150,\"y\":50,\"t\":2000,\"h\":0},{\"x\":0,\"y\":50,\"t\":2000,\"h\":0},{\"x\":0,\"y\":0,\"t\":2000,\"h\":0}]"
+                        }],
                  "rotation":0,
                  "type":"platform",
                  "visible":true,
                  "width":160,
                  "x":1408,
+                 "y":96
+                }, 
+                {
+                 "height":16,
+                 "id":24,
+                 "name":"platform2",
+                 "properties":[
+                        {
+                         "name":"path",
+                         "type":"string",
+                         "value":"[{\"x\":0,\"y\":0,\"t\":0,\"h\":0},{\"x\":60,\"y\":0,\"t\":2000,\"h\":0},{\"x\":60,\"y\":75,\"t\":2000,\"h\":0},{\"x\":0,\"y\":75,\"t\":2000,\"h\":0},{\"x\":0,\"y\":0,\"t\":2000,\"h\":0}]"
+                        }],
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":160,
+                 "x":1760,
                  "y":96
                 }],
          "opacity":1,
@@ -456,7 +479,7 @@
          "y":0
         }],
  "nextlayerid":12,
- "nextobjectid":24,
+ "nextobjectid":25,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

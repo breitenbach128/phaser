@@ -531,9 +531,11 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         if(properties){
             this.target.name = properties.targetName;
             this.target.type = properties.targetType;
+            this.path = JSON.parse(properties.path);
         }
-       //console.log("setup",name, properties,this.target);
-       this.setPath() // test tween
+    
+
+       this.setPath(this.path) // test tween
        this.prev = {x:x,y:y};
  
     }
@@ -542,11 +544,13 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
 
         this.debug.setPosition(this.x, this.y-16);
         this.debug.setText(this.name
-            +"\nVel: X:"+String(this.body.velocity.x)+" Y:" + String(this.body.velocity.y));
+            +"\nVel: X:"+String(this.body.velocity.x)+" Y:" + String(this.body.velocity.y)
+            +"\nVel: X:"+String(this.x)+" Y:" + String(this.y));
         // body is static so must manually update velocity for friction to work
         this.setVelocityX((this.x - this.prev.x));
+        this.setVelocityY((this.y - this.prev.y));
         this.prev.x = this.x;
-        this.prev.y = this.y
+        this.prev.y = this.y;
     }
     setTarget(targetObject){
         this.target.object = targetObject;
@@ -557,22 +561,25 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
             this.target.object.activateTrigger();
         }
     }
-    setPath(){
+    setPath(path){
         //For each coord in the array, start tweening to at a specific time. The coord array contains
-        // x, y, time objects for each tween
+        // x, y, time, hold objects for each tween x,y,t,h
+        //positioning is relative
+        var timeline = this.scene.tweens.createTimeline();
+        timeline.loop = -1;
+        path.forEach(function(e){
+            timeline.add({
+                targets: this,
+                x: this.x+e.x,
+                y: this.y+e.y,
+                ease: 'Power1',
+                duration: e.t,
+                hold: e.h
+            });
+        
+        },this);
 
-        //test tween
-        let tween = this.scene.tweens.add({
-            targets: this,
-            x: this.x+50,               // '+=100'
-            y: this.y,               // '+=100'
-            ease: 'Linear',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-            duration: 6000,
-            repeat: -1,            // -1: infinity
-            yoyo: true,
-            hold: 1000
-        });
-
+        timeline.play();
     }
     usePlatform(){
         if(this.ready == true){
