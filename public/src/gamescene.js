@@ -14,7 +14,7 @@ var GameScene = new Phaser.Class({
 
     preload: function ()
     {
-
+        //this.load.scenePlugin('Slopes', 'src/phaser-slopes.min.js');
     },
 
     create: function ()
@@ -60,7 +60,7 @@ var GameScene = new Phaser.Class({
         //Draw Debug
         
         this.matter.world.createDebugGraphic();
-        this.matter.world.drawDebug = true;
+        this.matter.world.drawDebug = false;
         //Add Labels for tile bodies for easier collision management
         collisionLayer.forEachTile(function (tile) {
             // In Tiled, the platform tiles have been given a "type" property which is a string
@@ -366,6 +366,7 @@ var GameScene = new Phaser.Class({
                 
               if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
                 // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
+                
                 if (gameObjectB.properties.collides){
                     if(bodyA.label == "BRIGHT_BOTTOM"){
                         bright.touching.down++;
@@ -407,7 +408,7 @@ var GameScene = new Phaser.Class({
             objectA:[solana.sensors.bottom,solana.sensors.left,solana.sensors.right],
             callback: eventData => {
               const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
-             
+              //console.log(bodyA.label,bodyB.label)
               if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
                 // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
                 if (gameObjectB.properties.collides){
@@ -416,11 +417,11 @@ var GameScene = new Phaser.Class({
                     }
                     if(bodyA.label == "SOLANA_RIGHT"){
                         solana.touching.right++;
-                        solana.x--;
+                        //solana.x--;
                     }
                     if(bodyA.label == "SOLANA_LEFT"){
                         solana.touching.left++;
-                        solana.x++;
+                        //solana.x++;
                     }
                 }                
               }
@@ -450,7 +451,7 @@ var GameScene = new Phaser.Class({
             objectA: solana.sprite,
             callback: eventData => {
               const { bodyB, gameObjectB } = eventData;
-                
+               
               if (gameObjectB !== undefined && gameObjectB instanceof TMXLever) {
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA){
@@ -524,9 +525,10 @@ var GameScene = new Phaser.Class({
                 var bodyB = getRootBody(event.pairs[i].bodyB);
                 var GameObjectA =  bodyA.gameObject;
                 var GameObjectB =  bodyB.gameObject;
+
                 //Between Solana and Enemies
                 if ((bodyA.label === 'ENEMY' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'ENEMY')) {
-                    console.log("ENEMY/SOLANA Collision");
+                    
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'ENEMY');
                     if (!gObjs[0].dead){
                         //Need Damage invul timer

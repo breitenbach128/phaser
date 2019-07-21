@@ -109,7 +109,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             //Check Jump ready
             if(this.onGround || this.onWall){
                 this.jumpReady = true;
-            }else{  
+            }else{
+                this.sprite.anims.play('solana-jump', true);  
                 //Add Jump Forgiveness of 100ms  
                 if(this.jumpTimerRunning == false){
                     this.jumpTimer = this.scene.time.addEvent({ delay: 100, callback: this.forgiveJump, callbackScope: this, loop: false });
