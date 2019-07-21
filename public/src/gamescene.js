@@ -56,11 +56,11 @@ var GameScene = new Phaser.Class({
         //groundLayer.setCollisionBetween(0, 256);
         // set the boundaries of our game world
         this.matter.world.convertTilemapLayer(collisionLayer);
-        this.matter.world.setBounds(map.widthInPixels, map.heightInPixels);
+        this.matter.world.setBounds(0,0,map.widthInPixels, map.heightInPixels);
         //Draw Debug
         
         this.matter.world.createDebugGraphic();
-        this.matter.world.drawDebug = false;
+        this.matter.world.drawDebug = true;
         //Add Labels for tile bodies for easier collision management
         collisionLayer.forEachTile(function (tile) {
             // In Tiled, the platform tiles have been given a "type" property which is a string
@@ -456,9 +456,9 @@ var GameScene = new Phaser.Class({
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA){
                     //Only control if currently the active control object
-                    if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
+                    if((game.wasd.up.isDown || gamePad.buttons.up.value == 1)) {
                         gameObjectB.useLever();
-                    }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
+                    }else if((game.wasd.down.isDown || gamePad.buttons.down.value == 1)) {
                         gameObjectB.useLever();
                     }
                 }
@@ -467,9 +467,9 @@ var GameScene = new Phaser.Class({
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA){
                     //Only control if currently the active control object
-                    if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
+                    if((game.wasd.up.isDown || gamePad.buttons.up.value == 1)) {
                         gameObjectB.useButton();
-                    }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
+                    }else if((game.wasd.down.isDown || gamePad.buttons.down.value == 1)) {
                         gameObjectB.useButton();
                     }
                 }
@@ -485,9 +485,9 @@ var GameScene = new Phaser.Class({
               if (gameObjectB !== undefined && gameObjectB instanceof MirrorSensor) {
                 if(curr_player==players.SOLANA){
                     //Only control if currently the active control object
-                    if((game.wasd.up.isDown || gamePad.buttons[12].value == 1)) {
+                    if((game.wasd.up.isDown || gamePad.buttons.up.value == 1)) {
                         gameObjectB.parent.rotateMirror(2);
-                    }else if((game.wasd.down.isDown || gamePad.buttons[13].value == 1)) {
+                    }else if((game.wasd.down.isDown || gamePad.buttons.down.value == 1)) {
                         gameObjectB.parent.rotateMirror(-2);
                     }
                 }
@@ -611,13 +611,9 @@ var GameScene = new Phaser.Class({
         //Establish Gamepad - MOve to menu - one time call in the future.
         if (this.input.gamepad.total != 0)
         {     
-            var pads = this.input.gamepad.gamepads;
-            gamePad = pads[0];
+            gamePad = new GamepadControl(this.input.gamepad.gamepads[0]);
         }else{
-            gamePad = {id:1,buttons:[]} //Load with empty values if pad is not valid
-            for(var i=0;i<99;i++){
-                gamePad.buttons[i]=0;
-            }
+            gamePad = new GamepadControl(0);
         }
 
         //Updates
@@ -661,7 +657,7 @@ var GameScene = new Phaser.Class({
         if(Phaser.Input.Keyboard.JustDown(game.wasd.bright_sway)){
             bright.anims.play('bright-sway', true);
         } 
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight)){
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.buttons.Y.pressed){
             if(this.soul_light.ownerid == 1){
                 //Owner is solana, Pass to dark, dark becomes bright.
                 this.soul_light.passLight(bright.sprite,2);
@@ -677,7 +673,7 @@ var GameScene = new Phaser.Class({
             hud.clearHud();       
             this.scene.restart();
         }     
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.change_player)){
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.change_player) || gamePad.buttons.switchPlayer.pressed){
             this.changePlayer();
         } 
         
