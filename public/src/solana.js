@@ -29,7 +29,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
           //parts: [mainBody],
           frictionStatic: 0.1,
           frictionAir: 0.02,
-          friction: 0.7,
+          friction: 0.35,
           restitution: 0.05
         });
        //Fix the draw offsets for the compound sprite.
@@ -119,11 +119,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             }
 
             //Slow Descent if on Wall
-            if(this.onWall && this.body.velocity.y >= 0){
-            //if(this.onWall && this.mv_Ydiff >= 0){
-                this.setVelocityY(0);
-            }else{
-
+            if(this.onWall){
+               if(Math.round(this.body.velocity.y) >= 0){ //Upwards
+                    this.setVelocityY(0);
+               }
             }
 
             //Movement Code
@@ -198,11 +197,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
         this.debug.setPosition(this.sprite.x+16, this.sprite.y-64);
         this.debug.setText("Ground:"+String(this.touching.down)
-        +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(this.sprite.body.velocity.y)
+        +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(Math.round(this.sprite.body.velocity.y))
         +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right) + " oW:"+String(this.onWall)
         +" \njr:"+String(this.jumpReady)
         +" \njlck:"+String(this.jumpLock)
-        +" \nInLight:"+String(this.inLight));
+        +" \nFriction:"+String(this.body.friction));
 
         //DO THIS LAST
         this.mv_Xdiff = Math.round(this.x - this.prev_position.x);
@@ -242,7 +241,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             
         }   
         //this.applyForce({x:0,y:-.025});
-        this.sprite.setVelocityY(-jumpVel);
+        if(this.onWall && this.onGround){
+            this.sprite.setVelocityY(-jumpVel*1.40);
+        }else{
+            this.sprite.setVelocityY(-jumpVel);
+        }
         
         this.soundJump.play();
     }
