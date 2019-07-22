@@ -623,6 +623,13 @@ var GameScene = new Phaser.Class({
             console.log('Playing with ' + pad.id);    
             gamePad = new GamepadControl(pad);    
         }, this);
+
+        //TIME SCALE - No timeScale for matter world. Need to figure out a way to slow the game down for slow motion.
+        // let timeScale = 0.1;
+        // this.tweens.timeScale = timeScale; // tweens
+        // this.matter.world.timeScale = timeScale; // physics
+        // this.time.timeScale = timeScale; // time events
+        // console.log(this.matter.world);
     },
 
     update: function (time, delta)

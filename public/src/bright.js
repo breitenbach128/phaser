@@ -28,15 +28,15 @@ class Bright extends Phaser.Physics.Matter.Sprite{
           parts: [mainBody, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
           frictionStatic: 0,
           frictionAir: 0.02,
-          friction: 0.1,
-          restitution: 0,
-          density: 0.009,
+          friction: 0.3,
+          restitution: 0.00,
+          density: 0.3,
           label: "BRIGHT"
         });
         this.sprite
         .setExistingBody(compoundBody)          
         .setCollisionCategory(CATEGORY.BRIGHT)
-        .setScale(2)
+        .setScale(1.5)
         //.setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setPosition(config.x, config.y)
         .setIgnoreGravity(true);
@@ -46,6 +46,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.hp = 1;
         this.max_hp = 1;
         this.mv_speed = 3;
+        this.roll_speed = .4;
         this.jump_speed = 6;
         this.alive = true;
         this.falling = false;
@@ -101,7 +102,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         this.flipX= true; // flip the sprite to the left
                     }else{                        
                         this.sprite.anims.play('dark-idle', true);
-                        this.sprite.setAngularVelocity(-.2);
+                        this.sprite.setAngularVelocity(-this.roll_speed);
                     }
                 }
                 else if (control_right) {
@@ -110,7 +111,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         this.flipX= false; // flip the sprite to the right
                     }else{                        
                         this.sprite.anims.play('dark-idle', true);
-                        this.sprite.setAngularVelocity(.2);
+                        this.sprite.setAngularVelocity(this.roll_speed);
                     }
                 }
                 else if(!control_left && !control_right){
