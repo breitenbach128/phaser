@@ -83,8 +83,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     {
         if(this.alive){
             //Only control if currently the active control object
-            let control_left = (game.wasd.left.isDown || gamePad.checkButtonState('left') > 0);
-            let control_right = (game.wasd.right.isDown || gamePad.checkButtonState('right') > 0);
+            let control_left = (game.wasd.left.isDown || gamePad.pad.leftStick.x < 0);
+            let control_right = (game.wasd.right.isDown || gamePad.pad.leftStick.x > 0);
             let control_shoot = (game.wasd.shoot.isDown || gamePad.checkButtonState('shoot') > 0);
             
 
