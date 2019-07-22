@@ -1,17 +1,19 @@
 class GamepadControl {
     constructor(device){
         //Map the Controls to names
+        this.ready = false;
         if(device == 0){
             device = {id:1,buttons:[],axes:[]} //Load with empty values if pad is not valid
             for(var i=0;i<99;i++){
                 device.buttons[i]=0;
             }
-            for(var i=0;i<2;i++){
+            for(var i=0;i<4;i++){
                 device.axes[i]=0;
             }
             console.log("game Controller class booted - no controller. Loaded with empty values");
         }else{
             console.log("game Controller class booted");
+            this.ready = true;
         }
 
         this.pad = device;
@@ -52,10 +54,23 @@ class GamepadControl {
         if(!state){
             this.buttons[name].s = 0;
             return this.buttons[name].s;
-        }else{
+        }else{            
             this.buttons[name].s++;           
             return this.buttons[name].s;
+        }       
+    }
+    getStickLeft(){
+        if(this.ready){
+            return {x:this.pad.axes[0].getValue(),y:this.pad.axes[1].getValue()};
+        }else{
+            return {x:0,y:0};
         }
-       
+    }
+    getStickRight(){
+        if(this.ready){
+            return {x:this.pad.axes[2].getValue(),y:this.pad.axes[3].getValue()};
+        }else{
+            return {x:0,y:0};
+        }
     }
 }
