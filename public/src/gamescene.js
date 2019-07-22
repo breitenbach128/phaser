@@ -576,6 +576,21 @@ var GameScene = new Phaser.Class({
                     }  
 
                 }
+                //Between Soulight and Solana
+                if ((bodyA.label === 'SOULLIGHT' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'SOULLIGHT')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULLIGHT');
+                    if (gObjs[0].active){
+                        gObjs[0].lockLight(gObjs[1],0);
+                    }  
+                }
+                //Between Soulight and Bright
+                if ((bodyA.label === 'SOULLIGHT' && bodyB.label === 'BRIGHT') || (bodyA.label === 'BRIGHT' && bodyB.label === 'SOULLIGHT')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULLIGHT');
+                    if (gObjs[0].active){
+                        gObjs[0].lockLight(gObjs[1],1);
+                    }  
+                }
+                //Solar Blast and Mirrors
                 if ((bodyA.label === 'ABILITY-SOLAR-BLAST' && bodyB.label === 'MIRROR') || (bodyA.label === 'MIRROR' && bodyB.label === 'ABILITY-SOLAR-BLAST')) {
                     //Break out of loop to allow normal physics hits
                     continue;
@@ -654,15 +669,16 @@ var GameScene = new Phaser.Class({
         if(Phaser.Input.Keyboard.JustDown(game.wasd.bright_sway)){
             bright.anims.play('bright-sway', true);
         } 
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.checkButtonState('Y') == 1){
-            if(this.soul_light.ownerid == 1){
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.checkButtonState('Y') == 1){       
+           
+            if(this.soul_light.ownerid == 0){
+                let lightThrowVector = gamePad.ready ? gamePad.getStickLeft() : solana.getVelocity();
                 //Owner is solana, Pass to dark, dark becomes bright.
-                this.soul_light.passLight(bright.sprite,2);
-                bright.toBright();
+                this.soul_light.passLight(lightThrowVector.x,lightThrowVector.y);
             }else{
+                let lightThrowVector = gamePad.ready ? gamePad.getStickLeft() : bright.getVelocity();
                 //Owner is Bright, pass to solana, become dark.
-                this.soul_light.passLight(solana.sprite,1);
-                bright.toDark();
+                this.soul_light.passLight(lightThrowVector.x,lightThrowVector.y);
             }
         }  
         if(Phaser.Input.Keyboard.JustDown(game.wasd.restart_scene)){  
@@ -687,6 +703,7 @@ var GameScene = new Phaser.Class({
        
         if(curr_player == players.SOLANA){
             curr_player=players.BRIGHT;
+            if(bright.light_status == 0){bright.reAlignBright();}            
             this.cameras.main.startFollow(bright.sprite,true,.1,.1,0,0); 
         }else{
             curr_player=players.SOLANA;

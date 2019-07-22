@@ -31,7 +31,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
           friction: 0.1,
           restitution: 0,
           density: 0.009,
-          label: "bright"
+          label: "BRIGHT"
         });
         this.sprite
         .setExistingBody(compoundBody)          
@@ -159,17 +159,23 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite.setIgnoreGravity(true);
         this.sprite.setCollisionCategory(CATEGORY.BRIGHT);
         //Tween back to straight up
+        this.reAlignBright();
+    }
+    reAlignBright(){
         this.scene.tweens.add({
             targets: this,
             angle: 0,
             ease: 'Power1',
             duration: 1000,
-            onComplete: this.reAlignBright,
+            onComplete: this.reAlignComplete,
             onCompleteParams: [ this ]
         });
     }
-    reAlignBright(){
+    reAlignComplete(){
 
+    }
+    getVelocity(){
+        return this.body.velocity;
     }
     death(animation, frame){
         
