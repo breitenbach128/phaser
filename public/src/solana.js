@@ -54,7 +54,6 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.mv_Xdiff = 0;
         this.mv_Ydiff = 0;
         this.jump_speed = 6;
-        this.prevJumpButtonPressed = false;
         this.onGround = false;
         this.onWall = false;
         this.jumpReady = false;
@@ -84,9 +83,9 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     {
         if(this.alive){
             //Only control if currently the active control object
-            let control_left = (game.wasd.left.isDown || gamePad.buttons.left.value == 1);
-            let control_right = (game.wasd.right.isDown || gamePad.buttons.right.value == 1);
-            let control_shoot = (game.wasd.shoot.isDown || gamePad.buttons.shoot.value == 1);
+            let control_left = (game.wasd.left.isDown || gamePad.checkButtonState('left') > 0);
+            let control_right = (game.wasd.right.isDown || gamePad.checkButtonState('right') > 0);
+            let control_shoot = (game.wasd.shoot.isDown || gamePad.checkButtonState('shoot') > 0);
             
 
             //Detection Code for Jumping
@@ -129,7 +128,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             //Movement Code
             if(curr_player==players.SOLANA){
                 //Reduce Air Control
-                let control_jump = (Phaser.Input.Keyboard.JustDown(game.wasd.jump) || gamePad.buttons.jump.pressed);
+                let control_jump = (Phaser.Input.Keyboard.JustDown(game.wasd.jump) || gamePad.checkButtonState('jump') == 1);
                 let mv = this.onGround ? this.mv_speed : this.mv_speed*.75;
                 if (control_left && this.jumpLock == false) {
 
@@ -165,12 +164,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 }
 
                 
-                if (control_jump && !this.prevJumpButtonPressed && this.jumpReady) {
+                if (control_jump && this.jumpReady) {
                     this.jump(this.jump_speed,this.mv_speed);   
 
                 }
-                // If the user wants to jump - check prev to make sure it is not just being held down
-                this.prevJumpButtonPressed = gamePad.buttons.jump.pressed;
 
                 //Check for shooting 
                 if(control_shoot && this.equipment[0].equiped){

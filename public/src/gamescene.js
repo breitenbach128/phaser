@@ -456,9 +456,9 @@ var GameScene = new Phaser.Class({
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA){
                     //Only control if currently the active control object
-                    if((game.wasd.up.isDown || gamePad.buttons.up.value == 1)) {
+                    if((game.wasd.up.isDown || gamePad.checkButtonState('up') > 0)) {
                         gameObjectB.useLever();
-                    }else if((game.wasd.down.isDown || gamePad.buttons.down.value == 1)) {
+                    }else if((game.wasd.down.isDown || gamePad.checkButtonState('down') > 0)) {
                         gameObjectB.useLever();
                     }
                 }
@@ -467,9 +467,9 @@ var GameScene = new Phaser.Class({
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA){
                     //Only control if currently the active control object
-                    if((game.wasd.up.isDown || gamePad.buttons.up.value == 1)) {
+                    if((game.wasd.up.isDown || gamePad.checkButtonState('up') > 0)) {
                         gameObjectB.useButton();
-                    }else if((game.wasd.down.isDown || gamePad.buttons.down.value == 1)) {
+                    }else if((game.wasd.down.isDown || gamePad.checkButtonState('down') > 0)) {
                         gameObjectB.useButton();
                     }
                 }
@@ -485,9 +485,9 @@ var GameScene = new Phaser.Class({
               if (gameObjectB !== undefined && gameObjectB instanceof MirrorSensor) {
                 if(curr_player==players.SOLANA){
                     //Only control if currently the active control object
-                    if((game.wasd.up.isDown || gamePad.buttons.up.value == 1)) {
+                    if((game.wasd.up.isDown || gamePad.checkButtonState('up') > 0)) {
                         gameObjectB.parent.rotateMirror(2);
-                    }else if((game.wasd.down.isDown || gamePad.buttons.down.value == 1)) {
+                    }else if((game.wasd.down.isDown || gamePad.checkButtonState('down') > 0)) {
                         gameObjectB.parent.rotateMirror(-2);
                     }
                 }
@@ -602,20 +602,18 @@ var GameScene = new Phaser.Class({
             }
         }, this);
 
+        gamePad = new GamepadControl(0);
+
+        this.input.gamepad.once('connected', function (pad) {
+            //   'pad' is a reference to the gamepad that was just connected
+            console.log("gamepad connected"); 
+            gamePad = new GamepadControl(pad);
+
+        });
     },
 
     update: function (time, delta)
     {
-
-
-        //Establish Gamepad - MOve to menu - one time call in the future.
-        if (this.input.gamepad.total != 0)
-        {     
-            gamePad = new GamepadControl(this.input.gamepad.gamepads[0]);
-        }else{
-            gamePad = new GamepadControl(0);
-        }
-
         //Updates
         solana.update(time,delta);
         bright.update(time,delta);
@@ -657,7 +655,7 @@ var GameScene = new Phaser.Class({
         if(Phaser.Input.Keyboard.JustDown(game.wasd.bright_sway)){
             bright.anims.play('bright-sway', true);
         } 
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.buttons.Y.pressed){
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.checkButtonState('Y') == 1){
             if(this.soul_light.ownerid == 1){
                 //Owner is solana, Pass to dark, dark becomes bright.
                 this.soul_light.passLight(bright.sprite,2);
@@ -673,7 +671,7 @@ var GameScene = new Phaser.Class({
             hud.clearHud();       
             this.scene.restart();
         }     
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.change_player) || gamePad.buttons.switchPlayer.pressed){
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.change_player) || gamePad.checkButtonState('switchPlayer') == 1){
             this.changePlayer();
         } 
         
