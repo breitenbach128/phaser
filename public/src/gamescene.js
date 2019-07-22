@@ -603,17 +603,16 @@ var GameScene = new Phaser.Class({
         }, this);
 
         gamePad = new GamepadControl(0);
-
-        this.input.gamepad.once('connected', function (pad) {
-            //   'pad' is a reference to the gamepad that was just connected
-            console.log("gamepad connected"); 
-            gamePad = new GamepadControl(pad);
-
-        });
+       
+        this.input.gamepad.once('down', function (pad, button, index) {
+            console.log('Playing with ' + pad.id);    
+            gamePad = new GamepadControl(pad);    
+        }, this);
     },
 
     update: function (time, delta)
     {
+
         //Updates
         solana.update(time,delta);
         bright.update(time,delta);

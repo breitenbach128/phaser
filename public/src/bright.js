@@ -88,10 +88,10 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             //Movement Code
             if(curr_player==players.BRIGHT){
                 //Only control if currently the active control object
-                let control_left = (game.wasd.left.isDown || gamePad.checkButtonState('left') > 0);
-                let control_right = (game.wasd.right.isDown || gamePad.checkButtonState('right') > 0);
-                let control_up = (game.wasd.up.isDown || gamePad.checkButtonState('up') > 0);
-                let control_down = (game.wasd.down.isDown || gamePad.checkButtonState('down') > 0);
+                let control_left = (game.wasd.left.isDown || gamePad.getStickLeft().x < 0);
+                let control_right = (game.wasd.right.isDown || gamePad.getStickLeft().x > 0);
+                let control_up = (game.wasd.up.isDown || gamePad.getStickLeft().y < 0);
+                let control_down = (game.wasd.down.isDown || gamePad.getStickLeft().y > 0);
                 let control_jump = (Phaser.Input.Keyboard.JustDown(game.wasd.jump) || gamePad.checkButtonState('jump') == 1);
 
                 if (control_left) {

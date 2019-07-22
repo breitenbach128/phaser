@@ -35,14 +35,29 @@ var MainMenu = new Phaser.Class({
         this.btnstart.setPosition(game.canvas.width/2,400).setPipeline('GlowShader');;
 
         this.glowTime = 0;
+
+        gamePad = new GamepadControl(0);
+
+        this.input.gamepad.once('connected', function (pad) {
+            //   'pad' is a reference to the gamepad that was just connected
+            console.log("menuscene gamepad connected"); 
+            gamePad = new GamepadControl(pad);
+
+        });
         
+
     },
     update: function(){
         this.glowPipeline.setFloat1('time', this.glowTime);
         this.glowTime += 0.05;
+
+        if(gamePad.checkButtonState('start') > 0){
+            this.doStart();
+        }
     },	
 	doStart: function ()
     {
+        
 		this.scene.start('gamescene');
     }
 
