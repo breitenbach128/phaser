@@ -43,8 +43,15 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.accel = 1;
         this.sprite.setFriction(.3,.3);
         this.sprite.setIgnoreGravity(true);
-        this.protection_radius = 250;//How much does the light protect
+        this.protection_radius = {value:250, max: 250};//How much does the light protect;
         this.throw = {x:0,y:0};
+        this.readyThrow = false;
+
+        this.aimer = this.scene.add.image(this.x,this.y,'soullightblast').setScale(.5);
+        this.aimerRadius = 64;
+        this.aimerCircle = new Phaser.Geom.Circle(this.x, this.y, this.aimerRadius);
+        this.aimLine = this.scene.add.line(200,200,25,0,50,0,0xff66ff)
+        this.aimLine.setLineWidth(4,4);
     }
 
     update(time,delta)
@@ -60,21 +67,58 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.debug.setText("Passing:"+String(this.passing)
         +" \nSpeed:"+String(this.body.velocity.x) + ":" + String(this.body.velocity.y));
 
+        //Handle position and light growth and shrinking
         if(!this.passing){
             this.setPosition(this.owner.x,this.owner.y);
+            if(this.protection_radius.value <  this.protection_radius.max){this.protection_radius.value++;};
         }
+        
+        if(this.readyThrow){
+            if(this.protection_radius.value >  (this.protection_radius.max/10)){this.protection_radius.value--;};
+        }
+        //Update Aimer
+        this.setAimer();
     }
     
+    setAimer(){ 
+        let gameScale = camera_main.zoom;
+        let targVector = {x:pointer.x/gameScale,y:pointer.y/gameScale};
+        if(Gamepad.ready){
+            //Overwrite target vector with gamePad coords
+            let gpVec = gamePad.getStickLeft();
+            targVector = {x:gpVec.x*this.aimerRadius,y:gpVec.y*this.aimerRadius};
+        }
+        this.aimerCircle.x = this.x;
+        this.aimerCircle.y = this.y;
 
-    passLight(x,y){
+        let angle = Phaser.Math.Angle.Between(this.x-camera_main.worldView.x,this.y-camera_main.worldView.y, targVector.x,targVector.y);
+        let normAngle = Phaser.Math.Angle.Normalize(angle);
+        let deg = Phaser.Math.RadToDeg(normAngle);
+
+        let point = Phaser.Geom.Circle.CircumferencePoint(this.aimerCircle, normAngle);
+
+        this.aimer.setPosition(point.x,point.y);
+
+        this.aimer.rotation = normAngle;
+
+        this.aimLine.setPosition(this.x,this.y);
+        this.aimLine.setRotation(normAngle);
+    }
+
+    passLight(){
         if(!this.passing){
             this.passing = true;
-            this.throw.x = x;
-            this.throw.y = y;
+            this.throw.x = Math.cos(this.aimer.rotation);
+            this.throw.y = Math.sin(this.aimer.rotation);
+            
         }
     }
+    readyPass(){
+        this.readyThrow = true;
+    }
     lockLight(target,id){
-        if(id != this.ownerid){
+        if(id != this.ownerid && this.passing){
+            this.readyThrow = false;
             this.passing = false;
             this.ownerid = id;
             this.owner = target;

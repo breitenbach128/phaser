@@ -90,8 +90,8 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('gameitems', 'assets/objects/gameitems.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('light_crystal', 'assets/objects/light_crystal.png', {frameWidth: 16, frameHeight: 16});
 		//Abilities
-		this.load.spritesheet('ability_solarblast', 'assets/objects/ability_solarblast.png', {frameWidth: 16, frameHeight: 16});
-		
+		this.load.spritesheet('ability_solarblast', 'assets/objects/ability_solarblast.png', {frameWidth: 16, frameHeight: 16});		
+		this.load.image('soullightblast', 'assets/objects/soullightblast.png');
 		this.load.image('mask1', 'assets/objects/mask1.png');
 		this.load.image('mask2', 'assets/objects/mask2.png');
 		this.load.image('light1', 'assets/objects/light1.png');

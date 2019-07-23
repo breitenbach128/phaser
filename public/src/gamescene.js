@@ -630,11 +630,33 @@ var GameScene = new Phaser.Class({
         this.matter.world.engine.timing.timeScale = timeScale; // physics
         this.time.timeScale = timeScale; // time events
         console.log(this.time);
+        //Mouse
+        pointer = this.input.activePointer;
+        //Draw Point area debug
+        this.pointerDraw = this.add.graphics();
+
+        var color = 0xffff00;
+        var thickness = 2;
+        var alpha = 1;
+
+        this.pointerDraw.lineStyle(thickness, color, alpha);
+
+        //this.pointerDraw.strokeRect(pointer.worldX-16, pointer.worldX-16, 32, 32);
+        this.pointerDraw.strokeRect(0,0,16,16);
+        console.log(this.pointerDraw)
+
+
+        game.wasd.passLight.on('up', function(event) { 
+            //Release keyboard throw light
+            this.soul_light.passLight();
+        },this);
     },
 
     update: function (time, delta)
     {
 
+        this.pointerDraw.x = pointer.worldX-8;
+        this.pointerDraw.y = pointer.worldY-8;
         //Updates
         solana.update(time,delta);
         bright.update(time,delta);
@@ -655,9 +677,9 @@ var GameScene = new Phaser.Class({
         }
         
 
-        shadow_context = this.cutCanvasCircle(this.soul_light.sprite.x,this.soul_light.sprite.y,this.soul_light.protection_radius,shadow_context);
+        shadow_context = this.cutCanvasCircle(this.soul_light.sprite.x,this.soul_light.sprite.y,this.soul_light.protection_radius.value,shadow_context);
 
-        if(Phaser.Math.Distance.Between(this.soul_light.sprite.x,this.soul_light.y,solana.sprite.x,solana.sprite.y) <= this.soul_light.protection_radius){solana_in_light = true;}
+        if(Phaser.Math.Distance.Between(this.soul_light.sprite.x,this.soul_light.y,solana.sprite.x,solana.sprite.y) <= this.soul_light.protection_radius.value){solana_in_light = true;}
 
         //is the solana outside the light? Do damage!
         solana.inLight = solana_in_light;
@@ -676,23 +698,23 @@ var GameScene = new Phaser.Class({
         if(Phaser.Input.Keyboard.JustDown(game.wasd.bright_sway)){
             bright.anims.play('bright-sway', true);
         } 
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.checkButtonState('Y') == 1){       
-           
-            if(this.soul_light.ownerid == 0){
-                let lightThrowVector = gamePad.ready ? gamePad.getStickLeft() : solana.getVelocity();
-                //Owner is solana, Pass to dark, dark becomes bright.
-                this.soul_light.passLight(lightThrowVector.x,lightThrowVector.y);
-            }else{
-                let lightThrowVector = gamePad.ready ? gamePad.getStickLeft() : bright.getVelocity();
-                //Owner is Bright, pass to solana, become dark.
-                this.soul_light.passLight(lightThrowVector.x,lightThrowVector.y);
-            }
+        //Throw Soulight
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.checkButtonState('Y') == 1){ 
+            this.soul_light.readyPass(); 
         }  
+        if(gamePad.checkButtonState('Y') == -1){
+            //Release gamepad throw light
+            this.soul_light.passLight();
+        }
+
+        //Quick Change Map and Restart Scene
         if(Phaser.Input.Keyboard.JustDown(game.wasd.restart_scene)){  
             if(current_map == "map2"){current_map = "map3"}else{current_map = "map2"}; 
             hud.clearHud();       
             this.scene.restart();
         }     
+
+
         if(Phaser.Input.Keyboard.JustDown(game.wasd.change_player) || gamePad.checkButtonState('switchPlayer') == 1){
             this.changePlayer();
         } 

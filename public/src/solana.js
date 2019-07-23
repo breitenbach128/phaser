@@ -76,7 +76,6 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.jumpLock = false;
         this.jumpLockTimer;
         this.kickOff = this.mv_speed;
-
       }
 
     update(time,delta)
@@ -193,13 +192,13 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         }
 
 
-        this.debug.setPosition(this.sprite.x+16, this.sprite.y-64);
-        this.debug.setText("Ground:"+String(this.touching.down)
-        +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(Math.round(this.sprite.body.velocity.y))
-        +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right) + " oW:"+String(this.onWall)
-        +" \njr:"+String(this.jumpReady)
-        +" \njlck:"+String(this.jumpLock)
-        +" \nFriction:"+String(this.body.friction));
+        // this.debug.setPosition(this.sprite.x+16, this.sprite.y-64);
+        // this.debug.setText("Ground:"+String(this.touching.down)
+        // +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(Math.round(this.sprite.body.velocity.y))
+        // +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right) + " oW:"+String(this.onWall)
+        // +" \njr:"+String(this.jumpReady)
+        // +" \njlck:"+String(this.jumpLock)
+        // +" \nFriction:"+String(this.body.friction));
 
         //DO THIS LAST
         this.mv_Xdiff = Math.round(this.x - this.prev_position.x);

@@ -52,7 +52,7 @@ class GamepadControl {
         let state = b.pressed;
         //If not change, then return current state        
         if(!state){
-            this.buttons[name].s = 0;
+            this.buttons[name].s = this.buttons[name].s > 0 ? -1 : 0;
             return this.buttons[name].s;
         }else{            
             this.buttons[name].s++;           
