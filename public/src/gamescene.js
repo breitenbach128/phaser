@@ -590,6 +590,20 @@ var GameScene = new Phaser.Class({
                         gObjs[0].lockLight(gObjs[1],1);
                     }  
                 }
+                //Between SoulTransfer and Solana
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
+                    if (gObjs[0].active){
+                        gObjs[0].hit(0);
+                    }  
+                }
+                //Between SoulTransfer and Bright
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'BRIGHT') || (bodyA.label === 'BRIGHT' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
+                    if (gObjs[0].active){
+                        gObjs[0].hit(1);
+                    }  
+                }
                 //Solar Blast and Mirrors
                 if ((bodyA.label === 'ABILITY-SOLAR-BLAST' && bodyB.label === 'MIRROR') || (bodyA.label === 'MIRROR' && bodyB.label === 'ABILITY-SOLAR-BLAST')) {
                     //Break out of loop to allow normal physics hits
@@ -634,21 +648,16 @@ var GameScene = new Phaser.Class({
         pointer = this.input.activePointer;
         //Draw Point area debug
         this.pointerDraw = this.add.graphics();
-
         var color = 0xffff00;
         var thickness = 2;
         var alpha = 1;
-
         this.pointerDraw.lineStyle(thickness, color, alpha);
-
         //this.pointerDraw.strokeRect(pointer.worldX-16, pointer.worldX-16, 32, 32);
         this.pointerDraw.strokeRect(0,0,16,16);
-        console.log(this.pointerDraw)
-
 
         game.wasd.passLight.on('up', function(event) { 
             //Release keyboard throw light
-            this.soul_light.passLight();
+            this.soul_light.aimStop();
         },this);
     },
 
@@ -702,13 +711,13 @@ var GameScene = new Phaser.Class({
         } 
         //Throw Soulight
         if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.checkButtonState('Y') == 1){ 
-            this.soul_light.readyPass(); 
+            this.soul_light.aimStart(); 
         }  
-        
+
         if(gamePad.checkButtonState('Y') == -1){
             console.log("Released Y");
             //Release gamepad throw light
-            this.soul_light.passLight();
+            this.soul_light.aimStop();
         }
 
         //Quick Change Map and Restart Scene

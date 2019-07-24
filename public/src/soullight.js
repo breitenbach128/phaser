@@ -39,7 +39,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.threshhold_distance = 64;  
         this.move_speed = 1;
         this.base_speed = 1;
-        this.max_speed = 5; 
+        this.max_speed = 25; 
         this.accel = 1;
         this.sprite.setFriction(.3,.3);
         this.sprite.setIgnoreGravity(true);
@@ -48,10 +48,14 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.readyThrow = false;
 
         this.aimer = this.scene.add.image(this.x,this.y,'soullightblast').setScale(.5);
+        this.aimer.setVisible(false);
+        this.aimer.ready = true;
+        this.aimer.started = false;
         this.aimerRadius = 64;
         this.aimerCircle = new Phaser.Geom.Circle(this.x, this.y, this.aimerRadius);
         this.aimLine = this.scene.add.line(200,200,25,0,50,0,0xff66ff)
         this.aimLine.setLineWidth(4,4);
+
     }
 
     update(time,delta)
@@ -77,7 +81,12 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         }
         
         if(this.readyThrow){
-            if(this.protection_radius.value >  (this.protection_radius.max/10)){this.protection_radius.value-=25;};
+            if(this.protection_radius.value >  (this.protection_radius.max/10)){
+                this.protection_radius.value-=25;
+            }else{
+                //Ready to launch
+                this.passLight();
+            };
         }else{
             if(this.protection_radius.value <  this.protection_radius.max){this.protection_radius.value+=25;};
         }
@@ -109,17 +118,38 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.aimLine.setPosition(this.x,this.y);
         this.aimLine.setRotation(normAngle);
     }
-
+    aimStart(){
+        if(this.aimer.ready){
+            this.aimer.started = true;
+            this.aimer.setVisible(true);
+        }
+    }
+    aimStop(){
+        this.aimer.setVisible(false);
+        if(this.aimer.ready && this.aimer.started){
+            this.aimer.ready = false;
+            this.aimer.started = false;
+            let transfer = new SoulTransfer(this.scene,this.x,this.y,'soullightblast',0,this);
+            transfer.rotation = this.aimer.rotation;
+            transfer.fire(transfer.rotation,12);
+        }
+    }
     passLight(){
         if(!this.passing){
             this.passing = true;
-            this.throw.x = Math.cos(this.aimer.rotation);
-            this.throw.y = Math.sin(this.aimer.rotation);
-            
+            //Get owner to set X/Y target
+            let target = this.ownerid == 0 ? bright : solana;
+            let angle = Phaser.Math.Angle.Between(this.x,this.y,target.x,target.y);
+            this.throw.x = Math.cos(angle);
+            this.throw.y = Math.sin(angle);            
         }
+
     }
     readyPass(){
         this.readyThrow = true;
+    }
+    readyAimer(){
+        this.aimer.ready = true;
     }
     lockLight(target,id){
         if(id != this.ownerid && this.passing){
@@ -138,44 +168,51 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 }
 //Soul Transfer is the "Bullet" that will hit before the Soulight can transfer.
 class SoulTransfer extends Phaser.Physics.Matter.Sprite{
-    constructor(config,owner) {
-        super(config.scene.matter.world, config.x, config.y, config.sprite, config.frame)
-        this.scene = config.scene;
-        // Create the physics-based sprite that we will move around and animate
-        //this.sprite = this.scene.matter.add.sprite(config.x, config.y, config.sprite, config.frame);
-        config.scene.matter.world.add(this);
-        // config.scene.sys.displayList.add(this);
-        // config.scene.sys.updateList.add(this);
-        config.scene.add.existing(this); // This adds to the two listings of update and display.
+    constructor(scene, x, y, sprite, frame, parent) {
+        super(scene.matter.world, x, y, sprite, frame)
+        this.setScale(.3);
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
 
         this.setActive(true);
-
-        this.sprite = this;
-
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
-        const { width: w, height: h } = this.sprite;
+        const { width: w, height: h } = this;
         const mainBody = Bodies.circle(0,0,w*.20, { isSensor: true });
 
         const compoundBody = Body.create({
             parts: [mainBody],
             frictionStatic: 0,
-            frictionAir: 0.02,
+            frictionAir: 0.00,
             friction: 0.1,
-            label: "SOULLIGHT"
+            label: "SOULTRANSFER"
           });
-          this.sprite
+          this
             .setExistingBody(compoundBody)
-            .setPosition(config.x, config.y)
-            .setIgnoreGravity(true);
-
+            .setPosition(x, y)
+            .setIgnoreGravity(true)
+            .setCollisionCategory(CATEGORY.BULLET)
+            .setCollidesWith([ CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.BRIGHT, CATEGORY.SOLANA, CATEGORY.DARK ]);
           //Custom properties
-        this.ownerid = 0;
-
+        this.parent = parent;
+        this.timer = this.scene.time.addEvent({ delay: 2000, callback: this.kill, callbackScope: this, loop: false });
     }
-
+    fire(angle,speed){
+        this.setVelocity(Math.cos(angle)*speed,Math.sin(angle)*speed);
+    }
+    hit(id){
+        //Hit other target, so trigger the launch of the soulight.
+        if(this.parent.ownerid != id){
+            this.parent.readyPass();
+        }
+    }
     update(time,delta)
     {
 
+    }
+    kill(){
+        this.parent.readyAimer();
+        this.destroy();
     }
 
 }
