@@ -178,13 +178,14 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         this.setActive(true);
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this;
-        const mainBody = Bodies.circle(0,0,w*.20, { isSensor: true });
+        const mainBody = Bodies.circle(0,0,w*.20, {isSensor:true});
 
         const compoundBody = Body.create({
             parts: [mainBody],
             frictionStatic: 0,
             frictionAir: 0.00,
-            friction: 0.1,
+            friction: 0.0,
+            restitution: 1,
             label: "SOULTRANSFER"
           });
           this
@@ -196,6 +197,7 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
           //Custom properties
         this.parent = parent;
         this.timer = this.scene.time.addEvent({ delay: 2000, callback: this.kill, callbackScope: this, loop: false });
+        this.alive = true;
     }
     fire(angle,speed){
         this.setVelocity(Math.cos(angle)*speed,Math.sin(angle)*speed);
@@ -204,11 +206,12 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         //Hit other target, so trigger the launch of the soulight.
         if(this.parent.ownerid != id){
             this.parent.readyPass();
+            this.alive = false;
         }
     }
     update(time,delta)
     {
-
+        if(!this.alive){this.kill();};
     }
     kill(){
         this.parent.readyAimer();
