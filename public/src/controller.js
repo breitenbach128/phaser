@@ -47,17 +47,24 @@ class GamepadControl {
         
        
     }
-    checkButtonState(name){         
-        let b  = this.pad.buttons[this.buttons[name].i];
-        let state = b.pressed;
-        //If not change, then return current state        
-        if(!state){
-            this.buttons[name].s = this.buttons[name].s > 0 ? -1 : 0;
-            return this.buttons[name].s;
-        }else{            
-            this.buttons[name].s++;           
-            return this.buttons[name].s;
-        }       
+    updateButtonState(){
+        Object.keys(this.buttons).forEach(function(name) {        
+        
+            let b  = this.pad.buttons[this.buttons[name].i];
+            let state = b.pressed;
+            //If not change, then return current state        
+            if(!state){
+                this.buttons[name].s = this.buttons[name].s > 0 ? -1 : 0;                
+            }else{            
+                this.buttons[name].s++; 
+            } 
+        },this)
+          
+    }
+    //Need a single state updater to check the state conditions for each button.
+    //Then use the check button state to just pull out the number.
+    checkButtonState(name){  
+        return this.buttons[name].s;              
     }
     getStickLeft(){
         if(this.ready){

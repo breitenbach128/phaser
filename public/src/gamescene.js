@@ -654,7 +654,9 @@ var GameScene = new Phaser.Class({
 
     update: function (time, delta)
     {
-
+        //Controller Update
+        gamePad.updateButtonState();
+        //Draw Pointer - DEBUG
         this.pointerDraw.x = pointer.worldX-8;
         this.pointerDraw.y = pointer.worldY-8;
         //Updates
@@ -702,7 +704,9 @@ var GameScene = new Phaser.Class({
         if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.checkButtonState('Y') == 1){ 
             this.soul_light.readyPass(); 
         }  
+        
         if(gamePad.checkButtonState('Y') == -1){
+            console.log("Released Y");
             //Release gamepad throw light
             this.soul_light.passLight();
         }

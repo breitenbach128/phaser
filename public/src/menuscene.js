@@ -50,7 +50,9 @@ var MainMenu = new Phaser.Class({
     update: function(){
         this.glowPipeline.setFloat1('time', this.glowTime);
         this.glowTime += 0.05;
-
+        if(gamePad.ready){
+            gamePad.updateButtonState();
+        }
         if(gamePad.checkButtonState('start') > 0){
             this.doStart();
         }

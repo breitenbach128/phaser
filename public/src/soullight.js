@@ -63,18 +63,23 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed)};
         if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
 
+
+        let gpVec = gamePad.getStickLeft();
+        let targVector = {x:this.x+gpVec.x*this.aimerRadius,y:this.y+gpVec.y*this.aimerRadius};
+
         this.debug.setPosition(this.sprite.x+16, this.sprite.y-32);
         this.debug.setText("Passing:"+String(this.passing)
-        +" \nSpeed:"+String(this.body.velocity.x) + ":" + String(this.body.velocity.y));
+        +" \nThrowVec2:"+String(targVector.x) + ":" + String(targVector.y));
 
         //Handle position and light growth and shrinking
         if(!this.passing){
-            this.setPosition(this.owner.x,this.owner.y);
-            if(this.protection_radius.value <  this.protection_radius.max){this.protection_radius.value++;};
+            this.setPosition(this.owner.x,this.owner.y);            
         }
         
         if(this.readyThrow){
-            if(this.protection_radius.value >  (this.protection_radius.max/10)){this.protection_radius.value--;};
+            if(this.protection_radius.value >  (this.protection_radius.max/10)){this.protection_radius.value-=25;};
+        }else{
+            if(this.protection_radius.value <  this.protection_radius.max){this.protection_radius.value+=25;};
         }
         //Update Aimer
         this.setAimer();
@@ -83,10 +88,10 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
     setAimer(){ 
         let gameScale = camera_main.zoom;
         let targVector = {x:pointer.x/gameScale,y:pointer.y/gameScale};
-        if(Gamepad.ready){
+        if(gamePad.ready){
             //Overwrite target vector with gamePad coords
             let gpVec = gamePad.getStickLeft();
-            targVector = {x:gpVec.x*this.aimerRadius,y:gpVec.y*this.aimerRadius};
+            targVector = {x:this.x+gpVec.x*this.aimerRadius,y:this.y+gpVec.y*this.aimerRadius};
         }
         this.aimerCircle.x = this.x;
         this.aimerCircle.y = this.y;
@@ -131,4 +136,49 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
     }
 
 }
+//Soul Transfer is the "Bullet" that will hit before the Soulight can transfer.
+class SoulTransfer extends Phaser.Physics.Matter.Sprite{
+    constructor(config,owner) {
+        super(config.scene.matter.world, config.x, config.y, config.sprite, config.frame)
+        this.scene = config.scene;
+        // Create the physics-based sprite that we will move around and animate
+        //this.sprite = this.scene.matter.add.sprite(config.x, config.y, config.sprite, config.frame);
+        config.scene.matter.world.add(this);
+        // config.scene.sys.displayList.add(this);
+        // config.scene.sys.updateList.add(this);
+        config.scene.add.existing(this); // This adds to the two listings of update and display.
+
+        this.setActive(true);
+
+        this.sprite = this;
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody = Bodies.circle(0,0,w*.20, { isSensor: true });
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.02,
+            friction: 0.1,
+            label: "SOULLIGHT"
+          });
+          this.sprite
+            .setExistingBody(compoundBody)
+            .setPosition(config.x, config.y)
+            .setIgnoreGravity(true);
+
+          //Custom properties
+        this.ownerid = 0;
+
+    }
+
+    update(time,delta)
+    {
+
+    }
+
+}
+
+
 

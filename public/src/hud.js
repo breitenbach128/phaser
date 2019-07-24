@@ -16,10 +16,10 @@ class HudScene extends Phaser.Scene {
     {
         if(this.ready){   
             if(gamePad.ready){
-            this.debug.setText("CameraX:"+String(Math.round(camera_main.worldView.x))
-            +"\nCameraY:" + String(Math.round(camera_main.worldView.y))
-            +"\nSolanadiff: X:"+String(solana.mv_Xdiff)+"-Y:"+String(solana.mv_Ydiff)
-            +"\nGamePad: leftStick:"+String(gamePad.getStickLeft().x)+":"+String(gamePad.getStickLeft().y));
+                this.debug.setText("CameraX:"+String(Math.round(camera_main.worldView.x))
+                +"\nCameraY:" + String(Math.round(camera_main.worldView.y))
+                +"\nSolanadiff: X:"+String(solana.mv_Xdiff)+"-Y:"+String(solana.mv_Ydiff)
+                +"\nGamePad: button Y:"+String(gamePad.checkButtonState('Y')));
             }
             
             if(this.dialogueArea.isRunning){
