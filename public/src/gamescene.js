@@ -655,10 +655,7 @@ var GameScene = new Phaser.Class({
         //this.pointerDraw.strokeRect(pointer.worldX-16, pointer.worldX-16, 32, 32);
         this.pointerDraw.strokeRect(0,0,16,16);
 
-        game.wasd.passLight.on('up', function(event) { 
-            //Release keyboard throw light
-            this.soul_light.aimStop();
-        },this);
+   
     },
 
     update: function (time, delta)
@@ -714,7 +711,7 @@ var GameScene = new Phaser.Class({
             this.soul_light.aimStart(); 
         }  
 
-        if(gamePad.checkButtonState('Y') == -1){
+        if(Phaser.Input.Keyboard.JustUp(game.wasd.passLight) || gamePad.checkButtonState('Y') == -1){
             console.log("Released Y");
             //Release gamepad throw light
             this.soul_light.aimStop();

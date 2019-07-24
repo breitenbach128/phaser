@@ -206,12 +206,12 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         //Hit other target, so trigger the launch of the soulight.
         if(this.parent.ownerid != id){
             this.parent.readyPass();
-            this.alive = false;
+            this.timer = this.scene.time.addEvent({ delay: 100, callback: this.kill, callbackScope: this, loop: false });
         }
     }
     update(time,delta)
     {
-        if(!this.alive){this.kill();};
+        
     }
     kill(){
         this.parent.readyAimer();

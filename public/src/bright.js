@@ -200,5 +200,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             
         }
     }
+    pulseThrow(){
+        //Bright charges up, sending nearby objects flying away, including Solana, bullets, crates, etc.
+        //Will have a min power and a max power level, based on charge time. The Charge drains light.
+    }
 }
 
