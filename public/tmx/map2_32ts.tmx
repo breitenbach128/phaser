@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="25">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="26">
  <tileset firstgid="1" name="32Tileset" tilewidth="32" tileheight="32" spacing="2" tilecount="851" columns="37">
   <image source="../assets/world/oldTileset32.png" width="1280" height="800"/>
  </tileset>
@@ -316,6 +316,11 @@
   <object id="24" name="platform2" type="platform" x="1760" y="96" width="160" height="16">
    <properties>
     <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:60,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:60,&quot;y&quot;:75,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:75,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0}]"/>
+   </properties>
+  </object>
+  <object id="25" name="lamp1" type="crystallamp" x="288" y="192" width="16" height="16">
+   <properties>
+    <property name="brightness_max" type="int" value="250"/>
    </properties>
   </object>
  </objectgroup>

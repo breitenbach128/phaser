@@ -84,7 +84,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             //Only control if currently the active control object
             let control_left = (game.wasd.left.isDown || gamePad.getStickLeft().x < 0);
             let control_right = (game.wasd.right.isDown || gamePad.getStickLeft().x > 0);
-            let control_shoot = (game.wasd.shoot.isDown || gamePad.checkButtonState('shoot') > 0);
+            let control_shoot = (pointer.leftButtonDown() || gamePad.checkButtonState('shoot') > 0);
             
 
             //Detection Code for Jumping
@@ -127,7 +127,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             //Movement Code
             if(curr_player==players.SOLANA){
                 //Reduce Air Control
-                let control_jump = (Phaser.Input.Keyboard.JustDown(game.wasd.jump) || gamePad.checkButtonState('jump') == 1);
+                let control_jump = (pointer.rightButtonReleased() || gamePad.checkButtonState('jump') == 1);
                 let mv = this.onGround ? this.mv_speed : this.mv_speed*.75;
                 if (control_left && this.jumpLock == false) {
 

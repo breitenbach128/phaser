@@ -44,7 +44,17 @@ var MainMenu = new Phaser.Class({
             gamePad = new GamepadControl(pad);
 
         });
-        
+
+        this.controls_guide = this.add.text(this.x, game.canvas.height-160, 'Controls', { fontSize: '12px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
+       
+        this.controls_guide.setText("Controls"
+        +"\n - Keyboard/Mouse:"
+        +"\n - Move(WASD), Switch Character(Q), Pass Light(R), Jump(MB2), Shoot blast(MB1)"
+        +"\n"
+        +"\n - Gamepad (XBOX 360)"
+        +"\n - LeftStk: Move/Aim, Shoot: A, Jump:X, Pass:Y, Switch: RightShoulder, DPAD-Up/Down: Interact with objects"
+        +"\n"
+        +"\n - Testing Controls: X - Switch Scene test(map2-map3 toggle), P - Self hurt for testing death");
 
     },
     update: function(){

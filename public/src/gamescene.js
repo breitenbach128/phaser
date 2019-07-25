@@ -21,7 +21,7 @@ var GameScene = new Phaser.Class({
     {
         //Setup Global
         playScene = this;
-        
+        game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
         //Refresh/Setup HUD
         hud = this.scene.get('UIScene');;
         hud.updateGameScene();
@@ -148,6 +148,11 @@ var GameScene = new Phaser.Class({
             classType: TMXZone,
             runChildUpdate: true 
         });
+        //Lamps
+        crystallamps = this.add.group({ 
+            classType: CrystalLamp,
+            runChildUpdate: true 
+        });
         //Gates
         gates = this.add.group({ 
             classType: TMXGate,
@@ -226,6 +231,8 @@ var GameScene = new Phaser.Class({
                 triggerObj = platforms.get();
             }else if(triggerlayer.objects[e].type == "button"){
                 triggerObj = buttons.get();
+            }else if(triggerlayer.objects[e].type == "crystallamp"){
+                triggerObj = crystallamps.get();
             }else if(triggerlayer.objects[e].type == "zone"){
                 triggerObj = triggerzones.get();
                 triggerObj.setDisplaySize(triggerlayer.objects[e].width, triggerlayer.objects[e].height);
@@ -312,11 +319,7 @@ var GameScene = new Phaser.Class({
         solana.z = light1.z+1;
         bright.z = light1.z+1;
 
-        //MOve these to a layer in Tiled/TMX
-        this.light_crystals = new Array();
-        this.light_crystals.push(new CrystalLamp(this,250,250,150));
-        this.light_crystals.push(new CrystalLamp(this,700,200,150));
-        this.light_crystals.push(new CrystalLamp(this,500,600,150));
+
 
         let newitem = new EquipItem(this,320,192,'gameitems',0);
 
@@ -655,6 +658,7 @@ var GameScene = new Phaser.Class({
         //this.pointerDraw.strokeRect(pointer.worldX-16, pointer.worldX-16, 32, 32);
         this.pointerDraw.strokeRect(0,0,16,16);
 
+        //Probably need a statemachine like I have for gamePad for the keyboard and mouse controls to have them update in the game scene. Mouse2 is sticking on jump
    
     },
 
@@ -675,8 +679,9 @@ var GameScene = new Phaser.Class({
         
         //Do Crystal Lamps and Light Checking
         var solana_in_light = false;
-        for(var x = 0;x < this.light_crystals.length;x++){
-            var lamp = this.light_crystals[x];
+        let lamps = crystallamps.getChildren()
+        for(var x = 0;x < lamps.length;x++){
+            var lamp = lamps[x];
             shadow_context = this.cutCanvasCircle(lamp.x,lamp.y,lamp.brightness,shadow_context);
             
             //Check if solana is inside at least one light, if not, flag them and damage them every x seconds.
@@ -699,13 +704,7 @@ var GameScene = new Phaser.Class({
         if(Phaser.Input.Keyboard.JustDown(game.wasd.suicide)){
             solana.receiveDamage(1);
         }
-        //Test bright
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.bright_move)){
-            bright.anims.play('bright-move', true);
-        }
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.bright_sway)){
-            bright.anims.play('bright-sway', true);
-        } 
+ 
         //Throw Soulight
         if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.checkButtonState('Y') == 1){ 
             this.soul_light.aimStart(); 
@@ -965,11 +964,9 @@ function createControls(scene){
         shoot: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L),
         jump: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J),
         suicide: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
-        bright_move: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-        bright_sway: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
         passLight: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),
         restart_scene: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),
-        change_player: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
+        change_player: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q)
 
     };
 }
