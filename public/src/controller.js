@@ -27,9 +27,9 @@ class GamepadControl {
             shoot: {i:0,s:0}, //A
             B: {i:1,s:0}, //B
             jump: {i:2,s:0}, //X
-            Y: {i:3,s:0}, //Y
+            passLight: {i:3,s:0}, //Y
             leftShoulder: {i:4,s:0}, //Left Shoulder
-            switchPlayer: {i:5,s:0}, // Right Shoulder
+            switch: {i:5,s:0}, // Right Shoulder
             leftTrigger: {i:6,s:0}, //Left Trigger
             rightTrigger: {i:7,s:0}, // Right Trigger
             select : {i:8,s:0},
@@ -44,11 +44,12 @@ class GamepadControl {
             left : { x : this.pad.axes[0], y : this.pad.axes[1] },
             right: { x : this.pad.axes[2], y : this.pad.axes[3] }
         }
-        
+        this.keys = Object.keys(this.buttons);
        
     }
     updateButtonState(){
-        Object.keys(this.buttons).forEach(function(name) {        
+        //Reduce the object keys function call but setting the keynames one time, instead of each loop
+        this.keys.forEach(function(name) {        
         
             let b  = this.pad.buttons[this.buttons[name].i];
             let state = b.pressed;
@@ -80,4 +81,46 @@ class GamepadControl {
             return {x:0,y:0};
         }
     }
+}
+
+class KeyboardMouseControl {
+    constructor(scene){
+        //Map Point and Controls
+        this.buttons = {
+            up: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),s:0},
+            down: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),s:0},
+            left: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),s:0},
+            right: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),s:0},
+            suicide: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),s:0},
+            passLight: {b: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),s:0},
+            restart_scene: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),s:0},
+            switch: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),s:0}
+        }
+        this.pointers = {
+            shoot: {b:1,s:0},
+            jump: {b:2,s:0},
+        }
+        //Create lists
+        this.keys = Object.keys(this.buttons);
+        this.mousekeys = Object.keys(this.pointers);
+    }
+    update(){
+        //Get the statuses
+        this.keys.forEach(function(name) {        
+        
+            let b  = this.pad.buttons[this.buttons[name].b];
+            let state = b.pressed;
+            //If not change, then return current state        
+            if(!state){
+                this.buttons[name].s = this.buttons[name].s > 0 ? -1 : 0;                
+            }else{            
+                this.buttons[name].s++; 
+            } 
+        },this)
+
+    }
+    checkButtonState(name){
+
+    }
+
 }

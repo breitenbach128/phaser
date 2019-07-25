@@ -706,11 +706,11 @@ var GameScene = new Phaser.Class({
         }
  
         //Throw Soulight
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.checkButtonState('Y') == 1){ 
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.checkButtonState('passLight') == 1){ 
             this.soul_light.aimStart(); 
         }  
 
-        if(Phaser.Input.Keyboard.JustUp(game.wasd.passLight) || gamePad.checkButtonState('Y') == -1){
+        if(Phaser.Input.Keyboard.JustUp(game.wasd.passLight) || gamePad.checkButtonState('passLight') == -1){
             console.log("Released Y");
             //Release gamepad throw light
             this.soul_light.aimStop();
@@ -724,7 +724,7 @@ var GameScene = new Phaser.Class({
         }     
 
 
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.change_player) || gamePad.checkButtonState('switchPlayer') == 1){
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.switch) || gamePad.checkButtonState('switch') == 1){
             this.changePlayer();
         } 
         
