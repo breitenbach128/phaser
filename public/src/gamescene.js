@@ -667,6 +667,9 @@ var GameScene = new Phaser.Class({
         //Debug Properties
         this.debugAimLine = this.add.graphics(0, 0);
         //Need to push all debug graphics into a single debug array for easy enable
+
+        //Test Firefly
+        let firefly = new Firefly(this,200,170);
     },
 
     update: function (time, delta)
@@ -1170,6 +1173,20 @@ function createAnimations(scene){
         key: 'lamp-turn-off',
         frames: scene.anims.generateFrameNumbers('light_crystal', { frames:[0,1,2,3,4] }),
         frameRate: 24,
+        repeat: 0
+    });
+    
+    scene.anims.create({
+        key: 'firefly-move',
+        frames: scene.anims.generateFrameNumbers('fireflies', { frames:[3,4] }),
+        frameRate: 16,
+        repeat: -1
+    });
+    
+    scene.anims.create({
+        key: 'firefly-flash',
+        frames: scene.anims.generateFrameNumbers('fireflies', { frames:[0,1,2] }),
+        frameRate: 16,
         repeat: 0
     });
 }
