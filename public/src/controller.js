@@ -84,7 +84,7 @@ class GamepadControl {
 }
 
 class KeyboardMouseControl {
-    constructor(scene){
+    constructor(scene,pointer){
         //Map Point and Controls
         this.buttons = {
             up: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),s:0},
@@ -96,19 +96,20 @@ class KeyboardMouseControl {
             restart_scene: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),s:0},
             switch: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),s:0}
         }
-        this.pointers = {
-            shoot: {b:1,s:0},
+        this.msbuttons= {
+            shoot: {b:0,s:0},
             jump: {b:2,s:0},
         }
+        this.pointer = pointer;
         //Create lists
         this.keys = Object.keys(this.buttons);
-        this.mousekeys = Object.keys(this.pointers);
+        this.mousekeys = Object.keys(this.msbuttons);
     }
-    update(){
+    updateKeyState(){
         //Get the statuses
         this.keys.forEach(function(name) {        
         
-            let b  = this.pad.buttons[this.buttons[name].b];
+            let b  = this.buttons[name].b;
             let state = b.pressed;
             //If not change, then return current state        
             if(!state){
@@ -118,9 +119,23 @@ class KeyboardMouseControl {
             } 
         },this)
 
-    }
-    checkButtonState(name){
+        if(!this.pointer.isDown){            
+            this.msbuttons.shoot.s = this.msbuttons.shoot.s > 0 ? -1 : 0;
+            this.msbuttons.jump.s = this.msbuttons.jump.s > 0 ? -1 : 0;
+        }else{
+            if(this.pointer.button == 0){
+                this.msbuttons.shoot.s++;
+            };
+            if(this.pointer.button == 2){
+                this.msbuttons.jump.s++;
+            };
+        }
 
     }
-
+    checkKeyState(name){
+        return this.buttons[name].s; 
+    }
+    checkMouseState(name){
+        return this.msbuttons[name].s; 
+    }
 }

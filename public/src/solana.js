@@ -127,7 +127,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             //Movement Code
             if(curr_player==players.SOLANA){
                 //Reduce Air Control
-                let control_jump = (pointer.rightButtonReleased() || gamePad.checkButtonState('jump') == 1);
+                let control_jump = (keyPad.checkMouseState("jump") == 1 || gamePad.checkButtonState('jump') == 1);
                 let mv = this.onGround ? this.mv_speed : this.mv_speed*.75;
                 if (control_left && this.jumpLock == false) {
 
@@ -174,13 +174,22 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     let costToFireWeapon = 10;      
                     if ((time-lastFired) >  240 && hud.energy.n > costToFireWeapon)//ROF(MS)
                     {
-                        let solanaCenter = solana.sprite.getCenter();
+                        
                         let blast = ab_solarblasts.get();
-                        if(solana.sprite.flipX){
-                            blast.fire(solanaCenter.x-18, solanaCenter.y+12, -6, 0, 150);
-                        }else{
-                            blast.fire(solanaCenter.x+18, solanaCenter.y+12, 6, 0, 150);
+                        let gameScale = camera_main.zoom;
+                        let targVector = {x:pointer.x/gameScale,y:pointer.y/gameScale};
+                        if(gamePad.ready){
+                            //Overwrite target vector with gamePad coords
+                            let gpVec = gamePad.getStickLeft();
+                            targVector = {x:this.x+gpVec.x,y:this.y+gpVec.y};
                         }
+                        let angle = Phaser.Math.Angle.Between(this.x,this.y,targVector.x,targVector.y);
+                        let bulletSpeed = 6;
+                        let vecX = Math.cos(angle)*bulletSpeed;
+                        let vecY = Math.sin(angle)*bulletSpeed;    
+                        
+                        blast.fire(this.x,this.y, vecX, vecY, 150);
+                        
 
                         lastFired = time;
                         //Remove Energy for the shooting

@@ -93,7 +93,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 let control_right = (game.wasd.right.isDown || gamePad.getStickLeft().x > 0);
                 let control_up = (game.wasd.up.isDown || gamePad.getStickLeft().y < 0);
                 let control_down = (game.wasd.down.isDown || gamePad.getStickLeft().y > 0);
-                let control_jump = (pointer.rightButtonReleased() || gamePad.checkButtonState('jump') == 1);
+                let control_jump = (keyPad.checkMouseState("jump") == 1 || gamePad.checkButtonState('jump') == 1);
 
                 if (control_left) {
                     if(this.light_status == 0){

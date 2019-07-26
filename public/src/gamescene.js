@@ -634,6 +634,9 @@ var GameScene = new Phaser.Class({
             }
         }, this);
 
+        //Mouse
+        pointer = this.input.activePointer;
+
         gamePad = new GamepadControl(0);
        
         this.input.gamepad.once('down', function (pad, button, index) {
@@ -641,14 +644,15 @@ var GameScene = new Phaser.Class({
             gamePad = new GamepadControl(pad);    
         }, this);
 
+        keyPad = new KeyboardMouseControl(this,pointer)
+
         //TIME SCALE
         let timeScale = 1;
         this.tweens.timeScale = timeScale; // tweens
         this.matter.world.engine.timing.timeScale = timeScale; // physics
         this.time.timeScale = timeScale; // time events
         console.log(this.time);
-        //Mouse
-        pointer = this.input.activePointer;
+ 
         //Draw Point area debug
         this.pointerDraw = this.add.graphics();
         var color = 0xffff00;
@@ -666,6 +670,7 @@ var GameScene = new Phaser.Class({
     {
         //Controller Update
         gamePad.updateButtonState();
+        keyPad.updateKeyState();
         //Draw Pointer - DEBUG
         this.pointerDraw.x = pointer.worldX-8;
         this.pointerDraw.y = pointer.worldY-8;
@@ -966,7 +971,7 @@ function createControls(scene){
         suicide: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
         passLight: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),
         restart_scene: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),
-        change_player: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q)
+        switch: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q)
 
     };
 }
