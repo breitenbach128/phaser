@@ -53,8 +53,9 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.aimer.started = false;
         this.aimerRadius = 64;
         this.aimerCircle = new Phaser.Geom.Circle(this.x, this.y, this.aimerRadius);
-        this.aimLine = this.scene.add.line(200,200,25,0,50,0,0xff66ff)
-        this.aimLine.setLineWidth(4,4);
+
+        // this.aimLine = this.scene.add.line(200,200,25,0,50,0,0xff66ff)
+        // this.aimLine.setLineWidth(4,4);
 
     }
 
@@ -115,8 +116,8 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 
         this.aimer.rotation = normAngle;
 
-        this.aimLine.setPosition(this.x,this.y);
-        this.aimLine.setRotation(normAngle);
+        // this.aimLine.setPosition(this.x,this.y);
+        // this.aimLine.setRotation(normAngle);
     }
     aimStart(){
         if(this.aimer.ready){

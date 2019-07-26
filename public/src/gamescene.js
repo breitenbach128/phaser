@@ -60,7 +60,7 @@ var GameScene = new Phaser.Class({
         //Draw Debug
         
         this.matter.world.createDebugGraphic();
-        this.matter.world.drawDebug = true;
+        this.matter.world.drawDebug = false;
         //Add Labels for tile bodies for easier collision management
         collisionLayer.forEachTile(function (tile) {
             // In Tiled, the platform tiles have been given a "type" property which is a string
@@ -654,16 +654,19 @@ var GameScene = new Phaser.Class({
         console.log(this.time);
  
         //Draw Point area debug
-        this.pointerDraw = this.add.graphics();
+        this.debugPointer = this.add.graphics();
         var color = 0xffff00;
         var thickness = 2;
         var alpha = 1;
-        this.pointerDraw.lineStyle(thickness, color, alpha);
+        this.debugPointer.lineStyle(thickness, color, alpha);
         //this.pointerDraw.strokeRect(pointer.worldX-16, pointer.worldX-16, 32, 32);
-        this.pointerDraw.strokeRect(0,0,16,16);
+        this.debugPointer.strokeRect(0,0,16,16);
 
         //Probably need a statemachine like I have for gamePad for the keyboard and mouse controls to have them update in the game scene. Mouse2 is sticking on jump
    
+        //Debug Properties
+        this.debugAimLine = this.add.graphics(0, 0);
+        //Need to push all debug graphics into a single debug array for easy enable
     },
 
     update: function (time, delta)
@@ -671,9 +674,21 @@ var GameScene = new Phaser.Class({
         //Controller Update
         gamePad.updateButtonState();
         keyPad.updateKeyState();
-        //Draw Pointer - DEBUG
-        this.pointerDraw.x = pointer.worldX-8;
-        this.pointerDraw.y = pointer.worldY-8;
+ 
+        //DEBUG
+        if(GLOBAL_DEBUG){
+            //Draw Pointer - DEBUG
+            this.debugPointer.x = pointer.worldX-8;
+            this.debugPointer.y = pointer.worldY-8;
+            this.debugAimLine.clear();
+            this.debugAimLine.lineStyle(5, 0xFF00FF, 1.0);
+            this.debugAimLine.beginPath();
+            this.debugAimLine.moveTo(solana.x, solana.y);
+            this.debugAimLine.lineTo(pointer.worldX, pointer.worldY);
+            this.debugAimLine.closePath();
+            this.debugAimLine.strokePath();
+        }
+
         //Updates
         solana.update(time,delta);
         bright.update(time,delta);
@@ -709,7 +724,25 @@ var GameScene = new Phaser.Class({
         if(Phaser.Input.Keyboard.JustDown(game.wasd.suicide)){
             solana.receiveDamage(1);
         }
- 
+        
+        //GLOBAL DEBUG TURN ON/OFF
+        if(keyPad.checkKeyState('DEBUG') == 1){
+            GLOBAL_DEBUG = !GLOBAL_DEBUG;
+            if(GLOBAL_DEBUG == false){
+                this.debugAimLine.clear();
+                this.debugPointer.x = -100;
+                this.debugPointer.y = -100;
+                this.matter.world.drawDebug = false;
+                this.matter.world.debugGraphic.clear();
+                console.log(this.matter.world);
+            }else{
+                this.matter.world.drawDebug = true;
+               
+            }
+             
+        }
+
+
         //Throw Soulight
         if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.checkButtonState('passLight') == 1){ 
             this.soul_light.aimStart(); 

@@ -30,7 +30,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
           frictionStatic: 0.1,
           frictionAir: 0.02,
           friction: 0.35,
-          restitution: 0.05
+          restitution: 0.05,
+          density: 0.01
         });
        //Fix the draw offsets for the compound sprite.
         compoundBody.render.sprite.xOffset = .5;
@@ -171,8 +172,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 //Check for shooting 
                 if(control_shoot && this.equipment[0].equiped){
                     solana.sprite.anims.play('solana-shoot', true);     
-                    let costToFireWeapon = 10;      
-                    if ((time-lastFired) >  240 && hud.energy.n > costToFireWeapon)//ROF(MS)
+                    let costToFireWeapon = 10;     
+                    let wpRof = 1000;
+
+                    
+                    if ((time-lastFired) >  wpRof && hud.energy.n > costToFireWeapon)//ROF(MS)
                     {
                         
                         let blast = ab_solarblasts.get();
@@ -183,10 +187,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                             let gpVec = gamePad.getStickLeft();
                             targVector = {x:this.x+gpVec.x,y:this.y+gpVec.y};
                         }
-                        let angle = Phaser.Math.Angle.Between(this.x,this.y,targVector.x,targVector.y);
+                        let angle = Phaser.Math.Angle.Between(this.x-camera_main.worldView.x,this.y-camera_main.worldView.y, targVector.x,targVector.y);
                         let bulletSpeed = 6;
                         let vecX = Math.cos(angle)*bulletSpeed;
-                        let vecY = Math.sin(angle)*bulletSpeed;    
+                        let vecY = Math.sin(angle)*bulletSpeed;  
                         
                         blast.fire(this.x,this.y, vecX, vecY, 150);
                         

@@ -30,7 +30,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
           frictionAir: 0.02,
           friction: 0.3,
           restitution: 0.00,
-          density: 0.3,
+          density: 0.01,
           label: "BRIGHT"
         });
         this.sprite
@@ -152,6 +152,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite.anims.play('dark-idle', false);
         this.sprite.setIgnoreGravity(false);
         this.sprite.setCollisionCategory(CATEGORY.DARK);
+        this.sprite.setDensity(0.01);
     }
     toBright(){
         this.light_status = 0;
@@ -159,6 +160,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite.anims.play('bright-idle', false);
         this.sprite.setIgnoreGravity(true);
         this.sprite.setCollisionCategory(CATEGORY.BRIGHT);
+        this.sprite.setDensity(0.01);
         //Tween back to straight up
         this.reAlignBright();
     }

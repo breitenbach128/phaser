@@ -54,7 +54,7 @@ var MainMenu = new Phaser.Class({
         +"\n - Gamepad (XBOX 360)"
         +"\n - LeftStk: Move/Aim, Shoot: A, Jump:X, Pass:Y, Switch: RightShoulder, DPAD-Up/Down: Interact with objects"
         +"\n"
-        +"\n - Testing Controls: X - Switch Scene test(map2-map3 toggle), P - Self hurt for testing death");
+        +"\n - Testing Controls: X - Switch Scene test(map2-map3 toggle), P - Self hurt for testing death, O for DEBUG draws");
 
     },
     update: function(){
