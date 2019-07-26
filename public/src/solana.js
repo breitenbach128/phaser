@@ -108,6 +108,12 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             //Check Jump ready
             if(this.onGround || this.onWall){
                 this.jumpReady = true;
+                
+                if(this.mv_direction.x == 0){
+                    this.sprite.anims.play('solana-idle', true);//Idle
+                }else{
+                    this.sprite.anims.play('solana-walk', true);
+                }
             }else{
                 this.sprite.anims.play('solana-jump', true);  
                 //Add Jump Forgiveness of 100ms  
@@ -117,6 +123,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 }   
                 
             }
+            
+
 
             //Slow Descent if on Wall
             if(this.onWall){
@@ -155,15 +163,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
                 if(this.jumpLock){
                     this.sprite.setVelocityX(this.kickOff);
-                }
-                       
-                if(this.mv_direction.x == 0){
-                    this.sprite.anims.play('solana-idle', true);//Idle
-                }else{
-                    this.sprite.anims.play('solana-walk', true);
-                }
+                }    
 
-                
                 if (control_jump && this.jumpReady) {
                     this.jump(this.jump_speed,this.mv_speed);   
 

@@ -754,6 +754,13 @@ var GameScene = new Phaser.Class({
             this.soul_light.aimStop();
         }
 
+        //Test Bright pulse
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.pulse)){
+            bright.pulseCharge();
+        }
+        if(Phaser.Input.Keyboard.JustUp(game.wasd.pulse)){
+            bright.pulseThrow(solana);
+        }
         //Quick Change Map and Restart Scene
         if(Phaser.Input.Keyboard.JustDown(game.wasd.restart_scene)){  
             if(current_map == "map2"){current_map = "map3"}else{current_map = "map2"}; 
@@ -1004,7 +1011,8 @@ function createControls(scene){
         suicide: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
         passLight: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),
         restart_scene: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),
-        switch: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q)
+        switch: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
+        pulse: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
 
     };
 }

@@ -53,6 +53,17 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { fontSize: '10px', fill: '#00FF00' });
         this.touching = {up:0,down:0,left:0,right:0};
         this.airTime = 0;//For Camera Shake
+
+        //Create Effects
+        this.effect=[
+            this.scene.add.particles('shapes',  new Function('return ' + this.scene.cache.text.get('effect-bright-sparks'))())
+        ];
+        console.log(this.effect[0].emitters.list[0]);
+        this.effect[0].setVisible(false);
+        this.effect[0].emitters.list[0].setPosition(this.x,this.y);
+        this.effect[0].emitters.list[0].startFollow(this);
+        
+        this.abPulse = {c:0,max:100,doCharge:false};
     }
 
     update()
@@ -64,9 +75,14 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             }else{
                 this.airTime=0;
             };
+            if(this.abPulse.doCharge){
+                if(this.abPulse.c < this.abPulse.max){
+                this.abPulse.c++;
+                }
+            }
 
             this.debug.setPosition(this.sprite.x, this.sprite.y-64);
-            this.debug.setText("Air Time:"+String(this.airTime)
+            this.debug.setText("PulseValue:"+String(this.abPulse.c)
             +"\nAng:"+String(this.angle));
             //Do Dark Updates
             if(this.light_status == 1){
@@ -202,9 +218,23 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             
         }
     }
-    pulseThrow(){
+    pulseCharge(){
+        this.abPulse.doCharge = true;
+        this.effect[0].setVisible(true);
+    }
+    pulseThrow(object){
+        this.abPulse.doCharge = false;
+        this.effect[0].setVisible(false);
         //Bright charges up, sending nearby objects flying away, including Solana, bullets, crates, etc.
         //Will have a min power and a max power level, based on charge time. The Charge drains light.
+        if(Phaser.Math.Distance.Between(this.x,this.y,object.x,object.y) < 64){
+            let angleToThrow = Phaser.Math.Angle.Between(this.x,this.y,object.x,object.y);
+            let power =  this.abPulse.c/1000;
+            let vecX = Math.cos(angleToThrow)*power;
+            let vecY = Math.sin(angleToThrow)*power;  
+            object.applyForce({x:vecX,y:vecY});
+        }
+        this.abPulse.c = 0;
     }
 }
 
