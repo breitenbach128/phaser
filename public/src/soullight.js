@@ -43,7 +43,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.accel = 1;
         this.sprite.setFriction(.3,.3);
         this.sprite.setIgnoreGravity(true);
-        this.protection_radius = {value:250, max: 250};//How much does the light protect;
+        this.protection_radius = {value:250, max: 250, original: 250};//How much does the light protect;
         this.throw = {x:0,y:0};
         this.readyThrow = false;
 
@@ -83,7 +83,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         
         if(this.readyThrow){
             if(this.protection_radius.value >  (this.protection_radius.max/10)){
-                this.protection_radius.value-=25;
+                this.protection_radius.value-=(this.protection_radius.max/10);
             }else{
                 //Ready to launch
                 this.passLight();

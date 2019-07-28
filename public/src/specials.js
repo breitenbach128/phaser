@@ -56,3 +56,78 @@ class Barrier extends Phaser.Physics.Matter.Sprite{
         this.debug.setText("Zone Status:"+String(this.name));
     }
 };
+
+class Crate extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'crate', 0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+        this.setActive(true);
+
+        //Scale crate down
+        let newScale = 0.08;
+        this.setScale((newScale+0.04));
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.rectangle(0, 0, w*newScale, h*newScale);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.02,
+            friction: 0.1,
+            label: "CRATE"
+        });
+
+        this
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.SOLID)
+        .setPosition(x, y) 
+    }
+    setup(x,y){
+        this.setActive(true);
+        this.setPosition(x,y); 
+    }
+    update(time, delta)
+    {       
+
+    }
+};
+
+class Rock extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'rocks', 0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+
+        this.setActive(true);
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.circle(0,0,w*.50);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.02,
+            friction: 0.1,
+            label: "ROCK"
+        });
+
+        this
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.SOLID)
+        .setPosition(x, y) 
+    }
+    setup(x,y){
+        this.setActive(true);
+        this.setPosition(x,y); 
+    }
+    update(time, delta)
+    {       
+
+    }
+};

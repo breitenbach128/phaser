@@ -445,7 +445,10 @@ var GameScene = new Phaser.Class({
               if (gameObjectB !== undefined &&
                 (gameObjectB instanceof TMXPlatform
                 || gameObjectB instanceof Barrier
-                || gameObjectB instanceof TMXGate)) {   
+                || gameObjectB instanceof TMXGate
+                || gameObjectB instanceof TMXPlate
+                || gameObjectB instanceof Rock
+                || gameObjectB instanceof Crate)) {   
                 //handle plaform jumping allowance             
                 if(bodyA.label == "SOLANA_BOTTOM"){
                     solana.touching.down++;
@@ -530,6 +533,18 @@ var GameScene = new Phaser.Class({
 
                     gameObjectB.equipTo(solana);
 
+                }
+              }
+              if (gameObjectB !== undefined && bodyB.label == "GATE_BOTTOM") {
+                //Solana being crushed by a gate?
+                if(bodyB.velocity.y > 0){
+                    solana.receiveDamage(1);
+                    if(gameObjectB.x > solana.x){
+                        solana.setVelocityX(-5);
+                        //Work on making her not collide with the gate for a few seconds.
+                    }else{
+                        solana.setVelocityX(5);
+                    }
                 }
               }
             }
@@ -690,6 +705,15 @@ var GameScene = new Phaser.Class({
         this.debugAimLine = this.add.graphics(0, 0);
         //Need to push all debug graphics into a single debug array for easy enable
 
+        for(let r=0;r<5;r++){
+            let rX = Phaser.Math.Between(-64,64);
+            let rock = new Rock(this,200+rX,100);
+        }
+        
+        for(let r=0;r<1;r++){
+            let rX = Phaser.Math.Between(-64,64);
+            let crate = new Crate(this,400+rX,100);
+        }
     },
 
     update: function (time, delta)

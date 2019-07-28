@@ -122,9 +122,11 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
         const mainBody =  Bodies.rectangle(0, 0, w, h);
-
+        //Gates need a bottom sensor that hurts the Solana if they start to crush her.
+        this.bottom = Bodies.rectangle(0, h*0.5, w, 2, { isSensor: true })
+        this.bottom.label = "GATE_BOTTOM";
         const compoundBody = Body.create({
-            parts: [mainBody],
+            parts: [mainBody,this.bottom],
             frictionStatic: 0,
             frictionAir: 0.02,
             friction: 0.1
@@ -149,6 +151,8 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
         this.closedY = y;
         this.openY = y - this.height;
         this.ready = true;
+        this.isClosed = true;
+        this.prevVel = {x:0,y:0};
  
     }
     update(time, delta)
@@ -156,6 +160,10 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
 
         this.debug.setPosition(this.x, this.y-16);
         this.debug.setText("Gate Position:"+String(this.y));
+        this.setVelocity(this.x - this.prevVel.x,this.y - this.prevVel.y);
+        this.bottom.velocity.y = this.body.velocity.y;
+        this.prevVel.x = this.x;
+        this.prevVel.y = this.y;
     }
     activateTrigger(){
         
@@ -170,7 +178,7 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
                     ease: 'Power1',
                     duration: 3000,
                     onComplete: this.openComplete,
-                    onCompleteParams: [ this ]
+                    onCompleteParams: [ this, false ]
                 });
             }else{
                 this.scene.tweens.add({
@@ -179,15 +187,16 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
                     ease: 'Power1',
                     duration: 3000,
                     onComplete: this.openComplete,
-                    onCompleteParams: [ this ]
+                    onCompleteParams: [ this, true ]
                 });
             }            
         }
 
     }
-    openComplete(tween, targets, myGate){
+    openComplete(tween, targets, myGate, state){
         //console.log("Gate Tween Finished");
         myGate.ready = true;
+        this.isClosed = state;
     }
 };
 
@@ -207,7 +216,7 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
-        const mainBody =  Bodies.rectangle(0, 0, w, h);
+        const mainBody =  Bodies.rectangle(0, 0, w, h*.5);//Plates are thin, so lower it by half
 
         const compoundBody = Body.create({
             parts: [mainBody],
