@@ -27,35 +27,50 @@ class Firefly extends Phaser.Physics.Matter.Sprite{
         });
 
         this
-          .setExistingBody(compoundBody)
-          .setScale(1)
-          .setFixedRotation(true) // Sets inertia to infinity so the player can't rotate
-          .setIgnoreGravity(true)
-          .setPosition(x, y);
-          //Custom Properties
-          this.anims.play('firefly-move', true); 
-          this.flashTimer = this.scene.time.addEvent({ delay: Phaser.Math.Between(3000, 5000), callback: this.startFlash, callbackScope: this, loop: false });
+        .setExistingBody(compoundBody)
+        .setScale(1)
+        .setFixedRotation(true) // Sets inertia to infinity so the player can't rotate
+        .setIgnoreGravity(true)
+        .setPosition(x, y);
+        //Custom Properties
+        this.anims.play('firefly-move', true); 
+        this.flashTimer = this.scene.time.addEvent({ delay: Phaser.Math.Between(3000, 5000), callback: this.startFlash, callbackScope: this, loop: false });
+        this.wanderAllowance = 16;
+        this.wanderRange = {minX: this.x-this.wanderAllowance, maxX: this.x+this.wanderAllowance, minY: this.y - this.wanderAllowance, maxY: this.y+this.wanderAllowance};
+        this.wanderVec = new Phaser.Math.Vector2(Phaser.Math.Between(-1,1),Phaser.Math.Between(-1,1));
+        
+        this.debug = this.scene.add.text(this.x, this.y-16, '', { fontSize: '10px', fill: '#00FF00' }); 
     }
     update(time, delta)
     {
        
+        this.setVelocity(this.wanderVec.x,this.wanderVec.y);           
+        this.newWander();
+        //this.debug.setText("Vel: x:"+String(this.wanderVec.x)+" y:"+String(this.wanderVec.y));
+        this.rotation = this.wanderVec.angle();
     }
-    startFlash(){
-        console.log("Flash");          
+    startFlash(){        
         this.sprite.anims.play('firefly-flash', true); 
         this.sprite.once('animationcomplete',this.stopFlash,this);  
         
     }
     stopFlash(){
-        console.log("Flash over");
         this.anims.play('firefly-move', true);
         this.flashTimer = this.scene.time.addEvent({ delay: Phaser.Math.Between(3000, 5000), callback: this.startFlash, callbackScope: this, loop: false });
-        let vec = Phaser.Math.RandomXY({x:0,y:0});  
-        console.log(vec); 
-        this.setVelocity(vec.x,vec.y);
+    }
+    newWander(){
+
+        if(this.x < this.wanderRange.minX || this.x > this.wanderRange.maxX){       
+            this.wanderVec.x = this.x < this.wanderRange.minX ?  Phaser.Math.Between(1,5)/10: Phaser.Math.Between(-1,-5)/10;
+        }    
+        if(this.y > this.wanderRange.maxY || this.y < this.wanderRange.minY){            
+            this.wanderVec.y = this.y < this.wanderRange.minY ?  Phaser.Math.Between(1,5)/10: Phaser.Math.Between(-1,-5)/10;
+        }
+        if(this.wanderVec.x == 0){this.wanderVec.x = Phaser.Math.Between(-1,1)};
+        if(this.wanderVec.y == 0){this.wanderVec.y = Phaser.Math.Between(-1,1)};
     }
     collect(){
-
+        this.killAndHide();
     }
     spawn(){
 

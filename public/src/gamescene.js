@@ -168,6 +168,11 @@ var GameScene = new Phaser.Class({
             classType: Entrance,
             runChildUpdate: true 
         });
+        //Entrances
+        fireflies = this.add.group({ 
+            classType: Firefly,
+            runChildUpdate: true 
+        });
 
 
         speed = Phaser.Math.GetSpeed(300, 1);
@@ -304,6 +309,7 @@ var GameScene = new Phaser.Class({
          //Timer  - Example
          //spawner = this.time.addEvent({ delay: 5000, callback: this.spawnEnemies, callbackScope: this, loop: true });
          //timeEventName.remove();spawnEnemies(spawnlayer.objects)
+         
          this.energyTimer = this.time.addEvent({ delay: 200, callback: this.generateEnergy, callbackScope: this, loop: true });
 
       
@@ -607,6 +613,14 @@ var GameScene = new Phaser.Class({
                         gObjs[0].hit(1);
                     }  
                 }
+                //Solana and Fireflies
+                if ((bodyA.label === 'FIREFLY' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'FIREFLY')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'FIREFLY');
+                    if (gObjs[0].active){
+                        hud.alterEnergy(10);
+                        gObjs[0].collect();
+                    }  
+                }
                 //Solar Blast and Mirrors
                 if ((bodyA.label === 'ABILITY-SOLAR-BLAST' && bodyB.label === 'MIRROR') || (bodyA.label === 'MIRROR' && bodyB.label === 'ABILITY-SOLAR-BLAST')) {
                     //Break out of loop to allow normal physics hits
@@ -669,7 +683,10 @@ var GameScene = new Phaser.Class({
         //Need to push all debug graphics into a single debug array for easy enable
 
         //Test Firefly
-        let firefly = new Firefly(this,200,170);
+        for(var x=0;x<10;x++){
+            let firefly = fireflies.get(200+(Phaser.Math.Between(0,200)),150+Phaser.Math.Between(0,200));
+            firefly.setDepth(DEPTH_LAYERS.FRONT);
+        }
     },
 
     update: function (time, delta)
