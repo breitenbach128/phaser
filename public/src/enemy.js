@@ -6,15 +6,14 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         scene.matter.world.add(this);
         scene.add.existing(this); 
         this.setActive(true);
-        this.sprite = this;
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         
-        const { width: w, height: h } = this.sprite;
+        const { width: w, height: h } = this;
         //const mainBody = Bodies.rectangle(0, 0, w * 0.6, h, { chamfer: { radius: 10 } });
         
 
-        const mainBody = Bodies.rectangle(0, 0, w * 0.6, h-12, { chamfer: { radius: 5 } });
+        const mainBody = Bodies.rectangle(0, 0, w * 0.6, h-12, { chamfer: { radius: 1 } });
         this.sensors = {
           bottom: Bodies.rectangle(0, h*0.5-6, w * 0.25, 2, { isSensor: true }),
           left: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.75, { isSensor: true }),
@@ -30,35 +29,38 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
           //parts: [mainBody],
           frictionStatic: 0,
           frictionAir: 0.02,
-          friction: 0.00,
+          friction: 0.10,
           restitution: 0.00,
+          density: 0.03,
           label: "ENEMY"
         });
        //Fix the draw offsets for the compound sprite.
-        compoundBody.render.sprite.xOffset = .5;
-        compoundBody.render.sprite.yOffset = .60;
+        // compoundBody.render.sprite.xOffset = .5;
+        // compoundBody.render.sprite.yOffset = .60;
 
-        this.sprite
-          .setExistingBody(compoundBody)
-          .setCollisionCategory(CATEGORY.ENEMY)
-          .setScale(1)
-          .setFixedRotation(true) // Sets inertia to infinity so the player can't rotate
-          .setPosition(config.x, config.y);
+        this
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.ENEMY)
+        .setScale(1)
+        .setFixedRotation() // Sets inertia to infinity so the player can't rotate
+        .setPosition(x, y);
           //Custom Properties
-          this.hp = 1;
-          this.mv_speed = 1;
-          this.aggroRNG = Phaser.Math.Between(0,100);
-          this.aggroRange = 100;
-          this.maxAggroRange = 400;
-          this.gun = new Gun(60,4,70);
-          this.dead = false;
-          this.setScale(.5);
-          this.setTint(0x333333);
-          this.debug = scene.add.text(this.x, this.y-16, 'debug', { fontSize: '12px', fill: '#00FF00' });
+
+        this.hp = 1;
+        this.mv_speed = 1;
+        this.aggroRNG = Phaser.Math.Between(0,100);
+        this.aggroRange = 100;
+        this.maxAggroRange = 400;
+        this.gun = new Gun(60,4,70);
+        this.dead = false;
+        this.setScale(.5);
+        this.setTint(0x333333);
+        this.debug = scene.add.text(this.x, this.y-16, 'debug', { fontSize: '12px', fill: '#00FF00' });
     }
     update(time, delta)
     {
         if(!this.dead && solana.alive){
+            this.rotation = 0;//Temp since the fixed rotation is not working.
             var distanceToSolana = Phaser.Math.Distance.Between(solana.x,solana.y,this.x,this.y)
             if(distanceToSolana < this.aggroRange+this.aggroRNG){
                 if(solana.x < this.x){
@@ -73,7 +75,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
                    
                     
                     let bullet = bullets.get();
-                    if(this.sprite.flipX){
+                    if(this.flipX){
                         bullet.fire(this.x+36, this.y, 3, -1, 300);
                     }else{
                         bullet.fire(this.x-36, this.y, -3, -1, 300);
@@ -89,14 +91,14 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
             if(distanceToSolana > this.aggroRange+this.aggroRNG && distanceToSolana < this.maxAggroRange){
                 
                 if(solana.x < this.x){
-                    this.sprite.setVelocityX(this.mv_speed*-1);
+                    this.setVelocityX(this.mv_speed*-1);
                     this.flipX = false;
                 }else{
-                    this.sprite.setVelocityX(this.mv_speed);
+                    this.setVelocityX(this.mv_speed);
                     this.flipX = true;
                 }
             }else{
-                this.sprite.setVelocityX(0);
+                this.setVelocityX(0);
             }
 
             if(this.setVelocityX != 0){
@@ -108,8 +110,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
 
 
         this.debug.setPosition(this.x, this.y-64);
-        this.debug.setText("AggroRange:"+String(this.aggroRange+this.aggroRNG)
-        +"\nDtS:"+String(distanceToSolana));
+        this.debug.setText("Rot:"+String(this.rotation));
     }
     death(animation, frame){
         

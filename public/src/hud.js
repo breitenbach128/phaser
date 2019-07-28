@@ -10,6 +10,7 @@ class HudScene extends Phaser.Scene {
         this.energy = {n:100,max:100,h:100,w:16};
         this.dialogueArea;
         this.inventory;
+
     }
 
     update()
@@ -22,8 +23,9 @@ class HudScene extends Phaser.Scene {
             if(gamePad.ready){
                 debugString=debugString+"\nGamePad: button Y:"+String(gamePad.checkButtonState('Y'));
             }else{
-                debugString=debugString+"\nMouseKeyboard: button Jump:"+String(keyPad.checkMouseState('jump'));
+                debugString=debugString+"\nMKB: button Jump:"+String(keyPad.checkMouseState('jump'));
             }
+            debugString+="\nER#:"+String(this.energy.n);
             this.debug.setText(debugString);
 
             if(this.dialogueArea.isRunning){
@@ -65,7 +67,8 @@ class HudScene extends Phaser.Scene {
         this.dialogueArea.start();
         //DEBUG
         this.debug = this.add.text(48, 16, 'DEBUG-HUD', { fontSize: '32px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
-
+        //HUD Energy Bar Flash/Scale Effect: When energy is added, alter the look for a few MS to show energy has been gained.
+        this.energy_bar_effect = this.time.addEvent({ delay: 200, callback: this.resetEnergyScale, callbackScope: this, loop: false });
         this.inventory = new Inventory(this);
 
     }
@@ -78,6 +81,20 @@ class HudScene extends Phaser.Scene {
         let newValue = Math.round((this.energy.n/this.energy.max)*this.energy.h);
         //Alter the bar values
         this.energy_bar[1].setCrop(0,this.energy.h-newValue,this.energy.w,newValue);
+        //Tint Energy to red if it is less than 10% of total
+        if(n <= (this.energy.max/5)){
+            this.energy_bar[1].setTint(0xFFB6B6);
+        }else{
+            this.energy_bar[1].clearTint();
+        };
+        //Alter bar scale on gain only
+        if(energyChange > 0){
+            this.energy_bar.forEach(function(e){e.setScale(1.10)});
+            this.energy_bar_effect = this.time.addEvent({ delay: 200, callback: this.resetEnergyScale, callbackScope: this, loop: false });
+        }
+    }
+    resetEnergyScale(){
+        this.energy_bar.forEach(function(e){e.setScale(1)});
     }
     setHealth(hp,max)
     {
@@ -96,7 +113,7 @@ class HudScene extends Phaser.Scene {
 
 
     }
-    updateGameScene ()
+    handleEvents ()
     {
        
 

@@ -43,7 +43,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
           .setCollisionCategory(CATEGORY.SOLANA)
           .setScale(1)
           .setFixedRotation() // Sets inertia to infinity so the player can't rotate
-          .setPosition(config.x, config.y);
+          .setPosition(x, y);
 
         //this.sprite.setIgnoreGravity(true);
         //Custom Properties
@@ -108,7 +108,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             //Check Jump ready
             if(this.onGround || this.onWall){
                 this.jumpReady = true;
-                
+
                 if(this.mv_direction.x == 0){
                     this.sprite.anims.play('solana-idle', true);//Idle
                 }else{
@@ -174,7 +174,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 if(control_shoot && this.equipment[0].equiped){
                     solana.sprite.anims.play('solana-shoot', true);     
                     let costToFireWeapon = 10;     
-                    let wpRof = 1000;
+                    let wpRof = 350;
 
                     
                     if ((time-lastFired) >  wpRof && hud.energy.n > costToFireWeapon)//ROF(MS)

@@ -24,7 +24,7 @@ var GameScene = new Phaser.Class({
         game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
         //Refresh/Setup HUD
         hud = this.scene.get('UIScene');;
-        hud.updateGameScene();
+        hud.handleEvents();
         
         //Create Background
         world_background = this.add.tileSprite(512, 256, 4096, 512, 'forest_background');
@@ -87,7 +87,7 @@ var GameScene = new Phaser.Class({
         createAnimations(this);
 
         //Create Camera        
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);  
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels+128);  
         this.cameras.main.setBackgroundColor('#ccccff'); 
         this.cameras.main.setZoom(2);
         camera_main = this.cameras.main;
@@ -214,8 +214,14 @@ var GameScene = new Phaser.Class({
                 mapObject = barriers.get(-1000,-1000,"tmxwindow",0,true);
                 x_offset = -mapObject.width/2;
                 y_offset = mapObject.height/2;
+            }else if(objectlayer.objects[e].type == "hive"){
+                let hiveProps = getTileProperties(objectlayer.objects[e].properties);
+                for(let b=0;b<hiveProps.bugsMax;b++){
+                    let rX = Phaser.Math.Between(-32,32);
+                    let rY = Phaser.Math.Between(-32,32);
+                    fireflies.get(objectlayer.objects[e].x+rX,objectlayer.objects[e].y+rY);
+                }
             }
-
             if(mapObject){ 
                 mapObject.setup(objectlayer.objects[e].x-x_offset,objectlayer.objects[e].y-y_offset,objectlayer.objects[e].rotation);
             }
@@ -310,7 +316,8 @@ var GameScene = new Phaser.Class({
          //spawner = this.time.addEvent({ delay: 5000, callback: this.spawnEnemies, callbackScope: this, loop: true });
          //timeEventName.remove();spawnEnemies(spawnlayer.objects)
          
-         this.energyTimer = this.time.addEvent({ delay: 200, callback: this.generateEnergy, callbackScope: this, loop: true });
+         //Pass Energy Regen
+         //this.energyTimer = this.time.addEvent({ delay: 200, callback: this.generateEnergy, callbackScope: this, loop: true });
 
       
         
@@ -618,7 +625,8 @@ var GameScene = new Phaser.Class({
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'FIREFLY');
                     if (gObjs[0].active){
                         hud.alterEnergy(10);
-                        gObjs[0].collect();
+                        fireflies.killAndHide(gObjs[0]);
+                        //gObjs[0].collect();
                     }  
                 }
                 //Solar Blast and Mirrors
@@ -682,11 +690,6 @@ var GameScene = new Phaser.Class({
         this.debugAimLine = this.add.graphics(0, 0);
         //Need to push all debug graphics into a single debug array for easy enable
 
-        //Test Firefly
-        for(var x=0;x<10;x++){
-            let firefly = fireflies.get(200+(Phaser.Math.Between(0,200)),150+Phaser.Math.Between(0,200));
-            firefly.setDepth(DEPTH_LAYERS.FRONT);
-        }
     },
 
     update: function (time, delta)
@@ -868,7 +871,6 @@ var GameScene = new Phaser.Class({
                     new_enemy.setActive(true);
                     new_enemy.setVisible(true);
                     new_enemy.setPosition(spawns[value].x,spawns[value].y);
-                    new_enemy.body.setBounce(0.1);
                     
                 } 
             }

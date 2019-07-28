@@ -488,6 +488,57 @@
                  "width":32,
                  "x":96,
                  "y":224
+                }, 
+                {
+                 "height":32,
+                 "id":26,
+                 "name":"hive1",
+                 "properties":[
+                        {
+                         "name":"bugsMax",
+                         "type":"int",
+                         "value":3
+                        }],
+                 "rotation":0,
+                 "type":"hive",
+                 "visible":true,
+                 "width":32,
+                 "x":544,
+                 "y":160
+                }, 
+                {
+                 "height":32,
+                 "id":27,
+                 "name":"hive2",
+                 "properties":[
+                        {
+                         "name":"bugsMax",
+                         "type":"int",
+                         "value":3
+                        }],
+                 "rotation":0,
+                 "type":"hive",
+                 "visible":true,
+                 "width":32,
+                 "x":1056,
+                 "y":32
+                }, 
+                {
+                 "height":32,
+                 "id":28,
+                 "name":"hive3",
+                 "properties":[
+                        {
+                         "name":"bugsMax",
+                         "type":"int",
+                         "value":3
+                        }],
+                 "rotation":0,
+                 "type":"hive",
+                 "visible":true,
+                 "width":32,
+                 "x":1664,
+                 "y":32
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -496,7 +547,7 @@
          "y":0
         }],
  "nextlayerid":12,
- "nextobjectid":26,
+ "nextobjectid":29,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

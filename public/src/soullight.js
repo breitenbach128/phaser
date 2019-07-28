@@ -74,7 +74,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 
         this.debug.setPosition(this.sprite.x+16, this.sprite.y-32);
         this.debug.setText("Passing:"+String(this.passing)
-        +" \nThrowVec2:"+String(targVector.x) + ":" + String(targVector.y));
+        +" \nThrowVec2:"+String((targVector.x).toFixed(2)) + ":" + String((targVector.y).toFixed(2)));
 
         //Handle position and light growth and shrinking
         if(!this.passing){

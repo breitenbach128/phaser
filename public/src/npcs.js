@@ -14,7 +14,7 @@ class Firefly extends Phaser.Physics.Matter.Sprite{
         //const mainBody = Bodies.rectangle(0, 0, w * 0.6, h, { chamfer: { radius: 10 } });
         
 
-        const mainBody = Bodies.rectangle(0, 0, w * 0.6, h-12, { chamfer: { radius: 4 }, isSensor: true });  
+        const mainBody = Bodies.rectangle(0, 0, w * 0.6, h-12, { isSensor: true });  
 
         const compoundBody = Body.create({
           parts: [mainBody],
@@ -40,6 +40,8 @@ class Firefly extends Phaser.Physics.Matter.Sprite{
         this.wanderVec = new Phaser.Math.Vector2(Phaser.Math.Between(-1,1),Phaser.Math.Between(-1,1));
         
         this.debug = this.scene.add.text(this.x, this.y-16, '', { fontSize: '10px', fill: '#00FF00' }); 
+        //Move Fireflies to the front
+        this.setDepth(DEPTH_LAYERS.FRONT);
     }
     update(time, delta)
     {
@@ -70,7 +72,7 @@ class Firefly extends Phaser.Physics.Matter.Sprite{
         if(this.wanderVec.y == 0){this.wanderVec.y = Phaser.Math.Between(-1,1)};
     }
     collect(){
-        this.killAndHide();
+        
     }
     spawn(){
 
