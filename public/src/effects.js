@@ -4,8 +4,6 @@
 
 //Sparkles
 
-//Fireflies
-
 //Glow Shader
 var ShaderGlow = new Phaser.Class({
     Extends: Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline,
