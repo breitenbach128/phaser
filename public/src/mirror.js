@@ -74,7 +74,7 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
     update(time, delta)
     {       
 
-        this.debug.setPosition(this.x, this.y-196);
+        this.debug.setPosition(this.x, this.y-16);
         this.debug.setText("Angle:"+String(this.angle));
         //Check Rotation Constraints
         if(this.angle > this.maxAngle){ this.angle = this.maxAngle; }

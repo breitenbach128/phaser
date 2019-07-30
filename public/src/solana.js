@@ -206,7 +206,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         }
 
 
-        // this.debug.setPosition(this.sprite.x+16, this.sprite.y-64);
+        this.debug.setPosition(this.sprite.x+16, this.sprite.y-64);
         // this.debug.setText("Ground:"+String(this.touching.down)
         // +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(Math.round(this.sprite.body.velocity.y))
         // +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right) + " oW:"+String(this.onWall)

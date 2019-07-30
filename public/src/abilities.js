@@ -17,7 +17,95 @@
 //Bright Bump - Bright: Bumps Solana in a direction. Can toss her up.
 
 //Bright Beam - Bright: Fires a beam that can be walked on by Solana and persists for a short time.
+class BrightBeam {
+    constructor(scene, x,y, angle){
+        this.scene = scene;
+        this.x = x;
+        this.y = y;
+        this.rects = [];
+        this.angle = angle;
+        this.width = 40;//Pixel size of a default chunk
+        this.height = 8;//Pixel size of default chunk
 
+        //NOT WORKING
+        // var graphics = this.scene.make.graphics().fillStyle(0xFFFF00).fillRect(this.x, this.y, this.width, this.height);
+
+        // graphics.generateTexture('beamRect',this.width, this.height);
+        // let newRect = this.scene.matter.add.image(this.x, this.y, 'beamRect');
+        // graphics.destroy();
+
+        //WORKING
+        this.texture = this.scene.textures.createCanvas('beam1', this.width, this.height);
+
+        //  We can access the underlying Canvas context like this:
+        var grd = this.texture.context.createLinearGradient(0, 0, this.width, this.height);
+    
+        grd.addColorStop(0, '#CCCC00');
+        grd.addColorStop(1, '#FFFF33');
+    
+        this.texture.context.fillStyle = grd;
+        this.texture.context.fillRect(0, 0, this.width, this.height);
+    
+        //  Call this if running under WebGL, or you'll see nothing change
+        this.texture.refresh();
+
+        //COMPONSITE MATTERJS
+        //Matter.Composite.allBodies(engine.world)
+        //Matter.Query.point(bodies, point)
+        //Query every X pixels along the length. Once it hits a body of the unallowed type, stop and measure distance. Keep 
+        //reducing by half until it does not hit. Then walk it out 1 pixel at a time. Or just walk it out 1 pixel from the begining.
+        //Once length is set, make the bridge, scaleing the bodies to best fit.
+
+        
+
+    }
+    nextRect(){
+        //new Rectangle(scene, x, y [, width] [, height] [, fillColor] [, fillAlpha])
+        let angle = Phaser.Math.DegToRad(45);
+
+        for(let r=0;r<3;r++){
+
+            let dX = Math.cos(angle)*(this.width*r)+this.x;
+            let dY = Math.sin(angle)*(this.width*r)+this.y;  
+            
+            let newRect2 = this.scene.matter.add.image(dX, dY, 'beam1');        
+            newRect2.setStatic(true);               
+            newRect2.rotation = angle;
+        }
+
+        // newRect.setVisible(true);
+
+        //let newRect = new Phaser.GameObjects.Rectangle(this.scene, this.x, this.y, this.width, this.height, 0xFFFF00, 1.0);
+        //let bodyRect = this.scene.matter.add.rectangle(this.x, this.y, this.width, this.height, { restitution: 0.9 });
+
+        //this.scene.sys.displayList.add(newRect);
+        //this.scene.sys.updateList.add(newRect);   
+        //this.scene.matter.world.add(newRect);
+        //this.scene.add.existing(newRect);
+
+        // const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules        
+        // const { width: w, height: h } = newRect;
+
+        // const mainBody =  Bodies.rectangle(0,0,w,h);
+        // const compoundBody = Body.create({
+        //     parts: [mainBody],
+        //     frictionStatic: 0,
+        //     frictionAir: 0.00,
+        //     friction: 0.1,
+        //     restitution : 0.0,
+        //     label: "ABILITY-BRIGHT-BRIDGE"
+        // });
+        // newRect.setExistingBody(compoundBody)
+        // .setCollisionCategory(CATEGORY.SOLID)
+        // .setCollidesWith([ CATEGORY.SOLANA])
+        // .setPosition(this.x, this.y)
+        // .setFixedRotation()
+        // .setIgnoreGravity(true);
+
+    }
+    
+
+}
 //Sun
 
 class SolarBlast extends Phaser.Physics.Matter.Sprite{

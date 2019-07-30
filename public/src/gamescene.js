@@ -714,6 +714,9 @@ var GameScene = new Phaser.Class({
             let rX = Phaser.Math.Between(-64,64);
             let crate = new Crate(this,400+rX,100);
         }
+
+        let testBeam = new BrightBeam(this,200,150,0);
+        testBeam.nextRect();
     },
 
     update: function (time, delta)
