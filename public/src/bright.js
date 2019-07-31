@@ -64,6 +64,11 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.effect[0].emitters.list[0].startFollow(this);
         
         this.abPulse = {c:0,max:100,doCharge:false};
+
+        //Abilities
+        this.beamAbility = new BrightBeam(this.scene,this.x,this.y,this.rotation);
+        this.beamReady = true;
+        this.beamCoolDown = this.scene.time.addEvent({ delay: 1000, callback: this.resetBeam, callbackScope: this, loop: true });
     }
 
     update()
@@ -109,8 +114,15 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 let control_right = (game.wasd.right.isDown || gamePad.getStickLeft().x > 0);
                 let control_up = (game.wasd.up.isDown || gamePad.getStickLeft().y < 0);
                 let control_down = (game.wasd.down.isDown || gamePad.getStickLeft().y > 0);
-                let control_jump = (keyPad.checkMouseState("jump") == 1 || gamePad.checkButtonState('jump') == 1);
-
+                let control_jump = (keyPad.checkKeyState('jump') == 1 || gamePad.checkButtonState('jump') == 1);
+                let control_beam = (keyPad.checkKeyState('beam') == 1);
+                //Beam 
+                if(control_beam && this.beamReady && this.light_status == 0){
+                    this.beamReady = false;
+                    console.log(soullight)
+                    this.beamAbility.create(soullight.aimer.x,soullight.aimer.y,soullight.aimer.rotation);
+                }
+                //Movement
                 if (control_left) {
                     if(this.light_status == 0){
                         this.sprite.setVelocityX(-this.mv_speed);
@@ -161,7 +173,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             }
         }
     }
-
+    resetBeam(){
+       this.beamReady = true; 
+    }
     toDark(){
         this.light_status = 1;
         this.sprite.setTexture('dark');

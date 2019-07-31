@@ -23,7 +23,7 @@ class HudScene extends Phaser.Scene {
             if(gamePad.ready){
                 debugString=debugString+"\nGamePad: button Y:"+String(gamePad.checkButtonState('Y'));
             }else{
-                debugString=debugString+"\nMKB: button Jump:"+String(keyPad.checkMouseState('jump'));
+                debugString=debugString+"\nMKB: button Jump:"+String(keyPad.checkMouseState('mb2'));
             }
             debugString+="\nER#:"+String(this.energy.n);
             this.debug.setText(debugString);

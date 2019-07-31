@@ -94,12 +94,14 @@ class KeyboardMouseControl {
             suicide: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),s:0},
             passLight: {b: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),s:0},
             restart_scene: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),s:0},
-            switch: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),s:0},            
+            switch: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),s:0},   
+            beam: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B),s:0},  
+            jump: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),s:0},              
             DEBUG: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O),s:0}
         }
         this.msbuttons= {
             shoot: {b:0,s:0},
-            jump: {b:2,s:0},
+            mb2: {b:2,s:0},
         }
         this.pointer = pointer;
         //Create lists
@@ -122,13 +124,13 @@ class KeyboardMouseControl {
 
         if(!this.pointer.isDown){            
             this.msbuttons.shoot.s = this.msbuttons.shoot.s > 0 ? -1 : 0;
-            this.msbuttons.jump.s = this.msbuttons.jump.s > 0 ? -1 : 0;
+            this.msbuttons.mb2.s = this.msbuttons.mb2.s > 0 ? -1 : 0;
         }else{
             if(this.pointer.button == 0){
                 this.msbuttons.shoot.s++;
             };
             if(this.pointer.button == 2){
-                this.msbuttons.jump.s++;
+                this.msbuttons.mb2.s++;
             };
         }
 

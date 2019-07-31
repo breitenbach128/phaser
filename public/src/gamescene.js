@@ -79,7 +79,7 @@ var GameScene = new Phaser.Class({
         // create the solana sprite    
         solana = new Solana(this,128,128);  
         bright = new Bright(this,128,96);
-        this.soul_light =new SoulLight({scene: this, x:128,y:96,sprite:'bright',frame:0},solana);
+        soullight =new SoulLight({scene: this, x:128,y:96,sprite:'bright',frame:0},solana);
         //Emit Events
         //this.events.emit('solanaSetup'); 
 
@@ -268,7 +268,7 @@ var GameScene = new Phaser.Class({
                     
                     solana.sprite.setPosition(exitObj.x,exitObj.y);
                     bright.sprite.setPosition(exitObj.x,exitObj.y-32);
-                    this.soul_light.sprite.setPosition(exitObj.x,exitObj.y-32);
+                    soullight.sprite.setPosition(exitObj.x,exitObj.y-32);
                     
                     this.cameras.main.centerOn(exitObj.x,exitObj.y);
                     // make the camera follow the solana
@@ -337,7 +337,7 @@ var GameScene = new Phaser.Class({
         let newitem = new EquipItem(this,320,192,'gameitems',0);
 
          //Start soulight play
-         this.soul_light.sprite.anims.play('soulight-move', true);//Idle
+         soullight.sprite.anims.play('soulight-move', true);//Idle
 
         hud.setupHud(solana);
 
@@ -714,9 +714,7 @@ var GameScene = new Phaser.Class({
             let rX = Phaser.Math.Between(-64,64);
             let crate = new Crate(this,400+rX,100);
         }
-
-        let testBeam = new BrightBeam(this,200,150,0);
-        testBeam.nextRect();
+  
     },
 
     update: function (time, delta)
@@ -742,7 +740,7 @@ var GameScene = new Phaser.Class({
         //Updates
         solana.update(time,delta);
         bright.update(time,delta);
-        this.soul_light.update(time,delta);
+        soullight.update(time,delta);
 
         //Draw lighting        
         shadow_context.fillRect(0,0,1280,1280);    
@@ -760,9 +758,9 @@ var GameScene = new Phaser.Class({
         }
         
 
-        shadow_context = this.cutCanvasCircle(this.soul_light.sprite.x,this.soul_light.sprite.y,this.soul_light.protection_radius.value,shadow_context);
+        shadow_context = this.cutCanvasCircle(soullight.sprite.x,soullight.sprite.y,soullight.protection_radius.value,shadow_context);
 
-        if(Phaser.Math.Distance.Between(this.soul_light.sprite.x,this.soul_light.y,solana.sprite.x,solana.sprite.y) <= this.soul_light.protection_radius.value){solana_in_light = true;}
+        if(Phaser.Math.Distance.Between(soullight.sprite.x,soullight.y,solana.sprite.x,solana.sprite.y) <= soullight.protection_radius.value){solana_in_light = true;}
 
         //is the solana outside the light? Do damage!
         solana.inLight = solana_in_light;
@@ -791,17 +789,23 @@ var GameScene = new Phaser.Class({
             }
              
         }
-
+        //Test Matter Point Query
+        if(keyPad.checkMouseState('mb2') == 1){
+            console.log("MB2 Clicked");
+            //Phaser.Physics.Matter.Matter.Query.point(this.matter.world.localWorld.bodies, pointer); 
+            //this.matter.world.engine.world.bodies
+            console.log(Phaser.Physics.Matter.Matter.Query.point(this.matter.world.localWorld.bodies, {x:pointer.worldX, y:pointer.worldY}));
+        }
 
         //Throw Soulight
         if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.checkButtonState('passLight') == 1){ 
-            this.soul_light.aimStart(); 
+            soullight.aimStart(); 
         }  
 
         if(Phaser.Input.Keyboard.JustUp(game.wasd.passLight) || gamePad.checkButtonState('passLight') == -1){
             console.log("Released Y");
             //Release gamepad throw light
-            this.soul_light.aimStop();
+            soullight.aimStop();
         }
 
         //Test Bright pulse

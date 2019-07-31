@@ -24,8 +24,8 @@ class BrightBeam {
         this.y = y;
         this.rects = [];
         this.angle = angle;
-        this.width = 40;//Pixel size of a default chunk
-        this.height = 8;//Pixel size of default chunk
+        this.width = 10;//Pixel size of a default chunk
+        this.height = 4;//Pixel size of default chunk
 
         //NOT WORKING
         // var graphics = this.scene.make.graphics().fillStyle(0xFFFF00).fillRect(this.x, this.y, this.width, this.height);
@@ -50,7 +50,8 @@ class BrightBeam {
         this.texture.refresh();
 
         //COMPONSITE MATTERJS
-        //Matter.Composite.allBodies(engine.world)
+        //Matter.Composite.allBodies(this.matter.world.engine.world)
+        //console.log(this.matter.world.engine.world.bodies); // All Bodies in the world
         //Matter.Query.point(bodies, point)
         //Query every X pixels along the length. Once it hits a body of the unallowed type, stop and measure distance. Keep 
         //reducing by half until it does not hit. Then walk it out 1 pixel at a time. Or just walk it out 1 pixel from the begining.
@@ -59,48 +60,38 @@ class BrightBeam {
         
 
     }
-    nextRect(){
-        //new Rectangle(scene, x, y [, width] [, height] [, fillColor] [, fillAlpha])
-        let angle = Phaser.Math.DegToRad(45);
+    create(x,y,angle){
+        this.x = x;
+        this.y = y;
+        this.angle = angle;
 
-        for(let r=0;r<3;r++){
+        //Fire a project that is slow moving and "creates" the light beam
+        //The walkway will slowly fade and die from the oldest to the newest.
+        //It gives off sparks of light, and lights up the area as well.
+
+        //Phaser.Physics.Matter.Matter.Query.point(this.matter.world.localWorld.bodies, {x:pointer.worldX, y:pointer.worldY})
+        //Phaser.Physics.Matter.Matter.Query.collides(this.body, this.matter.world.localWorld.bodies)
+        //Run until a collision
+        let doMake = true;
+        let r=0;
+        while(doMake){
 
             let dX = Math.cos(angle)*(this.width*r)+this.x;
             let dY = Math.sin(angle)*(this.width*r)+this.y;  
             
-            let newRect2 = this.scene.matter.add.image(dX, dY, 'beam1');        
+            let newRect2 = this.scene.matter.add.image(dX, dY, 'beam1');  
+            newRect2.body.label = "BRIGHTBEAM";
             newRect2.setStatic(true);               
             newRect2.rotation = angle;
+            newRect2.setCollisionCategory(CATEGORY.SOLID);
+            r++;
+            let ck = Phaser.Physics.Matter.Matter.Query.collides(newRect2.body, this.scene.matter.world.localWorld.bodies);
+            console.log(ck);
+            if(ck.length > 1 || r > 15){doMake = false;}
         }
 
-        // newRect.setVisible(true);
-
-        //let newRect = new Phaser.GameObjects.Rectangle(this.scene, this.x, this.y, this.width, this.height, 0xFFFF00, 1.0);
-        //let bodyRect = this.scene.matter.add.rectangle(this.x, this.y, this.width, this.height, { restitution: 0.9 });
-
-        //this.scene.sys.displayList.add(newRect);
-        //this.scene.sys.updateList.add(newRect);   
-        //this.scene.matter.world.add(newRect);
-        //this.scene.add.existing(newRect);
-
-        // const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules        
-        // const { width: w, height: h } = newRect;
-
-        // const mainBody =  Bodies.rectangle(0,0,w,h);
-        // const compoundBody = Body.create({
-        //     parts: [mainBody],
-        //     frictionStatic: 0,
-        //     frictionAir: 0.00,
-        //     friction: 0.1,
-        //     restitution : 0.0,
-        //     label: "ABILITY-BRIGHT-BRIDGE"
-        // });
-        // newRect.setExistingBody(compoundBody)
-        // .setCollisionCategory(CATEGORY.SOLID)
-        // .setCollidesWith([ CATEGORY.SOLANA])
-        // .setPosition(this.x, this.y)
-        // .setFixedRotation()
-        // .setIgnoreGravity(true);
+    }
+    removeBeam(){
 
     }
     
