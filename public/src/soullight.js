@@ -31,7 +31,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 
         this.owner = owner.sprite;
 
-        this.ownerid = 0;
+        this.ownerid = 1;
         
 
         this.debug = this.scene.add.text(this.x, this.y-16, 'SoulLight', { fontSize: '10px', fill: '#00FF00' });              

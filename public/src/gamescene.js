@@ -57,6 +57,18 @@ var GameScene = new Phaser.Class({
         // set the boundaries of our game world
         this.matter.world.convertTilemapLayer(collisionLayer);
         this.matter.world.setBounds(0,0,map.widthInPixels, map.heightInPixels);
+        console.log("Map size:",map.widthInPixels, map.heightInPixels);
+        //Generate shadow canvas
+        //Shadow Canvas
+        if(this.textures.get("canvasShadow").key != "__MISSING"){  
+            let oldShadow = this.textures.get("canvasShadow");
+            oldShadow.destroy();
+        }
+        shadow_layer = this.textures.createCanvas("canvasShadow", map.widthInPixels, map.heightInPixels);        
+        shadow_context = shadow_layer.getContext();
+        shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels); 
+        shadow_layer.refresh();
+
         //Draw Debug
         
         this.matter.world.createDebugGraphic();
@@ -79,7 +91,7 @@ var GameScene = new Phaser.Class({
         // create the solana sprite    
         solana = new Solana(this,128,128);  
         bright = new Bright(this,128,96);
-        soullight =new SoulLight({scene: this, x:128,y:96,sprite:'bright',frame:0},solana);
+        soullight =new SoulLight({scene: this, x:128,y:96,sprite:'bright',frame:0},bright);
         //Emit Events
         //this.events.emit('solanaSetup'); 
 
@@ -97,6 +109,11 @@ var GameScene = new Phaser.Class({
 
 
         //GROUPS
+        //BrightBeams
+        ab_brightbeams = this.add.group({ 
+            classType: BrightBeamBlock,
+            runChildUpdate: true 
+        });
         //SolarBlasts
         ab_solarblasts = this.add.group({ 
             classType: SolarBlast,
@@ -322,7 +339,7 @@ var GameScene = new Phaser.Class({
       
         
          //Lightning construct using preloaded cavnas called canvasShadow (See Preloader)
-        var shadTexture = this.add.image(640, 640, 'canvasShadow');
+        var shadTexture = this.add.image(map.widthInPixels/2, map.heightInPixels/2, 'canvasShadow');
         shadTexture.alpha = .9;
 
         var light1 = this.add.image(256,64,'light1');
@@ -448,7 +465,8 @@ var GameScene = new Phaser.Class({
                 || gameObjectB instanceof TMXGate
                 || gameObjectB instanceof TMXPlate
                 || gameObjectB instanceof Rock
-                || gameObjectB instanceof Crate)) {   
+                || gameObjectB instanceof Crate
+                || gameObjectB instanceof BrightBeamBlock)) {   
                 //handle plaform jumping allowance             
                 if(bodyA.label == "SOLANA_BOTTOM"){
                     solana.touching.down++;
@@ -743,7 +761,7 @@ var GameScene = new Phaser.Class({
         soullight.update(time,delta);
 
         //Draw lighting        
-        shadow_context.fillRect(0,0,1280,1280);    
+        shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels);    
         
         //Do Crystal Lamps and Light Checking
         var solana_in_light = false;

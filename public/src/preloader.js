@@ -112,12 +112,7 @@ var Preloader = new Phaser.Class({
 		//Effects / Particles
 		this.load.atlas('shapes', 'assets/effects/shapes.png', 'assets/effects/shapes.json');
   		this.load.text('effect-bright-sparks', 'assets/effects/bright_sparks.json');
-
-		//Shadow Canvas
-		shadow_layer = this.textures.createCanvas("canvasShadow", 1280, 1280);        
-        shadow_context = shadow_layer.getContext();
-        shadow_context.fillRect(0,0,1280,1280); 
-        shadow_layer.refresh();
+		this.load.image('lightburst-1', 'assets/effects/lightburst-1.png');
 
 		// font
 		this.load.bitmapFont('fontwhite', 'img/fontwhite.png', 'img/fontwhite.xml');
