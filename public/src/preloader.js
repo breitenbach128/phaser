@@ -72,7 +72,7 @@ var Preloader = new Phaser.Class({
         //Map Assets  
 		this.load.tilemapTiledJSON('map2', 'assets/world/map2_32ts.json'); 
 		this.load.tilemapTiledJSON('map3', 'assets/world/map3_32ts.json');    
-		this.load.spritesheet('tiles32', 'assets/world/oldTileset32.png', {frameWidth: 32, frameHeight: 32}); 
+		this.load.spritesheet('tiles32', 'assets/world/oldTileset32.png', {frameWidth: 32, frameHeight: 32, spacing: 2}); 
 		this.load.spritesheet('collisions32', 'assets/world/map_collision.png', {frameWidth: 32, frameHeight: 32}); 
 		//Entity Assets
         this.load.spritesheet('enemy1', 'assets/characters/slimemonster1.png', {frameWidth: 128, frameHeight: 78});    

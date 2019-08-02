@@ -101,7 +101,6 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     if(this.falling){
                         //If I was falling, shake the camera.
                         camera_main.shake(80,.005);
-                        console.log("Dark hit ground");
                         this.falling = false;
                         
                     }
@@ -148,9 +147,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     this.sprite.anims.play('dark-idle', true);//Idle
                 }
                 //Dark Jump
-                if(control_jump){console.log("Dark jump button");}
-                if(this.light_status == 1 && control_jump && this.airTime ==  0){
-                    console.log("Dark jump");
+                if(this.light_status == 1 && control_jump && this.airTime <=  10){
                     this.sprite.setVelocityY(-this.jump_speed);
                 }
 

@@ -131,3 +131,65 @@ class Rock extends Phaser.Physics.Matter.Sprite{
 
     }
 };
+
+class Fallplat extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y,texture,frame) {
+        super(scene.matter.world, x, y, texture, frame)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+
+        this.setActive(true);
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.rectangle(0,0,w,h);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.02,
+            friction: 0.1,
+            label: "FALLPLAT"
+        });
+
+        this
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.SOLID)
+        .setPosition(x, y)
+        .setFixedRotation() 
+        .setStatic(true);
+        //Custom Props
+        this.ready = true;
+    }
+    setup(x,y){
+        this.setActive(true);
+        this.setPosition(x,y); 
+    }
+    update(time, delta)
+    {       
+
+    }
+    touched(){
+        //Gradual Wobble and then fall
+        //this.setStatic(false);
+        if(this.ready){
+            this.ready = false;
+            let tween = this.scene.tweens.add({
+                targets: this,
+                x: this.x+1,               // '+=100'
+                y: this.y+1,               // '+=100'
+                ease: 'Bounce.InOut',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+                duration: 150,
+                repeat: 3,            // -1: infinity
+                yoyo: true,
+                onComplete: this.openComplete,
+                onCompleteParams: [this],
+            });
+        }
+    }
+    openComplete(tween, targets, myPlat){
+        myPlat.setStatic(false);
+        myPlat.setVelocityY(6);//Fall faster than player
+    }
+};

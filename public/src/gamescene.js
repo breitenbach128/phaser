@@ -238,7 +238,12 @@ var GameScene = new Phaser.Class({
                     let rY = Phaser.Math.Between(-32,32);
                     fireflies.get(objectlayer.objects[e].x+rX,objectlayer.objects[e].y+rY);
                 }
+            }else if(objectlayer.objects[e].type == "platfall"){ 
+                x_offset = objectlayer.objects[e].width/2;
+                y_offset = objectlayer.objects[e].height/2;
+                let newFallPlat = new Fallplat(this,objectlayer.objects[e].x+x_offset,objectlayer.objects[e].y-y_offset,'tiles32',objectlayer.objects[e].gid-1);
             }
+
             if(mapObject){ 
                 mapObject.setup(objectlayer.objects[e].x-x_offset,objectlayer.objects[e].y-y_offset,objectlayer.objects[e].rotation);
             }
@@ -466,6 +471,7 @@ var GameScene = new Phaser.Class({
                 || gameObjectB instanceof TMXPlate
                 || gameObjectB instanceof Rock
                 || gameObjectB instanceof Crate
+                || gameObjectB instanceof Fallplat
                 || gameObjectB instanceof BrightBeamBlock)) {   
                 //handle plaform jumping allowance             
                 if(bodyA.label == "SOLANA_BOTTOM"){
@@ -588,6 +594,24 @@ var GameScene = new Phaser.Class({
                         }else{
                             gObjs[1].setVelocity(4,-4);
                         }
+                    }  
+                }
+                //Between Fallplat and Solana
+                if ((bodyA.label === 'FALLPLAT' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'FALLPLAT')) {
+                    //Get Bullet Object and run hit function
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'FALLPLAT');
+                    if (gObjs[0].active && gObjs[0].y > gObjs[1].y){
+                        gObjs[0].touched();
+                    }  
+                }
+                //Between Fallplat and Ground at velocity
+                if ((bodyA.label === 'FALLPLAT' && bodyB.label === 'SOLID') || (bodyA.label === 'SOLID' && bodyB.label === 'FALLPLAT')) {
+                    //Get Bullet Object and run hit function
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'FALLPLAT');
+                    if (gObjs[0].ready == false && gObjs[0].y < gObjs[1].tile.pixelY){
+                        emitter0.active = true;
+                        emitter0.explode(5,gObjs[0].x,gObjs[0].y);
+                        gObjs[0].destroy();
                     }  
                 }
                 //Between Bullets and Ground
