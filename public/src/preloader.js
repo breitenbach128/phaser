@@ -62,16 +62,23 @@ var Preloader = new Phaser.Class({
 		this.loadingbar_fill = this.add.sprite(400, 300, "loadingbar_fill");
 		this.setPreloadSprite(this.loadingbar_fill);
 
+		
+        //Setup Shader
+        glowPipeline = game.renderer.addPipeline('GlowShader', new ShaderGlow(game));
+        glowPipeline.setFloat1('alpha', 1.0);
+
 		// now load images, audio etc.
 		//Background
 		this.load.image('forest_background', 'assets/world/forest_bg.png');
 		// Menu
         this.load.atlas('sprites', 'img/spritearray.png', 'img/spritearray.json');
         this.load.image('Title1', 'img/Title1.png');
-        this.load.image('button_sun', 'img/sun1.png');
+		this.load.image('button_sun', 'img/sun1.png');
+		this.load.spritesheet('button_yellow','assets/ui/button_yellow.png',{frameWidth: 190, frameHeight: 49})
         //Map Assets  
 		this.load.tilemapTiledJSON('map2', 'assets/world/map2_32ts.json'); 
-		this.load.tilemapTiledJSON('map3', 'assets/world/map3_32ts.json');    
+		this.load.tilemapTiledJSON('map3', 'assets/world/map3_32ts.json');  
+		this.load.tilemapTiledJSON('map4', 'assets/world/map4_32ts.json');   
 		this.load.spritesheet('tiles32', 'assets/world/oldTileset32.png', {frameWidth: 32, frameHeight: 32, spacing: 2}); 
 		this.load.spritesheet('collisions32', 'assets/world/map_collision.png', {frameWidth: 32, frameHeight: 32}); 
 		//Entity Assets

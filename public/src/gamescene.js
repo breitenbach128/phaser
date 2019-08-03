@@ -45,8 +45,8 @@ var GameScene = new Phaser.Class({
         var Tiles = map.addTilesetImage('32Tileset','tiles32');//called it map1_tiles in tiled
         var CollisionTiles = map.addTilesetImage('collision','collisions32');//called it map1_tiles in tiled
         // create the ground layer
-        let groundLayer = map.createDynamicLayer('fg', Tiles, 0, 0);
         let bglayer = map.createStaticLayer('bg', Tiles, 0, 0);
+        let fglayer = map.createDynamicLayer('fg', Tiles, 0, 0);
 
         let collisionLayer = map.createDynamicLayer('collision', CollisionTiles, 0, 0);
         collisionLayer.setVisible(false);
@@ -294,7 +294,7 @@ var GameScene = new Phaser.Class({
                     
                     this.cameras.main.centerOn(exitObj.x,exitObj.y);
                     // make the camera follow the solana
-                    this.cameras.main.startFollow(solana.sprite,true,.1,.1,0,0);
+                    //this.cameras.main.startFollow(solana.sprite,true,.1,.1,0,0);
                 }
             }else{
                 exitObj = exits.get();
@@ -310,7 +310,18 @@ var GameScene = new Phaser.Class({
         setupTriggerTargets(triggerzones,"zones",this);
         setupTriggerTargets(platforms,"platforms",this);
 
-        //Particles - Example
+        //Particles
+        emitter_dirt_spray = this.add.particles('impact1').createEmitter({
+            x: 400,
+            y: 300,
+            speed: { min: -200, max: 200 },
+            angle: { min: 0, max: -180 },
+            scale: { start: 0.2, end: 0.1 },
+            blendMode: 'NORMAL',
+            active: false,
+            lifespan: 100,
+            gravityY: 800
+         });
         emitter0 = this.add.particles('impact1').createEmitter({
             x: 400,
             y: 300,
@@ -469,24 +480,29 @@ var GameScene = new Phaser.Class({
                 || gameObjectB instanceof Barrier
                 || gameObjectB instanceof TMXGate
                 || gameObjectB instanceof TMXPlate
-                || gameObjectB instanceof Rock
-                || gameObjectB instanceof Crate
                 || gameObjectB instanceof Fallplat
-                || gameObjectB instanceof BrightBeamBlock)) {   
-                //handle plaform jumping allowance             
-                if(bodyA.label == "SOLANA_BOTTOM"){
-                    solana.touching.down++;
-                }
-                if(bodyA.label == "SOLANA_RIGHT"){
-                    solana.touching.right++;
-                }
-                if(bodyA.label == "SOLANA_LEFT"){
-                    solana.touching.left++;
-                }
-                //Modify her velocity for 100% friction from the object
-                // solana.body.velocity.x+= gameObjectB.body.velocity.x;                             
-                // solana.body.velocity.y+= gameObjectB.body.velocity.y;                             
+                || gameObjectB instanceof BrightBeamBlock)) {  
+
+                    //handle plaform jumping allowance             
+                    if(bodyA.label == "SOLANA_BOTTOM"){
+                        solana.touching.down++;
+                    }
+                    if(bodyA.label == "SOLANA_RIGHT"){
+                        solana.touching.right++;
+                    }
+                    if(bodyA.label == "SOLANA_LEFT"){
+                        solana.touching.left++;
+                    }                            
               }
+            //Dont count rocks and crates as walls.
+            if (gameObjectB !== undefined &&
+                (gameObjectB instanceof Rock
+                || gameObjectB instanceof Crate)) {   
+
+                    if(bodyA.label == "SOLANA_BOTTOM"){
+                        solana.touching.down++;
+                    }                          
+                }
             }
         });
 
@@ -765,6 +781,20 @@ var GameScene = new Phaser.Class({
         gamePad.updateButtonState();
         keyPad.updateKeyState();
  
+        //center camera on the spot between the players. Zoom out to a max.
+        let disPlayers = Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y);
+
+        let midPoint = {x:(solana.x+bright.x)/2,y:(solana.y+bright.y)/2}
+        this.cameras.main.centerOn(midPoint.x,midPoint.y);
+        if(disPlayers > 500 && this.cameras.main.zoom != 1.75){
+            this.cameras.main.zoomTo(1.75,1000,'Linear');
+        }
+        if(disPlayers < 500 && this.cameras.main.zoom != 2){
+            this.cameras.main.zoomTo(2,1000,'Linear');
+        }
+        //Teleport Bright
+        if(disPlayers > 1000){bright.setPosition(solana.x,solana.y - 48)}
+
         //DEBUG
         if(GLOBAL_DEBUG){
             //Draw Pointer - DEBUG
@@ -883,10 +913,10 @@ var GameScene = new Phaser.Class({
         if(curr_player == players.SOLANA){
             curr_player=players.BRIGHT;
             if(bright.light_status == 0){bright.reAlignBright();}            
-            this.cameras.main.startFollow(bright.sprite,true,.1,.1,0,0); 
+            //this.cameras.main.startFollow(bright.sprite,true,.1,.1,0,0); 
         }else{
             curr_player=players.SOLANA;
-            this.cameras.main.startFollow(solana.sprite,true,.1,.1,0,0);
+            //this.cameras.main.startFollow(solana.sprite,true,.1,.1,0,0);
         }
         
 

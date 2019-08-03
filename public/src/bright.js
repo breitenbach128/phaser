@@ -26,11 +26,11 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
         const compoundBody = Body.create({
           parts: [mainBody, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
-          frictionStatic: 0,
-          frictionAir: 0.02,
-          friction: 0.3,
+          frictionStatic: 0.5,
+          frictionAir: 0.3,
+          friction: 0.5,
           restitution: 0.00,
-          density: 0.01,
+          density: 0.05,
           label: "BRIGHT"
         });
         this.sprite
@@ -46,7 +46,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.hp = 1;
         this.max_hp = 1;
         this.mv_speed = 3;
-        this.roll_speed = .4;
+        this.roll_speed = .3;
         this.jump_speed = 6;
         this.alive = true;
         this.falling = false;
@@ -115,58 +115,69 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 let control_down = (game.wasd.down.isDown || gamePad.getStickLeft().y > 0);
                 let control_jump = (keyPad.checkKeyState('jump') == 1 || gamePad.checkButtonState('jump') == 1);
                 let control_beam = (keyPad.checkKeyState('beam') == 1);
-                //Beam 
-                if(control_beam && this.beamReady && this.light_status == 0){
-                    this.beamReady = false;
-                    console.log(soullight)
-                    this.beamAbility.create(soullight.aimer.x,soullight.aimer.y,soullight.aimer.rotation);
-                }
-                //Movement
-                if (control_left) {
-                    if(this.light_status == 0){
-                        this.sprite.setVelocityX(-this.mv_speed);
-                        this.sprite.anims.play('bright-idle', true);
-                        this.flipX= true; // flip the sprite to the left
-                    }else{                        
-                        this.sprite.anims.play('dark-idle', true);
-                        this.sprite.setAngularVelocity(-this.roll_speed);
+                //Control Based on Light or Dark Modes
+                let darkMode = 1;
+                let brightMode = 0;
+                if(this.light_status == brightMode){
+                    //BRIGHT CONTROLS 
+                    if(control_beam && this.beamReady ){
+                        this.beamReady = false;
+                        this.beamAbility.create(soullight.aimer.x,soullight.aimer.y,soullight.aimer.rotation);
                     }
-                }
-                else if (control_right) {
-                    if(this.light_status == 0){
+                    if(control_left){
+                        this.sprite.setVelocityX(-this.mv_speed);
+                        this.flipX= true; // flip the sprite to the left
+                        this.sprite.anims.play('bright-idle', true);//Idle
+                    }
+                    if(control_right){
                         this.sprite.setVelocityX(this.mv_speed);
                         this.flipX= false; // flip the sprite to the right
-                    }else{                        
-                        this.sprite.anims.play('dark-idle', true);
-                        this.sprite.setAngularVelocity(this.roll_speed);
+                        this.sprite.anims.play('bright-idle', true);//Idle
                     }
-                }
-                else if(!control_left && !control_right){
-                    this.sprite.setVelocityX(0);
-                    this.sprite.setAngularVelocity(0);
-                    this.sprite.anims.play('dark-idle', true);//Idle
-                }
-                //Dark Jump
-                if(this.light_status == 1 && control_jump && this.airTime <=  10){
-                    this.sprite.setVelocityY(-this.jump_speed);
-                }
-
-                if(this.light_status == 0){ //Only if Bright
-                    //Vertical Control
                     if (control_up) {
                         this.sprite.setVelocityY(-this.mv_speed);
                         this.sprite.anims.play('bright-idle', true);
                     }
-                    else if (control_down) {
+                    if (control_down) {
                         this.sprite.setVelocityY(this.mv_speed);
                         this.sprite.anims.play('bright-idle', true);
                     }
-                    else if(!control_up && !control_down){
-                        this.sprite.setVelocityY(0);
+                    if(!control_left && !control_right && !control_up && !control_down){
                         this.sprite.anims.play('bright-idle', true);//Idle
                     }
-                }
+                    
 
+                }else{
+                    //DARK CONTROLS
+                    if (control_left) {          
+                        this.sprite.setAngularVelocity(-this.roll_speed);            
+                        this.sprite.anims.play('dark-idle', true);      
+                    }
+                    if (control_right) {     
+                        this.sprite.setAngularVelocity(this.roll_speed);                    
+                        this.sprite.anims.play('dark-idle', true);                 
+                    }
+                    if(!control_left && !control_right){
+                        this.sprite.anims.play('dark-idle', true);//Idle
+                    }
+                    
+                    if (control_down && this.airTime == 0) {
+                        let angVel = this.body.angularVelocity;
+                        if(angVel > 0){this.setAngularVelocity(angVel-.05)};
+                        if(angVel < 0){this.setAngularVelocity(angVel+.05)};
+                        if(angVel < .10 && angVel > -.10){this.setAngularVelocity(0)};
+                        //Kick up dust
+                        if(this.body.velocity.x > 1 || this.body.velocity.x < -1){
+                            let pQ = Math.round(Math.abs(this.body.velocity.x));
+                            emitter_dirt_spray.active = true;
+                            emitter_dirt_spray.explode(5,this.x,this.y);
+                        }
+                    }
+                                    //Dark Jump
+                    if(control_jump && this.airTime <=  10){
+                        this.sprite.setVelocityY(-this.jump_speed);
+                    }
+                }
             }
         }
     }
@@ -175,6 +186,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     }
     toDark(){
         this.light_status = 1;
+        this.setFrictionAir(0.01);
         this.sprite.setTexture('dark');
         this.sprite.anims.play('dark-idle', false);
         this.sprite.setIgnoreGravity(false);
@@ -183,6 +195,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     }
     toBright(){
         this.light_status = 0;
+        this.setFrictionAir(0.30);
         this.sprite.setTexture('bright');
         this.sprite.anims.play('bright-idle', false);
         this.sprite.setIgnoreGravity(true);
