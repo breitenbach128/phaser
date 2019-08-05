@@ -56,7 +56,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         this.setScale(.5);
         this.setTint(0x333333);
         this.debug = scene.add.text(this.x, this.y-16, 'debug', { fontSize: '12px', fill: '#00FF00' });
-        this.groundTile = {x:0,y:0};//Current Ground Tile
+        this.groundTile = {x:0,y:0, updated: false};//Current Ground Tile
 
         //Setup Collision
         this.scene.matterCollision.addOnCollideStart({
@@ -72,6 +72,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
                         if(this.groundTile.x != gameObjectB.x || this.groundTile.y != gameObjectB.y){
                             this.groundTile.x = gameObjectB.x;
                             this.groundTile.y = gameObjectB.y;
+                            this.groundTile.updated = true;
                         }
                     }
                 } 
@@ -141,21 +142,34 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         }
     }
     patrol(){
-        //Phaser.Physics.Matter.Matter.Query.point(this.scene.matter.world.localWorld.bodies, {x:this.x, y:this.y})
-        //Just look at monster position and round to tile position. I dont even need to know my collision object.
-        let checkTile = map.getTileAt((this.groundTile.x+this.patrolDirection), this.groundTile.y, true, this.scene.collisionLayer)
-        console.log(checkTile,map.tileWidth,this.groundTile,this.patrolDirection)
-        if(checkTile == null){this.patrolDirection = this.patrolDirection*-1;}//Toggle
-        this.setVelocityX(this.mv_speed*this.patrolDirection);
+        if(this.groundTile.updated){
+            //Phaser.Physics.Matter.Matter.Query.point(this.scene.matter.world.localWorld.bodies, {x:this.x, y:this.y})
+            //Just look at monster position and round to tile position. I dont even need to know my collision object.
+
+            //METHOD 1 - Check One tile over from current tile. If null, reverse position
+            // let checkTile = map.getTileAt((this.groundTile.x+this.patrolDirection), this.groundTile.y, true, this.scene.collisionLayer)
+            // if(checkTile.index == -1){this.patrolDirection = this.patrolDirection*-1;}//Toggle
+
+            //METHOD 2
+            let checkTile = map.getTileAt((this.groundTile.x+this.patrolDirection), this.groundTile.y, true, this.scene.collisionLayer)
+            if(checkTile.index == -1){//Toggle
+
+                let ts= map.tileWidth;
+
+                if((this.patrolDirection == -1 && (this.x) < (this.groundTile.x*ts+ ts/2))
+                || (this.patrolDirection == 1 && (this.x) > (this.groundTile.x*ts + ts/2))){
+                    this.patrolDirection = this.patrolDirection*-1;//Toggle
+                }
+
+            }
+            this.setVelocityX(this.mv_speed*this.patrolDirection);
+        }
     }
     defend(){
-
+        //Stand ground and attack when within range.
     }
     flee(){
-
-    }
-    setGroundTile(tile){
-        this.groundTile = Tile;
+        //Flee Away from Solana until outside aggro.
     }
     death(animation, frame){
         
@@ -181,6 +195,15 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         }
     }
 };
+
+class EnemyFlying extends Enemy{
+
+    constructor(scene,x,y) {
+        super(scene, x, y);
+
+        this.setIgnoreGravity(true);
+    }
+}
 //Credits
 /* 
 Slime Monster
