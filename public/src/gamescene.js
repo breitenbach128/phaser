@@ -48,14 +48,14 @@ var GameScene = new Phaser.Class({
         let bglayer = map.createStaticLayer('bg', Tiles, 0, 0);
         let fglayer = map.createDynamicLayer('fg', Tiles, 0, 0);
 
-        let collisionLayer = map.createDynamicLayer('collision', CollisionTiles, 0, 0);
-        collisionLayer.setVisible(false);
-        collisionLayer.setCollisionByProperty({ collides: true });
+        this.collisionLayer = map.createDynamicLayer('collision', CollisionTiles, 0, 0);
+        this.collisionLayer.setVisible(false);
+        this.collisionLayer.setCollisionByProperty({ collides: true });
         // the solana will collide with this layer
         //groundLayer.setCollisionByExclusion([-1]);
         //groundLayer.setCollisionBetween(0, 256);
         // set the boundaries of our game world
-        this.matter.world.convertTilemapLayer(collisionLayer);
+        this.matter.world.convertTilemapLayer(this.collisionLayer);
         this.matter.world.setBounds(0,0,map.widthInPixels, map.heightInPixels);
         console.log("Map size:",map.widthInPixels, map.heightInPixels);
         //Generate shadow canvas
@@ -74,7 +74,7 @@ var GameScene = new Phaser.Class({
         this.matter.world.createDebugGraphic();
         this.matter.world.drawDebug = false;
         //Add Labels for tile bodies for easier collision management
-        collisionLayer.forEachTile(function (tile) {
+        this.collisionLayer.forEachTile(function (tile) {
             // In Tiled, the platform tiles have been given a "type" property which is a string
             //if (tile.properties.type === 'lava' || tile.properties.type === 'spike')
             //{
@@ -596,6 +596,7 @@ var GameScene = new Phaser.Class({
                 var bodyB = getRootBody(event.pairs[i].bodyB);
                 var GameObjectA =  bodyA.gameObject;
                 var GameObjectB =  bodyB.gameObject;
+
 
                 //Between Solana and Enemies
                 if ((bodyA.label === 'ENEMY' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'ENEMY')) {
