@@ -45,8 +45,62 @@
                 {
                  "gid":497,
                  "height":32,
-                 "id":1,
+                 "id":38,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"aBehav",
+                         "type":"string",
+                         "value":"patrolFixed"
+                        }, 
+                        {
+                         "name":"enemyClass",
+                         "type":"string",
+                         "value":"air"
+                        }, 
+                        {
+                         "name":"enemyType",
+                         "type":"string",
+                         "value":"bat"
+                        }, 
+                        {
+                         "name":"pBehav",
+                         "type":"string",
+                         "value":"patrolFixed"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":160,
+                 "y":96
+                }, 
+                {
+                 "gid":497,
+                 "height":32,
+                 "id":39,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"aBehav",
+                         "type":"string",
+                         "value":"patrol"
+                        }, 
+                        {
+                         "name":"enemyClass",
+                         "type":"string",
+                         "value":"ground"
+                        }, 
+                        {
+                         "name":"enemyType",
+                         "type":"string",
+                         "value":"slime1"
+                        }, 
+                        {
+                         "name":"pBehav",
+                         "type":"string",
+                         "value":"patrol"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -427,8 +481,8 @@
                  "type":"crystallamp",
                  "visible":true,
                  "width":16,
-                 "x":375.833333333333,
-                 "y":278.166666666667
+                 "x":375.833,
+                 "y":278.167
                 }, 
                 {
                  "height":16,
@@ -641,7 +695,7 @@
          "y":0
         }],
  "nextlayerid":12,
- "nextobjectid":38,
+ "nextobjectid":40,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

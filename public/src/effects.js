@@ -41,3 +41,39 @@ var ShaderGlow = new Phaser.Class({
         });
     } 
 });
+
+//Flash Effect
+function FlashSpriteTint(scene,sprite,color,time){
+    let c1 = Phaser.Display.Color.HexStringToColor('#ffffff'); // From no tint
+    let c2 = Phaser.Display.Color.HexStringToColor(color); // To RED
+    console.log(c2,sprite)
+    this.tweenStep = 0;
+    let tween = scene.tweens.add({
+        targets: sprite,
+        tweenStep: 100,
+        onUpdate: ()=>{
+            
+            let col = Phaser.Display.Color.Interpolate.ColorWithColor(c1, c2, 100, this.tweenStep);
+            let colourInt = Phaser.Display.Color.GetColor(col.r, col.g, col.b);
+            sprite.setTint(colourInt);
+            console.log("Tweening Color for flash",col.r, col.g, col.b, this.tweenStep);
+
+        },
+        duration: time,
+        yoyo: true // Return to first tint
+    });
+
+    // //sprite.setTint(0xff0000);
+    // sprite.tint = c1._color;
+
+    // let tween = scene.tweens.add({
+    //     targets: sprite,
+    //     tint: c2._color,
+    //     duration: time,
+    //     onComplete: ()=>{
+    //         console.log("tween complete");
+    //         sprite.clearTint();
+    //     }
+    // });
+
+    }

@@ -18,8 +18,7 @@ class HudScene extends Phaser.Scene {
         if(this.ready){  
             let debugString =  "CameraX:"+String(Math.round(camera_main.worldView.x))
             +"\nCameraY:" + String(Math.round(camera_main.worldView.y))
-            +"\nSolanadiff: X:"+String(solana.mv_Xdiff)+"-Y:"+String(solana.mv_Ydiff)
-            +"\nDisPlayers:"+String(Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y));
+            +"\nDisPlayers:"+String(Math.round(Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y)));
 
             if(gamePad.ready){
                 debugString=debugString+"\nGamePad: button Y:"+String(gamePad.checkButtonState('Y'));
@@ -46,6 +45,7 @@ class HudScene extends Phaser.Scene {
         }  
         this.energy_bar = [];
         this.dialogueArea.destroyDialogue();
+        this.debug.destroy();
     }
     setupHud(player)
     {
@@ -67,7 +67,7 @@ class HudScene extends Phaser.Scene {
         this.dialogueArea = new Dialogue(this,dialogueChain);
         this.dialogueArea.start();
         //DEBUG
-        this.debug = this.add.text(48, 16, 'DEBUG-HUD', { fontSize: '32px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
+        this.debug = this.add.text(48, 16, 'DEBUG-HUD', { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
         //HUD Energy Bar Flash/Scale Effect: When energy is added, alter the look for a few MS to show energy has been gained.
         this.energy_bar_effect = this.time.addEvent({ delay: 200, callback: this.resetEnergyScale, callbackScope: this, loop: false });
         this.inventory = new Inventory(this);

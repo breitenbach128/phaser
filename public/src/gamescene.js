@@ -212,13 +212,24 @@ var GameScene = new Phaser.Class({
         let exitlayer = map.getObjectLayer('exit');
         //Spawn Enemies from Enemy TMX Object layer
         for(e=0;e<enemylayer.objects.length;e++){
-            
-            new_enemy = enemies.get();
+            let props = getTileProperties(enemylayer.objects[e].properties);
+            let EnemyType = props.enemyType;
+            let EnemyClass = props.enemyClass;
+            let PassiveBehavior = props.pBehav;
+            let AggressivBehavior = props.aBehav;
+            if(EnemyClass == 'ground'){
+                new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
+            }else if(EnemyClass == 'air'){
+                new_enemy = enemiesFly.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);                
+            }else{
+                new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
+            }
+
             if(new_enemy){
                 //Setup Enemy
                 new_enemy.setActive(true);
                 new_enemy.setVisible(true);
-                new_enemy.setPosition(enemylayer.objects[e].x,enemylayer.objects[e].y);
+                new_enemy.setBehavior(PassiveBehavior,AggressivBehavior);
                 
                 
             } 
@@ -361,7 +372,7 @@ var GameScene = new Phaser.Class({
         
          //Lightning construct using preloaded cavnas called canvasShadow (See Preloader)
         var shadTexture = this.add.image(map.widthInPixels/2, map.heightInPixels/2, 'canvasShadow');
-        shadTexture.alpha = .9;
+        shadTexture.alpha = .6;
 
         var light1 = this.add.image(256,64,'light1');
         light1.alpha = .5;
@@ -779,10 +790,6 @@ var GameScene = new Phaser.Class({
             let crate = new Crate(this,400+rX,100);
         }
         
-        //Test Flying Enemies
-        let FlyEnemy = new EnemyFlying(this,200,100);
-        FlyEnemy.setFixedRotation();
-        enemiesFly.add(FlyEnemy);
     },
 
     update: function (time, delta)
@@ -841,6 +848,7 @@ var GameScene = new Phaser.Class({
         
 
         shadow_context = this.cutCanvasCircle(soullight.sprite.x,soullight.sprite.y,soullight.protection_radius.value,shadow_context);
+        shadow_context = this.cutCanvasCircle(bright.x,bright.y,bright.light_radius,shadow_context);
 
         if(Phaser.Math.Distance.Between(soullight.sprite.x,soullight.y,solana.sprite.x,solana.sprite.y) <= soullight.protection_radius.value){solana_in_light = true;}
 
@@ -852,7 +860,8 @@ var GameScene = new Phaser.Class({
 
         //Suicide to test animation
         if(Phaser.Input.Keyboard.JustDown(game.wasd.suicide)){
-            solana.receiveDamage(1);
+            FlashSpriteTint(this,solana,'#FF0000',100);
+            //solana.receiveDamage(1);
         }
         
         //GLOBAL DEBUG TURN ON/OFF
@@ -1153,26 +1162,26 @@ function createControls(scene){
 }
 function createAnimations(scene){
     scene.anims.create({
-        key: 'enemy-idle',
-        frames: scene.anims.generateFrameNumbers('enemy1', { frames:[0] }),
+        key: 'slime1-idle',
+        frames: scene.anims.generateFrameNumbers('slime1', { frames:[0] }),
         frameRate: 3,
         repeat: -1
     });
     scene.anims.create({
-        key: 'enemy-walk',
-        frames: scene.anims.generateFrameNumbers('enemy1', { frames:[0,1,2,3] }),
+        key: 'slime1-move',
+        frames: scene.anims.generateFrameNumbers('slime1', { frames:[0,1,2,3] }),
         frameRate: 10,
         repeat: -1
     });
     scene.anims.create({
-        key: 'enemy-shoot',
-        frames: scene.anims.generateFrameNumbers('enemy1', { frames:[1]}),
+        key: 'slime1-shoot',
+        frames: scene.anims.generateFrameNumbers('slime1', { frames:[1]}),
         frameRate: 8,
         repeat: -1
     });
     scene.anims.create({
-        key: 'enemy-death',
-        frames: scene.anims.generateFrameNumbers('enemy1', { start: 0, end: 0 }),
+        key: 'slime1-death',
+        frames: scene.anims.generateFrameNumbers('slime1', { start: 0, end: 0 }),
         frameRate: 6,
         repeat: 0
     });
@@ -1320,5 +1329,30 @@ function createAnimations(scene){
         frames: scene.anims.generateFrameNumbers('fireflies', { frames:[0,1,2] }),
         frameRate: 16,
         repeat: 0
+    });   
+    
+    scene.anims.create({
+        key: 'bat-move',
+        frames: scene.anims.generateFrameNumbers('bat', { frames:[12,13,14,15] }),
+        frameRate: 16,
+        repeat: -1
+    });
+    scene.anims.create({
+        key: 'bat-idle',
+        frames: scene.anims.generateFrameNumbers('bat', { frames:[12,13,14,15] }),
+        frameRate: 16,
+        repeat: -1
+    });
+    scene.anims.create({
+        key: 'bat-shoot',
+        frames: scene.anims.generateFrameNumbers('bat', { frames:[12,13,14,15] }),
+        frameRate: 16,
+        repeat: -1
+    });
+    scene.anims.create({
+        key: 'bat-death',
+        frames: scene.anims.generateFrameNumbers('bat', { frames:[12,13,14,15] }),
+        frameRate: 16,
+        repeat: -1
     });
 }

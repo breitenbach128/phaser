@@ -1,12 +1,12 @@
 //When enemies are hit, they lose globs of oily shadow, of varying size, that fly off of them.
 class Enemy extends Phaser.Physics.Matter.Sprite{
-    constructor(scene,x,y) {
-        super(scene.matter.world, x, y, 'enemy1', 0)
+    constructor(scene,x,y,texture) {
+        super(scene.matter.world, x, y, texture, 0)
         this.scene = scene;       
         scene.matter.world.add(this);
         scene.add.existing(this); 
         this.setActive(true);
-        console.log("Enemy Created",x,y);
+        console.log("Enemy Created",x,y, texture,this.texture.key);
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         
         const { width: w, height: h } = this;
@@ -44,7 +44,6 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setPosition(x, y);
           //Custom Properties
-
         this.hp = 1;
         this.mv_speed = 1;
         this.aggroRNG = Phaser.Math.Between(0,100);
@@ -99,16 +98,16 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
             //Idle Vs Move Animations
             if(this.body.velocity.x != 0){
                 this.flipX = this.body.velocity.x < 0 ? false : true;
-                this.anims.play('enemy-walk', true);
+                this.anims.play(this.texture.key+'-move', true);
             }else{
-                this.anims.play('enemy-idle', true);
+                this.anims.play(this.texture.key+'-idle', true);
             }
         }
 
 
         this.debug.setPosition(this.x, this.y-64);
         this.debug.setText("BehavPass:"+this.behavior.passive
-        +"\nX:"+String(this.x)+", Y:"+String(this.y)
+        +"\nX:"+String(this.x>>0)+", Y:"+String(this.y>>0)
         +"\nPatrolWidth:"+String(this.patrolRange.min)+","+String(this.patrolRange.max));
     }
     barrage(){
@@ -116,7 +115,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         var bullet = bullets.get();
         if (bullet && this.gun.ready)//ROF(MS)
         {
-            this.anims.play('enemy-shoot', true);
+            this.anims.play(this.texture.key+'-shoot', true);
             
             let bullet = bullets.get();
             if(this.flipX){
@@ -172,15 +171,17 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
 
             //METHOD 2
             let checkTile = map.getTileAt((this.groundTile.x+this.patrolDirection), this.groundTile.y, true, this.scene.collisionLayer)
-            if(checkTile.index == -1){//Toggle
+            if(checkTile != null){
+                if(checkTile.index == -1){//Toggle
 
-                let ts= map.tileWidth;
+                    let ts= map.tileWidth;
 
-                if((this.patrolDirection == -1 && (this.x) < (this.groundTile.x*ts+ ts/2))
-                || (this.patrolDirection == 1 && (this.x) > (this.groundTile.x*ts + ts/2))){
-                    this.patrolDirection = this.patrolDirection*-1;//Toggle
+                    if((this.patrolDirection == -1 && (this.x) < (this.groundTile.x*ts+ ts/2))
+                    || (this.patrolDirection == 1 && (this.x) > (this.groundTile.x*ts + ts/2))){
+                        this.patrolDirection = this.patrolDirection*-1;//Toggle
+                    }
+
                 }
-
             }
             this.setVelocityX(this.mv_speed*this.patrolDirection);
         }
@@ -194,9 +195,12 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
     flee(){
         //Flee Away from Solana until outside aggro.
     }
+    setBehavior(p,a){
+        this.behavior = {passive:p,aggressive:a};
+    }
     death(animation, frame){
         
-        if(animation.key == 'enemy-death'){
+        if(animation.key == this.texture.key+'-death'){
             this.setActive(false);
             this.setVisible(false);
             this.debug.setVisible(false);
@@ -213,7 +217,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
             this.dead = true; 
                      
             this.on('animationcomplete',this.death,this);            
-            this.anims.play('enemy-death', false);
+            this.anims.play(this.texture.key+'-death', false);
             
         }
     }
@@ -221,8 +225,8 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
 
 class EnemyFlying extends Enemy{
 
-    constructor(scene,x,y) {
-        super(scene, x, y);
+    constructor(scene,x,y,texture) {
+        super(scene, x, y, texture);
 
         this.setIgnoreGravity(true);
 

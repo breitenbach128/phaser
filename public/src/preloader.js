@@ -82,7 +82,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('tiles32', 'assets/world/oldTileset32.png', {frameWidth: 32, frameHeight: 32, spacing: 2}); 
 		this.load.spritesheet('collisions32', 'assets/world/map_collision.png', {frameWidth: 32, frameHeight: 32}); 
 		//Entity Assets
-        this.load.spritesheet('enemy1', 'assets/characters/slimemonster1.png', {frameWidth: 128, frameHeight: 78});    
+        this.load.spritesheet('slime1', 'assets/characters/slimemonster1.png', {frameWidth: 128, frameHeight: 78});    
         this.load.spritesheet('bullet', 'assets/objects/projectiles.png', {frameWidth: 16, frameHeight: 16});
         this.load.image('impact1', 'assets/effects/particles.png');
         this.load.image('crate', 'assets/objects/crate.png');
@@ -99,6 +99,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('gameitems', 'assets/objects/gameitems.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('light_crystal', 'assets/objects/light_crystal.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('fireflies', 'assets/objects/fireflies.png', {frameWidth: 16, frameHeight: 16});
+		this.load.spritesheet('bat', 'assets/characters/bat_32.png', {frameWidth: 32, frameHeight: 32});
 		//Abilities
 		this.load.spritesheet('ability_solarblast', 'assets/objects/ability_solarblast.png', {frameWidth: 16, frameHeight: 16});		
 		this.load.image('soullightblast', 'assets/objects/soullightblast.png');
