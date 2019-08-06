@@ -6,7 +6,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         scene.matter.world.add(this);
         scene.add.existing(this); 
         this.setActive(true);
-
+        console.log("Enemy Created",x,y);
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         
         const { width: w, height: h } = this;
@@ -49,13 +49,14 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         this.mv_speed = 1;
         this.aggroRNG = Phaser.Math.Between(0,100);
         this.patrolDirection = -1;
+        this.patrolRange = {min:0,max:0};
         this.aggroRange = 100;
         this.maxAggroRange = 400;
         this.gun = new Gun(60,4,70);
         this.dead = false;
         this.setScale(.5);
         this.setTint(0x333333);
-        this.debug = scene.add.text(this.x, this.y-16, 'debug', { fontSize: '12px', fill: '#00FF00' });
+        this.debug = scene.add.text(this.x, this.y-16, 'debug', { resolution: 2, fontSize: '12px', fill: '#00FF00' });
         this.groundTile = {x:0,y:0, updated: false};//Current Ground Tile
 
         //Setup Collision
@@ -80,7 +81,8 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
             }
         });
 
-
+        this.behavior = {passive:'patrol',aggressive:'patrol'};
+        this.setPatrolRange(64);//Default fixed patrol width is width of sprite.
 
     }
     update(time, delta)
@@ -88,7 +90,11 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         if(!this.dead && solana.alive){
             this.rotation = 0;//Temp since the fixed rotation is not working.
 
-            this.patrol();
+            if(this.behavior.passive == 'patrol'){
+                this.patrol();
+            }else if(this.behavior.passive == 'patrolFixed'){
+                this.patrolFixed();
+            }
 
             //Idle Vs Move Animations
             if(this.body.velocity.x != 0){
@@ -101,7 +107,9 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
 
 
         this.debug.setPosition(this.x, this.y-64);
-        this.debug.setText("Rot:"+String(this.rotation));
+        this.debug.setText("BehavPass:"+this.behavior.passive
+        +"\nX:"+String(this.x)+", Y:"+String(this.y)
+        +"\nPatrolWidth:"+String(this.patrolRange.min)+","+String(this.patrolRange.max));
     }
     barrage(){
         //Shoot Ranged Weapon
@@ -141,6 +149,18 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
             this.setVelocityX(0);
         }
     }
+    setPatrolRange(width){
+        this.patrolRange = {min:this.x-width,max:this.x+width};
+    }
+    patrolFixed(){
+        //A fixed distace patrol
+        if((this.patrolDirection == -1 && (this.x) < (this.patrolRange.min))
+        || (this.patrolDirection == 1 && (this.x) > (this.patrolRange.max))){
+            this.patrolDirection = this.patrolDirection*-1;//Toggle
+        }
+
+        this.setVelocityX(this.mv_speed*this.patrolDirection);
+    }
     patrol(){
         if(this.groundTile.updated){
             //Phaser.Physics.Matter.Matter.Query.point(this.scene.matter.world.localWorld.bodies, {x:this.x, y:this.y})
@@ -164,6 +184,9 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
             }
             this.setVelocityX(this.mv_speed*this.patrolDirection);
         }
+    }
+    patrolWaypoints(){
+
     }
     defend(){
         //Stand ground and attack when within range.
@@ -202,6 +225,8 @@ class EnemyFlying extends Enemy{
         super(scene, x, y);
 
         this.setIgnoreGravity(true);
+
+        this.behavior = {passive:'patrolFixed',aggressive:'patrolFixed'};
     }
 }
 //Credits

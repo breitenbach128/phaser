@@ -124,6 +124,11 @@ var GameScene = new Phaser.Class({
             classType: Enemy,
             runChildUpdate: true 
         });
+        //Flying Enemies
+        enemiesFly = this.add.group({ 
+            classType: EnemyFlying,
+            runChildUpdate: true 
+        });
         //Bullets
         bullets = this.add.group({
             classType: Bullet,
@@ -773,7 +778,11 @@ var GameScene = new Phaser.Class({
             let rX = Phaser.Math.Between(-64,64);
             let crate = new Crate(this,400+rX,100);
         }
-  
+        
+        //Test Flying Enemies
+        let FlyEnemy = new EnemyFlying(this,200,100);
+        FlyEnemy.setFixedRotation();
+        enemiesFly.add(FlyEnemy);
     },
 
     update: function (time, delta)
