@@ -383,13 +383,13 @@
   <object id="35" name="platfall5" type="platfall" gid="379" x="928" y="192" width="32" height="32"/>
   <object id="41" name="rock" type="rock" x="301.5" y="271" width="16" height="16"/>
   <object id="42" name="rock" type="rock" x="282.5" y="271" width="16" height="16"/>
-  <object id="43" name="rock" type="rock" x="284" y="251" width="16" height="16"/>
-  <object id="44" name="rock" type="rock" x="305" y="247.5" width="16" height="16"/>
-  <object id="45" name="rock" type="rock" x="300.5" y="227" width="16" height="16"/>
-  <object id="46" name="rock" type="rock" x="282.5" y="228.5" width="16" height="16"/>
+  <object id="43" name="rock" type="rock" x="325.333" y="119" width="16" height="16"/>
+  <object id="44" name="rock" type="rock" x="260.333" y="192.833" width="16" height="16"/>
+  <object id="45" name="rock" type="rock" x="289.833" y="138.333" width="16" height="16"/>
+  <object id="46" name="rock" type="rock" x="299.167" y="113.167" width="16" height="16"/>
   <object id="47" name="rock" type="rock" x="260.5" y="267.5" width="16" height="16"/>
-  <object id="48" name="rock" type="rock" x="261.5" y="242.5" width="16" height="16"/>
-  <object id="49" name="rock" type="rock" x="294" y="195" width="16" height="16"/>
+  <object id="48" name="rock" type="rock" x="328.167" y="88.5" width="16" height="16"/>
+  <object id="49" name="rock" type="rock" x="276.667" y="223" width="16" height="16"/>
   <object id="50" name="crate" type="crate" x="313" y="143" width="16" height="16"/>
   <object id="51" name="wand" type="item" x="128" y="160" width="32" height="32"/>
  </objectgroup>

@@ -46,7 +46,7 @@ var GameScene = new Phaser.Class({
         var CollisionTiles = map.addTilesetImage('collision','collisions32');//called it map1_tiles in tiled
         // create the ground layer
         let bglayer = map.createStaticLayer('bg', Tiles, 0, 0);
-        let fglayer = map.createDynamicLayer('fg', Tiles, 0, 0);
+        let fglayer = map.createStaticLayer('fg', Tiles, 0, 0);
 
         this.collisionLayer = map.createDynamicLayer('collision', CollisionTiles, 0, 0);
         this.collisionLayer.setVisible(false);
