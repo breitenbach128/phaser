@@ -49,7 +49,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //Custom Properties
         this.hp = 5;
         this.max_hp = 5;
-        this.mv_speed = 4;
+        this.mv_speed = 3;
         this.mv_direction = {x:0,y:0};
         this.prev_position = {x:0,y:0};
         this.mv_Xdiff = 0;
@@ -59,6 +59,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.onWall = false;
         this.jumpReady = false;
         this.alive = true;
+        this.invuln = false;
         this.inLight = true;
         this.equipment = [
             {id:0,name:"Wand",lvl:0,equiped:false},
@@ -287,7 +288,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     }
     receiveDamage(damage) {
                 
-        if(this.alive){
+        if(this.alive && !this.invuln){
+            this.invuln = true;
+            this.setTint(0xFF0000);
+            //invuln timer
+            this.energyTimer = this.scene.time.addEvent({ delay: 100, callback: this.disableInvuln, callbackScope: this, loop: true });
             //Kill Blips
             this.scene.events.emit('playerHurt');
             hud.setHealth(this.hp,this.max_hp);
@@ -305,5 +310,9 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 console.log("deadly damage recv. Play death anim")              
             }
         }   
+    }
+    disableInvuln(){
+        this.invuln = false;
+        this.clearTint();
     }
 }

@@ -91,7 +91,7 @@ var Preloader = new Phaser.Class({
         this.load.spritesheet('bright', 'assets/characters/bright.png', {frameWidth: 48, frameHeight: 48});
         this.load.spritesheet('dark', 'assets/characters/dark.png', {frameWidth: 48, frameHeight: 48});
         this.load.spritesheet('soul_light', 'assets/characters/soul_light.png', {frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('mirror', 'assets/objects/mirror.png', {frameWidth: 48, frameHeight: 48});
+		this.load.spritesheet('mirror', 'assets/objects/mirror.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('lever', 'assets/objects/lever.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('pressure_plate', 'assets/objects/pressure_plate.png', {frameWidth: 32, frameHeight: 6});
 		this.load.spritesheet('tmxbutton', 'assets/objects/tmxbutton.png', {frameWidth: 16, frameHeight: 16});
@@ -139,6 +139,8 @@ var Preloader = new Phaser.Class({
 		// 	this.load.image('testloading'+i, 'img/spritearray.png');
 		// };
 		// !! TESTING !!
+		//EXTERNAL JSON ANIMATION LOADERS
+		//this.load.animation('gameAnimationsTest', 'anims/anims.json');
 	},
 
 	create: function ()
