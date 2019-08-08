@@ -1,4 +1,4 @@
-var GameSelectScene = new Phaser.Class({
+var MainMenu = new Phaser.Class({
 
     Extends: Phaser.Scene,
 
@@ -6,7 +6,7 @@ var GameSelectScene = new Phaser.Class({
 
     function MainMenu ()
     {
-        Phaser.Scene.call(this, { key: 'gameselect' });
+        Phaser.Scene.call(this, { key: 'mainmenu' });
     },
 
     preload: function ()

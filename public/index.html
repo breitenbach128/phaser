@@ -3,31 +3,31 @@
 <head>    	
     <script src="/socket.io/socket.io.js"></script>
     <script src="phaser.js"></script>
-    <script src="src/phaser-matter-collision-plugin.js"></script>
-    <script src="src/preloader.js"></script>
-    <script src="src/gameselectscene.js"></script>
-    <script src="src/introscene.js"></script>
-    <script src="src/controller.js"></script>
-    <script src="src/gamescene.js"></script>  
-    <script src="src/lobby.js"></script>   
-    <script src="src/hud.js"></script>
-    <script src="src/menuscene.js"></script>
-    <script src="src/storyboard.js"></script>
-    <script src="src/credits.js"></script>
-    <script src="src/solana.js"></script>
-    <script src="src/bright.js"></script>
-    <script src="src/soullight.js"></script>
-    <script src="src/effects.js"></script>
-    <script src="src/abilities.js"></script>
-    <script src="src/addons.js"></script>
-    <script src="src/bullet.js"></script>
-    <script src="src/mirror.js"></script>
-    <script src="src/specials.js"></script>
-    <script src="src/Exit.js"></script>
-    <script src="src/trigger.js"></script>
-    <script src="src/enemy.js"></script>
-    <script src="src/items.js"></script>
-    <script src="src/npcs.js"></script>
+    <script src="src/plugins/phaser-matter-collision-plugin.js"></script>
+    <script src="src/scenes/preloader.js"></script>
+    <script src="src/scenes/splashscene.js"></script>
+    <script src="src/scenes/introscene.js"></script>
+    <script src="src/scenes/gamescene.js"></script>  
+    <script src="src/scenes/lobby.js"></script>
+    <script src="src/scenes/mainmenu.js"></script>
+    <script src="src/scenes/storyboard.js"></script>
+    <script src="src/scenes/credits.js"></script>
+    <script src="src/utility/controller.js"></script>   
+    <script src="src/utility/hud.js"></script>
+    <script src="src/utility/addons.js"></script>
+    <script src="src/characters/solana.js"></script>
+    <script src="src/characters/bright.js"></script>
+    <script src="src/characters/soullight.js"></script>
+    <script src="src/characters/enemy.js"></script>
+    <script src="src/characters/npcs.js"></script>
+    <script src="src/effects/effects.js"></script>
+    <script src="src/effects/abilities.js"></script>
+    <script src="src/objects/bullet.js"></script>
+    <script src="src/objects/mirror.js"></script>
+    <script src="src/objects/specials.js"></script>
+    <script src="src/objects/Exit.js"></script>
+    <script src="src/objects/trigger.js"></script>
+    <script src="src/objects/items.js"></script>
 
     <style>
     @font-face {
@@ -54,125 +54,12 @@
 <body>
     <div class="fontLoader" style="font-family: xirod;">-</div>
     <div class="fontLoader" style="font-family: visitorTT1;">-</div>
-    <script>    
-    var socket = io();
-    var config = {
-        type: Phaser.WEBGL,
-        width: 1280,
-        height: 896, 
-        pixelArt: true,
-        input: {
-            gamepad: true
-        },
-        physics: {
-            default: 'matter',
-            arcade: {
-                tileBias: 8,
-                debug: false,
-                gravity: { y: 400 }
-            },
-            matter: {
-                gravity: { y: .70 }
-            }
-        },
-        // Install the scene plugin
-        plugins: {
-            scene: [
-            {
-                plugin: PhaserMatterCollisionPlugin, // The plugin class
-                key: "matterCollision", // Where to store in Scene.Systems, e.g. scene.sys.matterCollision
-                mapping: "matterCollision" // Where to store in the Scene, e.g. scene.matterCollision
-            }
-            ]
-        }, 
-        scene: [ Preloader, MainMenu, IntroScene, GameSelectScene, LobbyScene, GameScene, HudScene ]
-    };
+    <script src="src/config.js"></script> 
     
-    //Globals
-    //Global Game Access
-    var game;
-    var hud;
-    var playScene;
-    var GLOBAL_DEBUG = false;
-    //Physics
-    var global_gravity = 400;
-    //Tiles
-    var map; 
-    var current_map = "map2";
-    var current_exit = "west1";
-    var world_background;
-    //Game Objects
-    var solana,bright,soullight,
-    enemies,enemiesFly,bullets,
-    mirrors,exits,entrances,
-    levers,gates,plates,buttons,
-    triggerzones,platforms,barriers,
-    ab_solarblasts,crystallamps,ab_brightbeams,
-    rocks,crates;    
-    var new_enemy;
-    var spawner;
-    var spawnlayer;
-    //Controls
-    var pointer;
-    var prevJumpButtonPressed=false;
-    var jumpTimer;
-    var speed;
-    var lastFired = 0;
-    var gamePad;
-    var keyPad;
-    //Particles
-    var emitter0;
-    var emitter_dirt_spray;
-    var emitter_blood;
-    //HUD
-    var scoreText;
-    //Graphics
-    var shadow_layer,shadow_context;
-    //Shaders
-    var glowPipeline;
-    //Camera
-    var camera_main;
-    //Player Management
-    var isMultiplayer = false;
-    const players  = {
-        SOLANA: 'Solana',
-        BRIGHT: 'Bright'
-    }
-    const CATEGORY = {
-        SOLANA: 2,
-        BRIGHT: 4,
-        DARK: 8,
-        BULLET: 16,
-        MIRROR: 32,
-        BARRIER: 64,
-        GROUND: 128,
-        SOLID: 256,
-        ENEMY: 512
-    }
-    const DEPTH_LAYERS = {
-        BG: 10,
-        FG: 100,
-        FRONT: 999
-    }
-    const GAMEITEM = {
-        WAND: 0,
-        CROWN: 1,
-        WING: 2,
-        BELT: 3
-    }
-    var curr_player = "Solana";
+<!--//CREDITS
+    //“Sound effects obtained from https://www.zapsplat.com“ -->
 
-    //Debug:Version
-    console.log(String(Phaser.VERSION));
-    //Font Preloader
-    
-    //Game
-    var game = new Phaser.Game(config);
-    
-    //CREDITS
-    //“Sound effects obtained from https://www.zapsplat.com“
-
-    </script>
+ 
 
 </body>
 </html>

@@ -1,6 +1,6 @@
 // mein menu scene
 
-var MainMenu = new Phaser.Class({
+var SplashScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
 
@@ -8,7 +8,7 @@ var MainMenu = new Phaser.Class({
 
     function MainMenu ()
     {
-        Phaser.Scene.call(this, { key: 'mainmenu' });
+        Phaser.Scene.call(this, { key: 'splashscene' });
     },
 
     preload: function ()
@@ -18,17 +18,32 @@ var MainMenu = new Phaser.Class({
     create: function ()
     {
 
+        //Version
+        this.add.text(12, 12, "Verison: "+buildVersion, { fontSize: '12px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
+
 		// add logo
 		//this.sys.config.backgroundColor = '#f3cca3';
-        //var logo = this.add.sprite(400, 200, 'sprites', 'phaser3');
-        
-        let title = this.add.sprite(0, 0, 'Title1');
-        title.setPosition(game.canvas.width/2,title.height+128);
+        let logo = this.add.sprite(game.canvas.width/2,game.canvas.height/2, 'sprites', 'phaser3');
 
-		// add start button
-        //this.btnstart = this.addButton(0, 0, 'sprites', this.doStart, this, 'btn_play_hl', 'btn_play', 'btn_play_hl', 'btn_play');
-        this.btnstart = this.addButton(0, 0, 'button_sun', this.doStart, this, 0, 0, 0, 0);
-        this.btnstart.setPosition(game.canvas.width/2,400).setPipeline('GlowShader');;
+        let studio = this.add.sprite(-1000, -1000, '128games');
+
+        let title = this.add.sprite(-1000, -1000, 'Title1');
+
+        this.btnstart = this.addButton(-1000, -1000, 'button_sun', this.doStart, this, 0, 0, 0, 0);
+        this.btnstart.setPipeline('GlowShader');
+
+        var timeline = this.tweens.createTimeline();
+        timeline.add({targets: logo,x: game.canvas.width/2,y: game.canvas.height/2,ease: 'Power1',duration: 0,hold: 2000});
+        timeline.add({targets: logo,x: -1000,y: -1000,ease: 'Power1',duration: 0,hold: 1000});
+        timeline.add({targets: studio,x: game.canvas.width/2,y: game.canvas.height/2,ease: 'Power1',duration: 0,hold: 2000});
+        timeline.add({targets: studio,x: -1000,y: -1000,ease: 'Power1',duration: 0,hold: 1000});
+        timeline.add({targets: title,x: game.canvas.width/2,y: game.canvas.height/2-300,ease: 'Power1',duration: 0,hold: 0});
+        timeline.add({targets: this.btnstart,x: game.canvas.width/2,y: game.canvas.height/2,ease: 'Power1',duration: 0,hold: 0});
+        timeline.play();
+
+
+
+
 
         this.glowTime = 0;
 

@@ -74,7 +74,10 @@ var Preloader = new Phaser.Class({
         this.load.atlas('sprites', 'img/spritearray.png', 'img/spritearray.json');
         this.load.image('Title1', 'img/Title1.png');
 		this.load.image('button_sun', 'img/sun1.png');
+		this.load.image('128games', 'img/128studiobg.png');
+		
 		this.load.spritesheet('button_yellow','assets/ui/button_yellow.png',{frameWidth: 190, frameHeight: 49})
+
         //Map Assets  
 		this.load.tilemapTiledJSON('map2', 'assets/world/map2_32ts.json'); 
 		this.load.tilemapTiledJSON('map3', 'assets/world/map3_32ts.json');  
@@ -171,7 +174,7 @@ var Preloader = new Phaser.Class({
 		this.preloadSprite = null;
 
 		// start actual game
-		this.scene.start('mainmenu');
+		this.scene.start('splashscene');
 
 	}
 });

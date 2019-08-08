@@ -60,7 +60,7 @@ class SpeechBubble extends Phaser.GameObjects.Sprite {
 
 }
 class Dialogue {
-	constructor(scene,chain) {
+	constructor(scene,chain,oX,oY) {
 		//Chain {speaker, text, ttl}
 		this.chain = chain;
 		this.scene = scene;
@@ -68,6 +68,7 @@ class Dialogue {
 		this.isRunning = false;
 		this.bubbles = [];
 		this.timer;
+		this.offset = {x:oX, y:oY};
 	}
 	start(){
 		this.isRunning = true;
@@ -89,18 +90,16 @@ class Dialogue {
 	update(){
 		let i = this.curr;
 		let speaker = this.chain[i].speaker;
-		let worldScale=2;
-		let xO = 54;
-		let yO = -40;
+		let worldScale=camera_main.zoom;
 		if(speaker != undefined && this.bubbles != undefined){
 			
 			this.bubbles[i].flipX = speaker.flipX;
 			if(speaker.flipX){
-				xO = -speaker.width-20;
+				this.offset.x = -speaker.width-this.offset.x/2;
 			}
 			//Adjust for real HUD position offset from camera movement and scale
-			this.bubbles[i].x = (speaker.x+xO-camera_main.worldView.x)*worldScale;
-			this.bubbles[i].y = (speaker.y+yO-camera_main.worldView.y)*worldScale;
+			this.bubbles[i].x = (speaker.x+this.offset.x-camera_main.worldView.x)*worldScale;
+			this.bubbles[i].y = (speaker.y+this.offset.y-camera_main.worldView.y)*worldScale;
 			this.bubbles[i].update();
 		}
 	}

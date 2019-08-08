@@ -64,7 +64,7 @@ class HudScene extends Phaser.Scene {
         let dialogueChain = [{speaker:player,ttl:3000,text:"How did I get here?"},
         {speaker:player,ttl:2000,text:"Why is everything so dark?"},
         {speaker:player,ttl:5000,text:"I can switch to Bright by pressing K."}];
-        this.dialogueArea = new Dialogue(this,dialogueChain);
+        this.dialogueArea = new Dialogue(this,dialogueChain,54,-40);
         this.dialogueArea.start();
         //DEBUG
         this.debug = this.add.text(48, 16, 'DEBUG-HUD', { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
