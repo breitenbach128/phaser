@@ -56,17 +56,17 @@ var MainMenu = new Phaser.Class({
     },
     doStartOnlineMP:function ()
     {
-        
+        playerMode = 2;
 		//this.scene.start('lobby');
     }, 	
     doStartLocalMP:function ()
-    {
-        
-		this.scene.start('lobby');
+    {        
+        playerMode = 1;
+        this.scene.start('lobby');
     },
 	doStartSingle: function ()
-    {
-        
+    {        
+        playerMode = 0;
 		this.scene.start('lobby');
     }
 

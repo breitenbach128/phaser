@@ -77,7 +77,8 @@ var socket = io();
     //Camera
     var camera_main;
     //Player Management
-    var isMultiplayer = false;
+    var playerMode = 0;//0-Single,1-LocalCoop,2-OnlineCoop
+    var playerControls = {one:'KB',two:'GP'};
     const players  = {
         SOLANA: 'Solana',
         BRIGHT: 'Bright'

@@ -70,6 +70,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.beamAbility = new BrightBeam(this.scene,this.x,this.y,this.rotation);
         this.beamReady = true;
         this.beamCoolDown = this.scene.time.addEvent({ delay: 1000, callback: this.resetBeam, callbackScope: this, loop: true });
+
+        //Controller
+        this.controller;
     }
 
     update()
@@ -181,6 +184,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 }
             }
         }
+    }
+    setController(){
+        //Sets the controller Source
     }
     resetBeam(){
        this.beamReady = true; 
