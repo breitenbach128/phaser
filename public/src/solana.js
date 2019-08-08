@@ -13,11 +13,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //const mainBody = Bodies.rectangle(0, 0, w * 0.6, h, { chamfer: { radius: 10 } });
         
 
-        const mainBody = Bodies.rectangle(0, 0, w * 0.2, h-12, { chamfer: { radius: 5 } });
+        const mainBody = Bodies.rectangle(0, 0, w * 0.6, h-12, { chamfer: { radius: 5 } });
         this.sensors = {
           bottom: Bodies.rectangle(0, h*0.5-6, w * 0.25, 2, { isSensor: true }),
-          left: Bodies.rectangle(-w * 0.11, 0, 1, h * 0.75, { isSensor: true }),
-          right: Bodies.rectangle(w * 0.11, 0, 1, h * 0.75, { isSensor: true })
+          left: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.75, { isSensor: true }),
+          right: Bodies.rectangle(w * 0.35, 0, 2, h * 0.75, { isSensor: true })
         };
         this.sensors.bottom.label = "SOLANA_BOTTOM";
         this.sensors.left.label = "SOLANA_LEFT";
@@ -34,7 +34,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
           density: 0.01
         });
        //Fix the draw offsets for the compound sprite.
-        compoundBody.render.sprite.xOffset = .51;
+        compoundBody.render.sprite.xOffset = .5;
         compoundBody.render.sprite.yOffset = .60;
         compoundBody.label = "SOLANA";
 
@@ -49,7 +49,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //Custom Properties
         this.hp = 5;
         this.max_hp = 5;
-        this.mv_speed = 2;
+        this.mv_speed = 3;
         this.mv_direction = {x:0,y:0};
         this.prev_position = {x:0,y:0};
         this.mv_Xdiff = 0;
@@ -59,6 +59,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.onWall = false;
         this.jumpReady = false;
         this.alive = true;
+        this.invuln = false;
         this.inLight = true;
         this.equipment = [
             {id:0,name:"Wand",lvl:0,equiped:false},
@@ -129,7 +130,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             //Slow Descent if on Wall
             if(this.onWall){
                if(Math.round(this.body.velocity.y) >= 0){ //Upwards
-                    this.setVelocityY(0); this.sprite.anims.play('solana-wallslide', true);
+                    this.setVelocityY(0);
                }
             }
 
@@ -287,7 +288,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     }
     receiveDamage(damage) {
                 
-        if(this.alive){
+        if(this.alive && !this.invuln){
+            this.invuln = true;
+            this.setTint(0xFF0000);
+            //invuln timer
+            this.energyTimer = this.scene.time.addEvent({ delay: 100, callback: this.disableInvuln, callbackScope: this, loop: true });
             //Kill Blips
             this.scene.events.emit('playerHurt');
             hud.setHealth(this.hp,this.max_hp);
@@ -305,5 +310,9 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 console.log("deadly damage recv. Play death anim")              
             }
         }   
+    }
+    disableInvuln(){
+        this.invuln = false;
+        this.clearTint();
     }
 }

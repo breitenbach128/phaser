@@ -53,6 +53,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { fontSize: '10px', fill: '#00FF00' });
         this.touching = {up:0,down:0,left:0,right:0};
         this.airTime = 0;//For Camera Shake
+        this.light_radius = 50;
 
         //Create Effects
         this.effect=[

@@ -1,0 +1,1160 @@
+{
+    "anims": [
+        {
+            "key": "cointurn",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "sprites",
+                    "frame": "coin1",
+                    "duration": 0
+                },
+                {
+                    "key": "sprites",
+                    "frame": "coin2",
+                    "duration": 0
+                },
+                {
+                    "key": "sprites",
+                    "frame": "coin3",
+                    "duration": 0
+                },
+                {
+                    "key": "sprites",
+                    "frame": "coin4",
+                    "duration": 0
+                },
+                {
+                    "key": "sprites",
+                    "frame": "coin5",
+                    "duration": 0
+                },
+                {
+                    "key": "sprites",
+                    "frame": "coin6",
+                    "duration": 0
+                },
+                {
+                    "key": "sprites",
+                    "frame": "coin7",
+                    "duration": 0
+                },
+                {
+                    "key": "sprites",
+                    "frame": "coin8",
+                    "duration": 0
+                }
+            ],
+            "frameRate": 15,
+            "duration": 533.3333333333334,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "slime1-idle",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "slime1",
+                    "frame": 0,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 3,
+            "duration": 333.3333333333333,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "slime1-move",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "slime1",
+                    "frame": 0,
+                    "duration": 0
+                },
+                {
+                    "key": "slime1",
+                    "frame": 1,
+                    "duration": 0
+                },
+                {
+                    "key": "slime1",
+                    "frame": 2,
+                    "duration": 0
+                },
+                {
+                    "key": "slime1",
+                    "frame": 3,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 10,
+            "duration": 400,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "slime1-shoot",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "slime1",
+                    "frame": 1,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 8,
+            "duration": 125,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "slime1-death",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "slime1",
+                    "frame": 0,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 6,
+            "duration": 166.66666666666666,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": 0,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "solana-death",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "solana",
+                    "frame": 8,
+                    "duration": 0
+                },
+                {
+                    "key": "solana",
+                    "frame": 9,
+                    "duration": 0
+                },
+                {
+                    "key": "solana",
+                    "frame": 10,
+                    "duration": 0
+                },
+                {
+                    "key": "solana",
+                    "frame": 11,
+                    "duration": 0
+                },
+                {
+                    "key": "solana",
+                    "frame": 12,
+                    "duration": 0
+                },
+                {
+                    "key": "solana",
+                    "frame": 13,
+                    "duration": 0
+                },
+                {
+                    "key": "solana",
+                    "frame": 14,
+                    "duration": 0
+                },
+                {
+                    "key": "solana",
+                    "frame": 15,
+                    "duration": 0
+                },
+                {
+                    "key": "solana",
+                    "frame": 16,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 4,
+            "duration": 2250,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": 0,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "solana-idle",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "solana",
+                    "frame": 0,
+                    "duration": 0
+                },
+                {
+                    "key": "solana",
+                    "frame": 1,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 2,
+            "duration": 1000,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "solana-walk",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "solana",
+                    "frame": 5,
+                    "duration": 0
+                },
+                {
+                    "key": "solana",
+                    "frame": 6,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 6,
+            "duration": 333.3333333333333,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "solana-jump",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "solana",
+                    "frame": 7,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 6,
+            "duration": 166.66666666666666,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "bright-idle",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "bright",
+                    "frame": 0,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 1,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 6,
+            "duration": 333.3333333333333,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "bright-sway",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "bright",
+                    "frame": 0,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 2,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 3,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 4,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 5,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 6,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 7,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 8,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 9,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 10,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 11,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 0,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 2,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 3,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 18,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 17,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 16,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 15,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 14,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 13,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 12,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 11,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 12,
+            "duration": 1833.3333333333333,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "bright-move",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "bright",
+                    "frame": 3,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 4,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 5,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 6,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 7,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 8,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 9,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 11,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 12,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 13,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 14,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 15,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 16,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 17,
+                    "duration": 0
+                },
+                {
+                    "key": "bright",
+                    "frame": 18,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 12,
+            "duration": 1250,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "dark-idle",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "dark",
+                    "frame": 0,
+                    "duration": 0
+                },
+                {
+                    "key": "dark",
+                    "frame": 1,
+                    "duration": 0
+                },
+                {
+                    "key": "dark",
+                    "frame": 2,
+                    "duration": 0
+                },
+                {
+                    "key": "dark",
+                    "frame": 1,
+                    "duration": 0
+                },
+                {
+                    "key": "dark",
+                    "frame": 0,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 6,
+            "duration": 833.3333333333334,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "dark-falling",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "dark",
+                    "frame": 3,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 6,
+            "duration": 166.66666666666666,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "soulight-move",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "soul_light",
+                    "frame": 0,
+                    "duration": 0
+                },
+                {
+                    "key": "soul_light",
+                    "frame": 1,
+                    "duration": 0
+                },
+                {
+                    "key": "soul_light",
+                    "frame": 2,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 12,
+            "duration": 250,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "mirror-hit",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "mirror",
+                    "frame": 1,
+                    "duration": 0
+                },
+                {
+                    "key": "mirror",
+                    "frame": 2,
+                    "duration": 0
+                },
+                {
+                    "key": "mirror",
+                    "frame": 3,
+                    "duration": 0
+                },
+                {
+                    "key": "mirror",
+                    "frame": 4,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 24,
+            "duration": 166.66666666666666,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": 0,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "mirror-idle",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "mirror",
+                    "frame": 0,
+                    "duration": 0
+                },
+                {
+                    "key": "mirror",
+                    "frame": 0,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 1,
+            "duration": 2000,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "lever-idle",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "lever",
+                    "frame": 0,
+                    "duration": 0
+                },
+                {
+                    "key": "lever",
+                    "frame": 0,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 1,
+            "duration": 2000,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "lever-operate-0",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "lever",
+                    "frame": 0,
+                    "duration": 0
+                },
+                {
+                    "key": "lever",
+                    "frame": 1,
+                    "duration": 0
+                },
+                {
+                    "key": "lever",
+                    "frame": 2,
+                    "duration": 0
+                },
+                {
+                    "key": "lever",
+                    "frame": 3,
+                    "duration": 0
+                },
+                {
+                    "key": "lever",
+                    "frame": 4,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 12,
+            "duration": 416.6666666666667,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": 0,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "lever-operate-1",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "lever",
+                    "frame": 4,
+                    "duration": 0
+                },
+                {
+                    "key": "lever",
+                    "frame": 3,
+                    "duration": 0
+                },
+                {
+                    "key": "lever",
+                    "frame": 2,
+                    "duration": 0
+                },
+                {
+                    "key": "lever",
+                    "frame": 1,
+                    "duration": 0
+                },
+                {
+                    "key": "lever",
+                    "frame": 0,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 12,
+            "duration": 416.6666666666667,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": 0,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "button-activate",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "tmxbutton",
+                    "frame": 4,
+                    "duration": 0
+                },
+                {
+                    "key": "tmxbutton",
+                    "frame": 3,
+                    "duration": 0
+                },
+                {
+                    "key": "tmxbutton",
+                    "frame": 2,
+                    "duration": 0
+                },
+                {
+                    "key": "tmxbutton",
+                    "frame": 1,
+                    "duration": 0
+                },
+                {
+                    "key": "tmxbutton",
+                    "frame": 0,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 12,
+            "duration": 416.6666666666667,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": 0,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "ability-solar-blast-shoot",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "ability_solarblast",
+                    "frame": 0,
+                    "duration": 0
+                },
+                {
+                    "key": "ability_solarblast",
+                    "frame": 1,
+                    "duration": 0
+                },
+                {
+                    "key": "ability_solarblast",
+                    "frame": 2,
+                    "duration": 0
+                },
+                {
+                    "key": "ability_solarblast",
+                    "frame": 3,
+                    "duration": 0
+                },
+                {
+                    "key": "ability_solarblast",
+                    "frame": 4,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 24,
+            "duration": 208.33333333333334,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "lamp-flicker",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "light_crystal",
+                    "frame": 0,
+                    "duration": 0
+                },
+                {
+                    "key": "light_crystal",
+                    "frame": 1,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 24,
+            "duration": 83.33333333333333,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "lamp-turn-on",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "light_crystal",
+                    "frame": 4,
+                    "duration": 0
+                },
+                {
+                    "key": "light_crystal",
+                    "frame": 3,
+                    "duration": 0
+                },
+                {
+                    "key": "light_crystal",
+                    "frame": 2,
+                    "duration": 0
+                },
+                {
+                    "key": "light_crystal",
+                    "frame": 1,
+                    "duration": 0
+                },
+                {
+                    "key": "light_crystal",
+                    "frame": 0,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 24,
+            "duration": 208.33333333333334,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": 0,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "lamp-turn-off",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "light_crystal",
+                    "frame": 0,
+                    "duration": 0
+                },
+                {
+                    "key": "light_crystal",
+                    "frame": 1,
+                    "duration": 0
+                },
+                {
+                    "key": "light_crystal",
+                    "frame": 2,
+                    "duration": 0
+                },
+                {
+                    "key": "light_crystal",
+                    "frame": 3,
+                    "duration": 0
+                },
+                {
+                    "key": "light_crystal",
+                    "frame": 4,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 24,
+            "duration": 208.33333333333334,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": 0,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "firefly-move",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "fireflies",
+                    "frame": 3,
+                    "duration": 0
+                },
+                {
+                    "key": "fireflies",
+                    "frame": 4,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 16,
+            "duration": 125,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "firefly-flash",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "fireflies",
+                    "frame": 0,
+                    "duration": 0
+                },
+                {
+                    "key": "fireflies",
+                    "frame": 1,
+                    "duration": 0
+                },
+                {
+                    "key": "fireflies",
+                    "frame": 2,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 16,
+            "duration": 187.5,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": 0,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "bat-move",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "bat",
+                    "frame": 12,
+                    "duration": 0
+                },
+                {
+                    "key": "bat",
+                    "frame": 13,
+                    "duration": 0
+                },
+                {
+                    "key": "bat",
+                    "frame": 14,
+                    "duration": 0
+                },
+                {
+                    "key": "bat",
+                    "frame": 15,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 16,
+            "duration": 250,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "bat-idle",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "bat",
+                    "frame": 12,
+                    "duration": 0
+                },
+                {
+                    "key": "bat",
+                    "frame": 13,
+                    "duration": 0
+                },
+                {
+                    "key": "bat",
+                    "frame": 14,
+                    "duration": 0
+                },
+                {
+                    "key": "bat",
+                    "frame": 15,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 16,
+            "duration": 250,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "bat-shoot",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "bat",
+                    "frame": 12,
+                    "duration": 0
+                },
+                {
+                    "key": "bat",
+                    "frame": 13,
+                    "duration": 0
+                },
+                {
+                    "key": "bat",
+                    "frame": 14,
+                    "duration": 0
+                },
+                {
+                    "key": "bat",
+                    "frame": 15,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 16,
+            "duration": 250,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "bat-death",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "bat",
+                    "frame": 12,
+                    "duration": 0
+                },
+                {
+                    "key": "bat",
+                    "frame": 13,
+                    "duration": 0
+                },
+                {
+                    "key": "bat",
+                    "frame": 14,
+                    "duration": 0
+                },
+                {
+                    "key": "bat",
+                    "frame": 15,
+                    "duration": 0
+                }
+            ],
+            "frameRate": 16,
+            "duration": 250,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        }
+    ],
+    "globalTimeScale": 1
+}
