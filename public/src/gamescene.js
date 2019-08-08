@@ -46,7 +46,7 @@ var GameScene = new Phaser.Class({
         var CollisionTiles = map.addTilesetImage('collision','collisions32');//called it map1_tiles in tiled
         // create the ground layer
         let bglayer = map.createStaticLayer('bg', Tiles, 0, 0);
-        let fglayer = map.createStaticLayer('fg', Tiles, 0, 0);
+        let fglayer = map.createDynamicLayer('fg', Tiles, 0, 0);
 
         this.collisionLayer = map.createDynamicLayer('collision', CollisionTiles, 0, 0);
         this.collisionLayer.setVisible(false);
@@ -95,16 +95,14 @@ var GameScene = new Phaser.Class({
         //Emit Events
         //this.events.emit('solanaSetup'); 
 
-        //Animations - Move to JSON later, if it makes sense       
+        //Animations - Move to JSON       
         createAnimations(this);
 
         //Create Camera        
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels+128);  
         this.cameras.main.setBackgroundColor('#ccccff'); 
         this.cameras.main.setZoom(2);
-        this.cameras.main.roundPixels = true;
         camera_main = this.cameras.main;
-        
 
         //Controls
         createControls(this);
@@ -124,11 +122,6 @@ var GameScene = new Phaser.Class({
         //Enemies
         enemies = this.add.group({ 
             classType: Enemy,
-            runChildUpdate: true 
-        });
-        //Flying Enemies
-        enemiesFly = this.add.group({ 
-            classType: EnemyFlying,
             runChildUpdate: true 
         });
         //Bullets
@@ -197,16 +190,7 @@ var GameScene = new Phaser.Class({
             classType: Firefly,
             runChildUpdate: true 
         });
-        //Rocks
-        rocks = this.add.group({ 
-            classType: Rock,
-            runChildUpdate: true 
-        });
-        //Crates
-        crates = this.add.group({ 
-            classType: Crate,
-            runChildUpdate: true 
-        });
+
 
         speed = Phaser.Math.GetSpeed(300, 1);
        
@@ -223,24 +207,13 @@ var GameScene = new Phaser.Class({
         let exitlayer = map.getObjectLayer('exit');
         //Spawn Enemies from Enemy TMX Object layer
         for(e=0;e<enemylayer.objects.length;e++){
-            let props = getTileProperties(enemylayer.objects[e].properties);
-            let EnemyType = props.enemyType;
-            let EnemyClass = props.enemyClass;
-            let PassiveBehavior = props.pBehav;
-            let AggressivBehavior = props.aBehav;
-            if(EnemyClass == 'ground'){
-                new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
-            }else if(EnemyClass == 'air'){
-                new_enemy = enemiesFly.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);                
-            }else{
-                new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
-            }
-
+            
+            new_enemy = enemies.get();
             if(new_enemy){
                 //Setup Enemy
                 new_enemy.setActive(true);
                 new_enemy.setVisible(true);
-                new_enemy.setBehavior(PassiveBehavior,AggressivBehavior);
+                new_enemy.setPosition(enemylayer.objects[e].x,enemylayer.objects[e].y);
                 
                 
             } 
@@ -250,76 +223,67 @@ var GameScene = new Phaser.Class({
             let mapObject;
             let x_offset = 0;
             let y_offset = 0;
-            let tmxObjRef = objectlayer.objects[e];
-            if(tmxObjRef.type == "mirror"){  
+            if(objectlayer.objects[e].type == "mirror"){  
                 mapObject = mirrors.get();
                 x_offset = mapObject.width/2;
                 y_offset = mapObject.height/2;
-            }else if(tmxObjRef.type == "window"){  
+            }else if(objectlayer.objects[e].type == "window"){  
                 mapObject = barriers.get(-1000,-1000,"tmxwindow",0,true);
                 x_offset = -mapObject.width/2;
                 y_offset = mapObject.height/2;
-            }else if(tmxObjRef.type == "hive"){
-                let hiveProps = getTileProperties(tmxObjRef.properties);
+            }else if(objectlayer.objects[e].type == "hive"){
+                let hiveProps = getTileProperties(objectlayer.objects[e].properties);
                 for(let b=0;b<hiveProps.bugsMax;b++){
                     let rX = Phaser.Math.Between(-32,32);
                     let rY = Phaser.Math.Between(-32,32);
-                    fireflies.get(tmxObjRef.x+rX,tmxObjRef.y+rY);
+                    fireflies.get(objectlayer.objects[e].x+rX,objectlayer.objects[e].y+rY);
                 }
-            }else if(tmxObjRef.type == "platfall"){ 
-                x_offset = tmxObjRef.width/2;
-                y_offset = tmxObjRef.height/2;
-                let newFallPlat = new Fallplat(this,tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-1);
-            }else if(tmxObjRef.type == "rock"){  
-                let newRock = rocks.get(tmxObjRef.x,tmxObjRef.y);
-            }else if(tmxObjRef.type == "crate"){  
-                let newCrate = crates.get(tmxObjRef.x,tmxObjRef.y);
-            }else if(tmxObjRef.type == "item"){
-                let newitem = new EquipItem(this,tmxObjRef.x,tmxObjRef.y,'gameitems',GAMEITEM[tmxObjRef.name.toUpperCase()]);
-
+            }else if(objectlayer.objects[e].type == "platfall"){ 
+                x_offset = objectlayer.objects[e].width/2;
+                y_offset = objectlayer.objects[e].height/2;
+                let newFallPlat = new Fallplat(this,objectlayer.objects[e].x+x_offset,objectlayer.objects[e].y-y_offset,'tiles32',objectlayer.objects[e].gid-1);
             }
 
             if(mapObject){ 
-                mapObject.setup(tmxObjRef.x-x_offset,tmxObjRef.y-y_offset,tmxObjRef.rotation);
+                mapObject.setup(objectlayer.objects[e].x-x_offset,objectlayer.objects[e].y-y_offset,objectlayer.objects[e].rotation);
             }
         }
         //Spawn Triggers
         for(e=0;e<triggerlayer.objects.length;e++){
             //Check for Type first, to determine the GET method used.
             let triggerObj;
-            let tmxObjRef = triggerlayer.objects[e];
-            if(tmxObjRef.type == "lever"){  
-                triggerObj = new TMXLever(this,tmxObjRef.x,tmxObjRef.y);             
+            
+            if(triggerlayer.objects[e].type == "lever"){  
+                triggerObj = new TMXLever(this,triggerlayer.objects[e].x,triggerlayer.objects[e].y);             
                 levers.add(triggerObj);
-            }else if(tmxObjRef.type == "gate"){
+            }else if(triggerlayer.objects[e].type == "gate"){
                 triggerObj = gates.get();
-            }else if(tmxObjRef.type == "plate"){
+            }else if(triggerlayer.objects[e].type == "plate"){
                 triggerObj = plates.get();
-            }else if(tmxObjRef.type == "platform"){
+            }else if(triggerlayer.objects[e].type == "platform"){
                 triggerObj = platforms.get();
-            }else if(tmxObjRef.type == "button"){
+            }else if(triggerlayer.objects[e].type == "button"){
                 triggerObj = buttons.get();
-            }else if(tmxObjRef.type == "crystallamp"){
+            }else if(triggerlayer.objects[e].type == "crystallamp"){
                 triggerObj = crystallamps.get();
-            }else if(tmxObjRef.type == "zone"){
+            }else if(triggerlayer.objects[e].type == "zone"){
                 triggerObj = triggerzones.get();
-                triggerObj.setDisplaySize(tmxObjRef.width, tmxObjRef.height);
+                triggerObj.setDisplaySize(triggerlayer.objects[e].width, triggerlayer.objects[e].height);
             }
             if(triggerObj){
-                let trig_x_offset = tmxObjRef.width/2;
-                let trig_y_offset = tmxObjRef.height/2;
-                triggerObj.setup(tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,getTileProperties(tmxObjRef.properties),tmxObjRef.name);
+                let trig_x_offset = triggerlayer.objects[e].width/2;
+                let trig_y_offset = triggerlayer.objects[e].height/2;
+                triggerObj.setup(triggerlayer.objects[e].x+trig_x_offset,triggerlayer.objects[e].y+trig_y_offset,getTileProperties(triggerlayer.objects[e].properties),triggerlayer.objects[e].name);
             }
         }
           
         //Spawn Exits
         for(e=0;e<exitlayer.objects.length;e++){  
             let exitObj;
-            let tmxObjRef = exitlayer.objects[e];
-            //console.log(tmxObjRef)
-            if(tmxObjRef.type == "entrance"){
+            //console.log(exitlayer.objects[e])
+            if(exitlayer.objects[e].type == "entrance"){
                 exitObj = entrances.get();
-                exitObj.setup(tmxObjRef.x+16,tmxObjRef.y+16,tmxObjRef.name);
+                exitObj.setup(exitlayer.objects[e].x+16,exitlayer.objects[e].y+16,exitlayer.objects[e].name);
                 
                 //Re-position player to match entrance to exit they left.
                 if(exitObj.name == current_exit){
@@ -334,8 +298,8 @@ var GameScene = new Phaser.Class({
                 }
             }else{
                 exitObj = exits.get();
-                exitObj.setup(tmxObjRef.x+16,tmxObjRef.y+16,getTileProperties(tmxObjRef.properties),tmxObjRef.name);
-                exitObj.setDisplaySize(tmxObjRef.width,tmxObjRef.height);
+                exitObj.setup(exitlayer.objects[e].x+16,exitlayer.objects[e].y+16,getTileProperties(exitlayer.objects[e].properties),exitlayer.objects[e].name);
+                exitObj.setDisplaySize(exitlayer.objects[e].width,exitlayer.objects[e].height);
             } 
         }
 
@@ -345,7 +309,6 @@ var GameScene = new Phaser.Class({
         setupTriggerTargets(buttons,"buttons",this);
         setupTriggerTargets(triggerzones,"zones",this);
         setupTriggerTargets(platforms,"platforms",this);
-        setupTriggerTargets(crystallamps,"crystallamps",this);
 
         //Particles
         emitter_dirt_spray = this.add.particles('impact1').createEmitter({
@@ -393,7 +356,7 @@ var GameScene = new Phaser.Class({
         
          //Lightning construct using preloaded cavnas called canvasShadow (See Preloader)
         var shadTexture = this.add.image(map.widthInPixels/2, map.heightInPixels/2, 'canvasShadow');
-        shadTexture.alpha = .6;
+        shadTexture.alpha = .9;
 
         var light1 = this.add.image(256,64,'light1');
         light1.alpha = .5;
@@ -401,6 +364,10 @@ var GameScene = new Phaser.Class({
 
         solana.z = light1.z+1;
         bright.z = light1.z+1;
+
+
+
+        let newitem = new EquipItem(this,320,192,'gameitems',0);
 
          //Start soulight play
          soullight.sprite.anims.play('soulight-move', true);//Idle
@@ -739,10 +706,6 @@ var GameScene = new Phaser.Class({
                 //Solar Blast and Mirrors
                 if ((bodyA.label === 'ABILITY-SOLAR-BLAST' && bodyB.label === 'MIRROR') || (bodyA.label === 'MIRROR' && bodyB.label === 'ABILITY-SOLAR-BLAST')) {
                     //Break out of loop to allow normal physics hits
-                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'MIRROR');
-                    if (gObjs[0].active){
-                        gObjs[0].hit();
-                    }  
                     continue;
                 }
                 if ((bodyA.label === 'ABILITY-SOLAR-BLAST' && bodyB.label === 'CRYSTAL_LAMP') || (bodyA.label === 'CRYSTAL_LAMP' && bodyB.label === 'ABILITY-SOLAR-BLAST')) {
@@ -801,7 +764,16 @@ var GameScene = new Phaser.Class({
         this.debugAimLine = this.add.graphics(0, 0);
         //Need to push all debug graphics into a single debug array for easy enable
 
+        for(let r=0;r<5;r++){
+            let rX = Phaser.Math.Between(-64,64);
+            let rock = new Rock(this,200+rX,100);
+        }
         
+        for(let r=0;r<1;r++){
+            let rX = Phaser.Math.Between(-64,64);
+            let crate = new Crate(this,400+rX,100);
+        }
+  
     },
 
     update: function (time, delta)
@@ -860,7 +832,6 @@ var GameScene = new Phaser.Class({
         
 
         shadow_context = this.cutCanvasCircle(soullight.sprite.x,soullight.sprite.y,soullight.protection_radius.value,shadow_context);
-        shadow_context = this.cutCanvasCircle(bright.x,bright.y,bright.light_radius,shadow_context);
 
         if(Phaser.Math.Distance.Between(soullight.sprite.x,soullight.y,solana.sprite.x,solana.sprite.y) <= soullight.protection_radius.value){solana_in_light = true;}
 
@@ -871,7 +842,7 @@ var GameScene = new Phaser.Class({
 
 
         //Suicide to test animation
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.suicide)){            
+        if(Phaser.Input.Keyboard.JustDown(game.wasd.suicide)){
             solana.receiveDamage(1);
         }
         
@@ -1173,26 +1144,26 @@ function createControls(scene){
 }
 function createAnimations(scene){
     scene.anims.create({
-        key: 'slime1-idle',
-        frames: scene.anims.generateFrameNumbers('slime1', { frames:[0] }),
+        key: 'enemy-idle',
+        frames: scene.anims.generateFrameNumbers('enemy1', { frames:[0] }),
         frameRate: 3,
         repeat: -1
     });
     scene.anims.create({
-        key: 'slime1-move',
-        frames: scene.anims.generateFrameNumbers('slime1', { frames:[0,1,2,3] }),
+        key: 'enemy-walk',
+        frames: scene.anims.generateFrameNumbers('enemy1', { frames:[0,1,2,3] }),
         frameRate: 10,
         repeat: -1
     });
     scene.anims.create({
-        key: 'slime1-shoot',
-        frames: scene.anims.generateFrameNumbers('slime1', { frames:[1]}),
+        key: 'enemy-shoot',
+        frames: scene.anims.generateFrameNumbers('enemy1', { frames:[1]}),
         frameRate: 8,
         repeat: -1
     });
     scene.anims.create({
-        key: 'slime1-death',
-        frames: scene.anims.generateFrameNumbers('slime1', { start: 0, end: 0 }),
+        key: 'enemy-death',
+        frames: scene.anims.generateFrameNumbers('enemy1', { start: 0, end: 0 }),
         frameRate: 6,
         repeat: 0
     });
@@ -1204,16 +1175,22 @@ function createAnimations(scene){
     });
     scene.anims.create({
         key: 'solana-idle',
-        frames: scene.anims.generateFrameNumbers('solana', { start: 0, end: 1 }),
-        frameRate: 2,
+        frames: scene.anims.generateFrameNumbers('solana', { frames:[0,0,0,0,0,0,0,1,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}),
+        frameRate: 11,
         repeat: -1
     });
     scene.anims.create({
         key: 'solana-walk',
-        frames: scene.anims.generateFrameNumbers('solana', { start: 5, end: 6 }),
+        frames: scene.anims.generateFrameNumbers('solana', { frames:[20,21,5,6,17,18,5,6,17,18,5,6,17,18,5,6,17,18] }),
         frameRate: 6,
         repeat: -1
     });
+    scene.anims.create({
+        key: 'solana-wallslide',
+        frames: scene.anims.generateFrameNumbers('solana', { start: 19, end: 19 }),
+        frameRate: 6,
+        repeat: -1
+    })
     scene.anims.create({
         key: 'solana-jump',
         frames: scene.anims.generateFrameNumbers('solana', { start: 7, end: 7 }),
@@ -1338,31 +1315,6 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'firefly-flash',
         frames: scene.anims.generateFrameNumbers('fireflies', { frames:[0,1,2] }),
-        frameRate: 16,
-        repeat: 0
-    });   
-    
-    scene.anims.create({
-        key: 'bat-move',
-        frames: scene.anims.generateFrameNumbers('bat', { frames:[12,13,14,15] }),
-        frameRate: 16,
-        repeat: -1
-    });
-    scene.anims.create({
-        key: 'bat-idle',
-        frames: scene.anims.generateFrameNumbers('bat', { frames:[12,13,14,15] }),
-        frameRate: 16,
-        repeat: -1
-    });
-    scene.anims.create({
-        key: 'bat-shoot',
-        frames: scene.anims.generateFrameNumbers('bat', { frames:[12,13,14,15] }),
-        frameRate: 16,
-        repeat: 0
-    });
-    scene.anims.create({
-        key: 'bat-death',
-        frames: scene.anims.generateFrameNumbers('bat', { frames:[12,13,14,15] }),
         frameRate: 16,
         repeat: 0
     });

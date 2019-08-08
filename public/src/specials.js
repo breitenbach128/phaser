@@ -121,43 +121,14 @@ class Rock extends Phaser.Physics.Matter.Sprite{
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.SOLID)
         .setPosition(x, y) 
-
-        //Setup Collision
-        this.scene.matterCollision.addOnCollideStart({
-            objectA: [this],
-            callback: eventData => {
-                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
-                
-                if (gameObjectB !== undefined && gameObjectB instanceof Bright) {
-                    this.impact(gameObjectB);
-                }
-            }
-        });
     }
-    setup(x,y,scale){
+    setup(x,y){
         this.setActive(true);
         this.setPosition(x,y); 
-        this.setScale(scale);
     }
     update(time, delta)
     {       
 
-    }
-    impact(obj){
-        let fromBody = obj.body;
-        let speed = Math.sqrt(Math.pow(fromBody.velocity.x,2)+Math.pow(fromBody.velocity.y,2));
-        let force = speed*fromBody.density*100;
-        console.log("Rock Impact", force,speed);
-        if(force >= 1){
-            //Destroy and spawn more smaller rocks. BUGGED DO NOT USE FOR NOW, BAD LOOP
-            // for(let r=0;r< Phaser.Math.Between(1,3);r++){
-            //     let newRock = new Rock(this.scene,this.x,this.y);
-            //     newRock.setScale(.3);
-            //     newRock.setCollidesWith([ 0 ])
-            //     newRock.applyForce({x:Phaser.Math.Between(-3,3),y:Phaser.Math.Between(-1,-3)});
-            // }
-            this.destroy();
-        }
     }
 };
 
