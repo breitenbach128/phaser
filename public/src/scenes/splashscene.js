@@ -33,10 +33,10 @@ var SplashScene = new Phaser.Class({
         this.btnstart.setPipeline('GlowShader');
 
         var timeline = this.tweens.createTimeline();
-        timeline.add({targets: logo,x: game.canvas.width/2,y: game.canvas.height/2,ease: 'Power1',duration: 0,hold: 2000});
-        timeline.add({targets: logo,x: -1000,y: -1000,ease: 'Power1',duration: 0,hold: 1000});
-        timeline.add({targets: studio,x: game.canvas.width/2,y: game.canvas.height/2,ease: 'Power1',duration: 0,hold: 2000});
-        timeline.add({targets: studio,x: -1000,y: -1000,ease: 'Power1',duration: 0,hold: 1000});
+        timeline.add({targets: logo,x: game.canvas.width/2,y: game.canvas.height/2,ease: 'Power1',duration: 0,hold: 100});
+        timeline.add({targets: logo,x: -1000,y: -1000,ease: 'Power1',duration: 0,hold: 100});
+        timeline.add({targets: studio,x: game.canvas.width/2,y: game.canvas.height/2,ease: 'Power1',duration: 0,hold: 100});
+        timeline.add({targets: studio,x: -1000,y: -1000,ease: 'Power1',duration: 0,hold: 100});
         timeline.add({targets: title,x: game.canvas.width/2,y: game.canvas.height/2-300,ease: 'Power1',duration: 0,hold: 0});
         timeline.add({targets: this.btnstart,x: game.canvas.width/2,y: game.canvas.height/2,ease: 'Power1',duration: 0,hold: 0});
         timeline.play();

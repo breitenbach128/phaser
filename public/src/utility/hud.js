@@ -21,7 +21,7 @@ class HudScene extends Phaser.Scene {
             +"\nDisPlayers:"+String(Math.round(Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y)));
 
             if(gamePad.ready){
-                debugString=debugString+"\nGamePad: button Y:"+String(gamePad.checkButtonState('Y'));
+                debugString=debugString+"\nGamePad: button Y:"+String(gamePad.checkButtonState('passLight'));
             }else{
                 debugString=debugString+"\nMKB: button Jump:"+String(keyPad.checkMouseState('mb2'));
             }

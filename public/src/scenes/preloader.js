@@ -70,12 +70,15 @@ var Preloader = new Phaser.Class({
 		// now load images, audio etc.
 		//Background
 		this.load.image('forest_background', 'assets/world/forest_bg.png');
+		//Icons
+		this.load.image('icon_keyboard','img/keyboard_icon_w.png');
+		this.load.image('icon_gamepad','img/gamepad_icon_w.png')
 		// Menu
         this.load.atlas('sprites', 'img/spritearray.png', 'img/spritearray.json');
         this.load.image('Title1', 'img/Title1.png');
 		this.load.image('button_sun', 'img/sun1.png');
 		this.load.image('128games', 'img/128studiobg.png');
-		
+
 		this.load.spritesheet('button_yellow','assets/ui/button_yellow.png',{frameWidth: 190, frameHeight: 49})
 
         //Map Assets  
