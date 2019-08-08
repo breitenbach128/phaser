@@ -1181,10 +1181,16 @@ function createAnimations(scene){
     });
     scene.anims.create({
         key: 'solana-walk',
-        frames: scene.anims.generateFrameNumbers('solana', { frames:[20,21,5,6,17,18,5,6,17,18,5,6,17,18,5,6,17,18] }),
+        frames: scene.anims.generateFrameNumbers('solana', { frames:[20,21,5,6,17,18,5,6,17,18,5,6,17,18] }),
         frameRate: 6,
         repeat: -1
     });
+    //scene.anims.create({
+    //    key: 'solana-walk2',
+    //    frames: scene.anims.generateFrameNumbers('solana', { frames:[5,6,17,18] }),
+    //    frameRate: 6,
+    //    repeat: -1
+    //})
     scene.anims.create({
         key: 'solana-wallslide',
         frames: scene.anims.generateFrameNumbers('solana', { start: 19, end: 19 }),
