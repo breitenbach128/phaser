@@ -87,7 +87,7 @@ var Preloader = new Phaser.Class({
         this.load.image('impact1', 'assets/effects/particles.png');
         this.load.image('crate', 'assets/objects/crate.png');
         this.load.image('rocks', 'assets/objects/rocks.png');
-        this.load.spritesheet('solana', 'assets/characters/solana.png', {frameWidth: 32, frameHeight: 64});
+        this.load.spritesheet('solana', 'assets/characters/solana.png', {frameWidth: 96, frameHeight: 64});
         this.load.spritesheet('bright', 'assets/characters/bright.png', {frameWidth: 48, frameHeight: 48});
         this.load.spritesheet('dark', 'assets/characters/dark.png', {frameWidth: 48, frameHeight: 48});
         this.load.spritesheet('soul_light', 'assets/characters/soul_light.png', {frameWidth: 32, frameHeight: 32});

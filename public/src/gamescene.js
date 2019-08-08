@@ -1204,16 +1204,28 @@ function createAnimations(scene){
     });
     scene.anims.create({
         key: 'solana-idle',
-        frames: scene.anims.generateFrameNumbers('solana', { start: 0, end: 1 }),
-        frameRate: 2,
+        frames: scene.anims.generateFrameNumbers('solana', { frames:[0,0,0,0,0,0,0,1,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}),
+        frameRate: 11,
         repeat: -1
     });
     scene.anims.create({
         key: 'solana-walk',
-        frames: scene.anims.generateFrameNumbers('solana', { start: 5, end: 6 }),
+        frames: scene.anims.generateFrameNumbers('solana', { frames:[20,21,5,6,17,18,5,6,17,18,5,6,17,18] }),
         frameRate: 6,
         repeat: -1
     });
+    scene.anims.create({
+       key: 'solana-walk2',
+       frames: scene.anims.generateFrameNumbers('solana', { frames:[5,6,17,18] }),
+       frameRate: 6,
+       repeat: -1
+    })
+    scene.anims.create({
+       key: 'solana-wallslide',
+       frames: scene.anims.generateFrameNumbers('solana', { frames:[19,19] }),
+       frameRate: 6,
+       repeat: -1
+    })
     scene.anims.create({
         key: 'solana-jump',
         frames: scene.anims.generateFrameNumbers('solana', { start: 7, end: 7 }),
