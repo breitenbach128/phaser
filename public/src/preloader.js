@@ -82,16 +82,16 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('tiles32', 'assets/world/oldTileset32.png', {frameWidth: 32, frameHeight: 32, spacing: 2}); 
 		this.load.spritesheet('collisions32', 'assets/world/map_collision.png', {frameWidth: 32, frameHeight: 32}); 
 		//Entity Assets
-        this.load.spritesheet('slime1', 'assets/characters/slimemonster1.png', {frameWidth: 128, frameHeight: 78});    
+        this.load.spritesheet('enemy1', 'assets/characters/slimemonster1.png', {frameWidth: 128, frameHeight: 78});    
         this.load.spritesheet('bullet', 'assets/objects/projectiles.png', {frameWidth: 16, frameHeight: 16});
         this.load.image('impact1', 'assets/effects/particles.png');
         this.load.image('crate', 'assets/objects/crate.png');
         this.load.image('rocks', 'assets/objects/rocks.png');
-        this.load.spritesheet('solana', 'assets/characters/solana.png', {frameWidth: 32, frameHeight: 64});
+        this.load.spritesheet('solana', 'assets/characters/solana.png', {frameWidth: 96, frameHeight: 64});
         this.load.spritesheet('bright', 'assets/characters/bright.png', {frameWidth: 48, frameHeight: 48});
         this.load.spritesheet('dark', 'assets/characters/dark.png', {frameWidth: 48, frameHeight: 48});
         this.load.spritesheet('soul_light', 'assets/characters/soul_light.png', {frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('mirror', 'assets/objects/mirror.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('mirror', 'assets/objects/mirror.png', {frameWidth: 48, frameHeight: 48});
 		this.load.spritesheet('lever', 'assets/objects/lever.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('pressure_plate', 'assets/objects/pressure_plate.png', {frameWidth: 32, frameHeight: 6});
 		this.load.spritesheet('tmxbutton', 'assets/objects/tmxbutton.png', {frameWidth: 16, frameHeight: 16});
@@ -99,7 +99,6 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('gameitems', 'assets/objects/gameitems.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('light_crystal', 'assets/objects/light_crystal.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('fireflies', 'assets/objects/fireflies.png', {frameWidth: 16, frameHeight: 16});
-		this.load.spritesheet('bat', 'assets/characters/bat_32.png', {frameWidth: 32, frameHeight: 32});
 		//Abilities
 		this.load.spritesheet('ability_solarblast', 'assets/objects/ability_solarblast.png', {frameWidth: 16, frameHeight: 16});		
 		this.load.image('soullightblast', 'assets/objects/soullightblast.png');
@@ -139,8 +138,6 @@ var Preloader = new Phaser.Class({
 		// 	this.load.image('testloading'+i, 'img/spritearray.png');
 		// };
 		// !! TESTING !!
-		//EXTERNAL JSON ANIMATION LOADERS
-		//this.load.animation('gameAnimationsTest', 'anims/anims.json');
 	},
 
 	create: function ()
