@@ -58,8 +58,8 @@ var Preloader = new Phaser.Class({
 	{
 		// setup the loading bar
 		// note: images are available during preload because of the pack-property in the constructor
-		this.loadingbar_bg   = this.add.sprite(400, 300, "loadingbar_bg");
-		this.loadingbar_fill = this.add.sprite(400, 300, "loadingbar_fill");
+		this.loadingbar_bg   = this.add.sprite(game.canvas.width/2, 300, "loadingbar_bg");
+		this.loadingbar_fill = this.add.sprite(game.canvas.width/2, 300, "loadingbar_fill");
 		this.setPreloadSprite(this.loadingbar_fill);
 
 		

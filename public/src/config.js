@@ -56,14 +56,6 @@ var socket = io();
     var new_enemy;
     var spawner;
     var spawnlayer;
-    //Controls
-    var pointer;
-    var prevJumpButtonPressed=false;
-    var jumpTimer;
-    var speed;
-    var lastFired = 0;
-    var gamePad;
-    var keyPad;
     //Particles
     var emitter0;
     var emitter_dirt_spray;
@@ -75,13 +67,28 @@ var socket = io();
     //Shaders
     var glowPipeline;
     //Camera
-    var camera_main;
+    var camera_main;    
+    //Controls
+    var pointer;
+    var prevJumpButtonPressed=false;
+    var jumpTimer;
+    var speed;
+    var lastFired = 0;
+    var gamePad;
+    var keyPad;
     //Player Management
     var playerMode = 0;//0-Single,1-LocalCoop,2-OnlineCoop
-    var playerControls = {one:'KB',two:'GP'};
+    var playerModes = ['Single','Local-COOP','Online'];
+    const ctrls={
+        kb: 0,
+        gp1:1,
+        gp2:2
+    }
     const players  = {
         SOLANA: 'Solana',
-        BRIGHT: 'Bright'
+        BRIGHT: 'Bright',
+        SOLANAID: 0,
+        BRIGHTID: 1
     }
     const CATEGORY = {
         SOLANA: 2,
@@ -105,8 +112,48 @@ var socket = io();
         WING: 2,
         BELT: 3
     }
-    var curr_player = "Solana";
+    var playerConfig = {
+        one:{
+            ctrl:ctrls.kb,
+            char:players.SOLANA
+        },
+        two:{
+            ctrl:ctrls.gp1,
+            char:players.BRIGHT
+        }
+    };
+    var curr_player = playerConfig.one.char;
+    //Global Functions
+    function initGamePads(scene){
+        console.log("Setup GamePad for ");
+        gamePad = new GamepadControl(0);
+        scene.input.gamepad.once('connected', function (pad) {
+            //   'pad' is a reference to the gamepad that was just connected
+            console.log(scene.scene.key,"gamepad connected"); 
+            gamePad = new GamepadControl(pad);
 
+        }, scene);
+        scene.input.gamepad.once('down', function (pad, button, index) {
+            console.log(scene.scene.key,'Playing with ' + pad.id);    
+            gamePad = new GamepadControl(pad);    
+        }, scene);
+    }
+    function getInactiveGamePad(){
+        for(let i=0;i < gamePads.length;i++){
+            if(gamePads[i].ready == false){
+                return i;
+            }
+        }
+        return -1;
+    }
+    function addGamePads(pad){
+        let availPad = getInactiveGamePad();
+        if(availPad == -1){
+            //All pads filled up. 
+        }else{
+            gamePads[availPad] = pad;
+        }
+    }
     //Debug:Version
     console.log(String(Phaser.VERSION));
     //Font Preloader

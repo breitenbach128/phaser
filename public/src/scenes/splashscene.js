@@ -81,7 +81,7 @@ var SplashScene = new Phaser.Class({
     },	
 	doStart: function ()
     {
-        
+        this.input.gamepad.disconnectAll();
 		this.scene.start('intro');
     }
 

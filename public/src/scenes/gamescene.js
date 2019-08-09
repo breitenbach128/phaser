@@ -770,12 +770,8 @@ var GameScene = new Phaser.Class({
         //Mouse
         pointer = this.input.activePointer;
 
-        gamePad = new GamepadControl(0);
-       
-        this.input.gamepad.once('down', function (pad, button, index) {
-            console.log('Playing with ' + pad.id);    
-            gamePad = new GamepadControl(pad);    
-        }, this);
+       //Gamepad management
+       initGamePads(this);
 
         keyPad = new KeyboardMouseControl(this,pointer)
 

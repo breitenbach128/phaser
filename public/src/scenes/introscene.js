@@ -42,18 +42,16 @@ var IntroScene = new Phaser.Class({
         this.dialogueArea.start();
 
         this.btnstart = this.addButton(0, 0, 'button_sun', this.doStart, this, 0, 0, 0, 0);
-        this.btnstart.setPosition(game.canvas.width/2,600).setPipeline('GlowShader');;
+        this.btnstart.setPosition(game.canvas.width/2,game.canvas.height/2).setPipeline('GlowShader');;
 
         this.glowTime = 0;
 
-        gamePad = new GamepadControl(0);
+        this.sceneTransitionReady = false;
 
-        this.input.gamepad.once('connected', function (pad) {
-            //   'pad' is a reference to the gamepad that was just connected
-            console.log("menuscene gamepad connected"); 
-            gamePad = new GamepadControl(pad);
+        this.time.addEvent({ delay: 1000, callback: this.transitionSet, callbackScope: this, loop: false });
 
-        });
+       //Gamepad management
+       initGamePads(this);
 
         this.controls_guide = this.add.text(this.x, game.canvas.height-192, 'Controls', { fontSize: '12px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
        
@@ -61,13 +59,16 @@ var IntroScene = new Phaser.Class({
         +"\n - PRE GAME DIALOGUE PLAYER AND CUTSCENE");
 
     },
+    transitionSet(){
+        this.sceneTransitionReady = true;
+    },
     update: function(){
         glowPipeline.setFloat1('time', this.glowTime);
         this.glowTime += 0.05;
         if(gamePad.ready){
             gamePad.updateButtonState();
         }
-        if(gamePad.checkButtonState('start') > 0){
+        if(gamePad.checkButtonState('start') > 0 && this.sceneTransitionReady){
             this.doStart();
         }
         if(this.dialogueArea.isRunning){

@@ -8,7 +8,7 @@
          "name":"bg",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":64,
          "x":0,
          "y":0
@@ -32,7 +32,7 @@
          "name":"collision",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":64,
          "x":0,
          "y":0
@@ -45,20 +45,29 @@
                 {
                  "gid":497,
                  "height":32,
-                 "id":1,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":32,
-                 "x":865,
-                 "y":224
-                }, 
-                {
-                 "gid":497,
-                 "height":32,
                  "id":2,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"aBehav",
+                         "type":"string",
+                         "value":"patrolFixed"
+                        }, 
+                        {
+                         "name":"enemyClass",
+                         "type":"string",
+                         "value":"ground"
+                        }, 
+                        {
+                         "name":"enemyType",
+                         "type":"string",
+                         "value":"slime1"
+                        }, 
+                        {
+                         "name":"pBehav",
+                         "type":"string",
+                         "value":"patrolFixed"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,

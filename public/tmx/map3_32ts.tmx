@@ -329,8 +329,14 @@
 </data>
  </layer>
  <objectgroup id="2" name="enemies">
-  <object id="1" gid="497" x="865" y="224" width="32" height="32"/>
-  <object id="2" gid="497" x="481" y="224" width="32" height="32"/>
+  <object id="2" gid="497" x="481" y="224" width="32" height="32">
+   <properties>
+    <property name="aBehav" value="patrolFixed"/>
+    <property name="enemyClass" value="ground"/>
+    <property name="enemyType" value="slime1"/>
+    <property name="pBehav" value="patrolFixed"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="3" name="spawns"/>
  <objectgroup id="8" name="exit">

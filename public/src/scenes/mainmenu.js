@@ -15,6 +15,11 @@ var MainMenu = new Phaser.Class({
 
     create: function ()
     {
+        //Selection Box for Gamepad
+        this.selectionRect = this.add.rectangle(game.canvas.width/2,300,195,55,0xFFD700,1);
+        this.selectionRect.setStrokeStyle(5, 0xFFFFFF, .8);
+        this.selectionRect.setVisible(false);
+        if(gamePad.ready){this.selectionRect.setVisible(true);}
         //noClick, noClick Hover, Click, Click Hover
         this.btnstartSP = this.addButton(0, 0, 'button_yellow', this.doStartSingle, this, 0, 1, 0, 1);
         this.btnstartSP.setPosition(game.canvas.width/2,300);
@@ -23,14 +28,15 @@ var MainMenu = new Phaser.Class({
         this.btnstartMPOnline = this.addButton(0, 0, 'button_yellow', this.doStartOnlineMP, this, 0, 1, 0, 1);
         this.btnstartMPOnline.setPosition(game.canvas.width/2,500);
 
-        gamePad = new GamepadControl(0);
+        this.menuArray = [this.btnstartSP,this.btnstartMPlocal,this.btnstartMPOnline];
+        this.menuSelectionIndex = 0;
+        
+        this.sceneTransitionReady = false;
+        this.time.addEvent({ delay: 500, callback: this.transitionSet, callbackScope: this, loop: false });
 
-        this.input.gamepad.once('connected', function (pad) {
-            //   'pad' is a reference to the gamepad that was just connected
-            console.log("menuscene gamepad connected"); 
-            gamePad = new GamepadControl(pad);
-
-        });
+       //Gamepad management
+       initGamePads(this);
+        
         //Text rendering
         let style = { 
             fontFamily: 'visitorTT1',
@@ -43,15 +49,56 @@ var MainMenu = new Phaser.Class({
         this.btnTextSP = this.add.text(game.canvas.width/2,300, 'SINGLE PLAYER', style).setOrigin(0.5);
         this.btnTextMPLocal = this.add.text(game.canvas.width/2,400, 'LOCAL MULTIPLAYER', style).setOrigin(0.5);
         this.btnTextMPOnline = this.add.text(game.canvas.width/2,500, 'ONLINE', style).setOrigin(0.5);
-    
+        
+        this.stickChoke = {c:0,m:5};
 
+    },
+    transitionSet(){
+        this.sceneTransitionReady = true;
+    },
+    selectMenuItem(change){
+
+        this.menuSelectionIndex = this.menuSelectionIndex+change;
+        if(this.menuSelectionIndex < 0){this.menuSelectionIndex = this.menuArray.length-1;}
+        if(this.menuSelectionIndex >= this.menuArray.length){this.menuSelectionIndex = 0;}
+
+        let selectionObj = this.menuArray[this.menuSelectionIndex];
+        this.selectionRect.setPosition(selectionObj.x,selectionObj.y);
     },
     update: function(){
         if(gamePad.ready){
             gamePad.updateButtonState();
         }
-        if(gamePad.checkButtonState('start') > 0){
-            this.doStart();
+        if(gamePad.getStickLeft().y == 1){
+            if(this.stickChoke.c < this.stickChoke.m){
+                this.stickChoke.c++;
+            }else{
+                this.stickChoke.c=0;
+                this.selectMenuItem(1);
+                console.log("Menu Up");
+            }
+        }
+        if(gamePad.getStickLeft().y == -1){
+            if(this.stickChoke.c < this.stickChoke.m){
+                this.stickChoke.c++;
+            }else{
+                this.stickChoke.c=0;
+                this.selectMenuItem(-1);
+                console.log("Menu Up");
+            }
+        }
+        if(gamePad.checkButtonState('shoot') == 1){
+            switch(this.menuSelectionIndex){
+                case 1:
+                    this.doStartLocalMP();
+                break;
+                case 2:
+                    this.doStartOnlineMP();
+                break;
+                default:
+                    this.doStartSingle();
+            }
+          
         }
     },
     doStartOnlineMP:function ()
