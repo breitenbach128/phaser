@@ -771,7 +771,7 @@ var GameScene = new Phaser.Class({
         pointer = this.input.activePointer;
 
         //Controller management
-        initGamePads(this,function(){console.log("GameScene gp callback");});
+        initGamePads(this,this.gamepadCallback);
 
         keyPad = new KeyboardMouseControl(this,pointer)
 
@@ -799,12 +799,15 @@ var GameScene = new Phaser.Class({
         //Debug Properties
         this.debugAimLine = this.add.graphics(0, 0);
         //Need to push all debug graphics into a single debug array for easy enable
-
         
     },
-
+    gamepadCallback(scene){
+        bright.setController(0);
+        solana.setController(0);
+    },
     update: function (time, delta)
     {
+
         //Controller Update
         gamePad.forEach(e=>{
             if(e.ready){
