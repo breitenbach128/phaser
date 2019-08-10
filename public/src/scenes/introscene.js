@@ -51,7 +51,7 @@ var IntroScene = new Phaser.Class({
         this.time.addEvent({ delay: 1000, callback: this.transitionSet, callbackScope: this, loop: false });
 
        //Gamepad management
-       initGamePads(this);
+       initGamePads(this,function(){});
 
         this.controls_guide = this.add.text(this.x, game.canvas.height-192, 'Controls', { fontSize: '12px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
        
@@ -65,10 +65,8 @@ var IntroScene = new Phaser.Class({
     update: function(){
         glowPipeline.setFloat1('time', this.glowTime);
         this.glowTime += 0.05;
-        if(gamePad.ready){
-            gamePad.updateButtonState();
-        }
-        if(gamePad.checkButtonState('start') > 0 && this.sceneTransitionReady){
+        updateGamePads();
+        if((gamePad[0].checkButtonState('start') > 0 || gamePad[1].checkButtonState('start') > 0) && this.sceneTransitionReady){
             this.doStart();
         }
         if(this.dialogueArea.isRunning){

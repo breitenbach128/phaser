@@ -74,15 +74,15 @@ var socket = io();
     var jumpTimer;
     var speed;
     var lastFired = 0;
-    var gamePad;
+    var gamePad = [];
     var keyPad;
     //Player Management
     var playerMode = 0;//0-Single,1-LocalCoop,2-OnlineCoop
     var playerModes = ['Single','Local-COOP','Online'];
-    const ctrls={
-        kb: 0,
-        gp1:1,
-        gp2:2
+    const CTRLS={
+        KB: -1,
+        GP1:0,
+        GP2:1
     }
     const players  = {
         SOLANA: 'Solana',
@@ -112,35 +112,65 @@ var socket = io();
         WING: 2,
         BELT: 3
     }
-    var playerConfig = {
-        one:{
-            ctrl:ctrls.kb,
-            char:players.SOLANA
-        },
-        two:{
-            ctrl:ctrls.gp1,
-            char:players.BRIGHT
-        }
-    };
-    var curr_player = playerConfig.one.char;
-    //Global Functions
-    function initGamePads(scene){
-        console.log("Setup GamePad for ");
-        gamePad = new GamepadControl(0);
-        scene.input.gamepad.once('connected', function (pad) {
-            //   'pad' is a reference to the gamepad that was just connected
-            console.log(scene.scene.key,"gamepad connected"); 
-            gamePad = new GamepadControl(pad);
+    var playerConfig = 
+    [{
+        id:0,
+        ctrl:CTRLS.KB,
+        char:players.SOLANA
+    },
+    {
+        id:1,
+        ctrl:CTRLS.GP1,
+        char:players.BRIGHT
+    }];
 
-        }, scene);
+    var curr_player = playerConfig[0].char;
+    //Global Functions
+    function initGamePads(scene,callback){
+        console.log("Setup GamePad for ", scene.scene.key);
+        gamePad[0] = new GamepadControl(0);
+        gamePad[1] = new GamepadControl(0);
+
+        // scene.input.gamepad.once('connected', function (pad) {
+        //     //   'pad' is a reference to the gamepad that was just connected
+        //     console.log(scene.scene.key,"gamepad connected"); 
+        //     addGamePads(new GamepadControl(pad));            
+        //     callback(scene); 
+        // }, scene);
         scene.input.gamepad.once('down', function (pad, button, index) {
             console.log(scene.scene.key,'Playing with ' + pad.id);    
-            gamePad = new GamepadControl(pad);    
+            addGamePads(new GamepadControl(pad));  
+            callback(scene); 
         }, scene);
+       
+    }
+    function updateGamePads(){
+        for(let i=0;i < gamePad.length;i++){
+            if(gamePad[i].ready == true){
+                gamePad[i].updateButtonState();
+            }
+        }
     }
     function getInactiveGamePad(){
-        for(let i=0;i < gamePads.length;i++){
-            if(gamePads[i].ready == false){
+        for(let i=0;i < gamePad.length;i++){
+            if(gamePad[i].ready == false){
+                return i;
+            }
+        }
+        return -1;
+    }
+    function getActiveGamePadCount(){
+        let c = 0;
+        for(let i=0;i < gamePad.length;i++){
+            if(gamePad[i].ready == true){
+                c++;
+            }
+        }
+        return c;
+    }
+    function getActiveGamePad(){
+        for(let i=0;i < gamePad.length;i++){
+            if(gamePad[i].ready == true){
                 return i;
             }
         }
@@ -151,8 +181,25 @@ var socket = io();
         if(availPad == -1){
             //All pads filled up. 
         }else{
-            gamePads[availPad] = pad;
+            gamePad[availPad] = pad;
         }
+    }
+    function createControls(scene){
+        //Configure Controls by simple names
+        game.wasd = {
+            up: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+            down: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+            left: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+            right: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+            shoot: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L),
+            jump: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J),
+            suicide: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
+            passLight: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),
+            restart_scene: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),
+            switch: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
+            pulse: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
+    
+        };
     }
     //Debug:Version
     console.log(String(Phaser.VERSION));

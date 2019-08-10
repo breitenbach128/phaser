@@ -24,12 +24,12 @@ class GamepadControl {
             down: {i:13,s:0},
             left: {i:14,s:0},
             right: {i:15,s:0},
-            shoot: {i:0,s:0}, //A
+            A: {i:0,s:0}, //A
             B: {i:1,s:0}, //B
-            jump: {i:2,s:0}, //X
-            passLight: {i:3,s:0}, //Y
+            X: {i:2,s:0}, //X
+            Y: {i:3,s:0}, //Y
             leftShoulder: {i:4,s:0}, //Left Shoulder
-            switch: {i:5,s:0}, // Right Shoulder
+            rightShoulder: {i:5,s:0}, // Right Shoulder
             leftTrigger: {i:6,s:0}, //Left Trigger
             rightTrigger: {i:7,s:0}, // Right Trigger
             select : {i:8,s:0},
@@ -87,21 +87,23 @@ class KeyboardMouseControl {
     constructor(scene,pointer){
         //Map Point and Controls
         this.buttons = {
-            up: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),s:0},
-            down: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),s:0},
-            left: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),s:0},
-            right: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),s:0},
-            suicide: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),s:0},
-            passLight: {b: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),s:0},
-            restart_scene: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),s:0},
-            switch: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),s:0},   
-            beam: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B),s:0},  
-            jump: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),s:0},              
-            DEBUG: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O),s:0}
+            W: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),s:0},
+            S: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),s:0},
+            A: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),s:0},
+            D: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),s:0},
+            P: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),s:0},
+            R: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),s:0},
+            X: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),s:0},
+            Q: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),s:0},   
+            B: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B),s:0},  
+            SPC: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),s:0},              
+            O: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O),s:0},
+            F: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F),s:0}
         }
         this.msbuttons= {
-            shoot: {b:0,s:0},
-            mb2: {b:2,s:0},
+            MB0: {b:0,s:0},
+            MB1: {b:1,s:0},
+            MB2: {b:2,s:0}
         }
         this.pointer = pointer;
         //Create lists
@@ -123,22 +125,34 @@ class KeyboardMouseControl {
         },this)
 
         if(!this.pointer.isDown){            
-            this.msbuttons.shoot.s = this.msbuttons.shoot.s > 0 ? -1 : 0;
-            this.msbuttons.mb2.s = this.msbuttons.mb2.s > 0 ? -1 : 0;
+            this.msbuttons.MB0.s = this.msbuttons.MB0.s > 0 ? -1 : 0;
+            this.msbuttons.MB1.s = this.msbuttons.MB1.s > 0 ? -1 : 0;
+            this.msbuttons.MB2.s = this.msbuttons.MB2.s > 0 ? -1 : 0;
         }else{
             if(this.pointer.button == 0){
-                this.msbuttons.shoot.s++;
+                this.msbuttons.MB0.s++;
+            };
+            if(this.pointer.button == 1){
+                this.msbuttons.MB1.s++;
             };
             if(this.pointer.button == 2){
-                this.msbuttons.mb2.s++;
+                this.msbuttons.MB2.s++;
             };
         }
 
     }
     checkKeyState(name){
-        return this.buttons[name].s; 
+        if(this.buttons[name]){
+            return this.buttons[name].s; 
+        }else{
+           return 0; 
+        }
     }
     checkMouseState(name){
-        return this.msbuttons[name].s; 
+        if(this.msbuttons[name]){
+            return this.msbuttons[name].s; 
+        }else{
+            return 0; 
+        }
     }
 }

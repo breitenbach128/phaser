@@ -19,7 +19,7 @@ var MainMenu = new Phaser.Class({
         this.selectionRect = this.add.rectangle(game.canvas.width/2,300,195,55,0xFFD700,1);
         this.selectionRect.setStrokeStyle(5, 0xFFFFFF, .8);
         this.selectionRect.setVisible(false);
-        if(gamePad.ready){this.selectionRect.setVisible(true);}
+        if(gamePad[0].ready){this.selectionRect.setVisible(true);}
         //noClick, noClick Hover, Click, Click Hover
         this.btnstartSP = this.addButton(0, 0, 'button_yellow', this.doStartSingle, this, 0, 1, 0, 1);
         this.btnstartSP.setPosition(game.canvas.width/2,300);
@@ -35,7 +35,7 @@ var MainMenu = new Phaser.Class({
         this.time.addEvent({ delay: 500, callback: this.transitionSet, callbackScope: this, loop: false });
 
        //Gamepad management
-       initGamePads(this);
+       initGamePads(this,function(){});
         
         //Text rendering
         let style = { 
@@ -66,10 +66,9 @@ var MainMenu = new Phaser.Class({
         this.selectionRect.setPosition(selectionObj.x,selectionObj.y);
     },
     update: function(){
-        if(gamePad.ready){
-            gamePad.updateButtonState();
-        }
-        if(gamePad.getStickLeft().y == 1){
+        updateGamePads();
+
+        if(gamePad[0].getStickLeft().y == 1 || gamePad[1].getStickLeft().y == 1){
             if(this.stickChoke.c < this.stickChoke.m){
                 this.stickChoke.c++;
             }else{
@@ -78,7 +77,7 @@ var MainMenu = new Phaser.Class({
                 console.log("Menu Up");
             }
         }
-        if(gamePad.getStickLeft().y == -1){
+        if(gamePad[0].getStickLeft().y == -1 || gamePad[1].getStickLeft().y == -1){
             if(this.stickChoke.c < this.stickChoke.m){
                 this.stickChoke.c++;
             }else{
@@ -87,7 +86,7 @@ var MainMenu = new Phaser.Class({
                 console.log("Menu Up");
             }
         }
-        if(gamePad.checkButtonState('shoot') == 1){
+        if(gamePad[0].checkButtonState('A') == 1 || gamePad[1].checkButtonState('A') == 1){
             switch(this.menuSelectionIndex){
                 case 1:
                     this.doStartLocalMP();

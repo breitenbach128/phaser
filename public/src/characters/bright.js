@@ -73,6 +73,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
         //Controller
         this.controller;
+        this.ctrlDevice;
+        this.ctrlDeviceId = -1;
     }
 
     update()
@@ -90,9 +92,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 }
             }
 
-            this.debug.setPosition(this.sprite.x, this.sprite.y-64);
-            this.debug.setText("PulseValue:"+String(this.abPulse.c)
-            +"\nAng:"+String(this.angle));
+
             //Do Dark Updates
             if(this.light_status == 1){
                 if(this.touching.down == 0 && this.airTime > 40){
@@ -113,12 +113,16 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             //Movement Code
             if(curr_player==players.BRIGHT){
                 //Only control if currently the active control object
-                let control_left = (game.wasd.left.isDown || gamePad.getStickLeft().x < 0);
-                let control_right = (game.wasd.right.isDown || gamePad.getStickLeft().x > 0);
-                let control_up = (game.wasd.up.isDown || gamePad.getStickLeft().y < 0);
-                let control_down = (game.wasd.down.isDown || gamePad.getStickLeft().y > 0);
-                let control_jump = (keyPad.checkKeyState('jump') == 1 || gamePad.checkButtonState('jump') == 1);
-                let control_beam = (keyPad.checkKeyState('beam') == 1);
+                let control_left = this.getControllerAction('left');
+                let control_right = this.getControllerAction('right');
+                let control_up = this.getControllerAction('up');
+                let control_down = this.getControllerAction('down');
+                let control_jump = this.getControllerAction('jump');
+                let control_beam = this.getControllerAction('beam');
+                let control_passPress = this.getControllerAction('pass');
+                let control_passRelease = this.getControllerAction('passR');
+                let control_pulsePress = this.getControllerAction('pulse');
+                let control_pulseRelease = this.getControllerAction('pulseR');
                 //Control Based on Light or Dark Modes
                 let darkMode = 1;
                 let brightMode = 0;
@@ -149,7 +153,17 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     if(!control_left && !control_right && !control_up && !control_down){
                         this.sprite.anims.play('bright-idle', true);//Idle
                     }
-                    
+                    //Passing Soulight
+                    if(soullight.ownerid == 1){
+                        if(control_passPress){soullight.aimStart();};
+                        if(control_passRelease){soullight.aimStop();};
+                    }
+                    if(control_pulsePress){
+                        bright.pulseCharge();
+                    }
+                    if(control_pulseRelease){
+                        bright.pulseThrow(solana);
+                    }
 
                 }else{
                     //DARK CONTROLS
@@ -182,11 +196,76 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         this.sprite.setVelocityY(-this.jump_speed);
                     }
                 }
+
+                this.debug.setPosition(this.sprite.x, this.sprite.y-64);
+                this.debug.setText("ctrl-pass:"+String(control_passPress)
+                +"\nctrl-passR:"+String(control_passRelease)
+                +"\nR-StatusKPGlobal:"+String(keyPad.checkKeyState('R'))
+                +"\nR-KP_R:"+String(keyPad.buttons.R.b.isDown));
             }
         }
+
+    }    
+    getControllerAction(action){
+        if(this.ctrlDeviceId >=0){
+            switch(action){
+                case 'up':
+                    return (gamePad[this.ctrlDeviceId].getStickLeft().y < 0);
+                case 'down':
+                    return (gamePad[this.ctrlDeviceId].getStickLeft().y > 0);
+                case 'left':
+                    return (gamePad[this.ctrlDeviceId].getStickLeft().x < 0);
+                case 'right':
+                    return (gamePad[this.ctrlDeviceId].getStickLeft().x > 0);
+                case 'jump':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('A') == 1);
+                case 'beam':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('X') == 1);
+                case 'pass':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == 1);
+                case 'passR':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == -1);
+                case 'pulse':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('B') == 1);
+                case 'pulseR':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('B') == -1);
+                default:
+                    return false;
+            }
+        }else if(this.ctrlDeviceId == -1){
+            switch(action){
+                case 'up':
+                    return (keyPad.checkKeyState('W') > 0);
+                case 'down':
+                    return (keyPad.checkKeyState('S') > 0);
+                case 'left':
+                    return (keyPad.checkKeyState('A') > 0);
+                case 'right':
+                    return (keyPad.checkKeyState('D') > 0);
+                case 'jump':
+                    return (keyPad.checkKeyState('SPC') == 1);
+                case 'beam':
+                    return (keyPad.checkMouseState('MB0') > 0);
+                case 'pass':
+                    return (keyPad.checkKeyState('R') == 1);
+                case 'passR':
+                    return (keyPad.checkKeyState('R') == -1);
+                case 'pulse':
+                    return (keyPad.checkKeyState('F') == 1);
+                case 'pulseR':
+                    return (keyPad.checkKeyState('F') == -1);
+                default:
+                    return false;
+    
+                } 
+        }else{
+            return false
+        }
     }
-    setController(){
+    setController(ctrlId,ctrl){
         //Sets the controller Source
+        this.ctrlDevice = ctrl;
+        this.ctrlDeviceId = ctrlId;
     }
     resetBeam(){
        this.beamReady = true; 

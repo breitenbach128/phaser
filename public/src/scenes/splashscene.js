@@ -47,14 +47,8 @@ var SplashScene = new Phaser.Class({
 
         this.glowTime = 0;
 
-        gamePad = new GamepadControl(0);
-
-        this.input.gamepad.once('connected', function (pad) {
-            //   'pad' is a reference to the gamepad that was just connected
-            console.log("menuscene gamepad connected"); 
-            gamePad = new GamepadControl(pad);
-
-        });
+       //Gamepad management
+       initGamePads(this,function(){});
 
         this.controls_guide = this.add.text(this.x, game.canvas.height-192, 'Controls', { fontSize: '12px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
        
@@ -72,10 +66,9 @@ var SplashScene = new Phaser.Class({
     update: function(){
         glowPipeline.setFloat1('time', this.glowTime);
         this.glowTime += 0.05;
-        if(gamePad.ready){
-            gamePad.updateButtonState();
-        }
-        if(gamePad.checkButtonState('start') > 0){
+        updateGamePads();
+
+        if(gamePad[0].checkButtonState('start') > 0 || gamePad[1].checkButtonState('start') > 0){
             this.doStart();
         }
     },	

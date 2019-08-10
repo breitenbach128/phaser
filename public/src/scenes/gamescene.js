@@ -770,10 +770,13 @@ var GameScene = new Phaser.Class({
         //Mouse
         pointer = this.input.activePointer;
 
-       //Gamepad management
-       initGamePads(this);
+        //Controller management
+        initGamePads(this,function(){console.log("GameScene gp callback");});
 
         keyPad = new KeyboardMouseControl(this,pointer)
+
+        bright.setController(-1);
+        solana.setController(-1);
 
         //TIME SCALE
         let timeScale = 1;
@@ -781,7 +784,7 @@ var GameScene = new Phaser.Class({
         this.matter.world.engine.timing.timeScale = timeScale; // physics
         this.time.timeScale = timeScale; // time events
         console.log(this.time);
- 
+
         //Draw Point area debug
         this.debugPointer = this.add.graphics();
         var color = 0xffff00;
@@ -792,7 +795,7 @@ var GameScene = new Phaser.Class({
         this.debugPointer.strokeRect(0,0,16,16);
 
         //Probably need a statemachine like I have for gamePad for the keyboard and mouse controls to have them update in the game scene. Mouse2 is sticking on jump
-   
+
         //Debug Properties
         this.debugAimLine = this.add.graphics(0, 0);
         //Need to push all debug graphics into a single debug array for easy enable
@@ -803,9 +806,12 @@ var GameScene = new Phaser.Class({
     update: function (time, delta)
     {
         //Controller Update
-        gamePad.updateButtonState();
+        gamePad.forEach(e=>{
+            if(e.ready){
+                e.updateButtonState();
+            }
+        })
         keyPad.updateKeyState();
- 
         //center camera on the spot between the players. Zoom out to a max.
         let disPlayers = Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y);
 
@@ -866,13 +872,15 @@ var GameScene = new Phaser.Class({
         shadow_layer.refresh();
 
 
+
+        //KEYPRESS DETECTION - USING CUSTOM CONTROLLER CLASS
         //Suicide to test animation
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.suicide)){            
+        if(keyPad.checkKeyState('P')){            
             solana.receiveDamage(1);
         }
         
         //GLOBAL DEBUG TURN ON/OFF
-        if(keyPad.checkKeyState('DEBUG') == 1){
+        if(keyPad.checkKeyState('O') == 1){
             GLOBAL_DEBUG = !GLOBAL_DEBUG;
             if(GLOBAL_DEBUG == false){
                 this.debugAimLine.clear();
@@ -888,42 +896,24 @@ var GameScene = new Phaser.Class({
              
         }
         //Test Matter Point Query
-        if(keyPad.checkMouseState('mb2') == 1){
+        if(keyPad.checkMouseState('MB2') == 1){
             console.log("MB2 Clicked");
             //Phaser.Physics.Matter.Matter.Query.point(this.matter.world.localWorld.bodies, pointer); 
             //this.matter.world.engine.world.bodies
             console.log(Phaser.Physics.Matter.Matter.Query.point(this.matter.world.localWorld.bodies, {x:pointer.worldX, y:pointer.worldY}));
         }
-
-        //Throw Soulight
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.passLight) || gamePad.checkButtonState('passLight') == 1){ 
-            soullight.aimStart(); 
-        }  
-
-        if(Phaser.Input.Keyboard.JustUp(game.wasd.passLight) || gamePad.checkButtonState('passLight') == -1){
-            console.log("Released Y");
-            //Release gamepad throw light
-            soullight.aimStop();
-        }
-
-        //Test Bright pulse
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.pulse)){
-            bright.pulseCharge();
-        }
-        if(Phaser.Input.Keyboard.JustUp(game.wasd.pulse)){
-            bright.pulseThrow(solana);
-        }
         //Quick Change Map and Restart Scene
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.restart_scene)){  
+        if(keyPad.checkKeyState('X') == 1){  
             if(current_map == "map2"){current_map = "map3"}else{current_map = "map2"}; 
             hud.clearHud();       
             this.scene.restart();
         }     
-
-
-        if(Phaser.Input.Keyboard.JustDown(game.wasd.switch) || gamePad.checkButtonState('switch') == 1){
-            this.changePlayer();
-        } 
+        //Change Player in Single Mode
+        if(playerMode == 0){
+            if(keyPad.checkKeyState('Q') == 1){
+                this.changePlayer();
+            } 
+        }
         
         //Scroll parallax based on movement of bright or solana
         if(solana.mv_Xdiff != 0){
@@ -934,7 +924,7 @@ var GameScene = new Phaser.Class({
       
     },
     changePlayer: function(){
-        this.cameras.main.stopFollow();
+        //this.cameras.main.stopFollow();
        
         if(curr_player == players.SOLANA){
             curr_player=players.BRIGHT;
@@ -1150,23 +1140,7 @@ function Gun(rof,magsize,reloadtime){
         }
     }
 }
-function createControls(scene){
-    //Configure Controls by simple names
-    game.wasd = {
-        up: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
-        down: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
-        left: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
-        right: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
-        shoot: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L),
-        jump: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J),
-        suicide: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
-        passLight: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),
-        restart_scene: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),
-        switch: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-        pulse: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
 
-    };
-}
 function createAnimations(scene){
     scene.anims.create({
         key: 'slime1-idle',

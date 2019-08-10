@@ -73,6 +73,7 @@ var Preloader = new Phaser.Class({
 		//Icons
 		this.load.image('icon_keyboard','img/keyboard_icon_w.png');
 		this.load.image('icon_gamepad','img/gamepad_icon_w.png')
+		this.load.image('red_cross','img/red_cross.png')
 		// Menu
         this.load.atlas('sprites', 'img/spritearray.png', 'img/spritearray.json');
         this.load.image('Title1', 'img/Title1.png');

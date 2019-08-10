@@ -19,13 +19,6 @@ class HudScene extends Phaser.Scene {
             let debugString =  "CameraX:"+String(Math.round(camera_main.worldView.x))
             +"\nCameraY:" + String(Math.round(camera_main.worldView.y))
             +"\nDisPlayers:"+String(Math.round(Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y)));
-
-            if(gamePad.ready){
-                debugString=debugString+"\nGamePad: button Y:"+String(gamePad.checkButtonState('passLight'));
-            }else{
-                debugString=debugString+"\nMKB: button Jump:"+String(keyPad.checkMouseState('mb2'));
-            }
-            debugString+="\nER#:"+String(this.energy.n);
             this.debug.setText(debugString);
 
             if(this.dialogueArea.isRunning){

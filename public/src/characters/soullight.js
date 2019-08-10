@@ -68,14 +68,6 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed)};
         if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
 
-
-        let gpVec = gamePad.getStickLeft();
-        let targVector = {x:this.x+gpVec.x*this.aimerRadius,y:this.y+gpVec.y*this.aimerRadius};
-
-        this.debug.setPosition(this.sprite.x+16, this.sprite.y-32);
-        this.debug.setText("Passing:"+String(this.passing)
-        +" \nThrowVec2:"+String((targVector.x).toFixed(2)) + ":" + String((targVector.y).toFixed(2)));
-
         //Handle position and light growth and shrinking
         if(!this.passing){
             this.setPosition(this.owner.x,this.owner.y);            
@@ -96,11 +88,13 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
     }
     
     setAimer(){ 
+
         let gameScale = camera_main.zoom;
         let targVector = {x:pointer.x/gameScale,y:pointer.y/gameScale};
-        if(gamePad.ready){
+        
+        if(this.owner.ctrlDeviceId >= 0){
             //Overwrite target vector with gamePad coords
-            let gpVec = gamePad.getStickLeft();
+            let gpVec = gamePad[this.owner.ctrlDeviceId].getStickLeft();
             targVector = {x:this.x+gpVec.x*this.aimerRadius,y:this.y+gpVec.y*this.aimerRadius};
         }
         this.aimerCircle.x = this.x;

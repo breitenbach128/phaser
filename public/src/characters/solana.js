@@ -78,16 +78,21 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.jumpLock = false;
         this.jumpLockTimer;
         this.kickOff = this.mv_speed;
+        //Controller
+        this.controller;
+        this.ctrlDevice;
+        this.ctrlDeviceId = -1;
       }
 
     update(time,delta)
     {
         if(this.alive){
             //Only control if currently the active control object
-            let control_left = (game.wasd.left.isDown || gamePad.getStickLeft().x < 0);
-            let control_right = (game.wasd.right.isDown || gamePad.getStickLeft().x > 0);
-            let control_shoot = (pointer.leftButtonDown() || gamePad.checkButtonState('shoot') > 0);
-            
+            let control_left = this.getControllerAction('left');
+            let control_right = this.getControllerAction('right');
+            let control_shoot = this.getControllerAction('shoot');        
+            let control_passPress = this.getControllerAction('pass');
+            let control_passRelease = this.getControllerAction('passR');
 
             //Detection Code for Jumping
 
@@ -138,7 +143,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             //Movement Code
             if(curr_player==players.SOLANA){
                 //Reduce Air Control
-                let control_jump = (keyPad.checkKeyState('jump') == 1 || gamePad.checkButtonState('jump') == 1);
+                let control_jump = this.getControllerAction('jump');
                 let mv = this.onGround ? this.mv_speed : this.mv_speed*.75;
                 if (control_left && this.jumpLock == false) {
 
@@ -162,7 +167,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
                     this.mv_direction.x = 0; 
                 }
-
+                //Passing Soulight
+                if(soullight.ownerid == 0){
+                    if(control_passPress){soullight.aimStart()};
+                    if(control_passRelease){soullight.aimStop();};
+                }
                 if(this.jumpLock){
                     this.sprite.setVelocityX(this.kickOff);
                 }    
@@ -222,6 +231,58 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.prev_position.x = this.x;
         this.prev_position.y = this.y;
         
+    }
+    getControllerAction(action){
+        if(this.ctrlDeviceId >=0){
+            switch(action){
+                case 'up':
+                    return (gamePad[this.ctrlDeviceId].getStickLeft().y < 0);
+                case 'down':
+                    return (gamePad[this.ctrlDeviceId].getStickLeft().y > 0);
+                case 'left':
+                    return (gamePad[this.ctrlDeviceId].getStickLeft().x < 0);
+                case 'right':
+                    return (gamePad[this.ctrlDeviceId].getStickLeft().x > 0);
+                case 'jump':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('A') == 1);
+                case 'shoot':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('X') == 1);
+                case 'pass':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == 1);
+                case 'passR':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == -1);
+                default:
+                    return false;
+            }
+        }else if(this.ctrlDeviceId == -1){
+            switch(action){
+                case 'up':
+                    return (keyPad.checkKeyState('W') > 0);
+                case 'down':
+                    return (keyPad.checkKeyState('S') > 0);
+                case 'left':
+                    return (keyPad.checkKeyState('A') > 0);
+                case 'right':
+                    return (keyPad.checkKeyState('D') > 0);
+                case 'jump':
+                    return (keyPad.checkKeyState('SPC') == 1);
+                case 'shoot':
+                    return (keyPad.checkMouseState('MB0') > 0);
+                case 'pass':
+                    return (keyPad.checkKeyState('R') == 1);
+                case 'passR':
+                    return (keyPad.checkKeyState('R') == -1);
+                default:
+                    return false;
+    
+                } 
+        }else{
+            return false
+        }
+    }
+    setController(ctrlId){
+        //Sets the controller Source
+        this.ctrlDeviceId = ctrlId;
     }
     jumpLockReset(){
         this.jumpLock = false;
