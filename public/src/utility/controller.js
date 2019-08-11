@@ -17,6 +17,7 @@ class GamepadControl {
         }
 
         this.pad = device;
+        this.index = -1;
         
         //pad.buttons
         this.buttons = {
@@ -51,9 +52,21 @@ class GamepadControl {
         //Reduce the object keys function call but setting the keynames one time, instead of each loop
         this.keys.forEach(function(name) {        
             let state = false;
-            if(this.pad != 0){
-                state = this.pad.buttons[this.buttons[name].i].pressed;
+             //Phaser Gamepad Ver
+            let pad = this.pad;
+            if(this.index >= 0){
+            //Mozilla API Ver            
+                pad = navigator.getGamepads()[this.index];
+                //Update Sticks
+                let threshold = .1;
+                this.sticks.left.x = ((pad.axes[0] > 0 && pad.axes[0] > threshold) || (pad.axes[0] < 0 && pad.axes[0] < -threshold))? pad.axes[0] : 0;
+                this.sticks.left.y = ((pad.axes[1] > 0 && pad.axes[1] > threshold) || (pad.axes[1] < 0 && pad.axes[1] < -threshold))? pad.axes[1] : 0;
+                this.sticks.right.x = ((pad.axes[2] > 0 && pad.axes[2] > threshold) || (pad.axes[2] < 0 && pad.axes[2] < -threshold))? pad.axes[2] : 0;
+                this.sticks.right.y = ((pad.axes[3] > 0 && pad.axes[3] > threshold) || (pad.axes[3] < 0 && pad.axes[3] < -threshold))? pad.axes[3] : 0;
             }
+            if(pad != 0 && pad != null && pad != undefined){
+                state = pad.buttons[this.buttons[name].i].pressed;
+            } 
             //If not change, then return current state        
             if(!state){
                 this.buttons[name].s = this.buttons[name].s > 0 ? -1 : 0;                
@@ -70,16 +83,16 @@ class GamepadControl {
     }
     getStickLeft(){
         if(this.ready){
-            return {x:this.pad.axes[0].getValue(),y:this.pad.axes[1].getValue()}; // Phaser 3 Version
-            //return {x:this.pad.axes[0],y:this.pad.axes[1]}; // Mozilla API Version
+            //return {x:this.pad.axes[0].getValue(),y:this.pad.axes[1].getValue()}; // Phaser 3 Version
+            return {x:this.sticks.left.x,y:this.sticks.left.y}; // Mozilla API Version
         }else{
             return {x:0,y:0};
         }
     }
     getStickRight(){
         if(this.ready){
-            return {x:this.pad.axes[2].getValue(),y:this.pad.axes[3].getValue()}; // Phaser 3 Version
-            //return {x:this.pad.axes[2],y:this.pad.axes[3]};// Mozilla API Version
+            //return {x:this.pad.axes[2].getValue(),y:this.pad.axes[3].getValue()}; // Phaser 3 Version
+            return {x:this.sticks.right.x,y:this.sticks.right.y};// Mozilla API Version
         }else{
             return {x:0,y:0};
         }

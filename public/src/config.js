@@ -209,6 +209,7 @@ var socket = io();
             //All pads filled up. 
         }else{
             gamePad[availPad] = pad;
+            gamePad[availPad].index = availPad;
         }
     }
     function createControls(scene){

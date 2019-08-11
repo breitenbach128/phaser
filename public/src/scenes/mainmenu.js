@@ -80,6 +80,10 @@ var MainMenu = new Phaser.Class({
     update: function(){
         updateGamePads();
 
+        //Test Navigator
+        let gp = navigator.getGamepads()[0];
+        if(gp.buttons[0].value == 0){console.log("A Button Pushed");} //THIS WORKS!!! I could just update the controller class to pull directly from the navigator.
+
         if(gamePad[0].getStickLeft().y == 1 || gamePad[1].getStickLeft().y == 1){
             if(this.stickChoke.c < this.stickChoke.m){
                 this.stickChoke.c++;

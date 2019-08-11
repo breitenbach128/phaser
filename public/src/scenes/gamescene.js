@@ -771,14 +771,14 @@ var GameScene = new Phaser.Class({
         pointer = this.input.activePointer;
 
         //Controller management
-        initGamePads(this,this.gamepadCallback);
+        //initGamePads(this,this.gamepadCallback);
 
         keyPad = new KeyboardMouseControl(this,pointer)
 
-        bright.setController(-1);
-        solana.setController(-1);
+        solana.setController(playerConfig[0].ctrl);
+        bright.setController(playerConfig[1].ctrl);
 
-        console.log("player Configs:",playerModes[playerMode],playerConfig);
+        console.log("player Configs:",gamePad,playerModes[playerMode],playerConfig);
 
         //TIME SCALE
         let timeScale = 1;
@@ -803,7 +803,8 @@ var GameScene = new Phaser.Class({
         //Need to push all debug graphics into a single debug array for easy enable
         
     },
-    gamepadCallback(scene){     
+    gamepadCallback(scene){  
+        console.log("GameScene GP Callback");   
         let activePads = getActiveGamePadCount();   
         bright.setController(activePads-2);//IF activepads  == 1, bright goes Keyboard (-1), solana goes GP[0]
         solana.setController(activePads-1);//If activepads == 2, bright goes GP[1], soland goes GP[0]
