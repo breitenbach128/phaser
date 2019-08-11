@@ -141,7 +141,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             }
 
             //Movement Code
-            if(curr_player==players.SOLANA){
+            if(curr_player==players.SOLANA || playerMode > 0){
                 //Reduce Air Control
                 let control_jump = this.getControllerAction('jump');
                 let mv = this.onGround ? this.mv_speed : this.mv_speed*.75;

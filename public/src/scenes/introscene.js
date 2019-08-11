@@ -11,6 +11,7 @@ var IntroScene = new Phaser.Class({
 
     preload: function ()
     {
+        initGamePads(this,function(){});
     },
 
     create: function ()
@@ -48,15 +49,14 @@ var IntroScene = new Phaser.Class({
 
         this.sceneTransitionReady = false;
 
-        this.time.addEvent({ delay: 1000, callback: this.transitionSet, callbackScope: this, loop: false });
+        this.time.addEvent({ delay: 100, callback: this.transitionSet, callbackScope: this, loop: false });
 
-       //Gamepad management
-       initGamePads(this,function(){});
-
+  
         this.controls_guide = this.add.text(this.x, game.canvas.height-192, 'Controls', { fontSize: '12px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
        
         this.controls_guide.setText("INTRODUCTON SCENE"
-        +"\n - PRE GAME DIALOGUE PLAYER AND CUTSCENE");
+        +"\n - PRE GAME DIALOGUE PLAYER AND CUTSCENE"
+        +"\nStartBTN:"+String(gamePad[0].checkButtonState('start')+String(gamePad[1].checkButtonState('start'))));
 
     },
     transitionSet(){

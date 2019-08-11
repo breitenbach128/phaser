@@ -16,8 +16,9 @@ class HudScene extends Phaser.Scene {
     update()
     {
         if(this.ready){  
-            let debugString =  "CameraX:"+String(Math.round(camera_main.worldView.x))
-            +"\nCameraY:" + String(Math.round(camera_main.worldView.y))
+            let debugString =  "CamX:"+String(Math.round(camera_main.worldView.x))
+            +"\nCamY:" + String(Math.round(camera_main.worldView.y))
+            +"\nPlayerMode:" + String(playerMode)
             +"\nDisPlayers:"+String(Math.round(Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y)));
             this.debug.setText(debugString);
 

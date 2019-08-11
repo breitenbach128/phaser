@@ -13,6 +13,7 @@ var SplashScene = new Phaser.Class({
 
     preload: function ()
     {
+        initGamePads(this,function(){});
     },
 
     create: function ()
@@ -40,15 +41,9 @@ var SplashScene = new Phaser.Class({
         timeline.add({targets: title,x: game.canvas.width/2,y: game.canvas.height/2-300,ease: 'Power1',duration: 0,hold: 0});
         timeline.add({targets: this.btnstart,x: game.canvas.width/2,y: game.canvas.height/2,ease: 'Power1',duration: 0,hold: 0});
         timeline.play();
-
-
-
-
-
+        
         this.glowTime = 0;
-
-       //Gamepad management
-       initGamePads(this,function(){});
+  
 
         this.controls_guide = this.add.text(this.x, game.canvas.height-192, 'Controls', { fontSize: '12px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
        
@@ -74,8 +69,7 @@ var SplashScene = new Phaser.Class({
     },	
 	doStart: function ()
     {
-        this.input.gamepad.disconnectAll();
-		this.scene.start('intro');
+       this.scene.start('intro');
     }
 
 });

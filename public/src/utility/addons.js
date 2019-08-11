@@ -94,11 +94,12 @@ class Dialogue {
 		if(speaker != undefined && this.bubbles != undefined){
 			
 			this.bubbles[i].flipX = speaker.flipX;
+			let offX = this.offset.x;
 			if(speaker.flipX){
-				this.offset.x = -speaker.width-this.offset.x/2;
+				offX = -this.offset.x;
 			}
 			//Adjust for real HUD position offset from camera movement and scale
-			this.bubbles[i].x = (speaker.x+this.offset.x-camera_main.worldView.x)*worldScale;
+			this.bubbles[i].x = (speaker.x+offX-camera_main.worldView.x)*worldScale;
 			this.bubbles[i].y = (speaker.y+this.offset.y-camera_main.worldView.y)*worldScale;
 			this.bubbles[i].update();
 		}

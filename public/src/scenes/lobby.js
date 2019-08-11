@@ -26,6 +26,7 @@ var LobbyScene = new Phaser.Class({
         createControls(this);
         //Gamepad management
         initGamePads(this,this.detectedNewGP);
+  
 
         //Create player Selection
         let selectSolana = this.add.sprite(game.canvas.width/2,300,'solana').setScale(3);
@@ -104,11 +105,12 @@ var LobbyScene = new Phaser.Class({
         scene.disconnectedIcons[activePads-1].setVisible(false);
         scene.disconnectedIcons[activePads-1+1].setVisible(false);
         playerConfig[activePads-1].ctrl = activePads-1;
+        playerConfig[activePads-1].ctrlSN = gamePad[activePads-1].pad.id
         //If only pad, default player 2 to keyboard;
-        if(activePads == 1){playerConfig[1].ctrl = -1;}
+        if(activePads == 1){playerConfig[1].ctrl = -1;playerConfig[1].ctrlSN = 0;}
         //Setup Icons
         scene.setupControlsIcons();
-        console.log("GPTOTAL",scene.input.gamepad.total);
+        console.log("GPTOTAL",scene.input.gamepad.total,gamePad[activePads-1].pad.id);
     },
     setupControlsIcons(){
         //Player1
@@ -133,6 +135,10 @@ var LobbyScene = new Phaser.Class({
         if(playerConfig[0].ctrl != control && playerConfig[1].ctrl != control && control <= getActiveGamePadCount()-1 ){
 
             playerConfig[player-1].ctrl = control;
+            if(control >= 0){
+                console.log("Control Selected",control,gamePad[control].pad.id);
+                playerConfig[player-1].ctrlSN = gamePad[control].pad.id;
+            }
             this.setupControlsIcons();
         
         }
@@ -197,16 +203,17 @@ var LobbyScene = new Phaser.Class({
         if(gamePad[0].checkButtonState('start') > 0 || gamePad[1].checkButtonState('start') > 0){
             this.doStart();
         }
-        this.debug.setText("P1-CTRL:"+String(playerConfig[0].ctrl)
-        +"\nP2-CTRL:"+String(playerConfig[1].ctrl));
+        this.debug.setText("P1-CTRL:"+String(playerConfig[0].ctrl)+" "+String(playerConfig[1].ctrlSN)
+        +"\nP2-CTRL:"+String(playerConfig[1].ctrl)+" "+String(playerConfig[1].ctrlSN));
     },
     onObjectClicked(pointer,gameObject)
     {
-        let ctrl = gameObject.getData("ctrl");
-        if(gameObject.getData("p") == 1){
+        console.log("Object Clicked",gameObject,gameObject.data.get("ctrl"),gameObject.data.get("p"));
+        let ctrl = gameObject.data.get("ctrl");
+        if(gameObject.data.get("p") == 1){
             this.selectControl(1,ctrl);
         }
-        if(gameObject.getData("p") == 2){
+        if(gameObject.data.get("p") == 2){
             this.selectControl(2,ctrl);
         }
         if(gameObject.getData("button") == "start"){this.doStart();}

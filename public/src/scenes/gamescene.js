@@ -778,6 +778,8 @@ var GameScene = new Phaser.Class({
         bright.setController(-1);
         solana.setController(-1);
 
+        console.log("player Configs:",playerModes[playerMode],playerConfig);
+
         //TIME SCALE
         let timeScale = 1;
         this.tweens.timeScale = timeScale; // tweens
@@ -801,9 +803,10 @@ var GameScene = new Phaser.Class({
         //Need to push all debug graphics into a single debug array for easy enable
         
     },
-    gamepadCallback(scene){
-        bright.setController(0);
-        solana.setController(0);
+    gamepadCallback(scene){     
+        let activePads = getActiveGamePadCount();   
+        bright.setController(activePads-2);//IF activepads  == 1, bright goes Keyboard (-1), solana goes GP[0]
+        solana.setController(activePads-1);//If activepads == 2, bright goes GP[1], soland goes GP[0]
     },
     update: function (time, delta)
     {

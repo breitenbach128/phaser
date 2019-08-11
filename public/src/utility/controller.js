@@ -50,9 +50,10 @@ class GamepadControl {
     updateButtonState(){
         //Reduce the object keys function call but setting the keynames one time, instead of each loop
         this.keys.forEach(function(name) {        
-        
-            let b  = this.pad.buttons[this.buttons[name].i];
-            let state = b.pressed;
+            let state = false;
+            if(this.pad != 0){
+                state = this.pad.buttons[this.buttons[name].i].pressed;
+            }
             //If not change, then return current state        
             if(!state){
                 this.buttons[name].s = this.buttons[name].s > 0 ? -1 : 0;                
@@ -69,14 +70,16 @@ class GamepadControl {
     }
     getStickLeft(){
         if(this.ready){
-            return {x:this.pad.axes[0].getValue(),y:this.pad.axes[1].getValue()};
+            return {x:this.pad.axes[0].getValue(),y:this.pad.axes[1].getValue()}; // Phaser 3 Version
+            //return {x:this.pad.axes[0],y:this.pad.axes[1]}; // Mozilla API Version
         }else{
             return {x:0,y:0};
         }
     }
     getStickRight(){
         if(this.ready){
-            return {x:this.pad.axes[2].getValue(),y:this.pad.axes[3].getValue()};
+            return {x:this.pad.axes[2].getValue(),y:this.pad.axes[3].getValue()}; // Phaser 3 Version
+            //return {x:this.pad.axes[2],y:this.pad.axes[3]};// Mozilla API Version
         }else{
             return {x:0,y:0};
         }

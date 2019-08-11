@@ -74,7 +74,7 @@ var socket = io();
     var jumpTimer;
     var speed;
     var lastFired = 0;
-    var gamePad = [];
+    var gamePad = [new GamepadControl(0),new GamepadControl(0)];
     var keyPad;
     //Player Management
     var playerMode = 0;//0-Single,1-LocalCoop,2-OnlineCoop
@@ -116,16 +116,45 @@ var socket = io();
     [{
         id:0,
         ctrl:CTRLS.KB,
+        ctrlSN: 0,
         char:players.SOLANA
     },
     {
         id:1,
         ctrl:CTRLS.GP1,
+        ctrlSN: 0,
         char:players.BRIGHT
     }];
-
     var curr_player = playerConfig[0].char;
-    //Global Functions
+    //Global Gamepad Mozilla API functions
+    // window.addEventListener("gamepadconnected", function(e) {
+    //     console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+    //       e.gamepad.index, e.gamepad.id,
+    //       e.gamepad.buttons.length, e.gamepad.axes.length);
+    //       console.log(e.gamepad);
+    //       addGamePads(new GamepadControl(e.gamepad));  
+    // });
+    // function getActiveMozillaGamePads(){
+    //     let c=0;
+    //     for(let i=0;i < navigator.getGamepads().length;i++){ 
+    //         if(navigator.getGamepads()[i] != null){
+    //             c++;
+    //         }
+    //     }
+    //     return c;
+    // }
+    // function updateMozillaGamePads(){
+    //     for(let i=0;i < gamePad.length;i++){    
+    //         let ck = navigator.getGamepads()[i];
+    //         if(ck == null){
+    //             gamePad[i].pad = 0;
+    //         }else{               
+    //             gamePad[i].pad = navigator.getGamepads()[i]; 
+    //         }      
+                    
+    //     }
+    // }
+    //Global Gamepad Phaser Functions
     function initGamePads(scene,callback){
         console.log("Setup GamePad for ", scene.scene.key);
         gamePad[0] = new GamepadControl(0);
@@ -145,10 +174,8 @@ var socket = io();
        
     }
     function updateGamePads(){
-        for(let i=0;i < gamePad.length;i++){
-            if(gamePad[i].ready == true){
-                gamePad[i].updateButtonState();
-            }
+        for(let i=0;i < gamePad.length;i++){            
+            gamePad[i].updateButtonState();            
         }
     }
     function getInactiveGamePad(){

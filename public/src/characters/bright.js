@@ -111,7 +111,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 }
             }
             //Movement Code
-            if(curr_player==players.BRIGHT){
+            if(curr_player==players.BRIGHT || playerMode > 0){
                 //Only control if currently the active control object
                 let control_left = this.getControllerAction('left');
                 let control_right = this.getControllerAction('right');

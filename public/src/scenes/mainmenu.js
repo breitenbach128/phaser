@@ -11,6 +11,7 @@ var MainMenu = new Phaser.Class({
 
     preload: function ()
     {
+        initGamePads(this,this.showMenuSelect);
     },
 
     create: function ()
@@ -19,7 +20,6 @@ var MainMenu = new Phaser.Class({
         this.selectionRect = this.add.rectangle(game.canvas.width/2,300,195,55,0xFFD700,1);
         this.selectionRect.setStrokeStyle(5, 0xFFFFFF, .8);
         this.selectionRect.setVisible(false);
-        if(gamePad[0].ready){this.selectionRect.setVisible(true);}
         //noClick, noClick Hover, Click, Click Hover
         this.btnstartSP = this.addButton(0, 0, 'button_yellow', this.doStartSingle, this, 0, 1, 0, 1);
         this.btnstartSP.setPosition(game.canvas.width/2,300);
@@ -34,9 +34,18 @@ var MainMenu = new Phaser.Class({
         this.sceneTransitionReady = false;
         this.time.addEvent({ delay: 500, callback: this.transitionSet, callbackScope: this, loop: false });
 
-       //Gamepad management
-       initGamePads(this,function(){});
-        
+       //Gamepad management 
+       console.log(this.input.gamepad,this.input.gamepad.total,this.input.gamepad.gamepads.length);
+       console.log(Object.keys(this.input.gamepad.gamepads).length)
+        // if(this.input.gamepad.gamepads.length > 0) {
+        //     console.log("GamePads already connected, merging");
+        //     for(let g=0;g<this.input.gamepad.gamepads.length;g++){
+        //         gamePad[g] = this.input.gamepad.gamepads[g];
+        //     };
+        // }else{
+        //     //initGamePads(this,function(){});
+        // };
+
         //Text rendering
         let style = { 
             fontFamily: 'visitorTT1',
@@ -52,6 +61,9 @@ var MainMenu = new Phaser.Class({
         
         this.stickChoke = {c:0,m:5};
 
+    },
+    showMenuSelect(scene){
+        scene.selectionRect.setVisible(true);
     },
     transitionSet(){
         this.sceneTransitionReady = true;
