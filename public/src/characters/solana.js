@@ -90,7 +90,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             //Only control if currently the active control object
             let control_left = this.getControllerAction('left');
             let control_right = this.getControllerAction('right');
-            let control_shoot = this.getControllerAction('shoot');        
+            let control_shoot = this.getControllerAction('shoot');
+            let control_shootRelease = this.getControllerAction('shootR');         
             let control_passPress = this.getControllerAction('pass');
             let control_passRelease = this.getControllerAction('passR');
 
@@ -152,19 +153,19 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     } 
                 }
                 let mv = this.onGround ? this.mv_speed : this.mv_speed*.75;
+                //Move left/right
                 if (control_left && this.jumpLock == false) {
 
+                    this.sprite.flipX= true; // flip the sprite to the left                    
+                    this.mv_direction.x = -1;                   
                     this.sprite.setVelocityX(-mv);
-                    this.sprite.flipX= true; // flip the sprite to the left
                     
-                    this.mv_direction.x = -1;
                 }
                 else if (control_right && this.jumpLock == false) {
 
-                    this.sprite.setVelocityX(mv);         
-                    this.sprite.flipX= false; // flip the sprite to the right                 
-            
+                    this.sprite.flipX= false; // flip the sprite to the left                    
                     this.mv_direction.x = 1;
+                    this.sprite.setVelocityX(mv);
                 }
                 else if(!control_right && !control_left && this.jumpLock == false){
 
@@ -204,7 +205,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         if(this.ctrlDeviceId >=0){
                             if(gamePad[this.ctrlDeviceId].ready){
                                 //Overwrite target vector with gamePad coords
-                                let gpVec = gamePad[this.ctrlDeviceId].getStickLeft();
+                                let gpVec = gamePad[this.ctrlDeviceId].getStickRight();
                                 targVector = {x:this.x+gpVec.x,y:this.y+gpVec.y};
                             }
                         }
@@ -255,7 +256,9 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 case 'jump':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('A') == 1);
                 case 'shoot':
-                    return (gamePad[this.ctrlDeviceId].checkButtonState('X') == 1);
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('rightTrigger') > 0);
+                case 'shootR':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('rightTrigger') == -1);
                 case 'pass':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == 1);
                 case 'passR':
@@ -279,6 +282,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     return (keyPad.checkKeyState('SPC') == 1);
                 case 'shoot':
                     return (keyPad.checkMouseState('MB0') > 0);
+                case 'shootR':
+                    return (keyPad.checkMouseState('MB0') == -1);
                 case 'pass':
                     return (keyPad.checkKeyState('R') == 1);
                 case 'passR':
