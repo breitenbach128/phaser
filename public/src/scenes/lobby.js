@@ -16,12 +16,12 @@ var LobbyScene = new Phaser.Class({
     create: function ()
     {
   
-        console.log("GPTOTAL",this.input.gamepad.total);
+        //console.log("GPTOTAL",this.input.gamepad.total);
 
         this.sceneTransitionReady = false;
         this.time.addEvent({ delay: 500, callback: this.transitionSet, callbackScope: this, loop: false });
         
-        console.log("Enter Scene",this.scene.key);
+        //console.log("Enter Scene",this.scene.key);
         //Create Keyboard
         createControls(this);
         //Gamepad management
@@ -136,7 +136,7 @@ var LobbyScene = new Phaser.Class({
 
             playerConfig[player-1].ctrl = control;
             if(control >= 0){
-                console.log("Control Selected",control,gamePad[control].pad.id);
+                //console.log("Control Selected",control,gamePad[control].pad.id);
                 playerConfig[player-1].ctrlSN = gamePad[control].pad.id;
             }
             this.setupControlsIcons();
@@ -208,7 +208,7 @@ var LobbyScene = new Phaser.Class({
     },
     onObjectClicked(pointer,gameObject)
     {
-        console.log("Object Clicked",gameObject,gameObject.data.get("ctrl"),gameObject.data.get("p"));
+        //console.log("Object Clicked",gameObject,gameObject.data.get("ctrl"),gameObject.data.get("p"));
         let ctrl = gameObject.data.get("ctrl");
         if(gameObject.data.get("p") == 1){
             this.selectControl(1,ctrl);

@@ -92,6 +92,8 @@ var GameScene = new Phaser.Class({
         solana = new Solana(this,128,128);  
         bright = new Bright(this,128,96);
         soullight =new SoulLight({scene: this, x:128,y:96,sprite:'bright',frame:0},bright);
+        //
+        this.changePlayerReady = true;
         //Emit Events
         //this.events.emit('solanaSetup'); 
 
@@ -543,14 +545,17 @@ var GameScene = new Phaser.Class({
             objectA: solana.sprite,
             callback: eventData => {
               const { bodyB, gameObjectB } = eventData;
-               
+
+              let control_up = solana.ctrlDeviceId >= 0? gamePad[solana.ctrlDeviceId].checkButtonState('up') > 0 : keyPad.checkKeyState('W') > 0;
+              let control_down = solana.ctrlDeviceId >= 0? gamePad[solana.ctrlDeviceId].checkButtonState('down') > 0 : keyPad.checkKeyState('S') > 0;
+
               if (gameObjectB !== undefined && gameObjectB instanceof TMXLever) {
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA){
                     //Only control if currently the active control object
-                    if((game.wasd.up.isDown || gamePad.checkButtonState('up') > 0)) {
+                    if(control_up) {
                         gameObjectB.useLever();
-                    }else if((game.wasd.down.isDown || gamePad.checkButtonState('down') > 0)) {
+                    }else if(control_down) {
                         gameObjectB.useLever();
                     }
                 }
@@ -559,9 +564,9 @@ var GameScene = new Phaser.Class({
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA){
                     //Only control if currently the active control object
-                    if((game.wasd.up.isDown || gamePad.checkButtonState('up') > 0)) {
+                    if(control_up) {
                         gameObjectB.useButton();
-                    }else if((game.wasd.down.isDown || gamePad.checkButtonState('down') > 0)) {
+                    }else if(control_down) {
                         gameObjectB.useButton();
                     }
                 }
@@ -577,9 +582,9 @@ var GameScene = new Phaser.Class({
               if (gameObjectB !== undefined && gameObjectB instanceof MirrorSensor) {
                 if(curr_player==players.SOLANA){
                     //Only control if currently the active control object
-                    if((game.wasd.up.isDown || gamePad.checkButtonState('up') > 0)) {
+                    if(control_up) {
                         gameObjectB.parent.rotateMirror(2);
-                    }else if((game.wasd.down.isDown || gamePad.checkButtonState('down') > 0)) {
+                    }else if(control_down) {
                         gameObjectB.parent.rotateMirror(-2);
                     }
                 }
@@ -775,8 +780,14 @@ var GameScene = new Phaser.Class({
 
         keyPad = new KeyboardMouseControl(this,pointer)
 
-        solana.setController(playerConfig[0].ctrl);
-        bright.setController(playerConfig[1].ctrl);
+        if(playerMode == 0){
+            solana.setController(playerConfig[0].ctrl);
+            bright.setController(playerConfig[0].ctrl);
+        }else if(playerMode == 1){
+            solana.setController(playerConfig[0].ctrl);
+            bright.setController(playerConfig[1].ctrl);
+
+        }
 
         console.log("player Configs:",gamePad,playerModes[playerMode],playerConfig);
 
@@ -813,11 +824,7 @@ var GameScene = new Phaser.Class({
     {
 
         //Controller Update
-        gamePad.forEach(e=>{
-            if(e.ready){
-                e.updateButtonState();
-            }
-        })
+        updateGamePads();
         keyPad.updateKeyState();
         //center camera on the spot between the players. Zoom out to a max.
         let disPlayers = Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y);
@@ -882,7 +889,7 @@ var GameScene = new Phaser.Class({
 
         //KEYPRESS DETECTION - USING CUSTOM CONTROLLER CLASS
         //Suicide to test animation
-        if(keyPad.checkKeyState('P')){            
+        if(keyPad.checkKeyState('P') == 1){            
             solana.receiveDamage(1);
         }
         
@@ -915,12 +922,7 @@ var GameScene = new Phaser.Class({
             hud.clearHud();       
             this.scene.restart();
         }     
-        //Change Player in Single Mode
-        if(playerMode == 0){
-            if(keyPad.checkKeyState('Q') == 1){
-                this.changePlayer();
-            } 
-        }
+
         
         //Scroll parallax based on movement of bright or solana
         if(solana.mv_Xdiff != 0){
@@ -932,14 +934,18 @@ var GameScene = new Phaser.Class({
     },
     changePlayer: function(){
         //this.cameras.main.stopFollow();
-       
-        if(curr_player == players.SOLANA){
-            curr_player=players.BRIGHT;
-            if(bright.light_status == 0){bright.reAlignBright();}            
-            //this.cameras.main.startFollow(bright.sprite,true,.1,.1,0,0); 
-        }else{
-            curr_player=players.SOLANA;
-            //this.cameras.main.startFollow(solana.sprite,true,.1,.1,0,0);
+        if(this.changePlayerReady){
+            console.log("Player Changed")
+            this.changePlayerReady = false;
+            this.time.addEvent({ delay: 100, callback: function(){this.changePlayerReady = true;}, callbackScope: this, loop: false });
+            if(curr_player == players.SOLANA){
+                curr_player=players.BRIGHT;
+                if(bright.light_status == 0){bright.reAlignBright();}            
+                //this.cameras.main.startFollow(bright.sprite,true,.1,.1,0,0); 
+            }else{
+                curr_player=players.SOLANA;
+                //this.cameras.main.startFollow(solana.sprite,true,.1,.1,0,0);
+            }
         }
         
 

@@ -6,7 +6,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         scene.matter.world.add(this);
         scene.add.existing(this); 
         this.setActive(true);
-        console.log("Enemy Created",x,y, texture,this.texture.key);
+        //console.log("Enemy Created",x,y, texture,this.texture.key);
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         
         const { width: w, height: h } = this;

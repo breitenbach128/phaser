@@ -46,7 +46,7 @@
                  "gid":497,
                  "height":32,
                  "id":38,
-                 "name":"",
+                 "name":"bat",
                  "properties":[
                         {
                          "name":"aBehav",
@@ -69,10 +69,10 @@
                          "value":"patrolFixed"
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"bat",
                  "visible":true,
                  "width":32,
-                 "x":160,
+                 "x":896,
                  "y":96
                 }, 
                 {
@@ -107,6 +107,39 @@
                  "width":32,
                  "x":384,
                  "y":128
+                }, 
+                {
+                 "gid":497,
+                 "height":32,
+                 "id":52,
+                 "name":"bat",
+                 "properties":[
+                        {
+                         "name":"aBehav",
+                         "type":"string",
+                         "value":"patrolFixed"
+                        }, 
+                        {
+                         "name":"enemyClass",
+                         "type":"string",
+                         "value":"air"
+                        }, 
+                        {
+                         "name":"enemyType",
+                         "type":"string",
+                         "value":"bat"
+                        }, 
+                        {
+                         "name":"pBehav",
+                         "type":"string",
+                         "value":"patrolFixed"
+                        }],
+                 "rotation":0,
+                 "type":"bat",
+                 "visible":true,
+                 "width":32,
+                 "x":1408,
+                 "y":192
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -745,7 +778,7 @@
                  "type":"rock",
                  "visible":true,
                  "width":16,
-                 "x":325.333333333333,
+                 "x":325.333,
                  "y":119
                 }, 
                 {
@@ -756,8 +789,8 @@
                  "type":"rock",
                  "visible":true,
                  "width":16,
-                 "x":260.333333333333,
-                 "y":192.833333333333
+                 "x":260.333,
+                 "y":192.833
                 }, 
                 {
                  "height":16,
@@ -767,8 +800,8 @@
                  "type":"rock",
                  "visible":true,
                  "width":16,
-                 "x":289.833333333333,
-                 "y":138.333333333333
+                 "x":289.833,
+                 "y":138.333
                 }, 
                 {
                  "height":16,
@@ -778,8 +811,8 @@
                  "type":"rock",
                  "visible":true,
                  "width":16,
-                 "x":299.166666666667,
-                 "y":113.166666666667
+                 "x":299.167,
+                 "y":113.167
                 }, 
                 {
                  "height":16,
@@ -800,7 +833,7 @@
                  "type":"rock",
                  "visible":true,
                  "width":16,
-                 "x":328.166666666667,
+                 "x":328.167,
                  "y":88.5
                 }, 
                 {
@@ -811,7 +844,7 @@
                  "type":"rock",
                  "visible":true,
                  "width":16,
-                 "x":276.666666666667,
+                 "x":276.667,
                  "y":223
                 }, 
                 {
@@ -843,7 +876,7 @@
          "y":0
         }],
  "nextlayerid":12,
- "nextobjectid":52,
+ "nextobjectid":53,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

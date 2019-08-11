@@ -35,8 +35,8 @@ var MainMenu = new Phaser.Class({
         this.time.addEvent({ delay: 500, callback: this.transitionSet, callbackScope: this, loop: false });
 
        //Gamepad management 
-       console.log(this.input.gamepad,this.input.gamepad.total,this.input.gamepad.gamepads.length);
-       console.log(Object.keys(this.input.gamepad.gamepads).length)
+       //console.log(this.input.gamepad,this.input.gamepad.total,this.input.gamepad.gamepads.length);
+       //console.log(Object.keys(this.input.gamepad.gamepads).length)
         // if(this.input.gamepad.gamepads.length > 0) {
         //     console.log("GamePads already connected, merging");
         //     for(let g=0;g<this.input.gamepad.gamepads.length;g++){
@@ -80,17 +80,13 @@ var MainMenu = new Phaser.Class({
     update: function(){
         updateGamePads();
 
-        //Test Navigator
-        let gp = navigator.getGamepads()[0];
-        if(gp.buttons[0].value == 0){console.log("A Button Pushed");} //THIS WORKS!!! I could just update the controller class to pull directly from the navigator.
-
         if(gamePad[0].getStickLeft().y == 1 || gamePad[1].getStickLeft().y == 1){
             if(this.stickChoke.c < this.stickChoke.m){
                 this.stickChoke.c++;
             }else{
                 this.stickChoke.c=0;
                 this.selectMenuItem(1);
-                console.log("Menu Up");
+                //console.log("Menu Up");
             }
         }
         if(gamePad[0].getStickLeft().y == -1 || gamePad[1].getStickLeft().y == -1){
@@ -99,7 +95,7 @@ var MainMenu = new Phaser.Class({
             }else{
                 this.stickChoke.c=0;
                 this.selectMenuItem(-1);
-                console.log("Menu Up");
+                //console.log("Menu Up");
             }
         }
         if(gamePad[0].checkButtonState('A') == 1 || gamePad[1].checkButtonState('A') == 1){

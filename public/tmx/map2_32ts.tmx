@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="52">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="53">
  <tileset firstgid="1" name="32Tileset" tilewidth="32" tileheight="32" spacing="2" tilecount="851" columns="37">
   <image source="../assets/world/oldTileset32.png" width="1280" height="800"/>
  </tileset>
@@ -230,7 +230,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="enemies">
-  <object id="38" gid="497" x="160" y="96" width="32" height="32">
+  <object id="38" name="bat" type="bat" gid="497" x="896" y="96" width="32" height="32">
    <properties>
     <property name="aBehav" value="patrolFixed"/>
     <property name="enemyClass" value="air"/>
@@ -244,6 +244,14 @@
     <property name="enemyClass" value="ground"/>
     <property name="enemyType" value="slime1"/>
     <property name="pBehav" value="patrol"/>
+   </properties>
+  </object>
+  <object id="52" name="bat" type="bat" gid="497" x="1408" y="192" width="32" height="32">
+   <properties>
+    <property name="aBehav" value="patrolFixed"/>
+    <property name="enemyClass" value="air"/>
+    <property name="enemyType" value="bat"/>
+    <property name="pBehav" value="patrolFixed"/>
    </properties>
   </object>
  </objectgroup>

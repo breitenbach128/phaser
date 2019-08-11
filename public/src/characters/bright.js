@@ -59,7 +59,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.effect=[
             this.scene.add.particles('shapes',  new Function('return ' + this.scene.cache.text.get('effect-bright-sparks'))())
         ];
-        console.log(this.effect[0].emitters.list[0]);
+        //console.log(this.effect[0].emitters.list[0]);
         this.effect[0].setVisible(false);
         this.effect[0].emitters.list[0].setPosition(this.x,this.y);
         this.effect[0].emitters.list[0].startFollow(this);
@@ -123,9 +123,16 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 let control_passRelease = this.getControllerAction('passR');
                 let control_pulsePress = this.getControllerAction('pulse');
                 let control_pulseRelease = this.getControllerAction('pulseR');
+                let control_change = this.getControllerAction('changeplayer');
                 //Control Based on Light or Dark Modes
                 let darkMode = 1;
                 let brightMode = 0;
+                //Change Player in Single Mode
+                if(playerMode == 0){
+                    if(control_change){
+                        this.scene.changePlayer();
+                    } 
+                }
                 if(this.light_status == brightMode){
                     //BRIGHT CONTROLS 
                     if(control_beam && this.beamReady ){
@@ -229,6 +236,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     return (gamePad[this.ctrlDeviceId].checkButtonState('B') == 1);
                 case 'pulseR':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('B') == -1);
+                case 'changeplayer':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('leftTrigger') == 1);
                 default:
                     return false;
             }
@@ -254,6 +263,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     return (keyPad.checkKeyState('F') == 1);
                 case 'pulseR':
                     return (keyPad.checkKeyState('F') == -1);
+                case 'changeplayer':
+                    return (keyPad.checkKeyState('Q') == 1);
                 default:
                     return false;
     

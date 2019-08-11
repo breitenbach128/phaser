@@ -49,13 +49,13 @@ var SplashScene = new Phaser.Class({
        
         this.controls_guide.setText("Controls"
         +"\n - Keyboard/Mouse:"
-        +"\n - Move(WASD), Switch Character(Q), Pass Light(R), Jump(MB2), Shoot blast(MB1)"
+        +"\n - Move(WASD), Switch Character(Q), Pass Light(R), Jump(SPCBAR), Shoot blast(MB1)"
         +"\n"
         +"\n - Gamepad (XBOX 360)"
-        +"\n - LeftStk: Move/Aim, Shoot: A, Jump:X, Pass:Y, Switch: RightShoulder, DPAD-Up/Down: Interact with objects"
+        +"\n - LeftStk: Move/Aim, Shoot: A, Jump:X, Pass:Y, Switch: leftTrigger, DPAD-Up/Down: Interact with objects"
         +"\n"
         +"\n - Testing Controls: X - Switch Scene test(map2-map3 toggle), P - Self hurt for testing death, O for DEBUG draws"
-        +"\n - Testing Controls: F - Bright Pulse, B - Beam Bridge, Dark - Hold down to hit the brakes");
+        +"\n - Testing Controls: (KB-F) (GP-B) - Bright Pulse, B - Beam Bridge, Dark - Hold down to hit the brakes");
 
     },
     update: function(){

@@ -13,11 +13,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //const mainBody = Bodies.rectangle(0, 0, w * 0.6, h, { chamfer: { radius: 10 } });
         
 
-        const mainBody = Bodies.rectangle(0, 0, w * 0.2, h-12, { chamfer: { radius: 5 } });
+        const mainBody = Bodies.rectangle(0, 0, w * 0.2, h*.65, { chamfer: { radius: 5 } });
         this.sensors = {
-          bottom: Bodies.rectangle(0, h*0.5-6, w * 0.25, 2, { isSensor: true }),
-          left: Bodies.rectangle(-w * 0.11, 0, 2, h * 0.75, { isSensor: true }),
-          right: Bodies.rectangle(w * 0.11, 0, 2, h * 0.75, { isSensor: true })
+          bottom: Bodies.rectangle(0, h*0.35, w * 0.15, 2, { isSensor: true }),
+          left: Bodies.rectangle(-w * 0.11, 0, 2, h * 0.45, { isSensor: true }),
+          right: Bodies.rectangle(w * 0.11, 0, 2, h * 0.45, { isSensor: true })
         };
         this.sensors.bottom.label = "SOLANA_BOTTOM";
         this.sensors.left.label = "SOLANA_LEFT";
@@ -35,7 +35,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         });
        //Fix the draw offsets for the compound sprite.
         compoundBody.render.sprite.xOffset = .51;
-        compoundBody.render.sprite.yOffset = .60;
+        compoundBody.render.sprite.yOffset = .65;
         compoundBody.label = "SOLANA";
 
         this.sprite
@@ -144,6 +144,13 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             if(curr_player==players.SOLANA || playerMode > 0){
                 //Reduce Air Control
                 let control_jump = this.getControllerAction('jump');
+                let control_change = this.getControllerAction('changeplayer');
+                //Change Player in Single Mode
+                if(playerMode == 0){
+                    if(control_change){
+                        this.scene.changePlayer();
+                    } 
+                }
                 let mv = this.onGround ? this.mv_speed : this.mv_speed*.75;
                 if (control_left && this.jumpLock == false) {
 
@@ -194,10 +201,12 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         let blast = ab_solarblasts.get();
                         let gameScale = camera_main.zoom;
                         let targVector = {x:pointer.x/gameScale,y:pointer.y/gameScale};
-                        if(gamePad[this.ctrlDeviceId].ready){
-                            //Overwrite target vector with gamePad coords
-                            let gpVec = gamePad[this.ctrlDeviceId].getStickLeft();
-                            targVector = {x:this.x+gpVec.x,y:this.y+gpVec.y};
+                        if(this.ctrlDeviceId >=0){
+                            if(gamePad[this.ctrlDeviceId].ready){
+                                //Overwrite target vector with gamePad coords
+                                let gpVec = gamePad[this.ctrlDeviceId].getStickLeft();
+                                targVector = {x:this.x+gpVec.x,y:this.y+gpVec.y};
+                            }
                         }
                         let angle = Phaser.Math.Angle.Between(this.x-camera_main.worldView.x,this.y-camera_main.worldView.y, targVector.x,targVector.y);
                         let bulletSpeed = 6;
@@ -251,6 +260,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == 1);
                 case 'passR':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == -1);
+                case 'changeplayer':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('leftTrigger') == 1);
                 default:
                     return false;
             }
@@ -272,6 +283,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     return (keyPad.checkKeyState('R') == 1);
                 case 'passR':
                     return (keyPad.checkKeyState('R') == -1);
+                case 'changeplayer':
+                    return (keyPad.checkKeyState('Q') == 1);
                 default:
                     return false;
     

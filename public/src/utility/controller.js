@@ -10,9 +10,9 @@ class GamepadControl {
             for(var i=0;i<4;i++){
                 device.axes[i]=0;
             }
-            console.log("game Controller class booted - no controller. Loaded with empty values");
+            //console.log("game Controller class booted - no controller. Loaded with empty values");
         }else{
-            console.log("game Controller class booted");
+            //console.log("game Controller class booted");
             this.ready = true;
         }
 
