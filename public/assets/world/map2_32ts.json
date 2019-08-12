@@ -577,6 +577,28 @@
                  "width":32,
                  "x":480,
                  "y":64
+                }, 
+                {
+                 "height":6,
+                 "id":53,
+                 "name":"plate2",
+                 "properties":[
+                        {
+                         "name":"targetName",
+                         "type":"string",
+                         "value":"gate3"
+                        }, 
+                        {
+                         "name":"targetType",
+                         "type":"string",
+                         "value":"gate"
+                        }],
+                 "rotation":0,
+                 "type":"plate",
+                 "visible":true,
+                 "width":32,
+                 "x":96,
+                 "y":218
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -876,7 +898,7 @@
          "y":0
         }],
  "nextlayerid":12,
- "nextobjectid":53,
+ "nextobjectid":54,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

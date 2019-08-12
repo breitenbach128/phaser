@@ -192,7 +192,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 //Check for shooting 
                 if(control_shoot && this.equipment[0].equiped){
                     solana.sprite.anims.play('solana-shoot', true);     
-                    let costToFireWeapon = 10;     
+                    let costToFireWeapon = -9000;     
                     let wpRof = 350;
 
                     
@@ -203,11 +203,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         let gameScale = camera_main.zoom;
                         let targVector = {x:pointer.x/gameScale,y:pointer.y/gameScale};
                         if(this.ctrlDeviceId >=0){
-                            if(gamePad[this.ctrlDeviceId].ready){
-                                //Overwrite target vector with gamePad coords
-                                let gpVec = gamePad[this.ctrlDeviceId].getStickRight();
-                                targVector = {x:this.x+gpVec.x,y:this.y+gpVec.y};
-                            }
+                            //Overwrite target vector with gamePad coords
+                            let gpVec = gamePad[this.ctrlDeviceId].getStickRight(0);
+                            targVector = {x:this.x+gpVec.x,y:this.y+gpVec.y};
+                            console.log(gpVec);
                         }
                         let angle = Phaser.Math.Angle.Between(this.x-camera_main.worldView.x,this.y-camera_main.worldView.y, targVector.x,targVector.y);
                         let bulletSpeed = 6;
@@ -246,13 +245,13 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         if(this.ctrlDeviceId >=0){
             switch(action){
                 case 'up':
-                    return (gamePad[this.ctrlDeviceId].getStickLeft().y < 0);
+                    return (gamePad[this.ctrlDeviceId].getStickLeft(.1).y < 0);
                 case 'down':
-                    return (gamePad[this.ctrlDeviceId].getStickLeft().y > 0);
+                    return (gamePad[this.ctrlDeviceId].getStickLeft(.1).y > 0);
                 case 'left':
-                    return (gamePad[this.ctrlDeviceId].getStickLeft().x < 0);
+                    return (gamePad[this.ctrlDeviceId].getStickLeft(.1).x < 0);
                 case 'right':
-                    return (gamePad[this.ctrlDeviceId].getStickLeft().x > 0);
+                    return (gamePad[this.ctrlDeviceId].getStickLeft(.1).x > 0);
                 case 'jump':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('A') == 1);
                 case 'shoot':

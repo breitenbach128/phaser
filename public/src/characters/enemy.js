@@ -189,6 +189,9 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
     patrolWaypoints(){
 
     }
+    charge(){
+        //Enemy Rushes at double speed towards solana
+    }
     defend(){
         //Stand ground and attack when within range.
     }

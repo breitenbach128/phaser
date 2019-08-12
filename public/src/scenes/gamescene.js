@@ -540,7 +540,18 @@ var GameScene = new Phaser.Class({
                 }
             }
         });
+        this.matterCollision.addOnCollideActive({
+            objectA: bright,
+            callback: eventData => {
+              const { bodyB, gameObjectB, bodyA, gameObjectA } = eventData;
 
+              if (gameObjectB !== undefined && gameObjectB instanceof TMXPlate) {
+                  if(gameObjectA.light_status == 1){//Only in Dark Mode
+                    gameObjectB.usePlate();
+                  }
+              }
+            }
+        });
         this.matterCollision.addOnCollideActive({
             objectA: solana.sprite,
             callback: eventData => {
@@ -574,8 +585,8 @@ var GameScene = new Phaser.Class({
               if (gameObjectB !== undefined && gameObjectB instanceof TMXPlate) {
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA){
-
-                    gameObjectB.usePlate();
+                    //Solana is not heavy enough to use plates
+                    //gameObjectB.usePlate();
 
                 }
               }

@@ -94,7 +94,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         
         if(this.owner.ctrlDeviceId >= 0){
             //Overwrite target vector with gamePad coords
-            let gpVec = gamePad[this.owner.ctrlDeviceId].getStickLeft();
+            let gpVec = gamePad[this.owner.ctrlDeviceId].getStickLeft(0);
             targVector = {x:this.x+gpVec.x*this.aimerRadius,y:this.y+gpVec.y*this.aimerRadius};
         }
         this.aimerCircle.x = this.x;

@@ -42,8 +42,8 @@ class GamepadControl {
         //Button State - 0-up, 1-Down, 2-Held
         //pad.axes
         this.sticks = {
-            left : { x : this.pad.axes[0], y : this.pad.axes[1] },
-            right: { x : this.pad.axes[2], y : this.pad.axes[3] }
+            left : {x : this.pad.axes[0], y : this.pad.axes[1] },
+            right: {x : this.pad.axes[2], y : this.pad.axes[3] }
         }
         this.keys = Object.keys(this.buttons);
        
@@ -58,11 +58,10 @@ class GamepadControl {
             //Mozilla API Ver            
                 pad = navigator.getGamepads()[this.index];
                 //Update Sticks
-                let threshold = .1;
-                this.sticks.left.x = ((pad.axes[0] > 0 && pad.axes[0] > threshold) || (pad.axes[0] < 0 && pad.axes[0] < -threshold))? pad.axes[0] : 0;
-                this.sticks.left.y = ((pad.axes[1] > 0 && pad.axes[1] > threshold) || (pad.axes[1] < 0 && pad.axes[1] < -threshold))? pad.axes[1] : 0;
-                this.sticks.right.x = ((pad.axes[2] > 0 && pad.axes[2] > threshold) || (pad.axes[2] < 0 && pad.axes[2] < -threshold))? pad.axes[2] : 0;
-                this.sticks.right.y = ((pad.axes[3] > 0 && pad.axes[3] > threshold) || (pad.axes[3] < 0 && pad.axes[3] < -threshold))? pad.axes[3] : 0;
+                this.sticks.left.x = pad.axes[0];
+                this.sticks.left.y = pad.axes[1];
+                this.sticks.right.x = pad.axes[2];
+                this.sticks.right.y = pad.axes[3];
             }
             if(pad != 0 && pad != null && pad != undefined){
                 state = pad.buttons[this.buttons[name].i].pressed;
@@ -81,18 +80,26 @@ class GamepadControl {
     checkButtonState(name){  
         return this.buttons[name].s;              
     }
-    getStickLeft(){
+    getStickLeft(threshold){
         if(this.ready){
             //return {x:this.pad.axes[0].getValue(),y:this.pad.axes[1].getValue()}; // Phaser 3 Version
-            return {x:this.sticks.left.x,y:this.sticks.left.y}; // Mozilla API Version
+            let lX = this.sticks.left.x;
+            let lY = this.sticks.left.y;
+            let tX = ((lX > 0 && lX > threshold) || (lX < 0 && lX < -threshold))? lX : 0;
+            let tY = ((lY> 0 && lY > threshold) || (lY < 0 && lY < -threshold))? lY: 0;
+            return {x:tX,y:tY}; // Mozilla API Version
         }else{
             return {x:0,y:0};
         }
     }
-    getStickRight(){
+    getStickRight(threshold){
         if(this.ready){
             //return {x:this.pad.axes[2].getValue(),y:this.pad.axes[3].getValue()}; // Phaser 3 Version
-            return {x:this.sticks.right.x,y:this.sticks.right.y};// Mozilla API Version
+            let rX = this.sticks.right.x;
+            let rY = this.sticks.right.y;
+            let tX = ((rX > 0 && rX > threshold) || (rX < 0 && rX < -threshold))? rX : 0;
+            let tY = ((rY> 0 && rY > threshold) || (rY < 0 && rY < -threshold))? rY: 0;
+            return {x:tX,y:tY}; // Mozilla API Version
         }else{
             return {x:0,y:0};
         }
