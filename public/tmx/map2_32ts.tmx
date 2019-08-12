@@ -236,6 +236,7 @@
     <property name="enemyClass" value="air"/>
     <property name="enemyType" value="bat"/>
     <property name="pBehav" value="patrolFixed"/>
+    <property name="weapon" type="int" value="0"/>
    </properties>
   </object>
   <object id="39" gid="497" x="384" y="128" width="32" height="32">
@@ -244,6 +245,7 @@
     <property name="enemyClass" value="ground"/>
     <property name="enemyType" value="slime1"/>
     <property name="pBehav" value="patrol"/>
+    <property name="weapon" type="int" value="0"/>
    </properties>
   </object>
   <object id="52" name="bat" type="bat" gid="497" x="1408" y="192" width="32" height="32">
@@ -252,6 +254,7 @@
     <property name="enemyClass" value="air"/>
     <property name="enemyType" value="bat"/>
     <property name="pBehav" value="patrolFixed"/>
+    <property name="weapon" type="int" value="0"/>
    </properties>
   </object>
  </objectgroup>

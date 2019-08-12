@@ -230,6 +230,7 @@ var GameScene = new Phaser.Class({
             let EnemyClass = props.enemyClass;
             let PassiveBehavior = props.pBehav;
             let AggressivBehavior = props.aBehav;
+            let weapon = props.weapon;
             if(EnemyClass == 'ground'){
                 new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
             }else if(EnemyClass == 'air'){
@@ -242,7 +243,7 @@ var GameScene = new Phaser.Class({
                 //Setup Enemy
                 new_enemy.setActive(true);
                 new_enemy.setVisible(true);
-                new_enemy.setBehavior(PassiveBehavior,AggressivBehavior);
+                new_enemy.setBehavior(PassiveBehavior,AggressivBehavior,weapon);
                 
                 
             } 

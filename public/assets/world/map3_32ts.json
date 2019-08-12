@@ -67,6 +67,11 @@
                          "name":"pBehav",
                          "type":"string",
                          "value":"patrolFixed"
+                        }, 
+                        {
+                         "name":"weapon",
+                         "type":"int",
+                         "value":0
                         }],
                  "rotation":0,
                  "type":"",

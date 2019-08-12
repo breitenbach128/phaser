@@ -335,6 +335,7 @@
     <property name="enemyClass" value="ground"/>
     <property name="enemyType" value="slime1"/>
     <property name="pBehav" value="patrolFixed"/>
+    <property name="weapon" type="int" value="0"/>
    </properties>
   </object>
  </objectgroup>

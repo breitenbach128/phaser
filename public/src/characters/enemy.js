@@ -1,4 +1,13 @@
 //When enemies are hit, they lose globs of oily shadow, of varying size, that fly off of them.
+var ENEMY_WEAPONS = [
+    {name: 'slime_lob',prjTexture:'bullet',prjLife:600,prjVec:Phaser.Math.Vector2(1,-1),range:128,onDeath:[]},
+    {name: 'slime_melee',prjTexture:'bullet',prjLife:1,prjVec:Phaser.Math.Vector2(1,0),range:0,onDeath:[]},
+    {name: 'slime_shoot',prjTexture:'bullet',prjLife:600,prjVec:Phaser.Math.Vector2(1,0),range:128,onDeath:[]},
+    {name: 'slime_bomb',prjTexture:'bullet',prjLife:600,prjVec:Phaser.Math.Vector2(1,-1),range:128,onDeath:[{effect:'explode',count:5,damage:1}]},
+    {name: 'claw',prjTexture:'bullet',prjLife:1,prjVec:Phaser.Math.Vector2(1,0),range:0,onDeath:[]},
+    {name: 'darkblip_shoot',prjTexture:'bullet',prjLife:600,prjVec:Phaser.Math.Vector2(1,0),range:128,onDeath:[]},
+]
+
 class Enemy extends Phaser.Physics.Matter.Sprite{
     constructor(scene,x,y,texture) {
         super(scene.matter.world, x, y, texture, 0)
@@ -46,11 +55,9 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
           //Custom Properties
         this.hp = 1;
         this.mv_speed = 1;
-        this.aggroRNG = Phaser.Math.Between(0,100);
         this.patrolDirection = -1;
         this.patrolRange = {min:0,max:0};
-        this.aggroRange = 100;
-        this.maxAggroRange = 400;
+        this.aggroRange = 400;
         this.gun = new Gun(60,4,70);
         this.dead = false;
         this.setScale(.5);
@@ -59,6 +66,26 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         this.groundTile = {x:0,y:0, updated: false};//Current Ground Tile
 
         //Setup Collision
+        this.scene.matter.world.on('beforeupdate', function (event) {
+            this.touching.left = 0;
+            this.touching.right = 0;
+            this.touching.up = 0;
+            this.touching.down = 0;    
+        },this);
+        this.scene.matterCollision.addOnCollideStart({
+            objectA: [this.sensors.left,this.sensors.right],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                if (gameObjectB !== undefined && gameObjectB instanceof TMXGate) {
+                    if(bodyA.label == "ENEMY_LEFT"){
+                        this.touching.left++;
+                    }
+                    if(bodyA.label == "ENEMY_RIGHT"){
+                        this.touching.right++;
+                    }
+                  }
+            }
+        });
         this.scene.matterCollision.addOnCollideStart({
             objectA: [this.sensors.bottom],
             callback: eventData => {
@@ -80,19 +107,29 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
             }
         });
 
-        this.behavior = {passive:'patrol',aggressive:'patrol'};
+        this.behavior = {passive:'patrol',aggressive:'attack', weapon: -1};
         this.setPatrolRange(64);//Default fixed patrol width is width of sprite.
+        this.waypoints = [Phaser.Math.Vector2(this.x,this.y)];
+        this.waypointsIndex = 0;
+        this.distanceToSolana = 99999;;
 
     }
     update(time, delta)
     {
         if(!this.dead && solana.alive){
+
+            this.distanceToSolana = Phaser.Math.Distance.Between(solana.x,solana.y,this.x,this.y);
+
             this.rotation = 0;//Temp since the fixed rotation is not working.
 
             if(this.behavior.passive == 'patrol'){
                 this.patrol();
             }else if(this.behavior.passive == 'patrolFixed'){
                 this.patrolFixed();
+            }
+
+            if(this.behavior.aggressive == 'attack'){
+                this.attack();
             }
 
             //Idle Vs Move Animations
@@ -119,9 +156,9 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
             
             let bullet = bullets.get();
             if(this.flipX){
-                bullet.fire(this.x+36, this.y, 3, -1, 300);
+                bullet.fire(this.x+this.width, this.y, this.behavior.weapon.prjVec.x, this.behavior.weapon.prjVec.y, this.behavior.weapon.prjLife);
             }else{
-                bullet.fire(this.x-36, this.y, -3, -1, 300);
+                bullet.fire(this.x-this.width, this.y, -this.behavior.weapon.prjVec.x, this.behavior.weapon.prjVec.y, 300);
             }
             this.gun.shoot();//Decrease mag size. Can leave this out for a constant ROF.
         }
@@ -129,19 +166,26 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
             this.gun.update();
         }
     }
-    hunt(){
-        //Move towards solana 
-        var distanceToSolana = Phaser.Math.Distance.Between(solana.x,solana.y,this.x,this.y)
-        if(distanceToSolana < this.aggroRange+this.aggroRNG){           
-            if(this.gun){this.barrage();}
+    attack(){
+        let atkRng = this.width/2;
+
+        if(this.behavior.weapon != -1){
+            atkRng = this.behavior.weapon.range;
+            if(this.distanceToSolana < this.behavior.weapon.range){           
+                if(this.gun){this.barrage();}
+            }
         }
-        if(distanceToSolana > this.aggroRange+this.aggroRNG && distanceToSolana < this.maxAggroRange){
+    }  
+    hunt(speedMod){
+        //Move towards solana if within aggro.  
+
+        if(this.distanceToSolana > this.width/2 && this.distanceToSolana < this.aggroRange){
             
             if(solana.x < this.x){
-                this.setVelocityX(this.mv_speed*-1);
+                this.setVelocityX(this.mv_speed*-1*speedMod);
                 this.flipX = false;
             }else{
-                this.setVelocityX(this.mv_speed);
+                this.setVelocityX(this.mv_speed*speedMod);
                 this.flipX = true;
             }
         }else{
@@ -183,23 +227,53 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
 
                 }
             }
+            if(this.touching.left > 0 || this.touching.right > 0){this.patrolDirection = this.patrolDirection*-1;}
             this.setVelocityX(this.mv_speed*this.patrolDirection);
         }
     }
     patrolWaypoints(){
+        let destPoint = this.wapoints[this.waypointsIndex];
+        if(this.x < destPoint.x){
+            this.setVelocityX(this.mv_speed);
+        }else if(this.x > destPoint.x){
+            this.setVelocityX(this.mv_speed*-1);
+        }
 
+        if(this.body.ignoreGravity == false){
+            if(this.y < destPoint.y){
+                this.setVelocityY(this.mv_speed);
+            }else if(this.y > destPoint.y){
+                this.setVelocityY(this.mv_speed*-1);
+            }
+        }
+        let distanceToDestination = Phaser.Math.Distance.Between(this.x,this.y,destPoint.x,destPoint.y);
+        if(distanceToDestination < this.width){
+            this.waypointsIndex++;
+            if(this.waypointsIndex >= this.wapoints.length){this.waypointsIndex=0;}
+        }
     }
     charge(){
-        //Enemy Rushes at double speed towards solana
+        //Enemy Rushes at double speed towards solana and attempts to touch
+        this.hunt(2);//Hunt at twice speed
     }
     defend(){
         //Stand ground and attack when within range.
+        let distanceToSolana = this.distanceToSolana;
+        let atkRng = this.width/2;
+
+        if(this.behavior.weapon != -1){
+            atkRng = this.behavior.weapon.range;
+            if(distanceToSolana < this.behavior.weapon.range){           
+                if(this.gun){this.barrage();}
+            }
+        }
     }
     flee(){
         //Flee Away from Solana until outside aggro.
+        this.hunt(-1);//Just hunt in the opposite direction
     }
-    setBehavior(p,a){
-        this.behavior = {passive:p,aggressive:a};
+    setBehavior(p,a,wp){
+        this.behavior = {passive:p,aggressive:a,weapon:ENEMY_WEAPONS[wp]};
     }
     death(animation, frame){
         
