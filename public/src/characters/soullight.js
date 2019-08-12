@@ -90,7 +90,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
     setAimer(){ 
 
         let gameScale = camera_main.zoom;
-        let targVector = {x:pointer.x/gameScale,y:pointer.y/gameScale};
+        let targVector = {x:pointer.worldX,y:pointer.worldY};
         
         if(this.owner.ctrlDeviceId >= 0){
             //Overwrite target vector with gamePad coords
@@ -100,7 +100,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.aimerCircle.x = this.x;
         this.aimerCircle.y = this.y;
 
-        let angle = Phaser.Math.Angle.Between(this.x-camera_main.worldView.x,this.y-camera_main.worldView.y, targVector.x,targVector.y);
+        let angle = Phaser.Math.Angle.Between(this.x,this.y, targVector.x,targVector.y);
         let normAngle = Phaser.Math.Angle.Normalize(angle);
         let deg = Phaser.Math.RadToDeg(normAngle);
 

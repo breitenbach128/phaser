@@ -201,14 +201,14 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         
                         let blast = ab_solarblasts.get();
                         let gameScale = camera_main.zoom;
-                        let targVector = {x:pointer.x/gameScale,y:pointer.y/gameScale};
+                        let targVector = {x:pointer.worldX,y:pointer.worldY};
                         if(this.ctrlDeviceId >=0){
                             //Overwrite target vector with gamePad coords
                             let gpVec = gamePad[this.ctrlDeviceId].getStickRight(0);
                             targVector = {x:this.x+gpVec.x,y:this.y+gpVec.y};
                             console.log(gpVec);
                         }
-                        let angle = Phaser.Math.Angle.Between(this.x-camera_main.worldView.x,this.y-camera_main.worldView.y, targVector.x,targVector.y);
+                        let angle = Phaser.Math.Angle.Between(this.x,this.y, targVector.x,targVector.y);
                         let bulletSpeed = 6;
                         let vecX = Math.cos(angle)*bulletSpeed;
                         let vecY = Math.sin(angle)*bulletSpeed;  
