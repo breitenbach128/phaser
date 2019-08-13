@@ -60,6 +60,9 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
         this.setVisible(false);
         //mayeb toggle static on and off for the kill and fire 
     }
+    onDeathEffect(){
+        //Trigger this on death.
+    }
     bounceOff(angle,mirrorSize,mirrorX,mirrorY){
         //Bounce off of object
         //Set new position
