@@ -192,7 +192,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 //Check for shooting 
                 if(control_shoot && this.equipment[0].equiped){
                     solana.sprite.anims.play('solana-shoot', true);     
-                    let costToFireWeapon = -9000;     
+                    let costToFireWeapon = -9000;//Was 10     
                     let wpRof = 350;
 
                     

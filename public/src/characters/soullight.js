@@ -71,6 +71,9 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         //Handle position and light growth and shrinking
         if(!this.passing){
             this.setPosition(this.owner.x,this.owner.y);            
+        }else{
+            //Home in on target
+            this.homeLight();
         }
         
         if(this.readyThrow){
@@ -129,14 +132,17 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
             transfer.fire(transfer.rotation,12);
         }
     }
+    homeLight(){
+        let target = this.ownerid == 0 ? bright : solana;
+        let angle = Phaser.Math.Angle.Between(this.x,this.y,target.x,target.y);
+        this.throw.x = Math.cos(angle);
+        this.throw.y = Math.sin(angle);  
+    }
     passLight(){
         if(!this.passing){
             this.passing = true;
             //Get owner to set X/Y target
-            let target = this.ownerid == 0 ? bright : solana;
-            let angle = Phaser.Math.Angle.Between(this.x,this.y,target.x,target.y);
-            this.throw.x = Math.cos(angle);
-            this.throw.y = Math.sin(angle);            
+            this.homeLight();
         }
 
     }

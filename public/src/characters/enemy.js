@@ -1,11 +1,11 @@
 //When enemies are hit, they lose globs of oily shadow, of varying size, that fly off of them.
 var ENEMY_WEAPONS = [
-    {name: 'slime_lob',prjTexture:'bullet',prjLife:600,prjVec:Phaser.Math.Vector2(1,-1),range:128,onDeath:[]},
-    {name: 'slime_melee',prjTexture:'bullet',prjLife:1,prjVec:Phaser.Math.Vector2(1,0),range:0,onDeath:[]},
-    {name: 'slime_shoot',prjTexture:'bullet',prjLife:600,prjVec:Phaser.Math.Vector2(1,0),range:128,onDeath:[]},
-    {name: 'slime_bomb',prjTexture:'bullet',prjLife:600,prjVec:Phaser.Math.Vector2(1,-1),range:128,onDeath:[{effect:'explode',count:5,damage:1}]},
-    {name: 'claw',prjTexture:'bullet',prjLife:1,prjVec:Phaser.Math.Vector2(1,0),range:0,onDeath:[]},
-    {name: 'darkblip_shoot',prjTexture:'bullet',prjLife:600,prjVec:Phaser.Math.Vector2(1,0),range:128,onDeath:[]},
+    {name: 'slime_lob',prjTexture:'bullet',prjLife:600,prjVec:{x:1,y:-1},range:128,onDeath:[]},
+    {name: 'slime_melee',prjTexture:'bullet',prjLife:32,prjVec:{x:1,y:0},range:0,onDeath:[]},
+    {name: 'slime_shoot',prjTexture:'bullet',prjLife:600,prjVec:{x:1,y:0},range:128,onDeath:[]},
+    {name: 'slime_bomb',prjTexture:'bullet',prjLife:600,prjVec:{x:1,y:-1},range:128,onDeath:[{effect:'explode',count:5,damage:1}]},
+    {name: 'claw',prjTexture:'bullet',prjLife:1,prjVec:{x:32,y:0},range:0,onDeath:[]},
+    {name: 'darkblip_shoot',prjTexture:'bullet',prjLife:600,prjVec:{x:1,y:0},range:128,onDeath:[]}
 ]
 
 class Enemy extends Phaser.Physics.Matter.Sprite{
@@ -111,7 +111,8 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         this.setPatrolRange(64);//Default fixed patrol width is width of sprite.
         this.waypoints = [Phaser.Math.Vector2(this.x,this.y)];
         this.waypointsIndex = 0;
-        this.distanceToSolana = 99999;;
+        this.distanceToSolana = 99999;
+        this.wpPowerMulti = {x:4,y:1};
 
     }
     update(time, delta)
@@ -147,6 +148,9 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         +"\nX:"+String(this.x>>0)+", Y:"+String(this.y>>0)
         +"\nPatrolWidth:"+String(this.patrolRange.min)+","+String(this.patrolRange.max));
     }
+    snipe(){
+        //Aimed shot with weapon.
+    }
     barrage(){
         //Shoot Ranged Weapon
         var bullet = bullets.get();
@@ -155,10 +159,11 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
             this.anims.play(this.texture.key+'-shoot', true);
             
             let bullet = bullets.get();
+            bullet.setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.SOLANA ]);
             if(this.flipX){
-                bullet.fire(this.x+this.width, this.y, this.behavior.weapon.prjVec.x, this.behavior.weapon.prjVec.y, this.behavior.weapon.prjLife);
+                bullet.fire(this.x, this.y, this.behavior.weapon.prjVec.x*this.wpPowerMulti.x, this.behavior.weapon.prjVec.y*this.wpPowerMulti.y, this.behavior.weapon.prjLife);
             }else{
-                bullet.fire(this.x-this.width, this.y, -this.behavior.weapon.prjVec.x, this.behavior.weapon.prjVec.y, 300);
+                bullet.fire(this.x, this.y, -this.behavior.weapon.prjVec.x*this.wpPowerMulti.x, this.behavior.weapon.prjVec.y*this.wpPowerMulti.y, this.behavior.weapon.prjLife);
             }
             this.gun.shoot();//Decrease mag size. Can leave this out for a constant ROF.
         }
@@ -274,6 +279,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
     }
     setBehavior(p,a,wp){
         this.behavior = {passive:p,aggressive:a,weapon:ENEMY_WEAPONS[wp]};
+        console.log("Enemy Set Behavior",this.behavior);
     }
     death(animation, frame){
         

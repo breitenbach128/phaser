@@ -79,7 +79,7 @@ var GameScene = new Phaser.Class({
             //if (tile.properties.type === 'lava' || tile.properties.type === 'spike')
             //{
                 if(tile.physics.matterBody){
-                    tile.physics.matterBody.body.label = 'SOLID';
+                    tile.physics.matterBody.body.label = 'GROUND';
                     tile.physics.matterBody.setCollisionCategory(CATEGORY.GROUND);
                     tile.physics.matterBody.setFriction(.9,0);
                 }
@@ -681,8 +681,17 @@ var GameScene = new Phaser.Class({
                         gObjs[0].destroy();
                     }  
                 }
-                //Between Bullets and Ground
+                //Between Bullets and SOLID
                 if ((bodyA.label === 'BULLET' && bodyB.label === 'SOLID') || (bodyA.label === 'SOLID' && bodyB.label === 'BULLET')) {
+                    //Get Bullet Object and run hit function
+                    const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;
+                    const bulletObj = bulletBody.gameObject;
+                    emitter0.active = true;
+                    emitter0.explode(5,bulletObj.x,bulletObj.y);
+                    bulletObj.hit();
+                }
+                //Between Bullets and GROUND
+                if ((bodyA.label === 'BULLET' && bodyB.label === 'GROUND') || (bodyA.label === 'GROUND' && bodyB.label === 'BULLET')) {
                     //Get Bullet Object and run hit function
                     const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;
                     const bulletObj = bulletBody.gameObject;

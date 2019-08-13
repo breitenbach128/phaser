@@ -51,7 +51,7 @@
                         {
                          "name":"aBehav",
                          "type":"string",
-                         "value":"patrolFixed"
+                         "value":"attack"
                         }, 
                         {
                          "name":"enemyClass",
@@ -89,7 +89,7 @@
                         {
                          "name":"aBehav",
                          "type":"string",
-                         "value":"patrol"
+                         "value":"attack"
                         }, 
                         {
                          "name":"enemyClass",
@@ -109,7 +109,7 @@
                         {
                          "name":"weapon",
                          "type":"int",
-                         "value":0
+                         "value":2
                         }],
                  "rotation":0,
                  "type":"",
@@ -127,7 +127,7 @@
                         {
                          "name":"aBehav",
                          "type":"string",
-                         "value":"patrolFixed"
+                         "value":"attack"
                         }, 
                         {
                          "name":"enemyClass",

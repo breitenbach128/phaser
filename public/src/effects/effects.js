@@ -1,5 +1,9 @@
 //Blood Splatter
+function Splatter(){
+    //This will generate a splatter/drip effect for certain types of projectiles. These fall to ground, and pool outwards, and then drip down.
+    
 
+}
 //Shadow Blob Splatter
 
 //Sparkles
@@ -77,3 +81,4 @@ function FlashSpriteTint(scene,sprite,color,time){
     // });
 
     }
+
