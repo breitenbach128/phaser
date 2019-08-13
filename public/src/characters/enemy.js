@@ -237,7 +237,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         }
     }
     patrolWaypoints(){
-        let destPoint = this.wapoints[this.waypointsIndex];
+        let destPoint = this.waypoints[this.waypointsIndex];
         if(this.x < destPoint.x){
             this.setVelocityX(this.mv_speed);
         }else if(this.x > destPoint.x){
@@ -254,7 +254,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         let distanceToDestination = Phaser.Math.Distance.Between(this.x,this.y,destPoint.x,destPoint.y);
         if(distanceToDestination < this.width){
             this.waypointsIndex++;
-            if(this.waypointsIndex >= this.wapoints.length){this.waypointsIndex=0;}
+            if(this.waypointsIndex >= this.waypoints.length){this.waypointsIndex=0;}
         }
     }
     charge(){
