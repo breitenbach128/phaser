@@ -111,9 +111,9 @@ class Rock extends Phaser.Physics.Matter.Sprite{
 
         const compoundBody = Body.create({
             parts: [mainBody],
-            frictionStatic: 0,
-            frictionAir: 0.02,
-            friction: 0.1,
+            frictionStatic: 0.1,
+            frictionAir: 0.05,
+            friction: 0.3,
             label: "ROCK"
         });
 
@@ -133,30 +133,41 @@ class Rock extends Phaser.Physics.Matter.Sprite{
                 }
             }
         });
+        this.max_speed = 8;
     }
     setup(x,y,scale){
         this.setActive(true);
         this.setPosition(x,y); 
         this.setScale(scale);
+        //Crush Timer
+        this.readyCrush = false;
+        this.crushTimer = this.scene.time.addEvent({ delay: 300, callback: this.setReadyCrush, callbackScope: this, loop: false });
     }
     update(time, delta)
     {       
-
+        if(this.body.velocity.x > this.max_speed){this.setVelocityX(this.max_speed)};
+        if(this.body.velocity.x < -this.max_speed){this.setVelocityX(-this.max_speed)};
+        if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed)};
+        if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
+    }
+    setReadyCrush(){
+        this.readyCrush = true;
     }
     impact(obj){
-        let fromBody = obj.body;
-        let speed = Math.sqrt(Math.pow(fromBody.velocity.x,2)+Math.pow(fromBody.velocity.y,2));
-        let force = speed*fromBody.density*100;
-        console.log("Rock Impact", force,speed);
-        if(force >= 1){
-            //Destroy and spawn more smaller rocks. BUGGED DO NOT USE FOR NOW, BAD LOOP
-            // for(let r=0;r< Phaser.Math.Between(1,3);r++){
-            //     let newRock = new Rock(this.scene,this.x,this.y);
-            //     newRock.setScale(.3);
-            //     newRock.setCollidesWith([ 0 ])
-            //     newRock.applyForce({x:Phaser.Math.Between(-3,3),y:Phaser.Math.Between(-1,-3)});
-            // }
-            this.destroy();
+        if(this.readyCrush){
+            let fromBody = obj.body;
+            let speed = Math.sqrt(Math.pow(fromBody.velocity.x,2)+Math.pow(fromBody.velocity.y,2));
+            let force = speed*fromBody.density*100;
+            if(force >= 2){                
+                console.log("Rock Impact", force >> 0,speed >> 0,fromBody.density);
+                if(this.scale > .25){
+                    for(let r=0;r< Phaser.Math.Between(1,3);r++){
+                        let newRock = rocks.get();
+                        newRock.setup(this.x,this.y,this.scale*.75);                        
+                    }
+                }
+                this.destroy();
+            }
         }
     }
 };

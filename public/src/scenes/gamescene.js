@@ -231,6 +231,7 @@ var GameScene = new Phaser.Class({
             let PassiveBehavior = props.pBehav;
             let AggressivBehavior = props.aBehav;
             let weapon = props.weapon;
+            let path = '[{"x":0,"y":0}]';
             if(EnemyClass == 'ground'){
                 new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
             }else if(EnemyClass == 'air'){
@@ -239,11 +240,16 @@ var GameScene = new Phaser.Class({
                 new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
             }
 
+            if(props.path){
+                path = props.path;
+            }
+
             if(new_enemy){
                 //Setup Enemy
                 new_enemy.setActive(true);
                 new_enemy.setVisible(true);
                 new_enemy.setBehavior(PassiveBehavior,AggressivBehavior,weapon);
+                new_enemy.setPath(path);
                 
                 
             } 
@@ -274,7 +280,8 @@ var GameScene = new Phaser.Class({
                 y_offset = tmxObjRef.height/2;
                 let newFallPlat = new Fallplat(this,tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-1);
             }else if(tmxObjRef.type == "rock"){  
-                let newRock = rocks.get(tmxObjRef.x,tmxObjRef.y);
+                let newRock = rocks.get();
+                newRock.setup(tmxObjRef.x,tmxObjRef.y,1);
             }else if(tmxObjRef.type == "crate"){  
                 let newCrate = crates.get(tmxObjRef.x,tmxObjRef.y);
             }else if(tmxObjRef.type == "item"){
@@ -672,7 +679,7 @@ var GameScene = new Phaser.Class({
                     }  
                 }
                 //Between Fallplat and Ground at velocity
-                if ((bodyA.label === 'FALLPLAT' && bodyB.label === 'SOLID') || (bodyA.label === 'SOLID' && bodyB.label === 'FALLPLAT')) {
+                if ((bodyA.label === 'FALLPLAT' && bodyB.label === 'GROUND') || (bodyA.label === 'GROUND' && bodyB.label === 'FALLPLAT')) {
                     //Get Bullet Object and run hit function
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'FALLPLAT');
                     if (gObjs[0].ready == false && gObjs[0].y < gObjs[1].tile.pixelY){
