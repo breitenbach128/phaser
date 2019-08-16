@@ -39,6 +39,17 @@
         }, 
         {
          "draworder":"topdown",
+         "id":15,
+         "name":"hulls",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":2,
          "name":"enemies",
          "objects":[],
@@ -533,7 +544,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":15,
+ "nextlayerid":16,
  "nextobjectid":36,
  "orientation":"orthogonal",
  "renderorder":"right-down",

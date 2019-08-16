@@ -195,8 +195,19 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":12,
+         "name":"hulls",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":12,
+ "nextlayerid":13,
  "nextobjectid":8,
  "orientation":"orthogonal",
  "renderorder":"right-down",

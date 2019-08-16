@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="8">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="8">
  <tileset firstgid="1" name="32Tileset" tilewidth="32" tileheight="32" spacing="2" tilecount="851" columns="37">
   <image source="../assets/world/oldTileset32.png" width="1280" height="800"/>
  </tileset>
@@ -358,4 +358,5 @@
  </objectgroup>
  <objectgroup id="10" name="triggers"/>
  <objectgroup id="9" name="objects"/>
+ <objectgroup id="12" name="hulls"/>
 </map>

@@ -14,7 +14,7 @@ var GameScene = new Phaser.Class({
 
     preload: function ()
     {
-        //this.load.scenePlugin('Slopes', 'src/phaser-slopes.min.js');
+        //this.load.scenePlugin('Slopes', 'src/plugins/phaser-slopes.min.js');
     },
 
     create: function ()
@@ -82,10 +82,31 @@ var GameScene = new Phaser.Class({
                     tile.physics.matterBody.body.label = 'GROUND';
                     tile.physics.matterBody.setCollisionCategory(CATEGORY.GROUND);
                     tile.physics.matterBody.setFriction(.9,0);
+
+                    //Fix "Gaps between tiles small bodies can squeeze thru" //TESTED 1.1 DOES NOT WORK
+                    //Phaser.Physics.Matter.Matter.Body.scale(tile.physics.matterBody.body, 1.1, 1.0)
                 }
                
             //}
         });
+
+        //NEED TO TEST THIS OUT WITH JUMP CODE. I NEED TO CREATE A TRUE GAME OBJECT HERE, SO I CAN REFERENCE THE TYPE.
+        //NOT ABSOLUTELY NEEDED, BUT PROBABLY BETTER.
+
+        //Test Hulls Layer for Object Creation for collision. Very Effecient.
+        //See http://labs.phaser.io/edit.html?src=src/game%20objects/tilemap/collision/matter%20ghost%20collisions.js
+        // let rectCarve = map.findObject('hulls', function (obj) { return obj.name === 'hull'; });
+        // let rectHull = this.matter.add.rectangle(
+        //     rectCarve.x + (rectCarve.width / 2), rectCarve.y + (rectCarve.height / 2),
+        //     rectCarve.width, rectCarve.height,
+        //     { isStatic: true }
+        // );
+        
+        // rectHull.label = 'GROUND';
+        // rectHull.collisionFilter.category = CATEGORY.GROUND;
+        // rectHull.friction = .9;
+
+        // console.log("RectHull",rectHull,rectCarve)
 
         //CREATE PLAYER ENTITIES
         // create the solana sprite    

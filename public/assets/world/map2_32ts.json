@@ -399,7 +399,7 @@
                  "visible":true,
                  "width":16,
                  "x":936,
-                 "y":233.333333333333
+                 "y":233.333
                 }, 
                 {
                  "height":16,
@@ -619,8 +619,8 @@
                  "type":"crystallamp",
                  "visible":true,
                  "width":16,
-                 "x":626.833333333333,
-                 "y":56.6666666666667
+                 "x":626.833,
+                 "y":56.6667
                 }, 
                 {
                  "height":16,
@@ -878,7 +878,7 @@
                  "type":"rock",
                  "visible":true,
                  "width":16,
-                 "x":574.666333333333,
+                 "x":574.666,
                  "y":111
                 }, 
                 {
@@ -933,7 +933,7 @@
                  "type":"rock",
                  "visible":true,
                  "width":16,
-                 "x":592.833666666667,
+                 "x":592.834,
                  "y":180.5
                 }, 
                 {
@@ -978,7 +978,7 @@
                  "visible":true,
                  "width":16,
                  "x":615.5,
-                 "y":109.166666666667
+                 "y":109.167
                 }, 
                 {
                  "height":16,
@@ -989,7 +989,7 @@
                  "visible":true,
                  "width":16,
                  "x":615,
-                 "y":142.666666666667
+                 "y":142.667
                 }, 
                 {
                  "height":16,
@@ -999,7 +999,7 @@
                  "type":"rock",
                  "visible":true,
                  "width":16,
-                 "x":607.166666666667,
+                 "x":607.167,
                  "y":220
                 }, 
                 {
@@ -1011,7 +1011,7 @@
                  "visible":true,
                  "width":16,
                  "x":636.5,
-                 "y":116.166666666667
+                 "y":116.167
                 }, 
                 {
                  "height":16,
@@ -1022,7 +1022,7 @@
                  "visible":true,
                  "width":16,
                  "x":590.5,
-                 "y":138.166666666667
+                 "y":138.167
                 }, 
                 {
                  "height":16,
@@ -1090,9 +1090,31 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":12,
+         "name":"hulls",
+         "objects":[
+                {
+                 "height":32,
+                 "id":66,
+                 "name":"hull",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":320,
+                 "x":64,
+                 "y":288
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":12,
- "nextobjectid":65,
+ "nextlayerid":13,
+ "nextobjectid":67,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",
