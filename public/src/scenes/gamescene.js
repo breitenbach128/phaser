@@ -107,6 +107,7 @@ var GameScene = new Phaser.Class({
         this.cameras.main.roundPixels = true;
         camera_main = this.cameras.main;
         
+        //this.cameras.add(0,0,200,300);Second Camera
 
         //Controls
         createControls(this);
@@ -231,6 +232,7 @@ var GameScene = new Phaser.Class({
             let PassiveBehavior = props.pBehav;
             let AggressivBehavior = props.aBehav;
             let weapon = props.weapon;
+            
             let path = '[{"x":0,"y":0}]';
             if(EnemyClass == 'ground'){
                 new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
@@ -242,6 +244,13 @@ var GameScene = new Phaser.Class({
 
             if(props.path){
                 path = props.path;
+            }
+            if(props.tint){
+                let newTint =  (Phaser.Display.Color.HexStringToColor(props.tint))._color; //0x333333
+                new_enemy.setTint(newTint);
+            }
+            if(props.scale){
+                new_enemy.setScale(props.scale);
             }
 
             if(new_enemy){

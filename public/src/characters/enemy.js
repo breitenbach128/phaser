@@ -60,8 +60,6 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         this.aggroRange = 400;
         this.gun = new Gun(60,4,70);
         this.dead = false;
-        this.setScale(.5);
-        this.setTint(0x333333);
         this.debug = scene.add.text(this.x, this.y-16, 'debug', { resolution: 2, fontSize: '12px', fill: '#00FF00' });
         this.groundTile = {x:0,y:0, updated: false};//Current Ground Tile
 

@@ -89,7 +89,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('tiles32', 'assets/world/oldTileset32.png', {frameWidth: 32, frameHeight: 32, spacing: 2}); 
 		this.load.spritesheet('collisions32', 'assets/world/map_collision.png', {frameWidth: 32, frameHeight: 32}); 
 		//Entity Assets
-        this.load.spritesheet('slime1', 'assets/characters/slimemonster1.png', {frameWidth: 128, frameHeight: 78});    
+        this.load.spritesheet('slime1', 'assets/characters/slimemonster2.png', {frameWidth: 64, frameHeight: 37});    
         this.load.spritesheet('bullet', 'assets/objects/projectiles.png', {frameWidth: 16, frameHeight: 16});
         this.load.image('impact1', 'assets/effects/particles.png');
         this.load.image('crate', 'assets/objects/crate.png');
