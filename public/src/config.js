@@ -36,7 +36,7 @@ var socket = io();
     
     //Globals
     //Global Game Access
-    var buildVersion = "a1";
+    var buildVersion = "a-8-18-2019";
     var game;
     var hud;
     var playScene;

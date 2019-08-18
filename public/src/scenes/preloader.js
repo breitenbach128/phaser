@@ -83,11 +83,14 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('button_yellow','assets/ui/button_yellow.png',{frameWidth: 190, frameHeight: 49})
 
         //Map Assets  
+		this.load.tilemapTiledJSON('map1', 'assets/world/map1_32ts.json'); 
 		this.load.tilemapTiledJSON('map2', 'assets/world/map2_32ts.json'); 
 		this.load.tilemapTiledJSON('map3', 'assets/world/map3_32ts.json');  
 		this.load.tilemapTiledJSON('map4', 'assets/world/map4_32ts.json');   
 		this.load.spritesheet('tiles32', 'assets/world/oldTileset32.png', {frameWidth: 32, frameHeight: 32, spacing: 2}); 
+		this.load.spritesheet('castle32', 'assets/world/tile_castle_grey.png', {frameWidth: 32, frameHeight: 32}); 
 		this.load.spritesheet('collisions32', 'assets/world/map_collision.png', {frameWidth: 32, frameHeight: 32}); 
+		
 		//Entity Assets
         this.load.spritesheet('slime1', 'assets/characters/slimemonster2.png', {frameWidth: 64, frameHeight: 37});    
         this.load.spritesheet('bullet', 'assets/objects/projectiles.png', {frameWidth: 16, frameHeight: 16});

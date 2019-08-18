@@ -42,11 +42,20 @@ var GameScene = new Phaser.Class({
         map = this.make.tilemap({key: current_map});
         
         // tiles for the ground layer
-        var Tiles = map.addTilesetImage('32Tileset','tiles32');//called it map1_tiles in tiled
-        var CollisionTiles = map.addTilesetImage('collision','collisions32');//called it map1_tiles in tiled
+        var Tiles = map.addTilesetImage('32Tileset','tiles32');//called it 32Tileset in tiled
+        var TIlesCastle = map.addTilesetImage('32Castle','castle32');//called it 32Castle in tiled
+        var CollisionTiles = map.addTilesetImage('collision','collisions32');//called it collision in tiled
         // create the ground layer
-        let bglayer = map.createStaticLayer('bg', Tiles, 0, 0);
-        let fglayer = map.createStaticLayer('fg', Tiles, 0, 0);
+        if(current_map === 'map1'){
+            let bglayer3 = map.createStaticLayer('bg3', TIlesCastle, 0, 0);
+            let bglayer2 = map.createStaticLayer('bg2', TIlesCastle, 0, 0);
+            let bglayer = map.createStaticLayer('bg', TIlesCastle, 0, 0);
+            let fglayer = map.createStaticLayer('fg', TIlesCastle, 0, 0); 
+        }else{
+            let bglayer = map.createStaticLayer('bg', Tiles, 0, 0);
+            let fglayer = map.createStaticLayer('fg', Tiles, 0, 0);
+        }
+
 
         this.collisionLayer = map.createDynamicLayer('collision', CollisionTiles, 0, 0);
         this.collisionLayer.setVisible(false);
