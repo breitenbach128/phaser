@@ -31,7 +31,7 @@ var socket = io();
             }
             ]
         }, 
-        scene: [ Preloader, SplashScene, MainMenu, IntroScene, LobbyScene, GameScene, HudScene ]
+        scene: [ Preloader, SplashScene, MainMenu, IntroScene, LobbyScene, GameScene, HudScene, Storyboard ]
     };
     
     //Globals

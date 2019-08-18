@@ -70,6 +70,8 @@ var SplashScene = new Phaser.Class({
 	doStart: function ()
     {
        this.scene.start('intro');
+       //this.scene.start('storyboard');
+       
     }
 
 });
