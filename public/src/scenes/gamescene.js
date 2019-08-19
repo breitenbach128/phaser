@@ -42,19 +42,16 @@ var GameScene = new Phaser.Class({
         map = this.make.tilemap({key: current_map});
         
         // tiles for the ground layer
-        var Tiles = map.addTilesetImage('32Tileset','tiles32');//called it 32Tileset in tiled
-        var TIlesCastle = map.addTilesetImage('32Castle','castle32');//called it 32Castle in tiled
+        var TilesForest = map.addTilesetImage('32Tileset','tiles32');//called it 32Tileset in tiled
+        var TilesCastle = map.addTilesetImage('32Castle','castle32');//called it 32Castle in tiled
         var CollisionTiles = map.addTilesetImage('collision','collisions32');//called it collision in tiled
         // create the ground layer
-        if(current_map === 'map1'){
-            let bglayer3 = map.createStaticLayer('bg3', TIlesCastle, 0, 0);
-            let bglayer2 = map.createStaticLayer('bg2', TIlesCastle, 0, 0);
-            let bglayer = map.createStaticLayer('bg', TIlesCastle, 0, 0);
-            let fglayer = map.createStaticLayer('fg', TIlesCastle, 0, 0); 
-        }else{
-            let bglayer = map.createStaticLayer('bg', Tiles, 0, 0);
-            let fglayer = map.createStaticLayer('fg', Tiles, 0, 0);
-        }
+      
+        let bglayer3 = map.createStaticLayer('bg3', [TilesCastle,TilesForest], 0, 0);
+        let bglayer2 = map.createStaticLayer('bg2', [TilesCastle,TilesForest], 0, 0);
+        let bglayer = map.createStaticLayer('bg', [TilesCastle,TilesForest], 0, 0);
+        let fglayer = map.createStaticLayer('fg', [TilesCastle,TilesForest], 0, 0); 
+
 
 
         this.collisionLayer = map.createDynamicLayer('collision', CollisionTiles, 0, 0);
@@ -368,12 +365,12 @@ var GameScene = new Phaser.Class({
             //console.log(tmxObjRef)
             if(tmxObjRef.type == "entrance"){
                 exitObj = entrances.get();
-                exitObj.setup(tmxObjRef.x+16,tmxObjRef.y+16,tmxObjRef.name);
+                exitObj.setup(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,tmxObjRef.name);
                 
                 //Re-position player to match entrance to exit they left.
                 if(exitObj.name == current_exit){
                     
-                    solana.sprite.setPosition(exitObj.x,exitObj.y);
+                    solana.sprite.setPosition(exitObj.x,exitObj.y+exitObj.height/2-solana.sprite.height/2);
                     bright.sprite.setPosition(exitObj.x,exitObj.y-32);
                     soullight.sprite.setPosition(exitObj.x,exitObj.y-32);
                     
@@ -383,7 +380,7 @@ var GameScene = new Phaser.Class({
                 }
             }else{
                 exitObj = exits.get();
-                exitObj.setup(tmxObjRef.x+16,tmxObjRef.y+16,getTileProperties(tmxObjRef.properties),tmxObjRef.name);
+                exitObj.setup(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,getTileProperties(tmxObjRef.properties),tmxObjRef.name);
                 exitObj.setDisplaySize(tmxObjRef.width,tmxObjRef.height);
             } 
         }
@@ -651,7 +648,7 @@ var GameScene = new Phaser.Class({
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA){
 
-                    gameObjectB.exitLevel();
+                    gameObjectB.exitLevel(solana);
 
                 }
               }
