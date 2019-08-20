@@ -94,6 +94,19 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 
         let gameScale = camera_main.zoom;
         let targVector = {x:pointer.worldX,y:pointer.worldY};
+        //Adjust for Split Screen
+        if(this.scene.cameraLevel == 3){
+            let cam_p1 = this.scene.cameras.getCamera('cam_p1');
+            let cam_p2 = this.scene.cameras.getCamera('cam_p2');
+            let camVec = {x:0,y:0};
+            if(this.ownerid == 0){
+                camVec= pointer.positionToCamera(cam_p1);
+            }else{
+                camVec= pointer.positionToCamera(cam_p2);
+            }
+            targVector = camVec;
+        }
+        
         
         if(this.owner.ctrlDeviceId >= 0){
             //Overwrite target vector with gamePad coords

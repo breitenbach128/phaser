@@ -134,7 +134,7 @@ var GameScene = new Phaser.Class({
         this.cameras.main.roundPixels = true;
         camera_main = this.cameras.main;
         
-        //this.cameras.add(0,0,200,300);Second Camera
+        
 
         //Controls
         createControls(this);
@@ -876,6 +876,7 @@ var GameScene = new Phaser.Class({
         //Debug Properties
         this.debugAimLine = this.add.graphics(0, 0);
         //Need to push all debug graphics into a single debug array for easy enable
+        this.cameraLevel = 1;
         
     },
     gamepadCallback(scene){  
@@ -895,14 +896,22 @@ var GameScene = new Phaser.Class({
 
         let midPoint = {x:(solana.x+bright.x)/2,y:(solana.y+bright.y)/2}
         this.cameras.main.centerOn(midPoint.x,midPoint.y);
-        if(disPlayers > 500 && this.cameras.main.zoom != 1.75){
-            this.cameras.main.zoomTo(1.75,1000,'Linear');
-        }
-        if(disPlayers < 500 && this.cameras.main.zoom != 2){
+        //Lvl 1, Normal Mode
+        if(disPlayers < 500 && this.cameraLevel != 1){
+            this.cameraLevel = 1;
             this.cameras.main.zoomTo(2,1000,'Linear');
         }
-        //Teleport Bright
-        if(disPlayers > 1000){bright.setPosition(solana.x,solana.y - 48)}
+        //Lvl 2, Zoom out
+        if(disPlayers >= 500 && disPlayers < 750 && this.cameraLevel != 2){
+            if( this.cameraLevel == 3){this.splitScreen(false);}//If it was split screen, cancel that.
+            this.cameraLevel = 2;
+            this.cameras.main.zoomTo(1.75,1000,'Linear');            
+        }
+        //Lvl 3, Split the Camera
+        if(disPlayers >= 750 && this.cameraLevel != 3){  
+            this.cameraLevel = 3;          
+            this.splitScreen(true);
+        }
 
         //DEBUG
         if(GLOBAL_DEBUG){
@@ -1013,6 +1022,21 @@ var GameScene = new Phaser.Class({
         }
         
 
+    },
+    splitScreen(enable){
+        if(enable){
+            let cam_p1 = this.cameras.add(0,0,camera_main.width/2,camera_main.height,false,'cam_p1');//Second Camera
+            let cam_p2 = this.cameras.add(camera_main.width/2,0,camera_main.width/2,camera_main.height,false,'cam_p2');//Second Camera
+            cam_p1.setZoom(2);
+            cam_p2.setZoom(2);
+            cam_p1.startFollow(solana,true,.8,.8,0,0);
+            cam_p2.startFollow(bright,true,.8,.8,0,0);
+        }else{
+            let cam_p1 = this.cameras.getCamera('cam_p1');
+            let cam_p2 = this.cameras.getCamera('cam_p2');
+            this.cameras.remove(cam_p1);
+            this.cameras.remove(cam_p2);
+        }
     },
     cutCanvasCircle: function(x,y,radius,ctx){
         ctx.save();         
