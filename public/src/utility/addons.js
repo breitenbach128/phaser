@@ -34,10 +34,12 @@ class SpeechBubble extends Phaser.GameObjects.Sprite {
 				color: '#000000',
 				align: 'center',
 				lineSpacing: 4,
+				resolution:2,
 			}
 			};
-		this.setScale(4);
+		this.setScale(2);
 		this.speechtext = scene.make.text(tconfig);
+		this.speechtext.setScale(.5);
 		this.speechtext.setWordWrapWidth(this.width*4-8, false);
 
 		this.speechtext.setOrigin(0.5);
@@ -99,8 +101,10 @@ class Dialogue {
 				offX = -this.offset.x;
 			}
 			//Adjust for real HUD position offset from camera movement and scale
-			this.bubbles[i].x = (speaker.x+offX-camera_main.worldView.x)*worldScale;
-			this.bubbles[i].y = (speaker.y+this.offset.y-camera_main.worldView.y)*worldScale;
+			// this.bubbles[i].x = (speaker.x+offX-camera_main.worldView.x)*worldScale;
+			// this.bubbles[i].y = (speaker.y+this.offset.y-camera_main.worldView.y)*worldScale;
+			this.bubbles[i].x = (speaker.x+offX);
+			this.bubbles[i].y = (speaker.y+this.offset.y);
 			this.bubbles[i].update();
 		}
 	}

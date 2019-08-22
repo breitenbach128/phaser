@@ -49,7 +49,7 @@ var socket = io();
     var current_exit = "west1";
     var world_background;
     //Game Objects
-    var solana,bright,soullight,
+    var solana,bright,soullight,polaris,
     enemies,enemiesFly,bullets,
     mirrors,exits,entrances,
     levers,gates,plates,buttons,

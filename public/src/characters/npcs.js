@@ -120,11 +120,20 @@ class NPC extends Phaser.Physics.Matter.Sprite{
 };
 class Polaris extends NPC{
     constructor(scene,x,y) {
-        super(scene.matter.world, x, y, 'polaris', 0);
+        super(scene, x, y, 'polaris', 0);
+
+        //Test Dialogue Setup
+        let dialogueChain = [{speaker:this,ttl:3000,text:"Good to see you up and about Princess."},
+        {speaker:this,ttl:3000,text:"Come over here so we can talk."},
+        {speaker:this,ttl:5000,text:"Move left and right with your left stick or the A/D keys."}];
+        this.dialogue = new Dialogue(this.scene,dialogueChain,54,-40);
+        this.dialogue.start();
     }
     update(time, delta)
     {
-       
+        if(this.dialogue.isRunning){
+            this.dialogue.update();
+        }
 
     }
 };

@@ -877,6 +877,9 @@ var GameScene = new Phaser.Class({
         this.debugAimLine = this.add.graphics(0, 0);
         //Need to push all debug graphics into a single debug array for easy enable
         this.cameraLevel = 1;
+
+        //Polaris Test
+        polaris = new Polaris(this,solana.x+128,solana.y);
         
     },
     gamepadCallback(scene){  
@@ -931,6 +934,7 @@ var GameScene = new Phaser.Class({
         solana.update(time,delta);
         bright.update(time,delta);
         soullight.update(time,delta);
+        polaris.update(time,delta);
 
         //Draw lighting        
         shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels);    

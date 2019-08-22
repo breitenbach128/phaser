@@ -8,7 +8,6 @@ class HudScene extends Phaser.Scene {
         this.energy_bar = [];
         this.ready = false;
         this.energy = {n:100,max:100,h:100,w:16};
-        this.dialogueArea;
         this.inventory;
 
     }
@@ -22,9 +21,6 @@ class HudScene extends Phaser.Scene {
             +"\nDisPlayers:"+String(Math.round(Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y)));
             this.debug.setText(debugString);
 
-            if(this.dialogueArea.isRunning){
-                this.dialogueArea.update();
-            }
         }
     }
     clearHud()
@@ -38,7 +34,6 @@ class HudScene extends Phaser.Scene {
             this.energy_bar[h].destroy();
         }  
         this.energy_bar = [];
-        this.dialogueArea.destroyDialogue();
         this.debug.destroy();
     }
     setupHud(player)
@@ -54,12 +49,6 @@ class HudScene extends Phaser.Scene {
         //Update energy bar values
         this.energy.h = this.energy_bar[1].height;
         this.energy.w = this.energy_bar[1].width;
-        //Add test dialogue
-        let dialogueChain = [{speaker:player,ttl:3000,text:"How did I get here?"},
-        {speaker:player,ttl:2000,text:"Why is everything so dark?"},
-        {speaker:player,ttl:5000,text:"I can switch to Bright by pressing K."}];
-        this.dialogueArea = new Dialogue(this,dialogueChain,54,-40);
-        this.dialogueArea.start();
         //DEBUG
         this.debug = this.add.text(48, 16, 'DEBUG-HUD', { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
         //HUD Energy Bar Flash/Scale Effect: When energy is added, alter the look for a few MS to show energy has been gained.
