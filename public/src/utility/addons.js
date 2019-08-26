@@ -68,6 +68,7 @@ class Dialogue {
 		this.scene = scene;
 		this.curr = 0;
 		this.isRunning = false;
+		this.isComplete = false;
 		this.bubbles = [];
 		this.timer;
 		this.offset = {x:oX, y:oY};
@@ -79,7 +80,11 @@ class Dialogue {
 		let text = this.chain[this.curr].text;
 		let ttl = this.chain[this.curr].ttl;
 		if(speaker != undefined && text && ttl){
-			this.bubbles.push(new SpeechBubble(this.scene,speaker.x,speaker.y,ttl));
+			let offX = this.offset.x;
+			if(speaker.flipX){
+				offX = -this.offset.x;
+			}
+			this.bubbles.push(new SpeechBubble(this.scene,speaker.x+offX,speaker.y+this.offset.y,ttl));
 			this.bubbles[this.bubbles.length-1].newText(text);
 			//Set Progress Time
 			this.timer = this.scene.time.addEvent({ delay: ttl, callback: this.nextSpeech, callbackScope: this, loop: false });
@@ -127,6 +132,7 @@ class Dialogue {
 	destroyDialogue(){
 		this.timer.remove();
 		this.isRunning = false;
+		this.isComplete = true;
 		this.bubbles.forEach(function(e){
 			e.timeUp();
 		});

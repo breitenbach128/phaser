@@ -108,32 +108,133 @@ class NPC extends Phaser.Physics.Matter.Sprite{
         this
         .setExistingBody(compoundBody)
         .setScale(1)
-        .setFixedRotation(true) // Sets inertia to infinity so the player can't rotate
+        .setFixedRotation(true) // Sets inertia to infinity so the player can't rotate        
         .setIgnoreGravity(true)
         .setPosition(x, y);
+
+        this.stage = 0; // Where is the NPC at in it's timeline.
+        this.dialogueEnabled = true;
+        this.dialogueIndex = 0;
+        this.dialogueFlow = 'random';
+        this.dialogueTriggered = false;
+        this.dialogueReady = false;
+        let diaDelay = 0;
+        this.dialogTarget = this;
+        this.dialogLoop = false;
+        this.dialogueDB = JSON.parse(JSON.stringify(npcDialogues));;
+        if(this.checkDialogueType('delay')){
+            diaDelay = this.dialogueDB[this.dialogueIndex].startAction.value;
+        };
+        this.readyTimer = this.scene.time.addEvent({ delay: diaDelay, callback: this.dialogueStartReady, callbackScope: this, loop: false });
     }
     update(time, delta)
     {
-       
+        if(this.dialogueEnabled){
+            if(this.checkDialogueType('auto') || this.checkDialogueType('delay')){
+                this.triggerDialogue();
+            }else if(this.checkDialogueType('distance')){
+                if(Phaser.Math.Distance.Between(solana.x,solana.y,this.x,this.y) < this.dialogueDB[this.dialogueIndex].startAction.value){
+                    this.dialogTarget = solana;
+                    this.triggerDialogue();
+                }
+            }
+            if(this.dialogue != undefined){
+                if(this.dialogue.isComplete){
+                    this.resetDialogue();
+                }else if(this.dialogue.isRunning){
+                    this.dialogue.update();
+                }
+            }
+        }
 
+    }
+    resetDialogue(){
+        console.log("resetDialogue",this.dialogueIndex, this.dialogueDB.length)
+        //Dialogue Completed, Move to next.
+        if(this.dialogueIndex < this.dialogueDB.length-1){  
+            this.dialogueIndex++;
+        }else{
+            if(this.dialogLoop){
+                this.dialogueIndex = 0;     
+            }else{
+                this.dialogueIndex = 0;
+                this.dialogueEnabled = false;
+            }
+        }
+        //Add additional delay for tween here.          
+        this.dialogue = undefined;
+        this.dialogueTriggered = false;        
+        let diaDelay = 0;
+        if(this.checkDialogueType('delay')){
+            diaDelay = this.dialogueDB[this.dialogueIndex].startAction.value;
+        };
+        this.dialogueReady = false;
+        this.readyTimer = this.scene.time.addEvent({ delay: diaDelay, callback: this.dialogueStartReady, callbackScope: this, loop: false });
+
+    }
+    dialogueStartReady(){
+        this.dialogueReady = true;
+    }
+    triggerDialogue(){
+        if(this.dialogueTriggered == false && this.dialogueReady == true){
+            this.dialogueTriggered = true;
+            //Start Dialogue
+            let dialogueChain = this.dialogueDB[this.dialogueIndex].data;
+
+            for(let i=0;i<dialogueChain.length;i++){
+                let e = dialogueChain[i];
+                if (e.speaker == 'src') {
+                    e.speaker = this;
+                } else if (e.speaker == 'trg') {
+                    e.speaker = this.dialogTarget;
+                };
+            }
+            this.dialogue = new Dialogue(this.scene,dialogueChain,54,-40);
+            this.dialogue.start();
+        }
+    }
+    interact(obj){
+        if(this.checkDialogueType('interact')){
+            this.dialogTarget = obj;
+            this.triggerDialogue();
+        }     
+    }
+    checkDialogueType(type){
+        if(this.dialogueDB[this.dialogueIndex].startAction.type == type){
+            return true;
+        }
+        return false;
     }
 };
 class Polaris extends NPC{
     constructor(scene,x,y) {
         super(scene, x, y, 'polaris', 0);
-
-        //Test Dialogue Setup
-        let dialogueChain = [{speaker:this,ttl:3000,text:"Good to see you up and about Princess."},
-        {speaker:this,ttl:3000,text:"Come over here so we can talk."},
-        {speaker:this,ttl:5000,text:"Move left and right with your left stick or the A/D keys."}];
-        this.dialogue = new Dialogue(this.scene,dialogueChain,54,-40);
-        this.dialogue.start();
-    }
-    update(time, delta)
-    {
-        if(this.dialogue.isRunning){
-            this.dialogue.update();
-        }
-
+        this.setIgnoreGravity(true);
+        this.dialogueIndex = 0;
+        this.dialogueDB = JSON.parse(JSON.stringify(polarisDialogues));
     }
 };
+
+//Auto - Just starts ASAP
+//Delay - Starts with delay
+//Interact - Requires solana button
+//Distance - Triggers based on Solana distance.
+
+var npcDialogues = [{startAction:{type:"distance",value:128},data:
+[{speaker:"src",ttl:2000,text:"Good to see you up and about Princess."},
+{speaker:"src",ttl:2000,text:"Praise be to the sun!"}]},
+];
+
+var polarisDialogues = [{startAction:{type:"distance",value:64},data:
+[{speaker:"src",ttl:2000,text:"Good to see you up and about Princess."},
+{speaker:"src",ttl:2000,text:"Move left and right with your left stick or the A/D keys."},
+{speaker:"trg",ttl:1000,text:"On my way master Polaris!"}]},
+{startAction:{type:"auto",value:64},data:
+[{speaker:"src",ttl:1000,text:"You can talk to me with your interact button"},
+{speaker:"src",ttl:2000,text:"Move to me and press interact!"},
+{speaker:"trg",ttl:1000,text:"Of course master Polaris!"}],tween:{x:200,y:200,duration:5000}},
+{startAction:{type:"interact",value:64},data:
+[{speaker:"src",ttl:2000,text:"Well done! Lets prepare you for the journey ahead."},
+{speaker:"src",ttl:1000,text:"Follow me!"},
+{speaker:"trg",ttl:1000,text:"Can do!"}]}
+];

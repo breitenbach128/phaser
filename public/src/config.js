@@ -55,7 +55,7 @@ var socket = io();
     levers,gates,plates,buttons,
     triggerzones,platforms,barriers,
     ab_solarblasts,crystallamps,ab_brightbeams,
-    rocks,crates;    
+    rocks,crates,npcs;    
     var new_enemy;
     var spawner;
     var spawnlayer;

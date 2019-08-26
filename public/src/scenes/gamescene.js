@@ -237,6 +237,11 @@ var GameScene = new Phaser.Class({
             classType: Crate,
             runChildUpdate: true 
         });
+        //NPCs
+        npcs = this.add.group({ 
+            classType: NPC,
+            runChildUpdate: true 
+        });
 
         speed = Phaser.Math.GetSpeed(300, 1);
        
@@ -668,6 +673,12 @@ var GameScene = new Phaser.Class({
 
                 }
               }
+              if (gameObjectB !== undefined && gameObjectB instanceof Polaris) {
+                //Solana Touching a lever?
+                if(curr_player==players.SOLANA && control_up){
+                    gameObjectB.interact(solana);
+                }
+              }
               if (gameObjectB !== undefined && bodyB.label == "GATE_BOTTOM") {
                 //Solana being crushed by a gate?
                 if(bodyB.velocity.y > 0){
@@ -880,6 +891,9 @@ var GameScene = new Phaser.Class({
 
         //Polaris Test
         polaris = new Polaris(this,solana.x+128,solana.y);
+        for(let i=0;i<5;i++){
+            npcs.get(solana.x+256+i*128,solana.y+16,'npc1');
+        }
         
     },
     gamepadCallback(scene){  
