@@ -673,10 +673,10 @@ var GameScene = new Phaser.Class({
 
                 }
               }
-              if (gameObjectB !== undefined && gameObjectB instanceof Polaris) {
+              if (gameObjectB !== undefined && gameObjectB instanceof NPCSensor) {
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA && control_up){
-                    gameObjectB.interact(solana);
+                    gameObjectB.parent.interact(solana);
                 }
               }
               if (gameObjectB !== undefined && bodyB.label == "GATE_BOTTOM") {
@@ -892,7 +892,7 @@ var GameScene = new Phaser.Class({
         //Polaris Test
         polaris = new Polaris(this,solana.x+128,solana.y);
         for(let i=0;i<5;i++){
-            npcs.get(solana.x+256+i*128,solana.y+16,'npc1');
+            npcs.get(solana.x+256+i*128,solana.y-128,'npc1');
         }
         
     },

@@ -90,26 +90,27 @@ class NPC extends Phaser.Physics.Matter.Sprite{
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         
         const { width: w, height: h } = this.sprite;
-        //const mainBody = Bodies.rectangle(0, 0, w * 0.6, h, { chamfer: { radius: 10 } });
-        
 
-        const mainBody = Bodies.rectangle(0, 0, w * 0.6, h-12, { isSensor: true });  
+        this.sensor = new NPCSensor(this);
+
+        const mainBody = Bodies.rectangle(0, 0, w, h);  
 
         const compoundBody = Body.create({
           parts: [mainBody],
           //parts: [mainBody],
           frictionStatic: 0,
           frictionAir: 0.00,
-          friction: 0.00,
+          friction: 0.80,
           restitution: 0.00,
           label: "NPC"
         });
 
         this
         .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.SOLID)
+        .setCollidesWith([ CATEGORY.SOLID, CATEGORY.GROUND ])
         .setScale(1)
-        .setFixedRotation(true) // Sets inertia to infinity so the player can't rotate        
-        .setIgnoreGravity(true)
+        .setFixedRotation(true) // Sets inertia to infinity so the player can't rotate 
         .setPosition(x, y);
 
         this.stage = 0; // Where is the NPC at in it's timeline.
@@ -126,6 +127,10 @@ class NPC extends Phaser.Physics.Matter.Sprite{
             diaDelay = this.dialogueDB[this.dialogueIndex].startAction.value;
         };
         this.readyTimer = this.scene.time.addEvent({ delay: diaDelay, callback: this.dialogueStartReady, callbackScope: this, loop: false });
+        //Wander Movement Stuff
+        this.wanderRange = Phaser.Math.Between(12,32);
+        this.wander = {distanceX:{min:this.x-this.wanderRange,max:this.x+this.wanderRange},direction:1};
+        this.moveSpeed = Phaser.Math.Between(1,20) / 10;
     }
     update(time, delta)
     {
@@ -146,6 +151,10 @@ class NPC extends Phaser.Physics.Matter.Sprite{
                 }
             }
         }
+        this.sensor.setPosition(this.x,this.y);
+        this.setVelocityX(this.moveSpeed*this.wander.direction);
+        if(this.x <= this.wander.distanceX.min){this.wander.direction = 1;}        
+        if(this.x >= this.wander.distanceX.max){this.wander.direction = -1}
 
     }
     resetDialogue(){
@@ -191,7 +200,25 @@ class NPC extends Phaser.Physics.Matter.Sprite{
             }
             this.dialogue = new Dialogue(this.scene,dialogueChain,54,-40);
             this.dialogue.start();
+            //Start Tween.
+            let dialogueTween = this.dialogueDB[this.dialogueIndex].tween;
+            if(dialogueTween){
+                this.scene.tweens.add({
+                    targets: this,
+                    x: this.x+200,               // '+=100'
+                    y: this.y,               // '+=100'
+                    ease: 'Bounce.InOut',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+                    duration: 1500,
+                    repeat: 3,            // -1: infinity
+                    yoyo: true,
+                    onComplete: this.tweenComplete,
+                    onCompleteParams: [this],
+                });
+            }
         }
+    }
+    tweenComplete(tween, targets, npc){
+
     }
     interact(obj){
         if(this.checkDialogueType('interact')){
@@ -206,12 +233,48 @@ class NPC extends Phaser.Physics.Matter.Sprite{
         return false;
     }
 };
+class NPCSensor extends Phaser.Physics.Matter.Image{
+    constructor(parent) {
+        super(parent.scene.matter.world, parent.x, parent.y, 'npc1', 0)        
+        parent.scene.matter.world.add(this);
+        parent.scene.add.existing(this); 
+        this.setActive(true);
+        this.parent = parent;
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        //Set Control Sensor - Player can't collide with mirrors, but bullets can. Sensor can detect player inputs.
+        const controlSensor =  Bodies.rectangle(0, 0, this.width, this.height, { isSensor: true });
+        const controlBody = Body.create({
+            parts: [controlSensor],
+            frictionStatic: 0,
+            frictionAir: 0.00,
+            friction: 0.00,
+            restitution: 0.00,
+            label: "NPCSensor"
+        });
+
+        this
+        .setExistingBody(controlBody)
+        .setStatic(true)
+        .setFixedRotation() 
+        .setIgnoreGravity(true)  
+        .setVisible(false);
+    }
+    update(time, delta)
+    {       
+
+    }
+}
 class Polaris extends NPC{
     constructor(scene,x,y) {
         super(scene, x, y, 'polaris', 0);
         this.setIgnoreGravity(true);
         this.dialogueIndex = 0;
         this.dialogueDB = JSON.parse(JSON.stringify(polarisDialogues));
+
+        //Wander Movement Stuff
+        this.wanderRange = 0;
+        this.wander = {distanceX:{min:this.x-this.wanderRange,max:this.x+this.wanderRange},direction:1};
+        this.moveSpeed = 0;
     }
 };
 
