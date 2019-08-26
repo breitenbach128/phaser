@@ -203,17 +203,15 @@ class NPC extends Phaser.Physics.Matter.Sprite{
             //Start Tween.
             let dialogueTween = this.dialogueDB[this.dialogueIndex].tween;
             if(dialogueTween){
-                this.scene.tweens.add({
+                let npcTween = this.scene.tweens.add({
                     targets: this,
-                    x: this.x+200,               // '+=100'
-                    y: this.y,               // '+=100'
-                    ease: 'Bounce.InOut',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-                    duration: 1500,
-                    repeat: 3,            // -1: infinity
-                    yoyo: true,
+                    props: dialogueTween,
                     onComplete: this.tweenComplete,
                     onCompleteParams: [this],
                 });
+                // npcTween.on('complete', function(tween, targets){
+
+                // }, scope);
             }
         }
     }
@@ -295,9 +293,9 @@ var polarisDialogues = [{startAction:{type:"distance",value:64},data:
 {startAction:{type:"auto",value:64},data:
 [{speaker:"src",ttl:1000,text:"You can talk to me with your interact button"},
 {speaker:"src",ttl:2000,text:"Move to me and press interact!"},
-{speaker:"trg",ttl:1000,text:"Of course master Polaris!"}],tween:{x:200,y:200,duration:5000}},
+{speaker:"trg",ttl:1000,text:"Of course master Polaris!"}],tween:{x: { value: '+=50', duration: 5000, ease: 'Bounce.easeOut' },y: { value: '+=0', duration: 1500, ease: 'Bounce.easeOut' }}},
 {startAction:{type:"interact",value:64},data:
 [{speaker:"src",ttl:2000,text:"Well done! Lets prepare you for the journey ahead."},
 {speaker:"src",ttl:1000,text:"Follow me!"},
-{speaker:"trg",ttl:1000,text:"Can do!"}]}
+{speaker:"trg",ttl:1000,text:"Can do!"}],tween:{x: { value: '+=200', duration: 5000, ease: 'Bounce.easeOut' },y: { value: '-=50', duration: 1500, ease: 'Bounce.easeOut' }}}
 ];

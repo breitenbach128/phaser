@@ -256,9 +256,27 @@ var GameScene = new Phaser.Class({
         let triggerlayer = map.getObjectLayer('triggers');
         //Create exit layer
         let exitlayer = map.getObjectLayer('exit');
+        //Create NPC layer
+        let npclayer = map.getObjectLayer('npcs');
+
+        //Spawn NPCs from Layer if the layer exist
+        if(npclayer){
+            for(e=0;e<npclayer.objects.length;e++){
+                let tmxObjRef = npclayer.objects[e];
+                let props = getTileProperties(tmxObjRef.properties);
+                if(tmxObjRef.name == 'polaris'){
+                    polaris = new Polaris(this,tmxObjRef.x,tmxObjRef.y);
+                }else{
+                    npcs.get(tmxObjRef.x,tmxObjRef.y,'npc1');
+                }
+            }
+        }
+
+
         //Spawn Enemies from Enemy TMX Object layer
         for(e=0;e<enemylayer.objects.length;e++){
-            let props = getTileProperties(enemylayer.objects[e].properties);
+            let tmxObjRef = enemylayer.objects[e];
+            let props = getTileProperties(tmxObjRef.properties);
             let EnemyType = props.enemyType;
             let EnemyClass = props.enemyClass;
             let PassiveBehavior = props.pBehav;
@@ -889,11 +907,7 @@ var GameScene = new Phaser.Class({
         //Need to push all debug graphics into a single debug array for easy enable
         this.cameraLevel = 1;
 
-        //Polaris Test
-        polaris = new Polaris(this,solana.x+128,solana.y);
-        for(let i=0;i<5;i++){
-            npcs.get(solana.x+256+i*128,solana.y-128,'npc1');
-        }
+
         
     },
     gamepadCallback(scene){  
@@ -933,22 +947,40 @@ var GameScene = new Phaser.Class({
         //DEBUG
         if(GLOBAL_DEBUG){
             //Draw Pointer - DEBUG
-            this.debugPointer.x = pointer.worldX-8;
-            this.debugPointer.y = pointer.worldY-8;
             this.debugAimLine.clear();
             this.debugAimLine.lineStyle(5, 0xFF00FF, 1.0);
             this.debugAimLine.beginPath();
-            this.debugAimLine.moveTo(solana.x, solana.y);
-            this.debugAimLine.lineTo(pointer.worldX, pointer.worldY);
+            if(curr_player == players.SOLANA){
+                this.debugAimLine.moveTo(solana.x, solana.y);
+            }else{
+                this.debugAimLine.moveTo(bright.x, bright.y);
+            }
+            
+            let targVector = {x:pointer.worldX,y:pointer.worldY};
+            //Adjust for Split Screen
+            if(this.cameraLevel == 3){
+                let cam_p1 = this.cameras.getCamera('cam_p1');
+                let cam_p2 = this.cameras.getCamera('cam_p2');
+                let camVec = {x:0,y:0};
+                if(curr_player == players.SOLANA){
+                    camVec= pointer.positionToCamera(cam_p1);
+                }else{
+                    camVec= pointer.positionToCamera(cam_p2);
+                }
+                targVector = camVec;
+            }
+            this.debugAimLine.lineTo(targVector.x, targVector.y);
             this.debugAimLine.closePath();
             this.debugAimLine.strokePath();
+            this.debugPointer.x = targVector.x-8;
+            this.debugPointer.y = targVector.y-8;
         }
 
         //Updates
         solana.update(time,delta);
         bright.update(time,delta);
         soullight.update(time,delta);
-        polaris.update(time,delta);
+        if(polaris != undefined){polaris.update(time,delta);};
 
         //Draw lighting        
         shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels);    
