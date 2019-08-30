@@ -26,8 +26,7 @@ var GameScene = new Phaser.Class({
         hud = this.scene.get('UIScene');;
         hud.handleEvents();
         
-        //Create Background
-        world_background = this.add.tileSprite(512, 256, 4096, 512, 'forest_background');
+
 
        
    
@@ -40,7 +39,10 @@ var GameScene = new Phaser.Class({
 
         //Map the map
         map = this.make.tilemap({key: current_map});
-        
+
+        //Create Background
+        world_background = this.add.tileSprite(512, 256, 4096, map.heightInPixels, 'forest_background');
+
         // tiles for the ground layer
         var TilesForest = map.addTilesetImage('32Tileset','tiles32');//called it 32Tileset in tiled
         var TilesCastle = map.addTilesetImage('32Castle','castle32');//called it 32Castle in tiled
@@ -260,12 +262,24 @@ var GameScene = new Phaser.Class({
         let npclayer = map.getObjectLayer('npcs');
 
         //Spawn NPCs from Layer if the layer exist
+        tutorialRunning = false;
         if(npclayer){
             for(e=0;e<npclayer.objects.length;e++){
                 let tmxObjRef = npclayer.objects[e];
                 let props = getTileProperties(tmxObjRef.properties);
                 if(tmxObjRef.name == 'polaris'){
+                    tutorialRunning = true;                    
                     polaris = new Polaris(this,tmxObjRef.x,tmxObjRef.y);
+
+                    //Check for state saves
+                    let findState = findWithAttr(guideStates,'map',current_map);
+                    if(findState == -1){
+                        guideStates.push(new stateData('polaris',current_map,polaris.x,polaris.y))
+                    }else{
+                        polaris.setPosition(guideStates[findState].pos.x,guideStates[findState].pos.y);
+                        console.log("Position Set based on map",findState)                        
+                        console.log("Map State Object List",guideStates)
+                    };//Set this so it starts the running guide
                 }else{
                     npcs.get(tmxObjRef.x,tmxObjRef.y,'npc1');
                 }
@@ -980,7 +994,9 @@ var GameScene = new Phaser.Class({
         solana.update(time,delta);
         bright.update(time,delta);
         soullight.update(time,delta);
-        if(polaris != undefined){polaris.update(time,delta);};
+        if(tutorialRunning){
+            polaris.update(time,delta);
+        };
 
         //Draw lighting        
         shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels);    
@@ -1077,6 +1093,8 @@ var GameScene = new Phaser.Class({
         if(enable){
             let cam_p1 = this.cameras.add(0,0,camera_main.width/2,camera_main.height,false,'cam_p1');//Second Camera
             let cam_p2 = this.cameras.add(camera_main.width/2,0,camera_main.width/2,camera_main.height,false,'cam_p2');//Second Camera
+            cam_p1.setBounds(0, 0, map.widthInPixels, map.heightInPixels+128);  
+            cam_p2.setBounds(0, 0, map.widthInPixels, map.heightInPixels+128);  
             cam_p1.setZoom(2);
             cam_p2.setZoom(2);
             cam_p1.startFollow(solana,true,.8,.8,0,0);
@@ -1145,6 +1163,18 @@ var GameScene = new Phaser.Class({
                 } 
             }
         }   
+    },
+    saveData(){
+        //Save Polaris Data
+        if(tutorialRunning){
+            let findState = findWithAttr(guideStates,'map',current_map);
+            if(findState != -1){
+                guideStates[findState].pos.x = polaris.x;
+                guideStates[findState].pos.y = polaris.y;
+            }else{
+                console.log("Error: No Polaris State data to update");
+            }
+        }
     }
 });
 //External Functions

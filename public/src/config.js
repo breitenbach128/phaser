@@ -59,6 +59,10 @@ var socket = io();
     var new_enemy;
     var spawner;
     var spawnlayer;
+    //NPC Control
+    var guideDialogueIndex = 0;
+    var tutorialRunning = false;
+    var guideStates = []; //new statedata for mapdata
     //Particles
     var emitter0;
     var emitter_dirt_spray;
@@ -231,6 +235,21 @@ var socket = io();
             pulse: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
     
         };
+    }
+    //Find by Property
+    function findWithAttr(array, attr, value) {
+        for(var i = 0; i < array.length; i += 1) {
+            if(array[i][attr] === value) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    //SaveStateObject
+    function stateData(id,map,x,y){
+        this.id = id;
+        this.map = map;
+        this.pos = {x:x,y:y};
     }
     //Debug:Version
     console.log(String(Phaser.VERSION));

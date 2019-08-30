@@ -58,6 +58,9 @@ class Exit extends Phaser.Physics.Matter.Sprite{
         }
     }
     nextLevel(){
+        //First, Save State
+        this.scene.saveData();
+        //Then, Transition to new map
         current_map = this.targetMap;
         current_exit = this.targetExit;
         this.triggered = true;

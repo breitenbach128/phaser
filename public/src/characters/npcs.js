@@ -161,7 +161,7 @@ class NPC extends Phaser.Physics.Matter.Sprite{
         console.log("resetDialogue",this.dialogueIndex, this.dialogueDB.length)
         //Dialogue Completed, Move to next.
         if(this.dialogueIndex < this.dialogueDB.length-1){  
-            this.dialogueIndex++;
+            this.incrementDialogue();
         }else{
             if(this.dialogLoop){
                 this.dialogueIndex = 0;     
@@ -180,6 +180,9 @@ class NPC extends Phaser.Physics.Matter.Sprite{
         this.dialogueReady = false;
         this.readyTimer = this.scene.time.addEvent({ delay: diaDelay, callback: this.dialogueStartReady, callbackScope: this, loop: false });
 
+    }
+    incrementDialogue(){
+        this.dialogueIndex++;
     }
     dialogueStartReady(){
         this.dialogueReady = true;
@@ -266,13 +269,17 @@ class Polaris extends NPC{
     constructor(scene,x,y) {
         super(scene, x, y, 'polaris', 0);
         this.setIgnoreGravity(true);
-        this.dialogueIndex = 0;
+        this.dialogueIndex = guideDialogueIndex;
         this.dialogueDB = JSON.parse(JSON.stringify(polarisDialogues));
 
         //Wander Movement Stuff
         this.wanderRange = 0;
         this.wander = {distanceX:{min:this.x-this.wanderRange,max:this.x+this.wanderRange},direction:1};
         this.moveSpeed = 0;
+    }
+    incrementDialogue(){
+        this.dialogueIndex++;
+        guideDialogueIndex =  this.dialogueIndex;
     }
 };
 
