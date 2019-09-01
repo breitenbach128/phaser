@@ -36,7 +36,7 @@ var socket = io();
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-8-18-2019";
+    var buildVersion = "a-8-30-2019";
     var game;
     var hud;
     var playScene;
@@ -83,6 +83,13 @@ var socket = io();
     var lastFired = 0;
     var gamePad = [new GamepadControl(0),new GamepadControl(0)];
     var keyPad;
+    //Equipment
+    var solanaEquipment = [
+        {id:0,name:"Wand",lvl:0,equiped:false},
+        {id:1,name:"Crown",lvl:0,equiped:false},
+        {id:2,name:"Wings",lvl:0,equiped:false},
+        {id:3,name:"Belt",lvl:0,equiped:false}
+    ];
     //Player Management
     var playerMode = 0;//0-Single,1-LocalCoop,2-OnlineCoop
     var playerModes = ['Single','Local-COOP','Online'];

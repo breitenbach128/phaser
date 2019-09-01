@@ -292,7 +292,7 @@ var npcDialogues = [{startAction:{type:"distance",value:128},data:
 [{speaker:"src",ttl:2000,text:"Good to see you up and about Princess."},
 {speaker:"src",ttl:2000,text:"Praise be to the sun!"}]},
 ];
-
+//tween:{x: { value: '+=50', duration: 5000, ease: 'Bounce.easeOut' }
 var polarisDialogues = [{startAction:{type:"distance",value:64},data:
 [{speaker:"src",ttl:2000,text:"Good to see you up and about Princess."},
 {speaker:"src",ttl:2000,text:"Move left and right with your left stick or the A/D keys."},
@@ -300,9 +300,9 @@ var polarisDialogues = [{startAction:{type:"distance",value:64},data:
 {startAction:{type:"auto",value:64},data:
 [{speaker:"src",ttl:1000,text:"You can talk to me with your interact button"},
 {speaker:"src",ttl:2000,text:"Move to me and press interact!"},
-{speaker:"trg",ttl:1000,text:"Of course master Polaris!"}],tween:{x: { value: '+=50', duration: 5000, ease: 'Bounce.easeOut' },y: { value: '+=0', duration: 1500, ease: 'Bounce.easeOut' }}},
+{speaker:"trg",ttl:1000,text:"Of course master Polaris!"}],requirement:{type:'item',value:0},tween:{x: { value: 28*32, duration: 5000, ease: 'Linear' },y: { value: 19*32, duration: 1500, ease: 'Linear' }}},
 {startAction:{type:"interact",value:64},data:
-[{speaker:"src",ttl:2000,text:"Well done! Lets prepare you for the journey ahead."},
-{speaker:"src",ttl:1000,text:"Follow me!"},
-{speaker:"trg",ttl:1000,text:"Can do!"}],tween:{x: { value: '+=200', duration: 5000, ease: 'Bounce.easeOut' },y: { value: '-=50', duration: 1500, ease: 'Bounce.easeOut' }}}
+[{speaker:"src",ttl:2000,text:"Press UP to enter that room and grab your wand."},
+{speaker:"src",ttl:1000,text:"You'll need it..."},
+{speaker:"trg",ttl:1000,text:"Can do!"}],tween:{x: { value: '+=128', duration: 5000, ease: 'Linear' },y: { value: '-=0', duration: 1500, ease: 'Linear' }}}
 ];

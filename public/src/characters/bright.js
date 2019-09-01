@@ -54,6 +54,10 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.touching = {up:0,down:0,left:0,right:0};
         this.airTime = 0;//For Camera Shake
         this.light_radius = 50;
+        //Dialogue    
+        this.dialogue = new Dialogue(this.scene,[{speaker:this,ttl:0,text:""}],54,-40);  
+        //FollowMode Solana
+        this.followMode = false;
 
         //Create Effects
         this.effect=[
@@ -81,16 +85,20 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     {
             if(this.alive){
 
-            if(this.touching.up==0 && this.touching.down == 0 && this.touching.left == 0 && this.touching.right == 0){
-                this.airTime++;
-            }else{
-                this.airTime=0;
-            };
-            if(this.abPulse.doCharge){
-                if(this.abPulse.c < this.abPulse.max){
-                this.abPulse.c++;
+                if(this.dialogue.isRunning){
+                    this.dialogue.update();
                 }
-            }
+
+                if(this.touching.up==0 && this.touching.down == 0 && this.touching.left == 0 && this.touching.right == 0){
+                    this.airTime++;
+                }else{
+                    this.airTime=0;
+                };
+                if(this.abPulse.doCharge){
+                    if(this.abPulse.c < this.abPulse.max){
+                    this.abPulse.c++;
+                    }
+                }
 
 
             //Do Dark Updates
@@ -111,6 +119,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 }
             }
             //Movement Code
+            //Control Based on Light or Dark Modes
+            let darkMode = 1;
+            let brightMode = 0;
             if(curr_player==players.BRIGHT || playerMode > 0){
                 //Only control if currently the active control object
                 let control_left = this.getControllerAction('left');
@@ -124,9 +135,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 let control_pulsePress = this.getControllerAction('pulse');
                 let control_pulseRelease = this.getControllerAction('pulseR');
                 let control_change = this.getControllerAction('changeplayer');
-                //Control Based on Light or Dark Modes
-                let darkMode = 1;
-                let brightMode = 0;
+
                 //Change Player in Single Mode
                 if(playerMode == 0){
                     if(control_change){
@@ -209,6 +218,22 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 +"\nctrl-passR:"+String(control_passRelease)
                 +"\nR-StatusKPGlobal:"+String(keyPad.checkKeyState('R'))
                 +"\nR-KP_R:"+String(keyPad.buttons.R.b.isDown));
+            }else if(curr_player==players.SOLANA && playerMode == 0){
+                //Allow Single Player Follow Mode
+                if(this.followMode){
+                    if(this.light_status == brightMode){
+                        if(this.x < solana.x - 64){
+                            this.sprite.setVelocityX(this.mv_speed);
+                        }else if(this.x > solana.x + 64){
+                            this.sprite.setVelocityX(-this.mv_speed);
+                        }
+                        if(this.y < solana.y-32 - 64){
+                            this.sprite.setVelocityY(this.mv_speed);
+                        }else if(this.y > solana.y-32 + 64){
+                            this.sprite.setVelocityY(-this.mv_speed);
+                        }
+                    }
+                }
             }
         }
 

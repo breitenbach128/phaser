@@ -67,6 +67,12 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             {id:2,name:"Wings",lvl:0,equiped:false},
             {id:3,name:"Belt",lvl:0,equiped:false}
         ];
+        //Check Global equipment
+        for(let e=0;e<solanaEquipment.length;e++){
+            if(solanaEquipment[e].equiped){
+                this.equipItem(e);
+            }
+        }
 
         this.debug = this.scene.add.text(this.x, this.y-16, 'Solana', { resolution: 2,fontSize: '10px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 }).setOrigin(.5);
         //Sounds
@@ -364,6 +370,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     }
     equipItem(id){
         this.equipment[id].equiped = true;
+        solanaEquipment[id].equiped = true;
     }
     receiveDamage(damage) {
                 

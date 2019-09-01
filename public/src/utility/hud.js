@@ -54,7 +54,12 @@ class HudScene extends Phaser.Scene {
         //HUD Energy Bar Flash/Scale Effect: When energy is added, alter the look for a few MS to show energy has been gained.
         this.energy_bar_effect = this.time.addEvent({ delay: 200, callback: this.resetEnergyScale, callbackScope: this, loop: false });
         this.inventory = new Inventory(this);
-
+        //Check Global equipment
+        for(let e=0;e<solanaEquipment.length;e++){
+            if(solanaEquipment[e].equiped){
+                this.inventory.equipItem(e);
+            }
+        }
     }
     alterEnergy(energyChange){
         let n = this.energy.n + energyChange;

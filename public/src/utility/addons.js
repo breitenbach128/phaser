@@ -95,6 +95,7 @@ class Dialogue {
 	
 	}
 	update(){
+		
 		let i = this.curr;
 		let speaker = this.chain[i].speaker;
 		let worldScale=camera_main.zoom;
@@ -112,6 +113,7 @@ class Dialogue {
 			this.bubbles[i].y = (speaker.y+this.offset.y);
 			this.bubbles[i].update();
 		}
+		
 	}
 	nextSpeech(){		
 		if(this.curr < this.chain.length-1){
