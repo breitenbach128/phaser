@@ -151,8 +151,8 @@
                  "type":"entrance",
                  "visible":true,
                  "width":32,
-                 "x":1920,
-                 "y":192
+                 "x":512,
+                 "y":160
                 }],
          "opacity":1,
          "type":"objectgroup",

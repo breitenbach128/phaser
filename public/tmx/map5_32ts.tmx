@@ -315,7 +315,7 @@
    </properties>
   </object>
   <object id="68" name="east1" type="entrance" x="1984" y="192" width="32" height="32"/>
-  <object id="78" name="west1" type="entrance" x="1920" y="192" width="32" height="32"/>
+  <object id="78" name="west1" type="entrance" x="512" y="160" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="10" name="triggers">
   <object id="77" name="zone1" type="zone" x="1472" y="480" width="224" height="96">

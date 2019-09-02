@@ -117,7 +117,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('fireflies', 'assets/objects/fireflies.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('bat', 'assets/characters/bat_32.png', {frameWidth: 32, frameHeight: 32});
 		//Bosses		
-		this.load.spritesheet('spider', 'assets/characters/spider.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('spider', 'assets/characters/spider_x2.png', {frameWidth: 64, frameHeight: 64});
 		//Abilities
 		this.load.spritesheet('ability_solarblast', 'assets/objects/ability_solarblast.png', {frameWidth: 16, frameHeight: 16});		
 		this.load.image('soullightblast', 'assets/objects/soullightblast.png');

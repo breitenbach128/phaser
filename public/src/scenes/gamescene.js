@@ -1548,7 +1548,7 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'boss-spider',
         frames: scene.anims.generateFrameNumbers('spider', { frames:[0,1,2,3,4] }),
-        frameRate: 16,
+        frameRate: 12,
         repeat: 0
     });
 }
