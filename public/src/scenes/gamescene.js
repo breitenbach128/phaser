@@ -118,9 +118,9 @@ var GameScene = new Phaser.Class({
 
         //CREATE PLAYER ENTITIES
         // create the solana sprite    
-        solana = new Solana(this,128,128);  
-        bright = new Bright(this,128,96);
-        soullight =new SoulLight({scene: this, x:128,y:96,sprite:'bright',frame:0},bright);
+        solana = new Solana(this,192,160);  
+        bright = new Bright(this,192,128);
+        soullight =new SoulLight({scene: this, x:192,y:128,sprite:'bright',frame:0},bright);
         //
         this.changePlayerReady = true;
         //Emit Events
@@ -244,6 +244,11 @@ var GameScene = new Phaser.Class({
             classType: NPC,
             runChildUpdate: true 
         });
+        //Boss
+        bosses = this.add.group({ 
+            classType: Boss,
+            runChildUpdate: true 
+        });
 
         speed = Phaser.Math.GetSpeed(300, 1);
        
@@ -267,7 +272,11 @@ var GameScene = new Phaser.Class({
             for(e=0;e<npclayer.objects.length;e++){
                 let tmxObjRef = npclayer.objects[e];
                 let props = getTileProperties(tmxObjRef.properties);
-                if(tmxObjRef.name == 'polaris'){
+
+                if(tmxObjRef.type == "boss"){
+                    let boss = bosses.get(tmxObjRef.x,tmxObjRef.y);
+                    boss.setPosition(tmxObjRef.x,tmxObjRef.y);
+                }else if(tmxObjRef.type == "guide"){
                     tutorialRunning = true;                    
                     polaris = new Polaris(this,tmxObjRef.x,tmxObjRef.y);
 
@@ -277,8 +286,6 @@ var GameScene = new Phaser.Class({
                         guideStates.push(new stateData('polaris',current_map,polaris.x,polaris.y))
                     }else{
                         polaris.setPosition(guideStates[findState].pos.x,guideStates[findState].pos.y);
-                        console.log("Position Set based on map",findState)                        
-                        console.log("Map State Object List",guideStates)
                     };//Set this so it starts the running guide
                 }else{
                     npcs.get(tmxObjRef.x,tmxObjRef.y,'npc1');
@@ -403,7 +410,6 @@ var GameScene = new Phaser.Class({
             if(tmxObjRef.type == "entrance"){
                 exitObj = entrances.get();
                 exitObj.setup(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,tmxObjRef.name);
-                
                 //Re-position player to match entrance to exit they left.
                 if(exitObj.name == current_exit){
                     
@@ -1536,6 +1542,12 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'bat-death',
         frames: scene.anims.generateFrameNumbers('bat', { frames:[12,13,14,15] }),
+        frameRate: 16,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'boss-spider',
+        frames: scene.anims.generateFrameNumbers('spider', { frames:[0,1,2,3,4] }),
         frameRate: 16,
         repeat: 0
     });

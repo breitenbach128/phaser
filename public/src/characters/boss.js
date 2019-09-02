@@ -1,10 +1,9 @@
 class Boss extends Phaser.Physics.Matter.Sprite{
     constructor(scene,x,y) {
-        super(scene.matter.world, x, y, 'npc1', 0)        
+        super(scene.matter.world, x, y, 'spider', 0)        
         scene.matter.world.add(this);
         scene.add.existing(this); 
         this.setActive(true);
-        this.parent = parent;
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         //Set Control Sensor - Player can't collide with mirrors, but bullets can. Sensor can detect player inputs.
         const controlSensor =  Bodies.rectangle(0, 0, this.width, this.height, { isSensor: true });
@@ -23,6 +22,8 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         .setFixedRotation() 
         .setIgnoreGravity(true)  
         .setVisible(false);
+
+        this.anims.play('boss-spider', true);
     }
     update(time, delta)
     {       
