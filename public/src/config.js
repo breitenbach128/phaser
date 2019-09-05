@@ -45,7 +45,7 @@ var socket = io();
     var global_gravity = 400;
     //Tiles
     var map; 
-    var current_map = "map5";
+    var current_map = "map2";
     var current_exit = "west1";
     var world_background;
     //Game Objects
@@ -55,7 +55,7 @@ var socket = io();
     levers,gates,plates,buttons,
     triggerzones,platforms,barriers,
     ab_solarblasts,crystallamps,ab_brightbeams,
-    rocks,crates,npcs,bosses;    
+    rocks,crates,npcs,bosses,light_shards;    
     var new_enemy;
     var spawner;
     var spawnlayer;

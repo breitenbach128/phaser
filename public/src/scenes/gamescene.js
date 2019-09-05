@@ -249,6 +249,10 @@ var GameScene = new Phaser.Class({
             classType: Boss,
             runChildUpdate: true 
         });
+        light_shards = this.add.group({ 
+            classType: LightShard,
+            runChildUpdate: true 
+        });
 
         speed = Phaser.Math.GetSpeed(300, 1);
        
@@ -797,6 +801,14 @@ var GameScene = new Phaser.Class({
                     if (gObjs[0].active){
                         gObjs[0].hit();
                         gObjs[1].receiveDamage(1);
+                    }  
+                }
+                //Between Light Shards and Solana
+                if ((bodyA.label === 'LIGHT_SHARD' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'LIGHT_SHARD')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'LIGHT_SHARD');
+                    if (gObjs[0].active){
+                        gObjs[0].hit();
+                        //gObjs[1].receiveDamage(1);
                     }  
                 }
                 //Between Solar blast and Enemies
