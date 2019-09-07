@@ -145,10 +145,8 @@ class Boss extends Phaser.Physics.Matter.Sprite{
             //Touching corner on ground or ceiling
             if(this.touching.left > 0 && (this.touching.down > 0 || this.touching.up > 0)){
                 this.wanderDirection = 1;
-                console.log("T-L: Change to 1");
             }else if(this.touching.right > 0 && (this.touching.down > 0 || this.touching.up > 0)){
                 this.wanderDirection = -1;
-                console.log("T-R: Change to -1");
             }
             
         }

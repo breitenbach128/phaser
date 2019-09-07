@@ -808,7 +808,7 @@ var GameScene = new Phaser.Class({
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'LIGHT_SHARD');
                     if (gObjs[0].active){
                         gObjs[0].hit();
-                        //gObjs[1].receiveDamage(1);
+                        hud.collectShard('light',1);
                     }  
                 }
                 //Between Solar blast and Enemies

@@ -9,7 +9,7 @@ class HudScene extends Phaser.Scene {
         this.ready = false;
         this.energy = {n:100,max:100,h:100,w:16};
         this.inventory;
-
+        this.shard_totals = {light:0,dark:0};
     }
 
     update()
@@ -21,6 +21,8 @@ class HudScene extends Phaser.Scene {
             +"\nDisPlayers:"+String(Math.round(Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y)));
             this.debug.setText(debugString);
 
+            this.shard_data_l.setText(this.shard_totals.light+" x");
+            this.shard_data_d.setText(this.shard_totals.dark+" x");
         }
     }
     clearHud()
@@ -49,6 +51,12 @@ class HudScene extends Phaser.Scene {
         //Update energy bar values
         this.energy.h = this.energy_bar[1].height;
         this.energy.w = this.energy_bar[1].width;
+        //Add Shard Counts
+        this.shards_light = this.add.image(this.cameras.main.width-32, 48, 'shard_light',0);
+        this.shards_dark = this.add.image(this.cameras.main.width-32, 96, 'shard_dark',0);        
+        this.shard_data_l = this.add.text(this.cameras.main.width-64, 48, '0 x', { fontFamily: 'visitorTT1', fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 }).setOrigin(.5);
+        this.shard_data_d = this.add.text(this.cameras.main.width-64, 96, '0 x', { fontFamily: 'visitorTT1', fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 }).setOrigin(.5);
+
         //DEBUG
         this.debug = this.add.text(48, 16, 'DEBUG-HUD', { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
         //HUD Energy Bar Flash/Scale Effect: When energy is added, alter the look for a few MS to show energy has been gained.
@@ -84,6 +92,13 @@ class HudScene extends Phaser.Scene {
     }
     resetEnergyScale(){
         this.energy_bar.forEach(function(e){e.setScale(1)});
+    }
+    collectShard(type,value){
+        if(type == 'light'){
+            this.shard_totals.light = this.shard_totals.light + value;
+        }else{
+            this.shard_totals.dark = this.shard_totals.dark + value;
+        }
     }
     setHealth(hp,max)
     {
