@@ -249,8 +249,15 @@ var GameScene = new Phaser.Class({
             classType: Boss,
             runChildUpdate: true 
         });
+        //Light Shards
         light_shards = this.add.group({ 
             classType: LightShard,
+            runChildUpdate: true 
+        });
+        //Dark Shards
+        //Breakable Tiles
+        breakabletiles = this.add.group({ 
+            classType: BreakableTile,
             runChildUpdate: true 
         });
 
@@ -363,6 +370,13 @@ var GameScene = new Phaser.Class({
                 x_offset = tmxObjRef.width/2;
                 y_offset = tmxObjRef.height/2;
                 let newFallPlat = new Fallplat(this,tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-1);
+            }else if(tmxObjRef.type == "breakabletile"){  
+                x_offset = tmxObjRef.width/2;
+                y_offset = tmxObjRef.height/2;
+                let newbreakabletile = breakabletiles.get();
+                let breakabletileProps = getTileProperties(tmxObjRef.properties);
+                console.log("New Breakable",breakabletileProps);
+                newbreakabletile.setup(tmxObjRef.x+x_offset,tmxObjRef.y+y_offset,1,breakabletileProps.frames);
             }else if(tmxObjRef.type == "rock"){  
                 let newRock = rocks.get();
                 newRock.setup(tmxObjRef.x,tmxObjRef.y,1);
