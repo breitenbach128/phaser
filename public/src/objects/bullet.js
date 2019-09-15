@@ -35,6 +35,8 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
         this.damage = 1;    
         this.lifespan = 0;
         this.bounced = false;
+        this.effects = [];
+        this.deathEffects = [];
     }
     fire(x, y, xV, yV, life)
     {       
@@ -48,6 +50,15 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
         //this.applyForce({x:xV,y:yV})
         this.setVelocity(xV,yV);
 
+    }
+    setEffects(effectsArray){
+        this.effects = effectsArray;
+    }
+    setDeathEffects(effectsArray){
+        this.deathEffects = effectsArray;
+    }
+    getEffects(){
+        return this.effects;
     }
     hit(){
         this.lifespan = 0;
@@ -86,3 +97,26 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
     }
 
 };
+//What happens when the bullet dies?
+//Explode: Spawn more projectiles
+//Spawn Item: Spawn an item
+//Spawn Enemy: Spawn an enemy
+//Visual Effect: Create a visual effect.
+function deathEffects(){
+
+}
+//Stunned: Can't move or shoot.
+//Slowed: Half Movement speed
+//DOT: Take damage over time
+//Darkened: Lose light power
+//Steal Light: Lose Light shards
+//Steal Dark: Lose Dark shards
+//Throw: Move player in a direction relative to projectile movement vector
+function bulletEffect(type,chance,duration,value,visualType,visualData){
+    this.type = type;
+    this.chance = chance;
+    this.duration = duration;
+    this.value = value;//If a numeric value is used;
+    this.visualType = visualType; //Anim, Particle, None
+    this.visualData = visualData;
+}

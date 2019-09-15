@@ -67,6 +67,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             {id:2,name:"Wings",lvl:0,equiped:false},
             {id:3,name:"Belt",lvl:0,equiped:false}
         ];
+        this.effects = [];
+        this.isAnimLocked = false;//Locks out new animations from playing to allow one to finish.
+        this.isStunned = false;
+        this.isSlowed = false;
         //Check Global equipment
         for(let e=0;e<solanaEquipment.length;e++){
             if(solanaEquipment[e].equiped){
@@ -93,6 +97,15 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     update(time,delta)
     {
         if(this.alive){
+            this.applyEffects();
+            let mv_speed = this.mv_speed;//This will handle the modifications based on conditions/effects
+            //Priority goes top to bottom, least speed to most speed
+            if(this.isStunned){
+                mv_speed = .01;
+            }else if(this.isSlowed){
+                mv_speed = 1.5;
+            }
+
             //Only control if currently the active control object
             let control_left = this.getControllerAction('left');
             let control_right = this.getControllerAction('right');
@@ -123,12 +136,12 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 this.jumpReady = true;
 
                 if(this.mv_direction.x == 0){
-                    this.sprite.anims.play('solana-idle', true);//Idle
+                    if(!this.isAnimLocked){this.sprite.anims.play('solana-idle', true);};//Idle
                 }else{
-                    this.sprite.anims.play('solana-walk', true);
+                    if(!this.isAnimLocked){this.sprite.anims.play('solana-walk', true);};
                 }
             }else{
-                this.sprite.anims.play('solana-jump', true);  
+                if(!this.isAnimLocked){this.sprite.anims.play('solana-jump', true);};  
                 //Add Jump Forgiveness of 100ms  
                 if(this.jumpTimerRunning == false){
                     this.jumpTimer = this.scene.time.addEvent({ delay: 100, callback: this.forgiveJump, callbackScope: this, loop: false });
@@ -143,7 +156,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             if(this.onWall){
                if(Math.round(this.body.velocity.y) >= 0){ //Upwards
                     this.setVelocityY(0);
-                    this.sprite.anims.play('solana-wallslide', true);
+                    if(!this.isAnimLocked){this.sprite.anims.play('solana-wallslide', true);};
                }
             }
 
@@ -158,7 +171,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         this.scene.changePlayer();
                     } 
                 }
-                let mv = this.onGround ? this.mv_speed : this.mv_speed*.75;
+                let mv = this.onGround ? mv_speed : mv_speed*.75;
                 //Move left/right
                 if (control_left && this.jumpLock == false) {
 
@@ -191,13 +204,13 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 }    
 
                 if (control_jump && this.jumpReady) {
-                    this.jump(this.jump_speed,this.mv_speed);   
+                    this.jump(this.jump_speed,mv_speed);   
 
                 }
 
                 //Check for shooting 
                 if(control_shoot && this.equipment[0].equiped){
-                    solana.sprite.anims.play('solana-shoot', true);     
+                    if(!this.isAnimLocked){solana.sprite.anims.play('solana-shoot', true);};    
                     let costToFireWeapon = -9000;//Was 10     
                     let wpRof = 350;
 
@@ -349,7 +362,80 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         
         this.soundJump.play();
     }
+    addEffects(effects){
+        //Loop through effect array. If found of same type, set new duration.
+        //If not found, add into array.
+        console.log('Adding Effect ', effects);
+        effects.forEach(e=> {
+            let newEffect = e;
+            let findEffect = this.effects.map(e => e.type).indexOf(newEffect.type);
+            if(findEffect == -1){
+                this.effects.push(newEffect);
+            }else{
+                //Set the duration to be re-applied with the current one if it is higher
+                if(newEffect.duration > this.effects[findEffect].duration){this.effects[findEffect].duration = newEffect.duration;};
+                //If value is higher, apply the higher value
+                if(newEffect.value > this.effects[findEffect].value){this.effects[findEffect].value = newEffect.value;};
+            }
+        });
 
+    }
+    applyEffects(){
+        //Set Each frame for check. Could work on system with
+        //two case statements for one apply and one remove. Might
+        //be easier to work with?
+        this.isAnimLocked = false;
+        this.isStunned = false;
+        this.isSlowed = false;
+
+        if(this.effects.length > 0){
+            this.effects.forEach(function(e,i){
+                //Apply Effect
+                switch (e.type) {
+                    case 'Stunned':
+                        //Apply Stunned
+                        this.isStunned = true;
+                        break;
+                    case 'Slowed':
+                        //Apply Slowed
+                        this.isSlowed = true;
+                        break;
+                    case 'DOT':
+                        //Apply DOT
+                        break;
+                    case 'Darkened':
+                        //Apply Darkened
+                        break;
+                    case 'StealLight':
+                        //Apply StealLight
+                        break;
+                    case 'StealDark':
+                        //Apply StealDark
+                        break;
+                    case 'Throw':
+                        //Apply Throw
+                        break;
+                    default:
+                        console.log('ERROR:Unknown Effect applied');
+                        break;
+                }
+                //Apply Visual Data
+                if(e.visualType == 'Anim'){
+                    console.log(e.visualType,e.visualData)
+                    this.sprite.anims.play(e.visualData, true);
+                    //Set Flag to true
+                    this.isAnimLocked = true;
+                };
+                //Reduce Effect Duration by 1
+                e.duration--;
+                //If Effect duration is 0, remove the effect.
+                if(e.duration <= 0){
+                    this.effects.splice(i);
+                    //Could Remove effect here?
+                };
+            },this);
+        }
+    }
     death(animation, frame){
         
         if(animation.key == 'solana-death'){

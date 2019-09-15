@@ -814,6 +814,8 @@ var GameScene = new Phaser.Class({
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'BULLET');
                     if (gObjs[0].active){
                         gObjs[0].hit();
+                        let applyTargetEffects = gObjs[0].getEffects();
+                        if(applyTargetEffects.length > 0){gObjs[1].addEffects(applyTargetEffects)};
                         gObjs[1].receiveDamage(1);
                     }  
                 }
@@ -1422,6 +1424,12 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'solana-jump',
         frames: scene.anims.generateFrameNumbers('solana', { start: 7, end: 7 }),
+        frameRate: 6,
+        repeat: -1
+    });
+    scene.anims.create({
+        key: 'solana-webbed',
+        frames: scene.anims.generateFrameNumbers('solana', { start: 22, end: 22 }),
         frameRate: 6,
         repeat: -1
     });

@@ -41,6 +41,9 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         this.mv_speed = 1;
         this.fall_speed = 6;
         this.jump_speed = 2;
+        this.gun = new Gun(60,1,120);
+        this.aggroDis = 600;
+
         //Collision
         this.scene.matter.world.on('beforeupdate', function (event) {
             this.touching.left = 0;
@@ -113,8 +116,29 @@ class Boss extends Phaser.Physics.Matter.Sprite{
 
         //Check for Player to attack
         let disToSolana = Phaser.Math.Distance.Between(this.x,this.y,solana.x,solana.y);
-        if(disToSolana < 256){
-           
+        if(disToSolana < this.aggroDis){
+            //Update Gun
+            if(this.gun){
+                
+                var bullet = bullets.get();
+                if (bullet && this.gun.ready)//ROF(MS)
+                {                
+                    let bullet = bullets.get();
+                    bullet.setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.SOLANA ]);
+                    bullet.setIgnoreGravity(false);
+                    bullet.setFrame(16);
+                    let effs = [(new bulletEffect('Stunned',1.0,60,1,'Anim','solana-webbed'))];
+                    bullet.setEffects(effs);
+                    if(this.wanderDirection == 1){
+                        bullet.fire(this.x, this.y, 4, -4, 400);
+                    }else{
+                        bullet.fire(this.x, this.y, -4, -4, 400);
+                    }
+                    
+                    this.gun.shoot();//Decrease mag size. Can leave this out for a constant ROF.
+                }
+                this.gun.update();
+            }
         }
         //ON PLATFORM BEHAVIOR
         if(this.touching.left == 0 &&  this.touching.right == 0 && this.touching.up == 0 && this.touching.down == 0){
