@@ -104,7 +104,9 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         //AI
         this.wanderDirection = 1;//Clockwise
         this.falltime = 0;
-        this.attackDelay = this.scene.time.addEvent({ delay: 3000, callback: this.startAttack, callbackScope: this, loop: true });
+        //this.attackDelay = this.scene.time.addEvent({ delay: 3000, callback: this.startAttack, callbackScope: this, loop: true });
+        this.climbing = false;
+        this.climbDelay = this.scene.time.addEvent({ delay: 3000, callback: this.climbToTile, callbackScope: this, loop: false });
         this.jumping = false;
     }
     update(time, delta)
@@ -140,48 +142,71 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                 this.gun.update();
             }
         }
-        //ON PLATFORM BEHAVIOR
-        if(this.touching.left == 0 &&  this.touching.right == 0 && this.touching.up == 0 && this.touching.down == 0){
-            //Airborne
-            this.falltime++;
+        //Movement
+        let tleft = (this.touching.left > 0);
+        let tRight = (this.touching.right > 0);
+        let tDown = (this.touching.down > 0);
+        let tUp = (this.touching.up > 0);
+
+        if(this.climbing){
+            //Climbing to Tile
+            this.setVelocityX(0);
+            this.setVelocityY(this.mv_speed*-1.5);
+            if(tUp){
+                this.climbing = false;
+            }
         }else{
-            if(this.jumping){
-                this.jumping = false;
-                this.setIgnoreGravity(true);
-            }
-            this.falltime = 0;
-            //Touching Single Direction
-            if(this.touching.left > 0 && this.touching.right == 0 && this.touching.up == 0 && this.touching.down == 0){
-                this.setVelocityY(this.mv_speed*this.wanderDirection);
-                this.setVelocityX(this.mv_speed*this.wanderDirection*-1);
-            }else if(this.touching.left == 0 && this.touching.right > 0 && this.touching.up == 0 && this.touching.down == 0){
-                this.setVelocityY(this.mv_speed*this.wanderDirection*-1);
-                this.setVelocityX(this.mv_speed*this.wanderDirection);
+            //ON PLATFORM BEHAVIOR
+            if(!tleft && !tRight && !tUp && !tDown){
+                //Airborne                
+                this.falltime++;
+            }else{
+                if(this.jumping){
+                    this.jumping = false;
+                    this.setIgnoreGravity(true);
+                }
+                this.falltime = 0;
+
+                if(tleft){this.setVelocityY(this.mv_speed*this.wanderDirection);};
+                if(tRight){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);};
+                if(tUp){this.setVelocityX(this.mv_speed*this.wanderDirection*-1);};
+                if(tDown){this.setVelocityX(this.mv_speed*this.wanderDirection);};
+
+                //Touching Single Direction
+                // if(tleft && !tRight && !tUp && !tDown){
+                //     this.setVelocityY(this.mv_speed*this.wanderDirection);
+                //     this.setVelocityX(this.mv_speed*this.wanderDirection*-1);
+                // }else if(!tleft && tRight && !tUp && !tDown){
+                //     this.setVelocityY(this.mv_speed*this.wanderDirection*-1);
+                //     this.setVelocityX(this.mv_speed*this.wanderDirection);
+                // }
+
+                // if(tleft && tRight && tUp && !tDown){
+                //     this.setVelocityX(this.mv_speed*this.wanderDirection*-1);
+                // }else if(tleft && tRight && !tUp && tDown){
+                //     this.setVelocityX(this.mv_speed*this.wanderDirection);
+                // }
+
+                //Touching corner on ground or ceiling
+                // if(this.touching.left > 0 && (this.touching.down > 0 || this.touching.up > 0)){
+                //     this.wanderDirection = 1;
+                // }else if(this.touching.right > 0 && (this.touching.down > 0 || this.touching.up > 0)){
+                //     this.wanderDirection = -1;
+                // }
+                
             }
 
-            if(this.touching.left == 0 && this.touching.right == 0 && this.touching.up > 0 && this.touching.down == 0){
-                this.setVelocityX(this.mv_speed*this.wanderDirection*-1);
-                //this.setVelocityY(this.mv_speed*this.wanderDirection*-1);
-            }else if(this.touching.left == 0 && this.touching.right == 0 && this.touching.up == 0 && this.touching.down > 0){
-                this.setVelocityX(this.mv_speed*this.wanderDirection);
-                //this.setVelocityY(this.mv_speed*this.wanderDirection);
+            //Set fall time
+            if(this.falltime > 15){
+                this.setIgnoreGravity(false); 
+                //this.setVelocityY(this.fall_speed);
             }
-            //Touching corner on ground or ceiling
-            if(this.touching.left > 0 && (this.touching.down > 0 || this.touching.up > 0)){
-                this.wanderDirection = 1;
-            }else if(this.touching.right > 0 && (this.touching.down > 0 || this.touching.up > 0)){
-                this.wanderDirection = -1;
-            }
-            
-        }
-
-        //Set fall time
-        if(this.falltime > 15){
-            this.setIgnoreGravity(false); 
-            //this.setVelocityY(this.fall_speed);
         }
     }
     climbToTile(){
+        //Fire Projectile at ceiling. If hits a tile, then drawn line, and start climb.
+        this.climbing = true;
+        this.setIgnoreGravity(true);
         //If a tile is directly above the spider, they will stop, and spit a thread of silk at the platform and climb up to it to begin patrolling again.
         //If the player is above them, but not within LOS, they will do this as well.
     }
@@ -221,3 +246,10 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         
     }
 }
+
+
+//SPIDER HIVE - BOSS # 1
+//Spawns up to three spiders to chase player.
+//Spawns every 15 seconds if there is room.
+//Sprays webbing and acid every 5-10 seconds after a pulsating charge up.
+//How to defeat?
