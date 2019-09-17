@@ -9,10 +9,10 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         //Set Control Sensor - Player can't collide with mirrors, but bullets can. Sensor can detect player inputs.
         const coreArea =  Bodies.rectangle(0, 0, this.width*.5, this.height*.35, { chamfer: {radius: 5}, isSensor: false });
         this.sensors = {
-            bottom: Bodies.rectangle(0, h * 0.18, w * 0.40, 2, { isSensor: true }),
-            top: Bodies.rectangle(0, -h * 0.18, w * 0.40, 2, { isSensor: true }),
-            left: Bodies.rectangle(-w * 0.25, 0, 2, h * 0.20, { isSensor: true }),
-            right: Bodies.rectangle(w * 0.25, 0, 2, h * 0.20, { isSensor: true })
+            bottom: Bodies.rectangle(0, h * 0.18, w * 0.50, 2, { isSensor: true }),
+            top: Bodies.rectangle(0, -h * 0.18, w * 0.50, 2, { isSensor: true }),
+            left: Bodies.rectangle(-w * 0.25, 0, 2, h * 0.40, { isSensor: true }),
+            right: Bodies.rectangle(w * 0.25, 0, 2, h * 0.40, { isSensor: true })
           };
         this.sensors.bottom.label = "SPIDER_BOTTOM";
         this.sensors.top.label = "SPIDER_TOP";
@@ -23,7 +23,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
             parts: [coreArea, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
             frictionStatic: 0,
             frictionAir: 0.00,
-            friction: 0.00,
+            friction: 0.5,
             restitution: 0.00,
             label: "Boss"
         });
@@ -38,8 +38,8 @@ class Boss extends Phaser.Physics.Matter.Sprite{
 
         //Custom Props
         this.touching = {up:0,down:0,left:0,right:0};
-        this.mv_speed = 1;
-        this.fall_speed = 6;
+        this.mv_speed = .5;
+        this.fall_speed = .5;
         this.jump_speed = 2;
         this.gun = new Gun(60,1,120);
         this.aggroDis = 600;
@@ -106,7 +106,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         this.falltime = 0;
         //this.attackDelay = this.scene.time.addEvent({ delay: 3000, callback: this.startAttack, callbackScope: this, loop: true });
         this.climbing = false;
-        this.climbDelay = this.scene.time.addEvent({ delay: 3000, callback: this.climbToTile, callbackScope: this, loop: false });
+        //this.climbDelay = this.scene.time.addEvent({ delay: 3000, callback: this.climbToTile, callbackScope: this, loop: false });
         this.jumping = false;
     }
     update(time, delta)
@@ -160,17 +160,41 @@ class Boss extends Phaser.Physics.Matter.Sprite{
             if(!tleft && !tRight && !tUp && !tDown){
                 //Airborne                
                 this.falltime++;
+                this.setVelocityX(0);
+                // if(this.body.velocity.x > 0){
+                //     this.body.velocity.x -= 0.5;
+                // }else{
+                //     this.body.velocity.x += 0.5;
+                // }
+
             }else{
                 if(this.jumping){
                     this.jumping = false;
                     this.setIgnoreGravity(true);
                 }
                 this.falltime = 0;
+                
+                //Touching Down clean
+                if(tleft && tRight && tDown){this.setVelocityX(this.mv_speed*this.wanderDirection);}; 
+                //Touching Up Clean               
+                if(tleft && tRight && tUp){this.setVelocityX(this.mv_speed*this.wanderDirection*-1);};
+                //Touching Left Clean
+                if(tleft && tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection);};
+                //Touching Right Clean
+                if(tRight && tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);};
+                //Touching Left/Bottom
+                if(tleft && tDown && !tUp){this.setVelocityY(this.mv_speed*this.wanderDirection);this.setVelocityX(this.mv_speed*this.wanderDirection);}
+                //Touching Left/Top
+                if(tleft && !tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);this.setVelocityX(this.mv_speed*this.wanderDirection*-1);}
+                //Touching Right/Bottom
+                if(tRight && tDown && !tUp){this.setVelocityY(this.mv_speed*this.wanderDirection);}
+                //Touching Right/Top
+                if(tRight && !tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);}
 
-                if(tleft){this.setVelocityY(this.mv_speed*this.wanderDirection);};
-                if(tRight){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);};
-                if(tUp){this.setVelocityX(this.mv_speed*this.wanderDirection*-1);};
-                if(tDown){this.setVelocityX(this.mv_speed*this.wanderDirection);};
+                // if(tleft){this.setVelocityY(this.mv_speed*this.wanderDirection);this.setVelocityX(this.mv_speed*-1);};
+                // if(tRight){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);this.setVelocityX(this.mv_speed);};
+                // if(tUp){this.setVelocityX(this.mv_speed*this.wanderDirection*-1);};
+                // if(tDown){this.setVelocityX(this.mv_speed*this.wanderDirection);};
 
                 //Touching Single Direction
                 // if(tleft && !tRight && !tUp && !tDown){
@@ -198,8 +222,8 @@ class Boss extends Phaser.Physics.Matter.Sprite{
 
             //Set fall time
             if(this.falltime > 15){
-                this.setIgnoreGravity(false); 
-                //this.setVelocityY(this.fall_speed);
+                //this.setIgnoreGravity(false); 
+                this.setVelocityY(this.fall_speed);
             }
         }
     }
