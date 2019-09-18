@@ -9,10 +9,10 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         //Set Control Sensor - Player can't collide with mirrors, but bullets can. Sensor can detect player inputs.
         const coreArea =  Bodies.rectangle(0, 0, this.width*.5, this.height*.35, { chamfer: {radius: 5}, isSensor: false });
         this.sensors = {
-            bottom: Bodies.rectangle(0, h * 0.18, w * 0.50, 2, { isSensor: true }),
-            top: Bodies.rectangle(0, -h * 0.18, w * 0.50, 2, { isSensor: true }),
-            left: Bodies.rectangle(-w * 0.25, 0, 2, h * 0.40, { isSensor: true }),
-            right: Bodies.rectangle(w * 0.25, 0, 2, h * 0.40, { isSensor: true })
+            bottom: Bodies.rectangle(0, h * 0.18, w * 0.40, 2, { isSensor: true }),
+            top: Bodies.rectangle(0, -h * 0.18, w * 0.40, 2, { isSensor: true }),
+            left: Bodies.rectangle(-w * 0.25, 0, 2, h * 0.30, { isSensor: true }),
+            right: Bodies.rectangle(w * 0.25, 0, 2, h * 0.30, { isSensor: true })
           };
         this.sensors.bottom.label = "SPIDER_BOTTOM";
         this.sensors.top.label = "SPIDER_TOP";
@@ -100,7 +100,15 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         //DEBUG
         
         this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { resolution: 2,fontSize: '8px', fill: '#00FF00' });
-        
+
+        //Draw Point area debug
+        this.debugTargetTile = this.scene.add.graphics();
+        var color = 0xffff00;
+        var thickness = 2;
+        var alpha = 1;
+        this.debugTargetTile.lineStyle(thickness, color, alpha);
+        this.debugTargetTile.strokeRect(0,0,32,32);
+
         //AI
         this.wanderDirection = 1;//Clockwise
         this.falltime = 0;
@@ -115,6 +123,15 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         this.debug.setPosition(this.x, this.y-64);
         this.debug.setText("L:"+String(this.touching.left)+" R:"+String(this.touching.right)+" U:"+String(this.touching.up)+" D:"+String(this.touching.down)
         +"\n wd:"+String(this.wanderDirection));
+
+        //Debug Target Tile
+        let checkTile = map.getTileAt(Math.round(this.x/32), Math.round(this.y/32), true, this.scene.collisionLayer)
+        if(checkTile != null){  
+            if(checkTile.index != -1){      
+                this.debugTargetTile.x = checkTile.x*32;
+                this.debugTargetTile.y = checkTile.y*32;
+            }            
+        }
 
         //Check for Player to attack
         let disToSolana = Phaser.Math.Distance.Between(this.x,this.y,solana.x,solana.y);
@@ -160,7 +177,8 @@ class Boss extends Phaser.Physics.Matter.Sprite{
             if(!tleft && !tRight && !tUp && !tDown){
                 //Airborne                
                 this.falltime++;
-                this.setVelocityX(0);
+                //this.setVelocityX(0);
+
                 // if(this.body.velocity.x > 0){
                 //     this.body.velocity.x -= 0.5;
                 // }else{
@@ -174,27 +192,27 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                 }
                 this.falltime = 0;
                 
-                //Touching Down clean
-                if(tleft && tRight && tDown){this.setVelocityX(this.mv_speed*this.wanderDirection);}; 
-                //Touching Up Clean               
-                if(tleft && tRight && tUp){this.setVelocityX(this.mv_speed*this.wanderDirection*-1);};
-                //Touching Left Clean
-                if(tleft && tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection);};
-                //Touching Right Clean
-                if(tRight && tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);};
-                //Touching Left/Bottom
-                if(tleft && tDown && !tUp){this.setVelocityY(this.mv_speed*this.wanderDirection);this.setVelocityX(this.mv_speed*this.wanderDirection);}
-                //Touching Left/Top
-                if(tleft && !tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);this.setVelocityX(this.mv_speed*this.wanderDirection*-1);}
-                //Touching Right/Bottom
-                if(tRight && tDown && !tUp){this.setVelocityY(this.mv_speed*this.wanderDirection);}
-                //Touching Right/Top
-                if(tRight && !tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);}
+                // //Touching Down clean
+                // if(tleft && tRight && tDown){this.setVelocityX(this.mv_speed*this.wanderDirection);}; 
+                // //Touching Up Clean               
+                // if(tleft && tRight && tUp){this.setVelocityX(this.mv_speed*this.wanderDirection*-1);};
+                // //Touching Left Clean
+                // if(tleft && tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection);};
+                // //Touching Right Clean
+                // if(tRight && tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);};
+                // //Touching Left/Bottom
+                // if(tleft && tDown && !tUp){this.setVelocityY(this.mv_speed*this.wanderDirection);this.setVelocityX(this.mv_speed*this.wanderDirection);}
+                // //Touching Left/Top
+                // if(tleft && !tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);this.setVelocityX(this.mv_speed*this.wanderDirection*-1);}
+                // //Touching Right/Bottom
+                // if(tRight && tDown && !tUp){this.setVelocityY(this.mv_speed*this.wanderDirection);}
+                // //Touching Right/Top
+                // if(tRight && !tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);}
 
-                // if(tleft){this.setVelocityY(this.mv_speed*this.wanderDirection);this.setVelocityX(this.mv_speed*-1);};
-                // if(tRight){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);this.setVelocityX(this.mv_speed);};
-                // if(tUp){this.setVelocityX(this.mv_speed*this.wanderDirection*-1);};
-                // if(tDown){this.setVelocityX(this.mv_speed*this.wanderDirection);};
+                if(tleft){this.setVelocityY(this.mv_speed*this.wanderDirection);this.setVelocityX(this.mv_speed*-1);};
+                if(tRight){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);this.setVelocityX(this.mv_speed);};
+                if(tUp){this.setVelocityX(this.mv_speed*this.wanderDirection*-1);};
+                if(tDown){this.setVelocityX(this.mv_speed*this.wanderDirection);};
 
                 //Touching Single Direction
                 // if(tleft && !tRight && !tUp && !tDown){

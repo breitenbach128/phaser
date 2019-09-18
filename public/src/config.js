@@ -259,6 +259,7 @@ var socket = io();
         this.map = map;
         this.pos = {x:x,y:y};
     }
+
     //Debug:Version
     console.log(String(Phaser.VERSION));
     //Font Preloader
