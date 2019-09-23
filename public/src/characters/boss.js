@@ -43,7 +43,8 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         this.jump_speed = 2;
         this.gun = new Gun(60,1,120);
         this.aggroDis = 600;
-
+        this.groundTile = {x:0,y:0, updated: false};//Current Ground Tile
+        
         //Collision
         this.scene.matter.world.on('beforeupdate', function (event) {
             this.touching.left = 0;
