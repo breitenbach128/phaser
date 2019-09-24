@@ -38,7 +38,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
 
         //Custom Props
         this.touching = {up:0,down:0,left:0,right:0};
-        this.mv_speed = .5;
+        this.mv_speed = .25;
         this.fall_speed = .5;
         this.jump_speed = 2;
         this.gun = new Gun(60,1,120);
@@ -110,6 +110,11 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         this.debugTargetTile.lineStyle(thickness, color, alpha);
         this.debugTargetTile.strokeRect(0,0,32,32);
 
+        this.debugTargetTileSelf = this.scene.add.graphics();
+        this.debugTargetTileSelf.lineStyle(thickness, color, alpha);
+        this.debugTargetTileSelf.strokeRect(0,0,32,32);
+
+
         //AI
         this.wanderDirection = 1;//Clockwise
         this.falltime = 0;
@@ -117,22 +122,31 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         this.climbing = false;
         //this.climbDelay = this.scene.time.addEvent({ delay: 3000, callback: this.climbToTile, callbackScope: this, loop: false });
         this.jumping = false;
+        //Tile AI
+        this.targetMoveTile = null;
     }
     update(time, delta)
     {       
         this.anims.play('boss-spider', true);
         this.debug.setPosition(this.x, this.y-64);
-        this.debug.setText("L:"+String(this.touching.left)+" R:"+String(this.touching.right)+" U:"+String(this.touching.up)+" D:"+String(this.touching.down)
-        +"\n wd:"+String(this.wanderDirection));
+        let debugString = "L:"+String(this.touching.left)+" R:"+String(this.touching.right)+" U:"+String(this.touching.up)+" D:"+String(this.touching.down)
+        +"\n wd:"+String(this.wanderDirection);
+       
+        //Debug target draw
+        if(this.targetMoveTile != null){            
+            this.debugTargetTile.x = this.targetMoveTile.x*32;
+            this.debugTargetTile.y = this.targetMoveTile.y*32;
 
-        //Debug Target Tile
-        let checkTile = map.getTileAt(Math.round(this.x/32), Math.round(this.y/32), true, this.scene.collisionLayer)
-        if(checkTile != null){  
-            if(checkTile.index != -1){      
-                this.debugTargetTile.x = checkTile.x*32;
-                this.debugTargetTile.y = checkTile.y*32;
-            }            
+            debugString+="\n MTT:x"+String(this.targetMoveTile.x)+":"+String(this.targetMoveTile.y);      
         }
+
+        debugString+="\n TPT:x"+String(Math.floor(this.x/32))+":"+String(Math.floor(this.y/32));  
+        
+        
+        this.debugTargetTileSelf.x = Math.floor(this.x/32)*32;
+        this.debugTargetTileSelf.y = Math.floor(this.y/32)*32;
+
+        this.debug.setText(debugString);
 
         //Check for Player to attack
         let disToSolana = Phaser.Math.Distance.Between(this.x,this.y,solana.x,solana.y);
@@ -193,6 +207,21 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                 }
                 this.falltime = 0;
                 
+                //Redundant code here, can cleanup with getting let TilePosX and TilePosY as well as gettng the origin offsets once
+                //Not falling, and no target picked
+                if(this.targetMoveTile == null){
+                    //Target Tile
+                    let OriginX_TileOffSet = 0;
+                    let OriginY_TileOffset = 0;
+                    this.findDestinationTile(Math.round(this.x/32)+OriginX_TileOffSet,Math.round(this.y/32)+OriginY_TileOffset,this.wanderDirection,0);
+                //Target picked, but need to check if I have reached it
+                }else if(this.targetMoveTile.x == Math.round(this.x/32) && this.targetMoveTile.y == Math.round(this.y/32)){
+                    console.log("Touching target tile");
+                    let OriginX_TileOffSet = 0;
+                    let OriginY_TileOffset = 0;
+                    this.findDestinationTile(Math.round(this.x/32)+OriginX_TileOffSet,Math.round(this.y/32)+OriginY_TileOffset,this.wanderDirection,0);
+                }
+
                 // //Touching Down clean
                 // if(tleft && tRight && tDown){this.setVelocityX(this.mv_speed*this.wanderDirection);}; 
                 // //Touching Up Clean               
@@ -244,6 +273,15 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                 //this.setIgnoreGravity(false); 
                 this.setVelocityY(this.fall_speed);
             }
+        }
+    }
+    findDestinationTile(oX,oY,dirX,dirY){
+        console.log("finding new target tile");
+        let checkTile = map.getTileAt(oX+dirX,oY+dirY, true, this.scene.collisionLayer)
+        if(checkTile != null){  
+            if(checkTile.index == -1){      
+                this.targetMoveTile = {x:checkTile.x,y:checkTile.y-1};//Hard coding offset for ground touch here. Need to check touching 
+            }            
         }
     }
     climbToTile(){

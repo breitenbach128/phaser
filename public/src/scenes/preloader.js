@@ -120,7 +120,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('shard_dark', 'assets/objects/dark_shard.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('breakables', 'assets/objects/breakables.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('burstwave', 'assets/objects/burstwave1.png', {frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('boss_spiderhive', 'assets/objects/boss_spiderhive.png', {frameWidth: 64, frameHeight: 64});
+		this.load.spritesheet('boss_spiderhive', 'assets/characters/boss_spiderhive.png', {frameWidth: 64, frameHeight: 64});
 		
 		//Bosses		
 		this.load.spritesheet('spider', 'assets/characters/spider_x2.png', {frameWidth: 64, frameHeight: 64});
