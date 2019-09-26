@@ -118,6 +118,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         this.debugScanTile.lineStyle(thickness, 0x00ffff, alpha);
         this.debugScanTile.strokeRect(0,0,32,32);
 
+        
 
         //AI
         this.wanderDirection = 1;//Clockwise
@@ -195,7 +196,12 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         let tRight = (this.touching.right > 0);
         let tDown = (this.touching.down > 0);
         let tUp = (this.touching.up > 0);
-
+        //Position
+        let bodyMin = this.body.bounds.min;
+        let bodyMax = this.body.bounds.max;
+        let bodyWidth = bodyMax.x - bodyMin.x;
+        let bodyHeight = bodyMax.y - bodyMin.y;
+        
         if(this.climbing){
             //Climbing to Tile
             this.setVelocityX(0);
@@ -232,8 +238,23 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                     this.findDestinationTile(tpX,tpY,this.wanderDirection,1);
                 //Target picked, but need to check if I have reached it
                 }else if(this.targetMoveTile.x == tpX && this.targetMoveTile.y == tpY){
-                    console.log("Touching target tile");
-                    mv_speed = 0;
+
+                    //This is never being triggered because of the else statement and the fall/no sensor touch detection.
+
+                    console.log("L:"+(bodyMin.x),"R:"+(bodyMax.x),(this.targetMoveTile.x)*32,this.wanderDirection);
+                    
+                    if(this.wanderDirection > 0){
+                        if(bodyMin.x >= (this.targetMoveTile.x)*32){
+                            console.log("On Target Tile");
+                            mv_speed = 0;
+                        }
+                    }else if(this.wanderDirection < 0){
+                        if(bodyMax.x <= (this.targetMoveTile.x)*32){
+                            console.log("On Target Tile");
+                            mv_speed = 0;
+                        }
+                    }
+
                     //this.findDestinationTile(tpX+OriginX_TileOffSet,tpY+OriginY_TileOffset,this.wanderDirection,0);
 
                     //For this check, it needs to check the opposite movement side against the backside of the tile.
