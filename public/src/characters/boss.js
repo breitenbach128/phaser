@@ -38,7 +38,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
 
         //Custom Props
         this.touching = {up:0,down:0,left:0,right:0};
-        this.mv_speed = .25;
+        this.mv_speed = 1;
         this.fall_speed = .5;
         this.jump_speed = 2;
         this.gun = new Gun(60,1,120);
@@ -121,6 +121,13 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         
 
         //AI
+        
+        this.wanderDirections = {
+            right:{x:1,y:0},
+            left:{x:-1,y:0},
+            up:{x:0,y:-1},
+            down:{x:0,y:1}
+        };
         this.wanderDirection = 1;//Clockwise
         this.falltime = 0;
         //this.attackDelay = this.scene.time.addEvent({ delay: 3000, callback: this.startAttack, callbackScope: this, loop: true });
@@ -129,6 +136,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         this.jumping = false;
         //Tile AI
         this.targetMoveTile = null;
+        this.firstTouchGround = false;
     }
     update(time, delta)
     {       
@@ -196,12 +204,85 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         let tRight = (this.touching.right > 0);
         let tDown = (this.touching.down > 0);
         let tUp = (this.touching.up > 0);
+        let noTouch = (!tleft && !tRight && !tUp && !tDown);
         //Position
         let bodyMin = this.body.bounds.min;
         let bodyMax = this.body.bounds.max;
         let bodyWidth = bodyMax.x - bodyMin.x;
         let bodyHeight = bodyMax.y - bodyMin.y;
-        
+        //Body Velocities
+        let bodyVelX = this.body.velocity.x;
+        let bodyVelY = this.body.velocity.y;
+
+        //Am I touching my target tile?
+        if(this.targetMoveTile != null){
+            if(this.targetMoveTile.x == tpX && this.targetMoveTile.y == tpY){
+
+                //This is never being triggered because of the else statement and the fall/no sensor touch detection.
+
+                //console.log("L:"+(bodyMin.x),"R:"+(bodyMax.x),"U:"+(bodyMin.y),"D:"+(bodyMax.y),(this.targetMoveTile.x)*32,(this.targetMoveTile.y)*32,this.wanderDirection);
+                
+                if(this.wanderDirection > 0){
+                    if(bodyVelY == 0){
+                        if(bodyVelX > 0){
+                            if(bodyMin.x + bodyVelX >= (this.targetMoveTile.x)*32){
+                                console.log("On Target Tile: Y:0",bodyVelX,bodyVelY);
+                                this.setVelocity(0,1*mv_speed);
+                                if(bodyVelX < 0){this.setVelocity(0,-1*mv_speed);}
+                                this.targetMoveTile = null;
+                            }
+                        }else if(bodyVelX < 0){
+                            if(bodyMax.x + bodyVelX <= (this.targetMoveTile.x+1)*32){
+                                console.log("On Target Tile: Y:0",bodyVelX,bodyVelY);
+                                this.setVelocity(0,-1*mv_speed);
+                                this.targetMoveTile = null;
+                            }
+                        }
+
+                    }else if(bodyVelX == 0){
+                        if(bodyVelY > 0){
+                            if(bodyMin.y + bodyVelY >= (this.targetMoveTile.y)*32){
+                                console.log("On Target Til: X:0",bodyVelX,bodyVelY);
+                                this.setVelocity(-1*mv_speed,0);
+                                this.targetMoveTile = null;
+                            }
+                        }else if(bodyVelY < 0){
+                            if(bodyMax.y + bodyVelY <= (this.targetMoveTile.y+1)*32){
+                                console.log("On Target Til: X:0",bodyVelX,bodyVelY);
+                                this.setVelocity(1*mv_speed,0);
+                                this.targetMoveTile = null;
+                            }
+                        }
+                    }
+
+                }else if(this.wanderDirection < 0){
+                    if(bodyMax.x + bodyVelX <= (this.targetMoveTile.x+1)*32 && bodyMax.y + bodyVelY <= (this.targetMoveTile.y+1)*32){
+                        console.log("On Target Tile",bodyVelX,bodyVelY);
+
+                        if(bodyVelX > 0 && bodyVelY == 0){this.setVelocityY(0,-1*mv_speed);}
+                        if(bodyVelX < 0 && bodyVelY == 0){this.setVelocityY(0,1*mv_speed);}
+
+                        if(bodyVelY > 0 && bodyVelX == 0){this.setVelocityX(1*mv_speed,0);}
+                        if(bodyVelY < 0 && bodyVelX == 0){this.setVelocityX(-1*mv_speed,0);}
+
+                        this.targetMoveTile = null;
+                        
+                    }
+                }
+
+                //this.findDestinationTile(tpX+OriginX_TileOffSet,tpY+OriginY_TileOffset,this.wanderDirection,0);
+
+                //For this check, it needs to check the opposite movement side against the backside of the tile.
+                //For example, if the spider is moving right (+X), he needs to check his left side to be equal/greater than
+                //the tile left side. 
+
+                //I also need to check and adjust the velocity(Mv_speed) dynamically to make sure the spider stops on the correct spot.
+                //This might resolve the stopping issue, as I can check for if I am one frame away from the final movement required to be left to left sides
+                //and then adjust the speed to make that happen
+
+        }
+        }
+
         if(this.climbing){
             //Climbing to Tile
             this.setVelocityX(0);
@@ -211,121 +292,106 @@ class Boss extends Phaser.Physics.Matter.Sprite{
             }
         }else{
             //ON PLATFORM BEHAVIOR
-            if(!tleft && !tRight && !tUp && !tDown){
+            if(noTouch){
                 //Airborne                
                 this.falltime++;
-                //this.setVelocityX(0);
-
-                // if(this.body.velocity.x > 0){
-                //     this.body.velocity.x -= 0.5;
-                // }else{
-                //     this.body.velocity.x += 0.5;
-                // }
 
             }else{
+                if(!this.firstTouchGround){this.firstTouchGround =true;};
                 if(this.jumping){
                     this.jumping = false;
                     this.setIgnoreGravity(true);
                 }
                 this.falltime = 0;
 
+                //Now, check for corners to adjust wander direction. Add timer to keep it from spamming
 
-                //Redundant code here, can cleanup with getting let TilePosX and TilePosY as well as gettng the origin offsets once
                 //Not falling, and no target picked
-                if(this.targetMoveTile == null){
-                    //Target Tile  
-
-                    this.findDestinationTile(tpX,tpY,this.wanderDirection,1);
-                //Target picked, but need to check if I have reached it
-                }else if(this.targetMoveTile.x == tpX && this.targetMoveTile.y == tpY){
-
-                    //This is never being triggered because of the else statement and the fall/no sensor touch detection.
-
-                    console.log("L:"+(bodyMin.x),"R:"+(bodyMax.x),(this.targetMoveTile.x)*32,this.wanderDirection);
+                if(this.targetMoveTile == null || (bodyVelX == 0 && bodyVelY == 0)){
+                    let dirChoice = 'none';
+                    let dirOffset = {x:0,y:0};
+                    //Touch Left Directions
+                    if(tleft && this.wanderDirection > 0){dirChoice = 'down';dirOffset={x:-1,y:0};};
+                    if(tleft && this.wanderDirection < 0){dirChoice = 'up';dirOffset={x:-1,y:0};};
+                    //Touch Right Directions
+                    if(tRight && this.wanderDirection > 0){dirChoice = 'up';dirOffset={x:1,y:0};};
+                    if(tRight && this.wanderDirection < 0){dirChoice = 'down';dirOffset={x:1,y:0};};
+                    //Touch Up Directions
+                    if(tUp && this.wanderDirection > 0){dirChoice = 'left';dirOffset={x:0,y:-1};};
+                    if(tUp && this.wanderDirection < 0){dirChoice = 'right';dirOffset={x:0,y:-1};};
+                    //Touch Down Directions
+                    if(tDown && this.wanderDirection > 0){dirChoice = 'right';dirOffset={x:0,y:1};};
+                    if(tDown && this.wanderDirection < 0){dirChoice = 'left';dirOffset={x:0,y:1};};
                     
-                    if(this.wanderDirection > 0){
-                        if(bodyMin.x >= (this.targetMoveTile.x)*32){
-                            console.log("On Target Tile");
-                            mv_speed = 0;
+                    //Catch corner checks NEED TO CHECK LOGIC
+                    if(tleft && tUp){
+                        if(this.wanderDirection > 0){
+                            dirChoice = 'down';dirOffset={x:-1,y:0};
+                        }else if(this.wanderDirection < 0){
+                            dirChoice = 'right';dirOffset={x:0,y:-1};
                         }
-                    }else if(this.wanderDirection < 0){
-                        if(bodyMax.x <= (this.targetMoveTile.x)*32){
-                            console.log("On Target Tile");
-                            mv_speed = 0;
+                    };//UL
+                    if(tRight && tUp){
+                        if(this.wanderDirection > 0){
+                            dirChoice = 'down';dirOffset={x:1,y:0};
+                        }else if(this.wanderDirection < 0){
+                            dirChoice = 'left';dirOffset={x:0,y:-1};
                         }
+                    };//UR
+                    if(tleft && tDown){
+                        if(this.wanderDirection > 0){
+                            dirChoice = 'right';dirOffset={x:0,y:1};
+                        }else if(this.wanderDirection < 0){
+                            dirChoice = 'up';dirOffset={x:1,y:0};
+                        }
+                    };//DL
+                    if(tRight && tDown){
+                        if(this.wanderDirection > 0){
+                            dirChoice = 'up';dirOffset={x:1,y:0};
+                        }else if(this.wanderDirection < 0){
+                            dirChoice = 'left';dirOffset={x:0,y:-1};
+                        }
+                    };//DR
+
+                    //Find new Tile
+                    if(dirChoice != 'none'){
+                        //local choice directions
+                        let dVelX = this.wanderDirections[dirChoice].x;
+                        let dVelY = this.wanderDirections[dirChoice].y;
+                        //Set Velocity
+                        this.setVelocity(dVelX*mv_speed,dVelY*mv_speed);
+                        //Pick new Target Tile  
+                        this.findDestinationTile(tpX,tpY,dVelX,dVelY,dirOffset.x,dirOffset.y);
                     }
-
-                    //this.findDestinationTile(tpX+OriginX_TileOffSet,tpY+OriginY_TileOffset,this.wanderDirection,0);
-
-                    //For this check, it needs to check the opposite movement side against the backside of the tile.
-                    //For example, if the spider is moving right (+X), he needs to check his left side to be equal/greater than
-                    //the tile left side. 
-
-                    //I also need to check and adjust the velocity(Mv_speed) dynamically to make sure the spider stops on the correct spot.
-                    //This might resolve the stopping issue, as I can check for if I am one frame away from the final movement required to be left to left sides
-                    //and then adjust the speed to make that happen
-
                 }
 
-                // //Touching Down clean
-                // if(tleft && tRight && tDown){this.setVelocityX(this.mv_speed*this.wanderDirection);}; 
-                // //Touching Up Clean               
-                // if(tleft && tRight && tUp){this.setVelocityX(this.mv_speed*this.wanderDirection*-1);};
-                // //Touching Left Clean
-                // if(tleft && tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection);};
-                // //Touching Right Clean
-                // if(tRight && tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);};
-                // //Touching Left/Bottom
-                // if(tleft && tDown && !tUp){this.setVelocityY(this.mv_speed*this.wanderDirection);this.setVelocityX(this.mv_speed*this.wanderDirection);}
-                // //Touching Left/Top
-                // if(tleft && !tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);this.setVelocityX(this.mv_speed*this.wanderDirection*-1);}
-                // //Touching Right/Bottom
-                // if(tRight && tDown && !tUp){this.setVelocityY(this.mv_speed*this.wanderDirection);}
-                // //Touching Right/Top
-                // if(tRight && !tDown && tUp){this.setVelocityY(this.mv_speed*this.wanderDirection*-1);}
 
-                if(tleft){this.setVelocityY(mv_speed*this.wanderDirection);this.setVelocityX(mv_speed*-1);};
-                if(tRight){this.setVelocityY(mv_speed*this.wanderDirection*-1);this.setVelocityX(mv_speed);};
-                if(tUp){this.setVelocityX(mv_speed*this.wanderDirection*-1);};
-                if(tDown){this.setVelocityX(mv_speed*this.wanderDirection);};
 
-                //Touching Single Direction
-                // if(tleft && !tRight && !tUp && !tDown){
-                //     this.setVelocityY(this.mv_speed*this.wanderDirection);
-                //     this.setVelocityX(this.mv_speed*this.wanderDirection*-1);
-                // }else if(!tleft && tRight && !tUp && !tDown){
-                //     this.setVelocityY(this.mv_speed*this.wanderDirection*-1);
-                //     this.setVelocityX(this.mv_speed*this.wanderDirection);
-                // }
-
-                // if(tleft && tRight && tUp && !tDown){
-                //     this.setVelocityX(this.mv_speed*this.wanderDirection*-1);
-                // }else if(tleft && tRight && !tUp && tDown){
-                //     this.setVelocityX(this.mv_speed*this.wanderDirection);
-                // }
-
-                //Touching corner on ground or ceiling
-                // if(this.touching.left > 0 && (this.touching.down > 0 || this.touching.up > 0)){
-                //     this.wanderDirection = 1;
-                // }else if(this.touching.right > 0 && (this.touching.down > 0 || this.touching.up > 0)){
-                //     this.wanderDirection = -1;
-                // }
+                // if(tleft){this.setVelocityY(mv_speed*this.wanderDirection);this.setVelocityX(mv_speed*-1);};
+                // if(tRight){this.setVelocityY(mv_speed*this.wanderDirection*-1);this.setVelocityX(mv_speed);};
+                // if(tUp){this.setVelocityX(mv_speed*this.wanderDirection*-1);};
+                // if(tDown){this.setVelocityX(mv_speed*this.wanderDirection);};
                 
             }
 
             //Set fall time
-            if(this.falltime > 15){
+            if(this.falltime > 15 && !this.firstTouchGround){
                 //this.setIgnoreGravity(false); 
                 this.setVelocityY(this.fall_speed);
             }
         }
     }
-    findDestinationTile(oX,oY,dirX,dirY){
+    findDestinationTile(oX,oY,velX,velY,dOsX,dOsY){
+        //Velocity should be set here.
         console.log("searching for new target tile");
-        let checkTile = map.getTileAt(oX+dirX,oY+dirY, true, this.scene.collisionLayer)
+        let checkTile = map.getTileAt(oX+velX+dOsX,oY+velY+dOsY, true, this.scene.collisionLayer)
         if(checkTile != null){  
-            if(checkTile.index == -1){      
-                this.targetMoveTile = {x:checkTile.x,y:checkTile.y-1};//Hard coding offset for ground touch here. Need to check touching 
+            if(checkTile.index == -1){
+                //Negate the offset, Adjusted Offset X and Y
+                let adOsX = dOsX*-1;
+                let adOsY = dOsY*-1;  
+                   
+                this.targetMoveTile = {x:checkTile.x+adOsX,y:checkTile.y+adOsY};//Hard coding offset for ground touch here. Need to check touching 
             }
             this.debugScanTile.x = checkTile.x*32;
             this.debugScanTile.y = checkTile.y*32;            
