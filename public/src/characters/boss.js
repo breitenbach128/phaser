@@ -38,7 +38,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
 
         //Custom Props
         this.touching = {up:0,down:0,left:0,right:0};
-        this.mv_speed = 1;
+        this.mv_speed = .5;
         this.fall_speed = 2;
         this.jump_speed = 2;
         this.gun = new Gun(60,1,120);
@@ -249,6 +249,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                         }else if(bodyVelX < 0){
                             if(bodyMax.x + bodyVelX <= (this.targetMoveTile.x+1)*32){
                                 console.log("On Target Tile: Y:0",bodyVelX,bodyVelY);
+                                this.setPosition((this.targetMoveTile.x+1)*32+2-bodyWidth/2,this.y);
                                 this.setVelocity(0,-1*mv_speed);
                                 this.clearTargetMoveTile();
                             }
@@ -257,14 +258,15 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                     }else if(bodyVelX == 0){
                         if(bodyVelY > 0){                                
                             if(bodyMin.y + bodyVelY >= (this.targetMoveTile.y)*32){
-                                console.log("On Target Til: X:0",bodyVelX,bodyVelY);
+                                console.log("On Target Tile: X:0",bodyVelX,bodyVelY);
                                 this.setPosition(this.x,bodyHeight/2+(this.targetMoveTile.y)*32-2);
                                 this.setVelocity(-1*mv_speed,0);
                                 this.clearTargetMoveTile();
                             }
                         }else if(bodyVelY < 0){
                             if(bodyMax.y + bodyVelY <= (this.targetMoveTile.y+1)*32){
-                                console.log("On Target Til: X:0",bodyVelX,bodyVelY);
+                                console.log("On Target Tile: X:0",bodyVelX,bodyVelY);
+                                this.setPosition(this.x,(this.targetMoveTile.y+1)*32+2-bodyHeight/2);
                                 this.setVelocity(1*mv_speed,0);
                                 this.clearTargetMoveTile();
                             }
@@ -423,7 +425,12 @@ class Boss extends Phaser.Physics.Matter.Sprite{
 
 
                 this.targetMoveTile = {x:checkTile.x+adOsX,y:checkTile.y+adOsY};//Hard coding offset for ground touch here. Need to check touching 
-                if(this.targetMoveTile == this.prevTargetMoveTile){console.log("NO TARGET PROGRESS")}
+                if(this.prevTargetMoveTile != null){
+                    if(this.targetMoveTile.x == this.prevTargetMoveTile.x && this.targetMoveTile.y == this.prevTargetMoveTile.y){
+                        console.log("NO TARGET PROGRESS")
+                        //BUG on 1 velocity movement speed. Skips by the tile.
+                    }
+                }
                 console.log("Found target:",this.targetMoveTile,this.prevTargetMoveTile);
             }
             this.debugScanTile.x = checkTile.x*32;
