@@ -39,12 +39,12 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         //Custom Props
         this.touching = {up:0,down:0,left:0,right:0};
         this.mv_speed = 1;
-        this.fall_speed = .5;
+        this.fall_speed = 2;
         this.jump_speed = 2;
         this.gun = new Gun(60,1,120);
         this.aggroDis = 600;
         this.groundTile = {x:0,y:0, updated: false};//Current Ground Tile
-        this.tilePos = {x:0,y:0};
+        this.tilePos = {x:0,y:0,px:0,py:0};
 
         //Collision
         this.scene.matter.world.on('beforeupdate', function (event) {
@@ -136,6 +136,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         this.jumping = false;
         //Tile AI
         this.targetMoveTile = null;
+        this.prevTargetMoveTile = null;
         this.firstTouchGround = false;
     }
     update(time, delta)
@@ -143,9 +144,32 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         //Update Position in Tiles for AI
         let tpX = this.tilePos.x = (this.x/32 << 0);
         let tpY = this.tilePos.y = (this.y/32 << 0);
+        
+        let prevtpX = this.tilePos.px;
+        let prevtpY = this.tilePos.py;
+
+        let tileChanged = false;
+
+        if(prevtpX != tpX || prevtpY != tpY){tileChanged = true;};
 
         //Easy Access Variables
         let mv_speed = this.mv_speed;
+        //Movement
+        let tleft = (this.touching.left > 0);
+        let tRight = (this.touching.right > 0);
+        let tDown = (this.touching.down > 0);
+        let tUp = (this.touching.up > 0);
+        let noTouch = (!tleft && !tRight && !tUp && !tDown);
+        //Position
+        let bodyMin = this.body.bounds.min;
+        let bodyMax = this.body.bounds.max;
+        let bodyWidth = bodyMax.x - bodyMin.x;
+        let bodyHeight = bodyMax.y - bodyMin.y;
+        //Body Velocities
+        let bodyVelX = this.body.velocity.x;
+        let bodyVelY = this.body.velocity.y;
+        //Target Tile
+        let onTargeTile = false;
 
         //Play Animation
         this.anims.play('boss-spider', true);
@@ -153,7 +177,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         //Write Debug Information
         this.debug.setPosition(this.x, this.y-64);
         let debugString = "L:"+String(this.touching.left)+" R:"+String(this.touching.right)+" U:"+String(this.touching.up)+" D:"+String(this.touching.down)
-        +"\n wd:"+String(this.wanderDirection);
+        +"\n wd:"+String(this.wanderDirection)+" vX:"+String(bodyVelX) + " vY:"+String(bodyVelY);
        
         ////////////////////////////////////////////////////////////
         //Debug target draw
@@ -162,7 +186,11 @@ class Boss extends Phaser.Physics.Matter.Sprite{
             this.debugTargetTile.y = this.targetMoveTile.y*32;
 
             debugString+="\n MTT:x"+String(this.targetMoveTile.x)+":"+String(this.targetMoveTile.y);      
+        }else{
+            this.debugTargetTile.x = -32;
+            this.debugTargetTile.y = -32;
         }
+
 
         debugString+="\n TPT:x"+String(tpX)+":"+String(tpY);  
         
@@ -199,58 +227,46 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                 this.gun.update();
             }
         }
-        //Movement
-        let tleft = (this.touching.left > 0);
-        let tRight = (this.touching.right > 0);
-        let tDown = (this.touching.down > 0);
-        let tUp = (this.touching.up > 0);
-        let noTouch = (!tleft && !tRight && !tUp && !tDown);
-        //Position
-        let bodyMin = this.body.bounds.min;
-        let bodyMax = this.body.bounds.max;
-        let bodyWidth = bodyMax.x - bodyMin.x;
-        let bodyHeight = bodyMax.y - bodyMin.y;
-        //Body Velocities
-        let bodyVelX = this.body.velocity.x;
-        let bodyVelY = this.body.velocity.y;
+
 
         //Am I touching my target tile?
         if(this.targetMoveTile != null){
             if(this.targetMoveTile.x == tpX && this.targetMoveTile.y == tpY){
-
+                onTargeTile = true;
                 //This is never being triggered because of the else statement and the fall/no sensor touch detection.
 
-                //console.log("L:"+(bodyMin.x),"R:"+(bodyMax.x),"U:"+(bodyMin.y),"D:"+(bodyMax.y),(this.targetMoveTile.x)*32,(this.targetMoveTile.y)*32,this.wanderDirection);
+                //console.log("L:"+(bodyMin.x),"R:"+(bodyMax.x),"U:"+(bodyMin.y),"D:"+(bodyMax.y),(this.targetMoveTile.x)*32,(this.targetMoveTile.y)*32,this.wanderDirection,bodyVelX,bodyVelY);
                 
                 if(this.wanderDirection > 0){
                     if(bodyVelY == 0){
                         if(bodyVelX > 0){
                             if(bodyMin.x + bodyVelX >= (this.targetMoveTile.x)*32){
                                 console.log("On Target Tile: Y:0",bodyVelX,bodyVelY);
+                                this.setPosition(bodyWidth/2+(this.targetMoveTile.x)*32-2,this.y);
                                 this.setVelocity(0,1*mv_speed);
-                                if(bodyVelX < 0){this.setVelocity(0,-1*mv_speed);}
-                                this.targetMoveTile = null;
+                                this.clearTargetMoveTile();
                             }
                         }else if(bodyVelX < 0){
                             if(bodyMax.x + bodyVelX <= (this.targetMoveTile.x+1)*32){
                                 console.log("On Target Tile: Y:0",bodyVelX,bodyVelY);
                                 this.setVelocity(0,-1*mv_speed);
-                                this.targetMoveTile = null;
+                                this.clearTargetMoveTile();
                             }
                         }
 
                     }else if(bodyVelX == 0){
-                        if(bodyVelY > 0){
+                        if(bodyVelY > 0){                                
                             if(bodyMin.y + bodyVelY >= (this.targetMoveTile.y)*32){
                                 console.log("On Target Til: X:0",bodyVelX,bodyVelY);
+                                this.setPosition(this.x,bodyHeight/2+(this.targetMoveTile.y)*32-2);
                                 this.setVelocity(-1*mv_speed,0);
-                                this.targetMoveTile = null;
+                                this.clearTargetMoveTile();
                             }
                         }else if(bodyVelY < 0){
                             if(bodyMax.y + bodyVelY <= (this.targetMoveTile.y+1)*32){
                                 console.log("On Target Til: X:0",bodyVelX,bodyVelY);
                                 this.setVelocity(1*mv_speed,0);
-                                this.targetMoveTile = null;
+                                this.clearTargetMoveTile();
                             }
                         }
                     }
@@ -265,7 +281,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                         if(bodyVelY > 0 && bodyVelX == 0){this.setVelocityX(1*mv_speed,0);}
                         if(bodyVelY < 0 && bodyVelX == 0){this.setVelocityX(-1*mv_speed,0);}
 
-                        this.targetMoveTile = null;
+                        this.clearTargetMoveTile();
                         
                     }
                 }
@@ -280,7 +296,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                 //This might resolve the stopping issue, as I can check for if I am one frame away from the final movement required to be left to left sides
                 //and then adjust the speed to make that happen
 
-        }
+            }
         }
 
         if(this.climbing){
@@ -292,9 +308,10 @@ class Boss extends Phaser.Physics.Matter.Sprite{
             }
         }else{
             //ON PLATFORM BEHAVIOR
-            if(noTouch){
+            if(noTouch && !onTargeTile){
                 //Airborne                
                 this.falltime++;
+                
 
             }else{
                 if(!this.firstTouchGround){this.firstTouchGround =true;};
@@ -305,11 +322,44 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                 this.falltime = 0;
 
                 //Now, check for corners to adjust wander direction. Add timer to keep it from spamming
+                let cornerCheck = false;
+                let dirChoice = 'none';                
+                let dirOffset = {x:0,y:0};
 
-                //Not falling, and no target picked
-                if(this.targetMoveTile == null || (bodyVelX == 0 && bodyVelY == 0)){
-                    let dirChoice = 'none';
-                    let dirOffset = {x:0,y:0};
+                if(tleft && tUp){
+                    if(this.wanderDirection > 0){
+                        dirChoice = 'down';
+                    }else if(this.wanderDirection < 0){
+                        dirChoice = 'right';
+                    }
+                    cornerCheck = true;
+                };//UL
+                if(tRight && tUp){
+                    if(this.wanderDirection > 0){
+                        dirChoice = 'down'
+                    }else if(this.wanderDirection < 0){
+                        dirChoice = 'left';
+                    }
+                    cornerCheck = true;
+                };//UR
+                if(tleft && tDown){
+                    if(this.wanderDirection > 0){
+                        dirChoice = 'right';
+                    }else if(this.wanderDirection < 0){
+                        dirChoice = 'up';
+                    }
+                    cornerCheck = true;
+                };//DL
+                if(tRight && tDown){
+                    if(this.wanderDirection > 0){
+                        dirChoice = 'up';
+                    }else if(this.wanderDirection < 0){
+                        dirChoice = 'left';
+                    }
+                    cornerCheck = true;
+                };//DR
+                
+                if(cornerCheck == false){
                     //Touch Left Directions
                     if(tleft && this.wanderDirection > 0){dirChoice = 'down';dirOffset={x:-1,y:0};};
                     if(tleft && this.wanderDirection < 0){dirChoice = 'up';dirOffset={x:-1,y:0};};
@@ -322,76 +372,59 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                     //Touch Down Directions
                     if(tDown && this.wanderDirection > 0){dirChoice = 'right';dirOffset={x:0,y:1};};
                     if(tDown && this.wanderDirection < 0){dirChoice = 'left';dirOffset={x:0,y:1};};
-                    
-                    //Catch corner checks NEED TO CHECK LOGIC
-                    if(tleft && tUp){
-                        if(this.wanderDirection > 0){
-                            dirChoice = 'down';dirOffset={x:-1,y:0};
-                        }else if(this.wanderDirection < 0){
-                            dirChoice = 'right';dirOffset={x:0,y:-1};
-                        }
-                    };//UL
-                    if(tRight && tUp){
-                        if(this.wanderDirection > 0){
-                            dirChoice = 'down';dirOffset={x:1,y:0};
-                        }else if(this.wanderDirection < 0){
-                            dirChoice = 'left';dirOffset={x:0,y:-1};
-                        }
-                    };//UR
-                    if(tleft && tDown){
-                        if(this.wanderDirection > 0){
-                            dirChoice = 'right';dirOffset={x:0,y:1};
-                        }else if(this.wanderDirection < 0){
-                            dirChoice = 'up';dirOffset={x:1,y:0};
-                        }
-                    };//DL
-                    if(tRight && tDown){
-                        if(this.wanderDirection > 0){
-                            dirChoice = 'up';dirOffset={x:1,y:0};
-                        }else if(this.wanderDirection < 0){
-                            dirChoice = 'left';dirOffset={x:0,y:-1};
-                        }
-                    };//DR
+                }
+                if(dirChoice != 'none'){
+                    //local choice directions
+                    let dV = this.setDirectionalArrayVelocity(dirChoice,mv_speed);
 
-                    //Find new Tile
-                    if(dirChoice != 'none'){
-                        //local choice directions
-                        let dVelX = this.wanderDirections[dirChoice].x;
-                        let dVelY = this.wanderDirections[dirChoice].y;
-                        //Set Velocity
-                        this.setVelocity(dVelX*mv_speed,dVelY*mv_speed);
+                    if(this.targetMoveTile == null){
                         //Pick new Target Tile  
-                        this.findDestinationTile(tpX,tpY,dVelX,dVelY,dirOffset.x,dirOffset.y);
+                        this.findDestinationTile(tpX,tpY,dV.vX,dV.vY,dirOffset.x,dirOffset.y);                    
+                        
                     }
                 }
 
 
-
-                // if(tleft){this.setVelocityY(mv_speed*this.wanderDirection);this.setVelocityX(mv_speed*-1);};
-                // if(tRight){this.setVelocityY(mv_speed*this.wanderDirection*-1);this.setVelocityX(mv_speed);};
-                // if(tUp){this.setVelocityX(mv_speed*this.wanderDirection*-1);};
-                // if(tDown){this.setVelocityX(mv_speed*this.wanderDirection);};
-                
             }
 
             //Set fall time
-            if(this.falltime > 15 && !this.firstTouchGround){
+            if(this.falltime > 15){
                 //this.setIgnoreGravity(false); 
+                if(this.targetMoveTile != null){this.clearTargetMoveTile();};
                 this.setVelocityY(this.fall_speed);
             }
         }
+        //Load TileData for Prev
+        this.tilePos.px = (this.x/32 << 0);
+        this.tilePos.py = (this.y/32 << 0);
+    }
+    clearTargetMoveTile (){
+        this.prevTargetMoveTile = this.targetMoveTile;
+        this.targetMoveTile = null;
+    }
+    setDirectionalArrayVelocity(dir,ms){
+        let dVelX = this.wanderDirections[dir].x;
+        let dVelY = this.wanderDirections[dir].y;
+        //Set Velocity        
+        this.setVelocity(dVelX*ms,dVelY*ms);
+        //console.log(dir,this.body.velocity,dVelX*ms,dVelY*ms);
+        return {vX:dVelX,vY:dVelY};
     }
     findDestinationTile(oX,oY,velX,velY,dOsX,dOsY){
         //Velocity should be set here.
-        console.log("searching for new target tile");
         let checkTile = map.getTileAt(oX+velX+dOsX,oY+velY+dOsY, true, this.scene.collisionLayer)
         if(checkTile != null){  
             if(checkTile.index == -1){
                 //Negate the offset, Adjusted Offset X and Y
+               
                 let adOsX = dOsX*-1;
                 let adOsY = dOsY*-1;  
                    
+
+
                 this.targetMoveTile = {x:checkTile.x+adOsX,y:checkTile.y+adOsY};//Hard coding offset for ground touch here. Need to check touching 
+                if(this.targetMoveTile == this.prevTargetMoveTile){console.log("NO TARGET PROGRESS")}
+                console.log("Found target:",this.targetMoveTile,this.prevTargetMoveTile);
             }
             this.debugScanTile.x = checkTile.x*32;
             this.debugScanTile.y = checkTile.y*32;            
