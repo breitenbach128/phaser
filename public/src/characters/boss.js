@@ -207,10 +207,9 @@ class Boss extends Phaser.Physics.Matter.Sprite{
             //Update Gun
             if(this.gun){
                 
-                var bullet = bullets.get();
+                let bullet = bullets.get(-1000,-1000,'bullet');
                 if (bullet && this.gun.ready)//ROF(MS)
                 {                
-                    let bullet = bullets.get();
                     bullet.setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.SOLANA ]);
                     bullet.setIgnoreGravity(false);
                     bullet.setFrame(16);
@@ -483,7 +482,42 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         
     }
 }
+class SpiderSilk extends Bullet{
 
+    constructor(scene,x,y,texture) {
+        super(scene,x,y,texture);
+
+        //Create silk line
+        this.silkline = {sX:x,sY:y,eX:x,eY:y,color:0xEEEEEE}
+
+    }
+    //The line draw is on the scene, so I need to set it up on the spider.
+    //1 Use only 1 spider silk project. Just active/deactivate it.
+    //2 Fire it, and have the line trace to it's last position.
+    //3 Leave the silk line alive for x seconds, and then fade away and self destroy.
+
+    //Will need an array on the spider of silk lines to hold the group. Splice out old lines as they die.
+    //Update Silk Line (overwrite update function and add a secondary create on the constructor)
+    update(time, delta)
+    {
+        if(this.active){
+        this.lifespan--;
+            if (this.lifespan <= 0)
+            {
+                this.kill();
+            }
+        }
+
+    }
+    //Set actiom to move spider vertical
+    hit(){
+        this.lifespan = 0;
+        if(this.owner){
+            this.owner.climbToTile();
+        }
+        this.kill();
+    }
+}
 
 //SPIDER HIVE - BOSS # 1
 //Spawns up to three spiders to chase player.

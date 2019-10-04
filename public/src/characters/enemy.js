@@ -168,12 +168,11 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
     }
     barrage(){
         //Shoot Ranged Weapon
-        var bullet = bullets.get();
+        let bullet = bullets.get(-1000,-1000,'bullet');
         if (bullet && this.gun.ready)//ROF(MS)
         {
-            this.anims.play(this.texture.key+'-shoot', true);
+            this.anims.play(this.texture.key+'-shoot', true);            
             
-            let bullet = bullets.get();
             bullet.setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.SOLANA ]);
             if(this.behavior.weapon.aimmed){
                 let aimVec = this.aim(solana); //Just use X value for now. Probably want to have adjustable weapon speed later.

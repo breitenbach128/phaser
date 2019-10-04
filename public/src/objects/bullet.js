@@ -1,7 +1,6 @@
 class Bullet extends Phaser.Physics.Matter.Sprite{
-
-    constructor(scene,x,y) {
-        super(scene.matter.world, x, y, 'bullet', 0)
+    constructor(scene,x,y,texture) {
+        super(scene.matter.world, x, y, texture, 0)
         this.scene = scene;
         // Create the physics-based sprite that we will move around and animate
         scene.matter.world.add(this);
@@ -37,6 +36,7 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
         this.bounced = false;
         this.effects = [];
         this.deathEffects = [];
+        this.owner = null;
     }
     fire(x, y, xV, yV, life)
     {       
@@ -50,6 +50,9 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
         //this.applyForce({x:xV,y:yV})
         this.setVelocity(xV,yV);
 
+    }
+    setOwner(object){
+        this.owner = object;
     }
     setEffects(effectsArray){
         this.effects = effectsArray;
