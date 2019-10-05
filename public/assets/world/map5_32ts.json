@@ -76,6 +76,28 @@
                  "width":32,
                  "x":256,
                  "y":160
+                }, 
+                {
+                 "height":32,
+                 "id":79,
+                 "name":"spider",
+                 "rotation":0,
+                 "type":"boss",
+                 "visible":true,
+                 "width":32,
+                 "x":96,
+                 "y":288
+                }, 
+                {
+                 "height":32,
+                 "id":80,
+                 "name":"spider",
+                 "rotation":0,
+                 "type":"boss",
+                 "visible":true,
+                 "width":32,
+                 "x":672,
+                 "y":256
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -270,7 +292,7 @@
          "y":0
         }],
  "nextlayerid":34,
- "nextobjectid":79,
+ "nextobjectid":81,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="64" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="34" nextobjectid="79">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="64" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="34" nextobjectid="81">
  <tileset firstgid="1" name="32Tileset" tilewidth="32" tileheight="32" spacing="2" tilecount="851" columns="37">
   <image source="../assets/world/oldTileset32.png" width="1280" height="800"/>
  </tileset>
@@ -304,6 +304,8 @@
  </layer>
  <objectgroup id="23" name="npcs">
   <object id="76" name="spider" type="boss" x="256" y="160" width="32" height="32"/>
+  <object id="79" name="spider" type="boss" x="96" y="288" width="32" height="32"/>
+  <object id="80" name="spider" type="boss" x="672" y="256" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="2" name="enemies"/>
  <objectgroup id="3" name="spawns"/>

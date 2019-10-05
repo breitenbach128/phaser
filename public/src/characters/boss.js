@@ -23,7 +23,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
             parts: [coreArea, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
             frictionStatic: 0,
             frictionAir: 0.00,
-            friction: 0.5,
+            friction: 0.10,
             restitution: 0.00,
             label: "Boss"
         });
@@ -130,14 +130,24 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         };
         this.wanderDirection = 1;//Clockwise
         this.falltime = 0;
-        //this.attackDelay = this.scene.time.addEvent({ delay: 3000, callback: this.startAttack, callbackScope: this, loop: true });
+        this.attackDelay = this.scene.time.addEvent({ delay: 4000, callback: this.startAttack, callbackScope: this, loop: true });
+        this.silking = false;
         this.climbing = false;
-        //this.climbDelay = this.scene.time.addEvent({ delay: 3000, callback: this.climbToTile, callbackScope: this, loop: false });
+        this.climbDelay = this.scene.time.addEvent({ delay: 3000, callback: this.shootSilk, callbackScope: this, loop: true });
         this.jumping = false;
         //Tile AI
         this.targetMoveTile = null;
         this.prevTargetMoveTile = null;
         this.firstTouchGround = false;
+
+        //Climbing
+        this.silkshot = new SpiderSilk(this.scene,-1000,0,'bullet');
+        this.silkshot.setFrame(16);
+        this.silkshot.setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID]);
+        this.silkshot.owner = this;        
+        this.silkthread = {sX:this.x,sY:this.y,eX:this.x,eY:this.y,color:0xEEEEEE,active:false};;
+        this.silkDraw = false;
+        this.silkGraphic = this.scene.add.graphics(0, 0);
     }
     update(time, delta)
     {       
@@ -155,11 +165,11 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         //Easy Access Variables
         let mv_speed = this.mv_speed;
         //Movement
-        let tleft = (this.touching.left > 0);
+        let tLeft = (this.touching.left > 0);
         let tRight = (this.touching.right > 0);
         let tDown = (this.touching.down > 0);
         let tUp = (this.touching.up > 0);
-        let noTouch = (!tleft && !tRight && !tUp && !tDown);
+        let noTouch = (!tLeft && !tRight && !tUp && !tDown);
         //Position
         let bodyMin = this.body.bounds.min;
         let bodyMax = this.body.bounds.max;
@@ -215,11 +225,11 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                     bullet.setFrame(16);
                     let effs = [(new bulletEffect('Stunned',1.0,60,1,'Anim','solana-webbed'))];
                     bullet.setEffects(effs);
-                    if(this.wanderDirection == 1){
-                        bullet.fire(this.x, this.y, 4, -4, 400);
-                    }else{
-                        bullet.fire(this.x, this.y, -4, -4, 400);
-                    }
+                    
+                    let bVelY = tDown ? -4 : 0;
+                    let bVelX = bodyVelX > 0 || tLeft ? 4 : -4;
+
+                    bullet.fire(this.x, this.y, bVelX, bVelY, 400);                    
                     
                     this.gun.shoot();//Decrease mag size. Can leave this out for a constant ROF.
                 }
@@ -299,13 +309,15 @@ class Boss extends Phaser.Physics.Matter.Sprite{
 
             }
         }
-
-        if(this.climbing){
+        if(this.silking){
+            this.setVelocityX(0);
+        }else if(this.climbing){
             //Climbing to Tile
             this.setVelocityX(0);
             this.setVelocityY(this.mv_speed*-1.5);
             if(tUp){
                 this.climbing = false;
+                this.silking = false;
             }
         }else{
             //ON PLATFORM BEHAVIOR
@@ -327,7 +339,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                 let dirChoice = 'none';                
                 let dirOffset = {x:0,y:0};
 
-                if(tleft && tUp){
+                if(tLeft && tUp){
                     if(this.wanderDirection > 0){
                         dirChoice = 'down';
                     }else if(this.wanderDirection < 0){
@@ -343,7 +355,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                     }
                     cornerCheck = true;
                 };//UR
-                if(tleft && tDown){
+                if(tLeft && tDown){
                     if(this.wanderDirection > 0){
                         dirChoice = 'right';
                     }else if(this.wanderDirection < 0){
@@ -362,8 +374,8 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                 
                 if(cornerCheck == false){
                     //Touch Left Directions
-                    if(tleft && this.wanderDirection > 0){dirChoice = 'down';dirOffset={x:-1,y:0};};
-                    if(tleft && this.wanderDirection < 0){dirChoice = 'up';dirOffset={x:-1,y:0};};
+                    if(tLeft && this.wanderDirection > 0){dirChoice = 'down';dirOffset={x:-1,y:0};};
+                    if(tLeft && this.wanderDirection < 0){dirChoice = 'up';dirOffset={x:-1,y:0};};
                     //Touch Right Directions
                     if(tRight && this.wanderDirection > 0){dirChoice = 'up';dirOffset={x:1,y:0};};
                     if(tRight && this.wanderDirection < 0){dirChoice = 'down';dirOffset={x:1,y:0};};
@@ -395,6 +407,9 @@ class Boss extends Phaser.Physics.Matter.Sprite{
                 this.setVelocityY(this.fall_speed);
             }
         }
+        //Update Thread
+        this.drawSilkThreads();
+
         //Load TileData for Prev
         this.tilePos.px = (this.x/32 << 0);
         this.tilePos.py = (this.y/32 << 0);
@@ -439,32 +454,63 @@ class Boss extends Phaser.Physics.Matter.Sprite{
 
         
     }
+    drawSilkThreads(){
+        
+        //Update Thread end position to the active shot.
+        if(this.silkshot.active){
+            this.silkthread.eX = this.silkshot.x;
+            this.silkthread.eY = this.silkshot.y;
+        }
+        if(this.climbing){
+            this.silkthread.sY = this.y;
+
+            this.silkGraphic.clear();          
+            this.silkGraphic.lineStyle(5, this.silkthread.color, 1.0);
+            this.silkGraphic.beginPath();
+            this.silkGraphic.moveTo(this.silkthread.sX, this.silkthread.sY);
+            this.silkGraphic.lineTo(this.silkthread.eX, this.silkthread.eY);
+            this.silkGraphic.closePath();
+            this.silkGraphic.strokePath();
+        }else{
+            this.silkGraphic.clear();
+        }
+        
+        
+    }
+    shootSilk(){
+        if(!this.jumping){
+            //Random Chance to Climb
+            let rClimb = Phaser.Math.Between(0,10);
+            if(rClimb < 2){ // 20% chance?
+                this.silkshot.fire(this.x, this.y, 0, -4, 400);
+                this.silking = true;
+                //Create silk line
+                this.silkthread = {sX:this.x,sY:this.y,eX:this.x,eY:this.y,color:0xEEEEEE};        
+            }
+        }
+    }
     climbToTile(){
-        //Fire Projectile at ceiling. If hits a tile, then drawn line, and start climb.
+        //Fire Projectile at ceiling. If hits a tile, then drawn line, and start climb.    
+        this.silking = false;  
         this.climbing = true;
         this.setIgnoreGravity(true);
-        //If a tile is directly above the spider, they will stop, and spit a thread of silk at the platform and climb up to it to begin patrolling again.
-        //If the player is above them, but not within LOS, they will do this as well.
     }
     startAttack(){
-        if(!this.jumping){
-            this.jumping = true;
-            if(this.touching.up > 0){
-                this.setVelocityY(this.jump_speed);
-            }else{
-                this.setVelocityY(-this.jump_speed);
-            }
+        if(!this.jumping && !this.climbing){
+            let tUp = (this.touching.up > 0);
+            let jDirY = tUp ? this.jump_speed : -this.jump_speed;
+            let jDirX = this.jump_speed;
+
             if(this.canSee(solana)){
                 if(solana.x < this.x){
                     this.wanderDirection = -1;
-                    this.setVelocityX(-this.jump_speed*2);
                 }else{
                     this.wanderDirection = 1;
-                    this.setVelocityX(this.jump_speed*2);
                 }
-            }else{
-                this.setVelocityX(this.jump_speed*this.wanderDirection);
             }
+            jDirX = jDirX*this.wanderDirection;
+            this.setVelocity(jDirX,jDirY);
+            this.jumping = true;
         }
     }
     canSee(target){
@@ -482,42 +528,7 @@ class Boss extends Phaser.Physics.Matter.Sprite{
         
     }
 }
-class SpiderSilk extends Bullet{
 
-    constructor(scene,x,y,texture) {
-        super(scene,x,y,texture);
-
-        //Create silk line
-        this.silkline = {sX:x,sY:y,eX:x,eY:y,color:0xEEEEEE}
-
-    }
-    //The line draw is on the scene, so I need to set it up on the spider.
-    //1 Use only 1 spider silk project. Just active/deactivate it.
-    //2 Fire it, and have the line trace to it's last position.
-    //3 Leave the silk line alive for x seconds, and then fade away and self destroy.
-
-    //Will need an array on the spider of silk lines to hold the group. Splice out old lines as they die.
-    //Update Silk Line (overwrite update function and add a secondary create on the constructor)
-    update(time, delta)
-    {
-        if(this.active){
-        this.lifespan--;
-            if (this.lifespan <= 0)
-            {
-                this.kill();
-            }
-        }
-
-    }
-    //Set actiom to move spider vertical
-    hit(){
-        this.lifespan = 0;
-        if(this.owner){
-            this.owner.climbToTile();
-        }
-        this.kill();
-    }
-}
 
 //SPIDER HIVE - BOSS # 1
 //Spawns up to three spiders to chase player.
