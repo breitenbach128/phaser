@@ -320,6 +320,8 @@ var GameScene = new Phaser.Class({
             //Boss?
             if(tmxObjRef.type == "boss"){
                 console.log('boss',props);
+                boss = new SpiderHive(this,tmxObjRef.x,tmxObjRef.y);
+                boss.setPosition(tmxObjRef.x,tmxObjRef.y);
             //SPIDER
             }else if(tmxObjRef.type == "spider"){
                 spider = spiders.get(tmxObjRef.x,tmxObjRef.y);
@@ -1040,6 +1042,7 @@ var GameScene = new Phaser.Class({
         solana.update(time,delta);
         bright.update(time,delta);
         soullight.update(time,delta);
+        if(boss != -1){boss.update(time,delta);}
         if(tutorialRunning){
             polaris.update(time,delta);
         };
@@ -1595,6 +1598,12 @@ function createAnimations(scene){
         key: 'boss-spider',
         frames: scene.anims.generateFrameNumbers('spider', { frames:[0,1,2,3,4] }),
         frameRate: 12,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'boss-hive',
+        frames: scene.anims.generateFrameNumbers('boss_spiderhive', { frames:[0,1] }),
+        frameRate: 3,
         repeat: 0
     });
 }

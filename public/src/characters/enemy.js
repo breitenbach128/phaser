@@ -594,14 +594,14 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
                     if(bodyVelY == 0){
                         if(bodyVelX > 0){
                             if(bodyMin.x + bodyVelX >= (this.targetMoveTile.x)*32){
-                                console.log("On Target Tile: Y:0",bodyVelX,bodyVelY);
+                                //console.log("On Target Tile: Y:0",bodyVelX,bodyVelY);
                                 this.setPosition(bodyWidth/2+(this.targetMoveTile.x)*32-2,this.y);
                                 this.setVelocity(0,1*mv_speed);
                                 this.clearTargetMoveTile();
                             }
                         }else if(bodyVelX < 0){
                             if(bodyMax.x + bodyVelX <= (this.targetMoveTile.x+1)*32){
-                                console.log("On Target Tile: Y:0",bodyVelX,bodyVelY);
+                                //console.log("On Target Tile: Y:0",bodyVelX,bodyVelY);
                                 this.setPosition((this.targetMoveTile.x+1)*32+2-bodyWidth/2,this.y);
                                 this.setVelocity(0,-1*mv_speed);
                                 this.clearTargetMoveTile();
@@ -611,14 +611,14 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
                     }else if(bodyVelX == 0){
                         if(bodyVelY > 0){                                
                             if(bodyMin.y + bodyVelY >= (this.targetMoveTile.y)*32){
-                                console.log("On Target Tile: X:0",bodyVelX,bodyVelY);
+                                //console.log("On Target Tile: X:0",bodyVelX,bodyVelY);
                                 this.setPosition(this.x,bodyHeight/2+(this.targetMoveTile.y)*32-2);
                                 this.setVelocity(-1*mv_speed,0);
                                 this.clearTargetMoveTile();
                             }
                         }else if(bodyVelY < 0){
                             if(bodyMax.y + bodyVelY <= (this.targetMoveTile.y+1)*32){
-                                console.log("On Target Tile: X:0",bodyVelX,bodyVelY);
+                                //console.log("On Target Tile: X:0",bodyVelX,bodyVelY);
                                 this.setPosition(this.x,(this.targetMoveTile.y+1)*32+2-bodyHeight/2);
                                 this.setVelocity(1*mv_speed,0);
                                 this.clearTargetMoveTile();
@@ -628,7 +628,7 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
 
                 }else if(this.wanderDirection < 0){
                     if(bodyMax.x + bodyVelX <= (this.targetMoveTile.x+1)*32 && bodyMax.y + bodyVelY <= (this.targetMoveTile.y+1)*32){
-                        console.log("On Target Tile",bodyVelX,bodyVelY);
+                        //console.log("On Target Tile",bodyVelX,bodyVelY);
 
                         if(bodyVelX > 0 && bodyVelY == 0){this.setVelocityY(0,-1*mv_speed);}
                         if(bodyVelX < 0 && bodyVelY == 0){this.setVelocityY(0,1*mv_speed);}
@@ -748,7 +748,8 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
             if(this.falltime > 15){
                 //this.setIgnoreGravity(false); 
                 if(this.targetMoveTile != null){this.clearTargetMoveTile();};
-                this.setVelocityY(this.fall_speed);
+                //this.setVelocityY(this.fall_speed);
+                this.body.force.y += this.body.mass * 0.001;
             }
         }
         //Update Thread
@@ -789,7 +790,7 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
                         //BUG on 1 velocity movement speed. Skips by the tile.
                     }
                 }
-                console.log("Found target:",this.targetMoveTile,this.prevTargetMoveTile);
+                //console.log("Found target:",this.targetMoveTile,this.prevTargetMoveTile);
             }
             this.debugScanTile.x = checkTile.x*32;
             this.debugScanTile.y = checkTile.y*32;            
