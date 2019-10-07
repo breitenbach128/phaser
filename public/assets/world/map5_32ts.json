@@ -65,40 +65,7 @@
          "draworder":"topdown",
          "id":23,
          "name":"npcs",
-         "objects":[
-                {
-                 "height":32,
-                 "id":76,
-                 "name":"spider",
-                 "rotation":0,
-                 "type":"boss",
-                 "visible":true,
-                 "width":32,
-                 "x":256,
-                 "y":160
-                }, 
-                {
-                 "height":32,
-                 "id":79,
-                 "name":"spider",
-                 "rotation":0,
-                 "type":"boss",
-                 "visible":true,
-                 "width":32,
-                 "x":96,
-                 "y":288
-                }, 
-                {
-                 "height":32,
-                 "id":80,
-                 "name":"spider",
-                 "rotation":0,
-                 "type":"boss",
-                 "visible":true,
-                 "width":32,
-                 "x":672,
-                 "y":256
-                }],
+         "objects":[],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -109,7 +76,123 @@
          "draworder":"topdown",
          "id":2,
          "name":"enemies",
-         "objects":[],
+         "objects":[
+                {
+                 "height":64,
+                 "id":81,
+                 "name":"SpiderHive",
+                 "properties":[
+                        {
+                         "name":"aBehav",
+                         "type":"string",
+                         "value":"boss"
+                        }, 
+                        {
+                         "name":"bossIndex",
+                         "type":"int",
+                         "value":0
+                        }, 
+                        {
+                         "name":"enemyClass",
+                         "type":"string",
+                         "value":"boss"
+                        }, 
+                        {
+                         "name":"enemyType",
+                         "type":"string",
+                         "value":"spiderhive"
+                        }, 
+                        {
+                         "name":"pBehav",
+                         "type":"string",
+                         "value":"boss"
+                        }, 
+                        {
+                         "name":"weapon",
+                         "type":"int",
+                         "value":0
+                        }],
+                 "rotation":0,
+                 "type":"boss",
+                 "visible":true,
+                 "width":64,
+                 "x":64,
+                 "y":288
+                }, 
+                {
+                 "height":32,
+                 "id":82,
+                 "name":"spider",
+                 "properties":[
+                        {
+                         "name":"aBehav",
+                         "type":"string",
+                         "value":"jump"
+                        }, 
+                        {
+                         "name":"enemyClass",
+                         "type":"string",
+                         "value":"spider"
+                        }, 
+                        {
+                         "name":"enemyType",
+                         "type":"string",
+                         "value":"spiderhive"
+                        }, 
+                        {
+                         "name":"pBehav",
+                         "type":"string",
+                         "value":"idle"
+                        }, 
+                        {
+                         "name":"weapon",
+                         "type":"int",
+                         "value":16
+                        }],
+                 "rotation":0,
+                 "type":"spider",
+                 "visible":true,
+                 "width":32,
+                 "x":256,
+                 "y":160
+                }, 
+                {
+                 "height":32,
+                 "id":83,
+                 "name":"spider",
+                 "properties":[
+                        {
+                         "name":"aBehav",
+                         "type":"string",
+                         "value":"jump"
+                        }, 
+                        {
+                         "name":"enemyClass",
+                         "type":"string",
+                         "value":"spider"
+                        }, 
+                        {
+                         "name":"enemyType",
+                         "type":"string",
+                         "value":"spiderhive"
+                        }, 
+                        {
+                         "name":"pBehav",
+                         "type":"string",
+                         "value":"idle"
+                        }, 
+                        {
+                         "name":"weapon",
+                         "type":"int",
+                         "value":16
+                        }],
+                 "rotation":0,
+                 "type":"spider",
+                 "visible":true,
+                 "width":32,
+                 "x":384,
+                 "y":288
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -292,7 +375,7 @@
          "y":0
         }],
  "nextlayerid":34,
- "nextobjectid":81,
+ "nextobjectid":84,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

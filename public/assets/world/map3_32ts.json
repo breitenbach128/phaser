@@ -46,7 +46,7 @@
                  "gid":497,
                  "height":32,
                  "id":2,
-                 "name":"",
+                 "name":"slime",
                  "properties":[
                         {
                          "name":"aBehav",
@@ -74,7 +74,7 @@
                          "value":0
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"ground",
                  "visible":true,
                  "width":32,
                  "x":481,

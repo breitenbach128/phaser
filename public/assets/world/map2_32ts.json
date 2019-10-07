@@ -103,7 +103,7 @@
                          "value":5
                         }],
                  "rotation":0,
-                 "type":"bat",
+                 "type":"air",
                  "visible":true,
                  "width":32,
                  "x":896,
@@ -113,7 +113,7 @@
                  "gid":497,
                  "height":32,
                  "id":39,
-                 "name":"",
+                 "name":"slime",
                  "properties":[
                         {
                          "name":"aBehav",
@@ -151,7 +151,7 @@
                          "value":2
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"ground",
                  "visible":true,
                  "width":32,
                  "x":384,
@@ -189,7 +189,7 @@
                          "value":5
                         }],
                  "rotation":0,
-                 "type":"bat",
+                 "type":"air",
                  "visible":true,
                  "width":32,
                  "x":1408,
@@ -199,7 +199,7 @@
                  "gid":497,
                  "height":32,
                  "id":64,
-                 "name":"",
+                 "name":"slime",
                  "properties":[
                         {
                          "name":"aBehav",
@@ -237,7 +237,7 @@
                          "value":5
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"ground",
                  "visible":true,
                  "width":32,
                  "x":544,

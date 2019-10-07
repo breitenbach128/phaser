@@ -329,7 +329,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="enemies">
-  <object id="2" gid="497" x="481" y="224" width="32" height="32">
+  <object id="2" name="slime" type="ground" gid="497" x="481" y="224" width="32" height="32">
    <properties>
     <property name="aBehav" value="patrolFixed"/>
     <property name="enemyClass" value="ground"/>

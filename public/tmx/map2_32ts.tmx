@@ -276,7 +276,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="enemies">
-  <object id="38" name="bat" type="bat" gid="497" x="896" y="96" width="32" height="32">
+  <object id="38" name="bat" type="air" gid="497" x="896" y="96" width="32" height="32">
    <properties>
     <property name="aBehav" value="attack"/>
     <property name="enemyClass" value="air"/>
@@ -286,7 +286,7 @@
     <property name="weapon" type="int" value="5"/>
    </properties>
   </object>
-  <object id="39" gid="497" x="384" y="128" width="32" height="32">
+  <object id="39" name="slime" type="ground" gid="497" x="384" y="128" width="32" height="32">
    <properties>
     <property name="aBehav" value="attack"/>
     <property name="enemyClass" value="ground"/>
@@ -297,7 +297,7 @@
     <property name="weapon" type="int" value="2"/>
    </properties>
   </object>
-  <object id="52" name="bat" type="bat" gid="497" x="1408" y="192" width="32" height="32">
+  <object id="52" name="bat" type="air" gid="497" x="1408" y="192" width="32" height="32">
    <properties>
     <property name="aBehav" value="attack"/>
     <property name="enemyClass" value="air"/>
@@ -306,7 +306,7 @@
     <property name="weapon" type="int" value="5"/>
    </properties>
   </object>
-  <object id="64" gid="497" x="544" y="256" width="32" height="32">
+  <object id="64" name="slime" type="ground" gid="497" x="544" y="256" width="32" height="32">
    <properties>
     <property name="aBehav" value="attack"/>
     <property name="enemyClass" value="ground"/>

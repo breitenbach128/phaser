@@ -244,9 +244,9 @@ var GameScene = new Phaser.Class({
             classType: NPC,
             runChildUpdate: true 
         });
-        //Boss
-        bosses = this.add.group({ 
-            classType: Boss,
+        //spiders
+        spiders = this.add.group({ 
+            classType: EnemySpider,
             runChildUpdate: true 
         });
         //Light Shards
@@ -260,6 +260,9 @@ var GameScene = new Phaser.Class({
             classType: BreakableTile,
             runChildUpdate: true 
         });
+
+        //Clear Boss
+        boss = -1;
 
         speed = Phaser.Math.GetSpeed(300, 1);
        
@@ -284,10 +287,7 @@ var GameScene = new Phaser.Class({
                 let tmxObjRef = npclayer.objects[e];
                 let props = getTileProperties(tmxObjRef.properties);
 
-                if(tmxObjRef.type == "boss"){
-                    let boss = bosses.get(tmxObjRef.x,tmxObjRef.y);
-                    boss.setPosition(tmxObjRef.x,tmxObjRef.y);
-                }else if(tmxObjRef.type == "guide"){
+                if(tmxObjRef.type == "guide"){
                     tutorialRunning = true;                    
                     polaris = new Polaris(this,tmxObjRef.x,tmxObjRef.y);
 
@@ -314,36 +314,48 @@ var GameScene = new Phaser.Class({
             let PassiveBehavior = props.pBehav;
             let AggressivBehavior = props.aBehav;
             let weapon = props.weapon;
-            
+            let new_enemy;
             let path = '[{"x":0,"y":0}]';
-            if(EnemyClass == 'ground'){
-                new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
-            }else if(EnemyClass == 'air'){
-                new_enemy = enemiesFly.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);                
+
+            //Boss?
+            if(tmxObjRef.type == "boss"){
+                console.log('boss',props);
+            //SPIDER
+            }else if(tmxObjRef.type == "spider"){
+                spider = spiders.get(tmxObjRef.x,tmxObjRef.y);
+                spider.setPosition(tmxObjRef.x,tmxObjRef.y);
             }else{
-                new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
-            }
 
-            if(props.path){
-                path = props.path;
-            }
-            if(props.tint){
-                let newTint =  (Phaser.Display.Color.HexStringToColor(props.tint))._color; //0x333333
-                new_enemy.setTint(newTint);
-            }
-            if(props.scale){
-                new_enemy.setScale(props.scale);
-            }
+                //Standard Types            
+                if(EnemyClass == 'ground'){
+                    new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
+                }else if(EnemyClass == 'air'){
+                    new_enemy = enemiesFly.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);                
+                }else{
+                    new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
+                }
 
-            if(new_enemy){
-                //Setup Enemy
-                new_enemy.setActive(true);
-                new_enemy.setVisible(true);
-                new_enemy.setBehavior(PassiveBehavior,AggressivBehavior,weapon);
-                new_enemy.setPath(path);
-                
-                
-            } 
+                if(props.path){
+                    path = props.path;
+                }
+                if(props.tint){
+                    let newTint =  (Phaser.Display.Color.HexStringToColor(props.tint))._color; //0x333333
+                    new_enemy.setTint(newTint);
+                }
+                if(props.scale){
+                    new_enemy.setScale(props.scale);
+                }
+
+                if(new_enemy){
+                    //Setup Enemy
+                    new_enemy.setActive(true);
+                    new_enemy.setVisible(true);
+                    new_enemy.setBehavior(PassiveBehavior,AggressivBehavior,weapon);
+                    new_enemy.setPath(path);
+                    
+                    
+                } 
+            }
         }
         //Spawn Mirrors
         for(e=0;e<objectlayer.objects.length;e++){
