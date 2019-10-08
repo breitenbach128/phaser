@@ -35,6 +35,12 @@ class SpiderHive extends Phaser.Physics.Matter.Sprite{
 
         //Custom Properties
         this.gun = new Gun(60,1,70);
+        this.spawnGlob = new SpiderSpawnOrb(this.scene,-1000,0,'bullet');
+        this.spawnGlob.setFrame(17);
+        this.spawnGlob.setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID]);
+        this.spawnGlob.owner = this;          
+        this.spawnGlob.setIgnoreGravity(false);
+        this.spiderlings = [];
         
     }
     update(time,delta){
@@ -42,16 +48,40 @@ class SpiderHive extends Phaser.Physics.Matter.Sprite{
         this.spew();
     }
     spew(){
-        let bullet = bullets.get(-1000,-1000,'bullet');
-        bullet.setFrame(17);
-        bullet.setIgnoreGravity(false);
-        if (bullet && this.gun.ready)//ROF(MS)
-        {    
-            bullet.fire(this.x, this.y-(this.height*1/4), 2, -6, 300);
-            this.gun.shoot();//Decrease mag size. Can leave this out for a constant ROF.
-        }
-        if(this.gun){
-            this.gun.update();
+        if(spiders.countActive(true) < 3){
+            if (this.gun.ready)//ROF(MS)
+            {    
+                this.spawnGlob.fire(this.x, this.y-(this.height*1/4), 2, -6, 300);
+                this.gun.shoot();//Decrease mag size. Can leave this out for a constant ROF.
+            }
+            if(this.gun){
+                this.gun.update();
+            }
         }
     }
+    //Could check the amount of active spiders? If there is less than three, just spawn more.
+    spawnSpider(x,y){
+        console.log("trying to spawn spiders",spiders.countActive(true));
+        if(spiders.countActive(true) < 3){
+            let tpX = (x/32 << 0);
+            let tpY = (y/32 << 0);
+
+            let newSpider = spiders.get(tpX*32-16,tpY*32-16);
+            newSpider.setPosition(tpX*32-16,tpY*32-16);
+            newSpider.hive = this;
+            newSpider.id = Phaser.Math.Between(0,999);
+        }
+    }
+    // removeSpider(id){
+    //     let q = -1;
+    //     for(let i=0;i < this.spiderlings.length;i++){
+    //         if(this.spiderlings[i].id == id){
+    //             q = i;
+    //         }
+    //     }   
+    //     if(q != -1){
+    //         this.spiderlings.splice(q,1);
+    //     }   
+        
+    // }
 }

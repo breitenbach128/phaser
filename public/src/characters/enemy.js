@@ -492,6 +492,10 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
         this.silkthread = {sX:this.x,sY:this.y,eX:this.x,eY:this.y,color:0xEEEEEE,active:false};;
         this.silkDraw = false;
         this.silkGraphic = this.scene.add.graphics(0, 0);
+
+        //Hive
+        this.hive = -1;
+        this.id = -1;
     }
     update(time, delta)
     {       

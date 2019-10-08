@@ -155,43 +155,6 @@
                  "width":32,
                  "x":256,
                  "y":160
-                }, 
-                {
-                 "height":32,
-                 "id":83,
-                 "name":"spider",
-                 "properties":[
-                        {
-                         "name":"aBehav",
-                         "type":"string",
-                         "value":"jump"
-                        }, 
-                        {
-                         "name":"enemyClass",
-                         "type":"string",
-                         "value":"spider"
-                        }, 
-                        {
-                         "name":"enemyType",
-                         "type":"string",
-                         "value":"spiderhive"
-                        }, 
-                        {
-                         "name":"pBehav",
-                         "type":"string",
-                         "value":"idle"
-                        }, 
-                        {
-                         "name":"weapon",
-                         "type":"int",
-                         "value":16
-                        }],
-                 "rotation":0,
-                 "type":"spider",
-                 "visible":true,
-                 "width":32,
-                 "x":384,
-                 "y":288
                 }],
          "opacity":1,
          "type":"objectgroup",
