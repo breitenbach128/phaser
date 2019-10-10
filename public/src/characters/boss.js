@@ -28,8 +28,8 @@ class SpiderHive extends Phaser.Physics.Matter.Sprite{
 
         this
         .setExistingBody(mainBody)
-        .setFixedRotation() 
-        .setIgnoreGravity(false);  
+        .setFixedRotation()
+        .setStatic(true); 
 
         console.log("BOSS: SPIDERHIVE SPAWNED",x,y);
 
@@ -41,6 +41,15 @@ class SpiderHive extends Phaser.Physics.Matter.Sprite{
         this.spawnGlob.owner = this;          
         this.spawnGlob.setIgnoreGravity(false);
         this.spiderlings = [];
+        this.acidGroup = this.scene.add.group({
+            classType: Bullet,
+            //maxSize: 50,
+            runChildUpdate: true
+        }); 
+        //use .destroy() to remove the group;
+
+        //As the hive takes more damage, it can get a new gun with a magizine side of 1-2-3. each one is a burst 
+        this.setDepth(DEPTH_LAYERS.ENEMIES);
         
     }
     update(time,delta){
@@ -48,15 +57,32 @@ class SpiderHive extends Phaser.Physics.Matter.Sprite{
         this.spew();
     }
     spew(){
-        if(spiders.countActive(true) < 3){
-            if (this.gun.ready)//ROF(MS)
-            {    
+        
+        if (this.gun.ready)//ROF(MS)
+        {    
+            if(spiders.countActive(true) < 3){
                 this.spawnGlob.fire(this.x, this.y-(this.height*1/4), 2, -6, 300);
-                this.gun.shoot();//Decrease mag size. Can leave this out for a constant ROF.
+            }else{
+                let pc = 8; 
+                let angleInc = 180/pc;
+
+                for(let p=1;p < pc;p++){
+                    let acidBullet = this.acidGroup.get(this.x, this.y,'bullet',0);
+                    acidBullet.setCollidesWith([ CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.SOLANA ])
+                    acidBullet.setDepth(DEPTH_LAYERS.ENEMIES-1);
+                    let acidSpeed = 3;
+                    let angle = (angleInc*p)*(Math.PI/180)*-1;
+                    let vecX = Math.cos(angle)*acidSpeed;
+                    let vecY = Math.sin(angle)*acidSpeed; 
+
+                    acidBullet.fire(this.x, this.y, vecX, vecY, 300);
+                }
             }
-            if(this.gun){
-                this.gun.update();
-            }
+            this.gun.shoot();//Decrease mag size. Can leave this out for a constant ROF.
+        }
+        if(this.gun){
+            this.gun.update();
+        
         }
     }
     //Could check the amount of active spiders? If there is less than three, just spawn more.

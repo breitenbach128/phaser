@@ -376,6 +376,8 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
         mainBody.render.sprite.yOffset = .80;
 
         this
+        .setCollisionCategory(CATEGORY.ENEMY)
+        .setCollidesWith([ CATEGORY.BULLET, CATEGORY.SOLANA, CATEGORY.GROUND ])
         .setExistingBody(mainBody)
         .setFixedRotation() 
         .setIgnoreGravity(true);  
@@ -844,7 +846,11 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
         this.climbing = true;
         this.setIgnoreGravity(true);
     }
+    doAttack(){
+        //After attack telegraphed, perform the attack
+    }
     startAttack(){
+        //Give Random chance to attack.
         if(!this.jumping && !this.climbing){
             let tUp = (this.touching.up > 0);
             let jDirY = tUp ? this.jump_speed : -this.jump_speed;

@@ -119,6 +119,8 @@ var socket = io();
     const DEPTH_LAYERS = {
         BG: 10,
         FG: 100,
+        ENEMIES: 200,
+        PLAYERS: 300,
         FRONT: 999
     }
     const GAMEITEM = {

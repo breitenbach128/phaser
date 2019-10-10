@@ -454,7 +454,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
     }
     setTarget(targetObject){
         this.target.object = targetObject;
-        //console.log("Set target for ", this.name);
+        console.log("Set target for ", this.name);
     }
     triggerReset(){
         this.ready  = true;

@@ -321,7 +321,7 @@ var GameScene = new Phaser.Class({
             if(tmxObjRef.type == "boss"){
                 console.log('boss',props);
                 boss = new SpiderHive(this,tmxObjRef.x,tmxObjRef.y);
-                boss.setPosition(tmxObjRef.x,tmxObjRef.y);
+                boss.setPosition(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2+18);
             //SPIDER
             }else if(tmxObjRef.type == "spider"){
                 spider = spiders.get(tmxObjRef.x,tmxObjRef.y);
@@ -905,6 +905,7 @@ var GameScene = new Phaser.Class({
                     }  
                     continue;
                 }
+                //Lamps and Blast
                 if ((bodyA.label === 'ABILITY-SOLAR-BLAST' && bodyB.label === 'CRYSTAL_LAMP') || (bodyA.label === 'CRYSTAL_LAMP' && bodyB.label === 'ABILITY-SOLAR-BLAST')) {
                     console.log("blast hit lamp");
                     let bulletObj = GameObjectB;
