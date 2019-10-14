@@ -6,10 +6,12 @@ class HudScene extends Phaser.Scene {
 
         this.hp_blips = [];
         this.energy_bar = [];
+        this.boss_bar = [];
         this.ready = false;
         this.energy = {n:100,max:100,h:100,w:16};
         this.inventory;
         this.shard_totals = {light:0,dark:0};
+        this.showBossBar = false;
     }
 
     update()
@@ -38,6 +40,20 @@ class HudScene extends Phaser.Scene {
         this.energy_bar = [];
         this.debug.destroy();
     }
+    setBossVisible(value){
+        for(let i=0;i < this.boss_bar.length;i++){this.boss_bar[i].setVisible(value)};
+    }
+    alertBossHealth(current_hp,max_hp){
+        let bossBarWidth = this.boss_bar[0].width;//BG
+        let bossBarHeight = this.boss_bar[0].height;//BG
+        let scaleX = 1;//this.boss_bar[0].scaleX;
+        let percentage = (current_hp/max_hp)*bossBarWidth;
+        let newWidth = Math.round(percentage)*scaleX;
+        this.boss_bar[1].setCrop(0,0,newWidth,bossBarHeight);
+        //FIGURED IT OUT...maybe. Create a rectangle object, and use it, but adjusting it's width.
+        //It would be nice to have a gradual tween here. Since it is a set color, I could just shrink the width.
+        //let tween = this.scene.add.tween(cropRect).to( { width: bossBarWidth }, 3000, Phaser.Easing.Bounce.Out, false, 0, 1000, true);
+    }
     setupHud(player)
     {
         this.ready = true;
@@ -48,6 +64,14 @@ class HudScene extends Phaser.Scene {
         this.energy_bar.push(this.add.image(12, 48, 'hud_energybar1',1));//BG
         this.energy_bar.push(this.add.image(12, 48, 'hud_energybar1',2));//ENERGY
         this.energy_bar.push(this.add.image(12, 48, 'hud_energybar1',0));//FG
+        //Add Boss Health Bar
+        this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',2).setScale(6,3));//BG
+        this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',1).setScale(6,3));//Health
+        this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',0).setScale(6,3));//FG
+        //Test Set Visible and adjust health
+        this.setBossVisible(true);
+        this.alertBossHealth(5,10);
+
         //Update energy bar values
         this.energy.h = this.energy_bar[1].height;
         this.energy.w = this.energy_bar[1].width;

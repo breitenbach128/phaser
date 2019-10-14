@@ -141,6 +141,7 @@ var Preloader = new Phaser.Class({
 		// - HUD
 		this.load.spritesheet('hud_interaction_control_arrows','assets/hud/hud_interaction_control_arrows.png',{frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('hud_energybar1','assets/hud/hud_energybar1.png',{frameWidth: 16, frameHeight: 96});
+		this.load.spritesheet('hud_boss_health_bar','assets/hud/boss_health_bar.png',{frameWidth: 64, frameHeight: 16});
 		//Effects / Particles
 		this.load.atlas('shapes', 'assets/effects/shapes.png', 'assets/effects/shapes.json');
   		this.load.text('effect-bright-sparks', 'assets/effects/bright_sparks.json');

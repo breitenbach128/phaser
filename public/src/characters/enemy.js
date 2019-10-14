@@ -383,6 +383,7 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
         .setIgnoreGravity(true);  
 
         //Custom Props
+        this.hp = 1;
         this.touching = {up:0,down:0,left:0,right:0};
         this.mv_speed = .5;
         this.fall_speed = 2;

@@ -34,6 +34,7 @@ class SpiderHive extends Phaser.Physics.Matter.Sprite{
         console.log("BOSS: SPIDERHIVE SPAWNED",x,y);
 
         //Custom Properties
+        this.hp = 10;
         this.gun = new Gun(60,1,70);
         this.spawnGlob = new SpiderSpawnOrb(this.scene,-1000,0,'bullet');
         this.spawnGlob.setFrame(17);
