@@ -12,6 +12,7 @@ class HudScene extends Phaser.Scene {
         this.inventory;
         this.shard_totals = {light:0,dark:0};
         this.showBossBar = false;
+        this.bossCropRect = new Phaser.Geom.Rectangle(0,0, 1, 1);
     }
 
     update()
@@ -49,7 +50,26 @@ class HudScene extends Phaser.Scene {
         let scaleX = 1;//this.boss_bar[0].scaleX;
         let percentage = (current_hp/max_hp)*bossBarWidth;
         let newWidth = Math.round(percentage)*scaleX;
-        this.boss_bar[1].setCrop(0,0,newWidth,bossBarHeight);
+
+        this.bossCropRect.setSize(newWidth,bossBarHeight);
+        console.log(this.bossCropRect.width,newWidth)
+        //let tween = this.add.tween(rect).to( { width: 1 }, 5000, Phaser.Easing.Bounce.Out, false, 0, 1000, true);
+
+        let tween = this.tweens.add({
+            targets: this.bossCropRect,
+            width: 1,
+            ease: 'Power1',
+            duration: 5000,
+            delay: 1000,
+            onComplete: function(){console.log("rect complete",this.bossCropRect)},
+            onUpdate: function () {hud.boss_bar[1].setCrop(hud.bossCropRect)},
+        });
+
+        //this.boss_bar[1].setCrop(this.bossCropRect);
+        
+        //this.boss_bar[1].setCrop(0,0,newWidth,bossBarHeight);
+        
+
         //FIGURED IT OUT...maybe. Create a rectangle object, and use it, but adjusting it's width.
         //It would be nice to have a gradual tween here. Since it is a set color, I could just shrink the width.
         //let tween = this.scene.add.tween(cropRect).to( { width: bossBarWidth }, 3000, Phaser.Easing.Bounce.Out, false, 0, 1000, true);
