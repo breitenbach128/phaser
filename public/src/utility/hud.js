@@ -44,35 +44,26 @@ class HudScene extends Phaser.Scene {
     setBossVisible(value){
         for(let i=0;i < this.boss_bar.length;i++){this.boss_bar[i].setVisible(value)};
     }
+    initBossHealth(){
+        let bossBarWidth = this.boss_bar[0].width;//BG
+        let bossBarHeight = this.boss_bar[0].height;//BG
+        this.bossCropRect.setSize(bossBarWidth,bossBarHeight);
+    }
     alertBossHealth(current_hp,max_hp){
         let bossBarWidth = this.boss_bar[0].width;//BG
         let bossBarHeight = this.boss_bar[0].height;//BG
-        let scaleX = 1;//this.boss_bar[0].scaleX;
-        let percentage = (current_hp/max_hp)*bossBarWidth;
-        let newWidth = Math.round(percentage)*scaleX;
-
-        this.bossCropRect.setSize(newWidth,bossBarHeight);
-        console.log(this.bossCropRect.width,newWidth)
-        //let tween = this.add.tween(rect).to( { width: 1 }, 5000, Phaser.Easing.Bounce.Out, false, 0, 1000, true);
+        let newWidth = Math.round((current_hp/max_hp)*bossBarWidth);
 
         let tween = this.tweens.add({
             targets: this.bossCropRect,
-            width: 1,
+            width: newWidth,
             ease: 'Power1',
             duration: 5000,
             delay: 1000,
-            onComplete: function(){console.log("rect complete",this.bossCropRect)},
+            onComplete: function(){},
             onUpdate: function () {hud.boss_bar[1].setCrop(hud.bossCropRect)},
         });
 
-        //this.boss_bar[1].setCrop(this.bossCropRect);
-        
-        //this.boss_bar[1].setCrop(0,0,newWidth,bossBarHeight);
-        
-
-        //FIGURED IT OUT...maybe. Create a rectangle object, and use it, but adjusting it's width.
-        //It would be nice to have a gradual tween here. Since it is a set color, I could just shrink the width.
-        //let tween = this.scene.add.tween(cropRect).to( { width: bossBarWidth }, 3000, Phaser.Easing.Bounce.Out, false, 0, 1000, true);
     }
     setupHud(player)
     {
@@ -90,6 +81,7 @@ class HudScene extends Phaser.Scene {
         this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',0).setScale(6,3));//FG
         //Test Set Visible and adjust health
         this.setBossVisible(true);
+        this.initBossHealth();
         this.alertBossHealth(5,10);
 
         //Update energy bar values

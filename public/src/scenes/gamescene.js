@@ -1235,6 +1235,12 @@ var GameScene = new Phaser.Class({
                 console.log("Error: No Polaris State data to update");
             }
         }
+    },
+    gameOver(){
+        //Remove HUD
+        hud.scene.remove();
+        //Run game Over
+        this.scene.start('gameover');
     }
 });
 //External Functions

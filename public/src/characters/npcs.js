@@ -278,6 +278,7 @@ class Polaris extends NPC{
         this.moveSpeed = 0;
     }
     incrementDialogue(){
+        //Add Requirement Check
         this.dialogueIndex++;
         guideDialogueIndex =  this.dialogueIndex;
     }

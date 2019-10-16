@@ -444,6 +444,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.debug.setVisible(false);
             
             console.log("Solanas DEAD!")
+            this.scene.gameOver();
         }
         
     }
