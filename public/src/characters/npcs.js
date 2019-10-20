@@ -133,7 +133,7 @@ class NPC extends Phaser.Physics.Matter.Sprite{
         this.moveSpeed = Phaser.Math.Between(1,20) / 10;
 
         //Check Current Requirement to see if ready to move on to next dialogue
-
+        this.checkReqAndIncrement();
     }
     update(time, delta)
     {
@@ -164,7 +164,7 @@ class NPC extends Phaser.Physics.Matter.Sprite{
         console.log("resetDialogue",this.dialogueIndex, this.dialogueDB.length)
         //Dialogue Completed, Move to next.
         if(this.dialogueIndex < this.dialogueDB.length-1){  
-            this.incrementDialogue();
+            this.checkReqAndIncrement();
         }else{
             if(this.dialogLoop){
                 this.dialogueIndex = 0;     
@@ -236,6 +236,26 @@ class NPC extends Phaser.Physics.Matter.Sprite{
         }
         return false;
     }
+    checkDialogueRequirement(req){
+        let chk = true;
+
+        if(req.type == 'item'){
+            //Does solana have the requested item equipped?
+            chk = solana.equipment[req.value].equiped;
+            console.log("Item Equiped Check for NPC dialog",req,chk);
+        }
+
+        return chk;
+    }
+    checkReqAndIncrement(){
+        let req = this.dialogueDB[this.dialogueIndex].requirement;
+        let chk = this.checkDialogueRequirement(req);
+
+        if(chk){
+            this.incrementDialogue();
+        }
+        
+    }
 };
 class NPCSensor extends Phaser.Physics.Matter.Image{
     constructor(parent) {
@@ -281,21 +301,8 @@ class Polaris extends NPC{
         this.moveSpeed = 0;
     }
     incrementDialogue(){
-        //Add Requirement Check
-        let req = this.dialogueDB[this.dialogueIndex].requirement;
-
-        let chk = true;//IF no req exists, check is always true, otherwise start false;
-
-        if(req.type == 'item'){
-            //Does solana have the requested item equipped?
-            chk = solana.equipment[req.value].equiped;
-            console.log("Item Equiped Check for NPC dialog",req,chk);
-        }
-
-        if(chk){
-            this.dialogueIndex++;
-            guideDialogueIndex =  this.dialogueIndex;
-        }
+        this.dialogueIndex++;
+        guideDialogueIndex =  this.dialogueIndex;  
     }
 };
 
