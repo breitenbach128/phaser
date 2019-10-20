@@ -79,10 +79,10 @@ class HudScene extends Phaser.Scene {
         this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',2).setScale(6,3));//BG
         this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',1).setScale(6,3));//Health
         this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',0).setScale(6,3));//FG
-        //Test Set Visible and adjust health
-        this.setBossVisible(true);
-        this.initBossHealth();
-        this.alertBossHealth(5,10);
+        //Inital set to not visible
+        this.setBossVisible(false);
+
+        //this.alertBossHealth(5,10);
 
         //Update energy bar values
         this.energy.h = this.energy_bar[1].height;

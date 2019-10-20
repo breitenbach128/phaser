@@ -131,6 +131,9 @@ class NPC extends Phaser.Physics.Matter.Sprite{
         this.wanderRange = Phaser.Math.Between(12,32);
         this.wander = {distanceX:{min:this.x-this.wanderRange,max:this.x+this.wanderRange},direction:1};
         this.moveSpeed = Phaser.Math.Between(1,20) / 10;
+
+        //Check Current Requirement to see if ready to move on to next dialogue
+
     }
     update(time, delta)
     {
@@ -279,8 +282,20 @@ class Polaris extends NPC{
     }
     incrementDialogue(){
         //Add Requirement Check
-        this.dialogueIndex++;
-        guideDialogueIndex =  this.dialogueIndex;
+        let req = this.dialogueDB[this.dialogueIndex].requirement;
+
+        let chk = true;//IF no req exists, check is always true, otherwise start false;
+
+        if(req.type == 'item'){
+            //Does solana have the requested item equipped?
+            chk = solana.equipment[req.value].equiped;
+            console.log("Item Equiped Check for NPC dialog",req,chk);
+        }
+
+        if(chk){
+            this.dialogueIndex++;
+            guideDialogueIndex =  this.dialogueIndex;
+        }
     }
 };
 
@@ -297,13 +312,16 @@ var npcDialogues = [{startAction:{type:"distance",value:128},data:
 var polarisDialogues = [{startAction:{type:"distance",value:64},data:
 [{speaker:"src",ttl:2000,text:"Good to see you up and about Princess."},
 {speaker:"src",ttl:2000,text:"Move left and right with your left stick or the A/D keys."},
-{speaker:"trg",ttl:1000,text:"On my way master Polaris!"}]},
+{speaker:"trg",ttl:1000,text:"On my way master Polaris!"}],requirement:'none'},
 {startAction:{type:"auto",value:64},data:
 [{speaker:"src",ttl:1000,text:"You can talk to me with your interact button"},
 {speaker:"src",ttl:2000,text:"Move to me and press interact!"},
-{speaker:"trg",ttl:1000,text:"Of course master Polaris!"}],requirement:{type:'item',value:0},tween:{x: { value: 28*32, duration: 5000, ease: 'Linear' },y: { value: 19*32, duration: 1500, ease: 'Linear' }}},
+{speaker:"trg",ttl:1000,text:"Of course master Polaris!"}],requirement:'none',tween:{x: { value: 28*32, duration: 5000, ease: 'Linear' },y: { value: 19*32, duration: 1500, ease: 'Linear' }}},
 {startAction:{type:"interact",value:64},data:
 [{speaker:"src",ttl:2000,text:"Press UP to enter that room and grab your wand."},
 {speaker:"src",ttl:1000,text:"You'll need it..."},
-{speaker:"trg",ttl:1000,text:"Can do!"}],tween:{x: { value: '+=128', duration: 5000, ease: 'Linear' },y: { value: '-=0', duration: 1500, ease: 'Linear' }}}
+{speaker:"trg",ttl:1000,text:"Can do!"}],requirement:{type:'item',value:0},tween:{x: { value: '+=128', duration: 5000, ease: 'Linear' },y: { value: '-=0', duration: 1500, ease: 'Linear' }}},
+{startAction:{type:"delay",value:64},data:
+[{speaker:"src",ttl:2000,text:"Good..good. You will need such things on your journey."},
+{speaker:"trg",ttl:1000,text:"But, where are we going?"}],requirement:'none'}
 ];

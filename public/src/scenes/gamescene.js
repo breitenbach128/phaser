@@ -322,6 +322,9 @@ var GameScene = new Phaser.Class({
                 console.log('boss',props);
                 boss = new SpiderHive(this,tmxObjRef.x,tmxObjRef.y);
                 boss.setPosition(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2+18);
+                //Setup boss HUD info
+                hud.setBossVisible(true);
+                hud.initBossHealth();
             //SPIDER
             }else if(tmxObjRef.type == "spider"){
                 spider = spiders.get(tmxObjRef.x,tmxObjRef.y);
