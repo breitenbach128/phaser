@@ -299,6 +299,11 @@ class Polaris extends NPC{
         this.setIgnoreGravity(true);
 
         //Custom
+        //Tweens with Timeline : https://labs.phaser.io/edit.html?src=src%5Ctweens%5Ctimelines%5Cloop%20timeline.js
+        //Positions on a path and update: https://labs.phaser.io/edit.html?src=src/paths\curves\ellipse%20curve.js
+        //Path Builder to test https://github.com/samid737/phaser3-plugin-pathbuilder
+        //https://www.emanueleferonato.com/2015/08/21/playing-with-phaser-tweens-and-bezier-curves/?fbclid=IwAR2YLCZaMJSf6GuRNhViPSdM_neiEtEUbuy-_3DbxNCOQ1ZB3EXFGTaGOZ8
+        
         var polarisDialogues = [{startAction:{type:"distance",value:64},data:
         [{speaker:"src",ttl:2000,text:"Good to see you up and about Princess."},
         {speaker:"src",ttl:2000,text:"Move left and right with your left stick or the A/D keys."},
@@ -306,14 +311,14 @@ class Polaris extends NPC{
         {startAction:{type:"auto",value:64},data:
         [{speaker:"src",ttl:1000,text:"You can talk to me with your interact button"},
         {speaker:"src",ttl:2000,text:"Move to me and press interact!"},
-        {speaker:"trg",ttl:1000,text:"Of course master Polaris!"}],requirement:'none',tween:{x: { value: 28*32, duration: 5000, ease: 'Linear' },y: { value: 19*32, duration: 1500, ease: 'Linear' }}},
+        {speaker:"trg",ttl:1000,text:"Of course master Polaris!"}],requirement:'none',tween:{x: { value: 28*32, duration: 3000, ease: 'Sine.easeOut' },y: { value: 19*32, duration: 1500, ease: 'Linear' }}},
         {startAction:{type:"interact",value:64},data:
         [{speaker:"src",ttl:2000,text:"Press UP to enter that room and grab your wand."},
         {speaker:"src",ttl:1000,text:"You'll need it..."},
-        {speaker:"trg",ttl:1000,text:"Can do!"}],requirement:{type:'item',value:0},tween:{x: { value: '+=128', duration: 5000, ease: 'Linear' },y: { value: '-=0', duration: 1500, ease: 'Linear' }}},
+        {speaker:"trg",ttl:1000,text:"Can do!"}],requirement:{type:'item',value:0},tween:{x: { value: '+=128', duration: 3000, ease: 'Sine.easeOut' },y: { value: '-=0', duration: 1500, ease: 'Linear' }}},
         {startAction:{type:"delay",value:64},data:
         [{speaker:"src",ttl:2000,text:"Good..good. You will need such things on your journey."},
-        {speaker:"trg",ttl:1000,text:"But, where are we going?"}],requirement:'none'}
+        {speaker:"trg",ttl:1000,text:"But, where are we going?"}],requirement:'none',tween:{x: { value: '+=128', duration: 5000, ease: 'Sine.easeOut' },y: { value: '-=0', duration: 1500, ease: 'Linear' }}}
         ];
 
         this.dialogueIndex = guideDialogueIndex;
