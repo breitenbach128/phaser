@@ -318,7 +318,16 @@ class Polaris extends NPC{
         {speaker:"trg",ttl:1000,text:"Can do!"}],requirement:{type:'item',value:0},tween:{x: { value: '+=128', duration: 3000, ease: 'Sine.easeOut' },y: { value: '-=0', duration: 1500, ease: 'Linear' }}},
         {startAction:{type:"delay",value:64},data:
         [{speaker:"src",ttl:2000,text:"Good..good. You will need such things on your journey."},
-        {speaker:"trg",ttl:1000,text:"But, where are we going?"}],requirement:'none',tween:{x: { value: '+=128', duration: 5000, ease: 'Sine.easeOut' },y: { value: '-=0', duration: 1500, ease: 'Linear' }}}
+        {speaker:"trg",ttl:1000,text:"But, where are we going?"}],requirement:'none',tween:{x: { value: '+=128', duration: 5000, ease: 'Sine.easeOut' },y: { value: '-=0', duration: 1500, ease: 'Linear' }}},
+        {startAction:{type:"delay",value:64},data:
+        [{speaker:"src",ttl:2000,text:"Something has changed. I felt it."},
+        {speaker:"src",ttl:2000,text:"A darkness has set upon the land."}],requirement:'none',tween:{x: { value: '+=256', duration: 5000, ease: 'Sine.easeOut' },y: { value: '+=20', duration: 1500, ease: 'Linear' }}},
+        {startAction:{type:"delay",value:64},data:
+        [{speaker:"src",ttl:2000,text:"We must hurry"},
+        {speaker:"src",ttl:2000,text:"You must discover what has happened to your sister"},
+        {speaker:"src",ttl:4000,text:"The journey is going to be very dangerous. My advice wont be enough.."},
+        {speaker:"src",ttl:6000,text:"..."},
+        {speaker:"src",ttl:2000,text:"There is one thing that may offer hope."}],requirement:'none',tween:{x: { value: '+=32', duration: 5000, ease: 'Sine.easeOut' },y: { value: '+=0', duration: 1500, ease: 'Linear' }}}
         ];
 
         this.dialogueIndex = guideDialogueIndex;

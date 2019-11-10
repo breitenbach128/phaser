@@ -1069,7 +1069,9 @@ var GameScene = new Phaser.Class({
 
         shadow_context = this.cutCanvasCircle(soullight.sprite.x,soullight.sprite.y,soullight.protection_radius.value,shadow_context);
         shadow_context = this.cutCanvasCircle(bright.x,bright.y,bright.light_radius,shadow_context);
-
+        if(tutorialRunning){
+            shadow_context = this.cutCanvasCircle(polaris.x,polaris.y,128,shadow_context);
+        }
         if(Phaser.Math.Distance.Between(soullight.sprite.x,soullight.y,solana.sprite.x,solana.sprite.y) <= soullight.protection_radius.value){solana_in_light = true;}
 
         //is the solana outside the light? Do damage!
