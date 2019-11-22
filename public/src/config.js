@@ -1,4 +1,4 @@
-var socket = io();
+//var socket = io();
     var config = {
         type: Phaser.WEBGL,
         width: 1280,
