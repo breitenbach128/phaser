@@ -1115,18 +1115,7 @@ var GameScene = new Phaser.Class({
             if(current_map == "map2"){current_map = "map3"}else{current_map = "map2"}; 
             hud.clearHud();       
             this.scene.restart();
-        }    
-
-        if(keyPad.checkKeyState('Z') == 1 && playerMode == 0){  
-            bright.followMode = !bright.followMode;
-            if(!bright.dialogue.isRunning){
-                let stext = "Alright, I'll follow you.";
-                if(!bright.followMode){stext = "Staying put.";};
-                let brightFollowSpeech = [{speaker:bright,ttl:2000,text:stext}];
-                bright.dialogue = new Dialogue(this,brightFollowSpeech,54,-40);
-                bright.dialogue.start();
-            }
-        }    
+        }   
         
         //Scroll parallax based on movement of bright or solana
         if(solana.mv_Xdiff != 0){
@@ -1135,6 +1124,16 @@ var GameScene = new Phaser.Class({
             world_background.tilePositionX += paraMove;
         }   
       
+    },
+    brightFollowMode: function(){
+        bright.followMode = !bright.followMode;
+        if(!bright.dialogue.isRunning){
+            let stext = "Alright, I'll follow you.";
+            if(!bright.followMode){stext = "Staying put.";};
+            let brightFollowSpeech = [{speaker:bright,ttl:2000,text:stext}];
+            bright.dialogue = new Dialogue(this,brightFollowSpeech,54,-40);
+            bright.dialogue.start();
+        }
     },
     changePlayer: function(){
         //this.cameras.main.stopFollow();

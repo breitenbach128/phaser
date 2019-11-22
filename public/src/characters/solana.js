@@ -113,7 +113,13 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             let control_shootRelease = this.getControllerAction('shootR');         
             let control_passPress = this.getControllerAction('pass');
             let control_passRelease = this.getControllerAction('passR');
+            let control_brightFollow = this.getControllerAction('brightFollow');
 
+
+            //Toggle Bright follow in single player mode. In Multiplayer mode, send an alert/highlight position/ping
+            if(control_brightFollow && playerMode == 0){
+                this.scene.brightFollowMode();
+            }
             //Detection Code for Jumping
 
             if(this.touching.left > 0 && control_left){                
@@ -283,6 +289,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == -1);
                 case 'changeplayer':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('leftTrigger') == 1);
+                case 'brightFollow':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('leftShoulder') == 1);
                 default:
                     return false;
             }
@@ -308,6 +316,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     return (keyPad.checkKeyState('R') == -1);
                 case 'changeplayer':
                     return (keyPad.checkKeyState('Q') == 1);
+                case 'brightFollow':
+                    return (keyPad.checkKeyState('Z') == 1);
                 default:
                     return false;
     

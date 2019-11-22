@@ -143,6 +143,7 @@ var socket = io();
         char:players.BRIGHT
     }];
     var curr_player = playerConfig[0].char;
+
     //Global Gamepad Mozilla API functions
     // window.addEventListener("gamepadconnected", function(e) {
     //     console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
@@ -171,22 +172,21 @@ var socket = io();
                     
     //     }
     // }
+
     //Global Gamepad Phaser Functions
     function initGamePads(scene,callback){
         console.log("Setup GamePad for ", scene.scene.key);
         gamePad[0] = new GamepadControl(0);
         gamePad[1] = new GamepadControl(0);
 
-        // scene.input.gamepad.once('connected', function (pad) {
-        //     //   'pad' is a reference to the gamepad that was just connected
-        //     console.log(scene.scene.key,"gamepad connected"); 
-        //     addGamePads(new GamepadControl(pad));            
-        //     callback(scene); 
-        // }, scene);
-        scene.input.gamepad.once('down', function (pad, button, index) {
-            console.log(scene.scene.key,'Playing with ' + pad.id);    
-            addGamePads(new GamepadControl(pad));  
-            callback(scene); 
+        scene.input.gamepad.on('down', function (pad, button, index) {
+            let iagp = getInactiveGamePad();
+            if(iagp != -1){
+                console.log(scene.scene.key,'Playing with ' + pad.id, pad.index);    
+                //addGamePads(new GamepadControl(pad));  
+                addGamePadsByIndex(new GamepadControl(pad),pad.index);
+                callback(scene); 
+            }
         }, scene);
        
     }
@@ -220,14 +220,23 @@ var socket = io();
         }
         return -1;
     }
+    function addGamePadsByIndex(pad,i){
+        if(gamePad[i].ready == false && i < 2){
+            gamePad[i] = pad;
+            gamePad[i].index = i;
+        }
+    }
     function addGamePads(pad){
         let availPad = getInactiveGamePad();
+        console.log("Adding Game Pad (FUNC): to index",availPad);
         if(availPad == -1){
             //All pads filled up. 
+            console.log("No gamepads available!")
         }else{
             gamePad[availPad] = pad;
-            gamePad[availPad].index = availPad;
+            gamePad[availPad].index = availPad;            
         }
+        console.log("gamepad data:",gamePad,"navGPs:",navigator.getGamepads());
     }
     function createControls(scene){
         //Configure Controls by simple names

@@ -80,22 +80,22 @@ var MainMenu = new Phaser.Class({
     update: function(){
         updateGamePads();
 
-        if(gamePad[0].getStickLeft().y == 1 || gamePad[1].getStickLeft().y == 1){
+        if(gamePad[0].getStickLeft(.1).y == 1 || gamePad[1].getStickLeft(.1).y == 1){
             if(this.stickChoke.c < this.stickChoke.m){
                 this.stickChoke.c++;
             }else{
                 this.stickChoke.c=0;
                 this.selectMenuItem(1);
-                //console.log("Menu Up");
+                console.log("Menu Down");
             }
         }
-        if(gamePad[0].getStickLeft().y == -1 || gamePad[1].getStickLeft().y == -1){
+        if(gamePad[0].getStickLeft(.1).y == -1 || gamePad[1].getStickLeft(.1).y == -1){
             if(this.stickChoke.c < this.stickChoke.m){
                 this.stickChoke.c++;
             }else{
                 this.stickChoke.c=0;
                 this.selectMenuItem(-1);
-                //console.log("Menu Up");
+                console.log("Menu Up");
             }
         }
         if(gamePad[0].checkButtonState('A') == 1 || gamePad[1].checkButtonState('A') == 1){
