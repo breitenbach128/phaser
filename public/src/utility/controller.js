@@ -10,10 +10,11 @@ class GamepadControl {
             for(var i=0;i<4;i++){
                 device.axes[i]=0;
             }
-            //console.log("game Controller class booted - no controller. Loaded with empty values");
+            console.log("game Controller class booted - no controller. Loaded with empty values");
         }else{
-            //console.log("game Controller class booted");
-            this.ready = true;
+            console.log("game Controller class booted");
+            //this.ready = true;
+            this.loadGamePadConfiguration(device);
         }
 
         this.pad = device;
@@ -37,43 +38,79 @@ class GamepadControl {
             start: {i:9,s:0},
             leftPush: {i:10,s:0},
             rightPush: {i:11,s:0}
+        }
 
+        this.analogs = {
+            left: {x: 0, y: 1},
+            right: {x: 2, y: 3}
         }
         //Button State - 0-up, 1-Down, 2-Held
         //pad.axes
         this.sticks = {
-            left : {x : this.pad.axes[0], y : this.pad.axes[1] },
-            right: {x : this.pad.axes[2], y : this.pad.axes[3] }
+            left : {x : this.pad.axes[this.analogs.left.x], y : this.pad.axes[this.analogs.left.y] },
+            right: {x : this.pad.axes[this.analogs.right.x], y : this.pad.axes[this.analogs.right.y] }
         }
         this.keys = Object.keys(this.buttons);
        
     }
-    updateButtonState(){
-        //Reduce the object keys function call but setting the keynames one time, instead of each loop
-        this.keys.forEach(function(name) {        
-            let state = false;
-             //Phaser Gamepad Ver
-            let pad = this.pad;
-            if(this.index >= 0){
-            //Mozilla API Ver            
-                pad = navigator.getGamepads()[this.index];
-                //Update Sticks
-                this.sticks.left.x = pad.axes[0];
-                this.sticks.left.y = pad.axes[1];
-                this.sticks.right.x = pad.axes[2];
-                this.sticks.right.y = pad.axes[3];
+    loadGamePadConfiguration(device){
+        let id = device.id;
+        let configs = Object.keys(gamepadConfigs);
+        let foundConfig = false;
+        for(let c=0;c < configs.length;c++){
+            let curr_config = configs[c];
+            let id_List = gamepadConfigs[curr_config].ids;
+            for(let m=0;m<id_List.length;m++){
+                let checkId = id_List[m];
+                if(id.match(checkId)){
+                    foundConfig = true;
+                    break;
+                }
+            };
+
+            if(foundConfig){
+                //Found Config, so load it.
+                console.log("Found Matching Config:",curr_config);
+
+
+
+                //Set device to ready
+                this.ready = true;
+                break;
             }
+        };
+
+        if(!foundConfig){
+            //no config found! Send back error: Unrecognized Controller
+            console.log("Controller not recognized!");
+        }
+
+    }
+    updateButtonState(){
+        if(this.index >= 0){
+            //Phaser Gamepad Ver
+            let pad = this.pad;
+            pad = navigator.getGamepads()[this.index];
             if(pad != 0 && pad != null && pad != undefined){
-                state = pad.buttons[this.buttons[name].i].pressed;
-            } 
-            //If not change, then return current state        
-            if(!state){
-                this.buttons[name].s = this.buttons[name].s > 0 ? -1 : 0;                
-            }else{            
-                this.buttons[name].s++; 
-            } 
-        },this)
-          
+                //Update each botton by name
+                this.keys.forEach(function(name) {        
+                    let state = false;                     
+                    state = pad.buttons[this.buttons[name].i].pressed;
+                    
+                    //If not change, then return current state        
+                    if(!state){
+                        this.buttons[name].s = this.buttons[name].s > 0 ? -1 : 0;                
+                    }else{            
+                        this.buttons[name].s++; 
+                    } 
+                },this)
+                //Update Axis 
+                this.sticks.left.x = pad.axes[this.analogs.left.x];
+                this.sticks.left.y = pad.axes[this.analogs.left.y];
+                this.sticks.right.x = pad.axes[this.analogs.right.x];
+                this.sticks.right.y = pad.axes[this.analogs.right.y];
+            }          
+        }
     }
     //Need a single state updater to check the state conditions for each button.
     //Then use the check button state to just pull out the number.

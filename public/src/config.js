@@ -143,7 +143,64 @@
         char:players.BRIGHT
     }];
     var curr_player = playerConfig[0].char;
+    var gamepadConfigs = {
+        XBOX360: {
+            ids:["Xbox"],
+            setupButtons:  {          
+                up: {i:12,s:0},
+                down: {i:13,s:0},
+                left: {i:14,s:0},
+                right: {i:15,s:0},
+                A: {i:0,s:0}, //A
+                B: {i:1,s:0}, //B
+                X: {i:2,s:0}, //X
+                Y: {i:3,s:0}, //Y
+                leftShoulder: {i:4,s:0}, //Left Shoulder
+                rightShoulder: {i:5,s:0}, // Right Shoulder
+                leftTrigger: {i:6,s:0}, //Left Trigger
+                rightTrigger: {i:7,s:0}, // Right Trigger
+                select : {i:8,s:0},
+                start: {i:9,s:0},
+                leftPush: {i:10,s:0},
+                rightPush: {i:11,s:0}
+            },
+            setupAxes:{
+                left : {x : 0, y : 1 },
+                right: {x : 2, y : 3 }
+            },
+            setupAnalogDirPad: false,
 
+        },
+        GAMECUBE:{
+            ids:["Wired Fight Pad","Faceoff Wired Pro"],
+            setupButtons:  {      
+                X: {i:0,s:0}, 
+                B: {i:1,s:0}, 
+                A: {i:2,s:0}, 
+                Y: {i:3,s:0}, 
+                leftShoulder: {i:4,s:0}, //Left Shoulder
+                rightShoulder: {i:5,s:0}, // Right Shoulder
+                leftTrigger: {i:6,s:0}, //Left Trigger
+                rightTrigger: {i:7,s:0}, // Right Trigger
+                select : {i:8,s:0},
+                start: {i:9,s:0},
+                leftPush: {i:10,s:0},
+                rightPush: {i:11,s:0}
+            },
+            setupAxes:{
+                left : {x : 0, y : 1 },
+                right: {x : 2, y : 3 }
+            },
+            setupAnalogDirPad: true,
+            setupDirPad: {
+                up: {i:9,v:-1},
+                down: {i:9,v:0.14285719394683838},
+                left: {i:9,v:0.7142857313156128},
+                right: {i:9,v:-0.4285714030265808},
+            }
+
+        }
+    }
     //Global Gamepad Mozilla API functions
     // window.addEventListener("gamepadconnected", function(e) {
     //     console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
