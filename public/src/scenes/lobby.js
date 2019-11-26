@@ -203,8 +203,8 @@ var LobbyScene = new Phaser.Class({
         if(gamePad[0].checkButtonState('start') > 0 || gamePad[1].checkButtonState('start') > 0){
             this.doStart();
         }
-        this.debug.setText("P1-CTRL:"+String(playerConfig[0].ctrl)+" "+String(playerConfig[1].ctrlSN)
-        +"\nP2-CTRL:"+String(playerConfig[1].ctrl)+" "+String(playerConfig[1].ctrlSN));
+        this.debug.setText("P1-CTRL_ID:"+String(playerConfig[0].ctrl)+" Name:"+String(playerConfig[0].ctrlSN)
+        +"\nP2-CTRL_ID:"+String(playerConfig[1].ctrl)+" Name:"+String(playerConfig[1].ctrlSN));
     },
     onObjectClicked(pointer,gameObject)
     {

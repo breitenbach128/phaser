@@ -270,13 +270,13 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         if(this.ctrlDeviceId >=0){
             switch(action){
                 case 'up':
-                    return (gamePad[this.ctrlDeviceId].getStickLeft(.1).y < 0);
+                    return (gamePad[this.ctrlDeviceId].getStickLeft(.5).y < 0);
                 case 'down':
-                    return (gamePad[this.ctrlDeviceId].getStickLeft(.1).y > 0);
+                    return (gamePad[this.ctrlDeviceId].getStickLeft(.5).y > 0);
                 case 'left':
-                    return (gamePad[this.ctrlDeviceId].getStickLeft(.1).x < 0);
+                    return (gamePad[this.ctrlDeviceId].getStickLeft(.5).x < 0);
                 case 'right':
-                    return (gamePad[this.ctrlDeviceId].getStickLeft(.1).x > 0);
+                    return (gamePad[this.ctrlDeviceId].getStickLeft(.5).x > 0);
                 case 'jump':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('A') == 1);
                 case 'shoot':

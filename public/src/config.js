@@ -193,10 +193,10 @@
             },
             setupAnalogDirPad: true,
             setupDirPad: {
-                up: {i:9,v:-1},
-                down: {i:9,v:0.14285719394683838},
-                left: {i:9,v:0.7142857313156128},
-                right: {i:9,v:-0.4285714030265808},
+                up: {i:9,v:-1,s:0},
+                down: {i:9,v:0.14285719394683838,s:0},
+                left: {i:9,v:0.7142857313156128,s:0},
+                right: {i:9,v:-0.4285714030265808,s:0},
             }
 
         }
@@ -239,10 +239,12 @@
         scene.input.gamepad.on('down', function (pad, button, index) {
             let iagp = getInactiveGamePad();
             if(iagp != -1){
-                console.log(scene.scene.key,'Playing with ' + pad.id, pad.index);    
-                //addGamePads(new GamepadControl(pad));  
-                addGamePadsByIndex(new GamepadControl(pad),pad.index);
-                callback(scene); 
+                if(!gamePad[pad.index].ready){
+                    console.log(scene.scene.key,'Playing with ' + pad.id, pad.index);    
+                    //addGamePads(new GamepadControl(pad));  
+                    addGamePadsByIndex(new GamepadControl(pad),pad.index);
+                    callback(scene); 
+                }
             }
         }, scene);
        

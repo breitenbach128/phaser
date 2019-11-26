@@ -1462,7 +1462,7 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'bright-idle',
         frames: scene.anims.generateFrameNumbers('bright', { start: 0, end: 1 }),
-        frameRate: 6,
+        frameRate: 2,
         repeat: -1
     });
     scene.anims.create({

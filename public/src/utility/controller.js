@@ -11,15 +11,29 @@ class GamepadControl {
                 device.axes[i]=0;
             }
             console.log("game Controller class booted - no controller. Loaded with empty values");
+            this.loadDefaults();
         }else{
             console.log("game Controller class booted");
             //this.ready = true;
             this.loadGamePadConfiguration(device);
+            
+
         }
 
         this.pad = device;
         this.index = -1;
         
+        //Button State - 0-up, 1-Down, 2-Held
+        //pad.axes
+        this.sticks = {
+            left : {x : this.pad.axes[this.analogs.left.x], y : this.pad.axes[this.analogs.left.y] },
+            right: {x : this.pad.axes[this.analogs.right.x], y : this.pad.axes[this.analogs.right.y] }
+        }
+
+        this.keys = Object.keys(this.buttons);
+       
+    }
+    loadDefaults(){
         //pad.buttons
         this.buttons = {
             up: {i:12,s:0},
@@ -39,19 +53,20 @@ class GamepadControl {
             leftPush: {i:10,s:0},
             rightPush: {i:11,s:0}
         }
-
+        //Analog sticks.buttons
         this.analogs = {
             left: {x: 0, y: 1},
             right: {x: 2, y: 3}
         }
-        //Button State - 0-up, 1-Down, 2-Held
-        //pad.axes
-        this.sticks = {
-            left : {x : this.pad.axes[this.analogs.left.x], y : this.pad.axes[this.analogs.left.y] },
-            right: {x : this.pad.axes[this.analogs.right.x], y : this.pad.axes[this.analogs.right.y] }
+        //Does the D-pad use analog signals?
+        this.usesAnalogDirPad = false;
+        //What values does the D-pad require to show a press?
+        this.dirPadAnalogs = {
+            up: {i:9,v:-1,s:0},
+            down: {i:9,v:0.14285719394683838,s:0},
+            left: {i:9,v:0.7142857313156128,s:0},
+            right: {i:9,v:-0.4285714030265808,s:0},
         }
-        this.keys = Object.keys(this.buttons);
-       
     }
     loadGamePadConfiguration(device){
         let id = device.id;
@@ -70,8 +85,14 @@ class GamepadControl {
 
             if(foundConfig){
                 //Found Config, so load it.
-                console.log("Found Matching Config:",curr_config);
+                console.log("Found Matching Config:",gamepadConfigs[curr_config]);
+                this.buttons = gamepadConfigs[curr_config].setupButtons;
+                this.analogs = gamepadConfigs[curr_config].setupAxes;
 
+                if(gamepadConfigs[curr_config].setupAnalogDirPad){
+                    this.usesAnalogDirPad = true;
+                    this.dirPadAnalogs = gamepadConfigs[curr_config].setupDirPad;
+                }
 
 
                 //Set device to ready
@@ -83,6 +104,11 @@ class GamepadControl {
         if(!foundConfig){
             //no config found! Send back error: Unrecognized Controller
             console.log("Controller not recognized!");
+
+            //In future, have player setup controller, for now, just load defaults from xbox
+            let curr_config = configs['XBOX360'];
+            this.buttons = curr_config.setupButtons;
+            this.analogs = curr_config.setupAxes;
         }
 
     }
@@ -109,12 +135,29 @@ class GamepadControl {
                 this.sticks.left.y = pad.axes[this.analogs.left.y];
                 this.sticks.right.x = pad.axes[this.analogs.right.x];
                 this.sticks.right.y = pad.axes[this.analogs.right.y];
+                //IF d-pad is analog, check it as well
+                if(this.usesAnalogDirPad){
+                    let apd_Keys = Object.keys(this.dirPadAnalogs);
+                    apd_Keys.forEach(function(k){
+                        let chk = (this.dirPadAnalogs[k].i == this.dirPadAnalogs[k].v);
+                        if(!chk){
+                            this.dirPadAnalogs[k].s = this.dirPadAnalogs[k].s > 0 ? -1 : 0;                        
+                        }else{
+                            this.dirPadAnalogs[k].s++;
+                        }
+                    },this);
+                }
             }          
         }
     }
     //Need a single state updater to check the state conditions for each button.
     //Then use the check button state to just pull out the number.
     checkButtonState(name){  
+        if(this.usesAnalogDirPad){
+            if((Object.keys(this.dirPadAnalogs)).includes(name)){
+                return this.dirPadAnalogs[name].s
+            }
+        }
         return this.buttons[name].s;              
     }
     getStickLeft(threshold){
