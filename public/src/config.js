@@ -138,7 +138,7 @@
     },
     {
         id:1,
-        ctrl:CTRLS.GP1,
+        ctrl:CTRLS.KB,
         ctrlSN: 0,
         char:players.BRIGHT
     }];
@@ -243,7 +243,7 @@
                     console.log(scene.scene.key,'Playing with ' + pad.id, pad.index);    
                     //addGamePads(new GamepadControl(pad));  
                     addGamePadsByIndex(new GamepadControl(pad),pad.index);
-                    callback(scene); 
+                    callback(scene,pad.index); 
                 }
             }
         }, scene);
@@ -278,6 +278,15 @@
             }
         }
         return -1;
+    }
+    function getLastActiveGamePad(){
+        let la = 0;
+        for(let i=0;i < gamePad.length;i++){
+            if(gamePad[i].ready == true){
+                la = i;
+            }
+        }
+        return la;
     }
     function addGamePadsByIndex(pad,i){
         if(gamePad[i].ready == false && i < 2){

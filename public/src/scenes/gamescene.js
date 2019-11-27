@@ -934,9 +934,6 @@ var GameScene = new Phaser.Class({
         //Mouse
         pointer = this.input.activePointer;
 
-        //Controller management
-        //initGamePads(this,this.gamepadCallback);
-
         keyPad = new KeyboardMouseControl(this,pointer)
 
         if(playerMode == 0){
@@ -975,12 +972,6 @@ var GameScene = new Phaser.Class({
 
 
         
-    },
-    gamepadCallback(scene){  
-        console.log("GameScene GP Callback");   
-        let activePads = getActiveGamePadCount();   
-        bright.setController(activePads-2);//IF activepads  == 1, bright goes Keyboard (-1), solana goes GP[0]
-        solana.setController(activePads-1);//If activepads == 2, bright goes GP[1], soland goes GP[0]
     },
     update: function (time, delta)
     {

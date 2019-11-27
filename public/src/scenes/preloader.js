@@ -157,7 +157,7 @@ var Preloader = new Phaser.Class({
 		this.load.audio('coin', ['snd/coin.mp3', 'snd/coin.ogg']);
 		this.load.audio('bomb', ['snd/expl.mp3', 'snd/expl.ogg']);
 		this.load.audio('btn',  ['snd/btn.mp3', 'snd/btn.ogg']);
-		this.load.audio('jumpSolana',  ['snd/SFX_Jump_07.wav']);
+		this.load.audio('jumpSolana',  ['snd/jump1.mp3']);
 		this.load.audio('switch1',  ['snd/switch1.mp3']);
 		this.load.audio('switch2',  ['snd/switch2.mp3']);
 		

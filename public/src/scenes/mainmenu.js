@@ -62,7 +62,7 @@ var MainMenu = new Phaser.Class({
         this.stickChoke = {c:0,m:5};
 
     },
-    showMenuSelect(scene){
+    showMenuSelect(scene,navIndex){
         scene.selectionRect.setVisible(true);
     },
     transitionSet(){
