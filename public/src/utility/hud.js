@@ -39,6 +39,11 @@ class HudScene extends Phaser.Scene {
             this.energy_bar[h].destroy();
         }  
         this.energy_bar = [];
+        this.shards_light.destroy();
+        this.shard_data_l.destroy();
+        this.shards_dark.destroy();
+        this.shard_data_d.destroy();
+        
         this.debug.destroy();
     }
     setBossVisible(value){

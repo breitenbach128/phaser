@@ -370,7 +370,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.sprite.setVelocityY(-jumpVel);
         }
         
-        this.soundJump.play();
+        this.soundJump.play("",{volume:.025});
     }
     addEffects(effects){
         //Loop through effect array. If found of same type, set new duration.

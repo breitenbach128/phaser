@@ -126,6 +126,9 @@ var GameScene = new Phaser.Class({
         //Emit Events
         //this.events.emit('solanaSetup'); 
 
+        //Setup HUD
+        hud.setupHud(solana);
+
         //Animations - Move to JSON later, if it makes sense       
         createAnimations(this);
 
@@ -528,8 +531,6 @@ var GameScene = new Phaser.Class({
 
          //Start soulight play
          soullight.sprite.anims.play('soulight-move', true);//Idle
-
-        hud.setupHud(solana);
 
         solana.setDepth(DEPTH_LAYERS.FRONT);
         bright.setDepth(DEPTH_LAYERS.FRONT);

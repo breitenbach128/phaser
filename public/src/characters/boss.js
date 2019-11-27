@@ -64,14 +64,14 @@ class SpiderHive extends Phaser.Physics.Matter.Sprite{
             if(spiders.countActive(true) < 3){
                 this.spawnGlob.fire(this.x, this.y-(this.height*1/4), 2, -6, 300);
             }else{
-                let pc = 8; 
+                let pc = Phaser.Math.Between(4,12); 
                 let angleInc = 180/pc;
-
+                angleInc+=(Phaser.Math.Between(-5,5));
                 for(let p=1;p < pc;p++){
                     let acidBullet = this.acidGroup.get(this.x, this.y,'bullet',0);
                     acidBullet.setCollidesWith([ CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.SOLANA ])
                     acidBullet.setDepth(DEPTH_LAYERS.ENEMIES-1);
-                    let acidSpeed = 3;
+                    let acidSpeed = 3;                    
                     let angle = (angleInc*p)*(Math.PI/180)*-1;
                     let vecX = Math.cos(angle)*acidSpeed;
                     let vecY = Math.sin(angle)*acidSpeed; 
