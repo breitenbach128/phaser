@@ -56,7 +56,7 @@
     triggerzones,platforms,barriers,
     ab_solarblasts,crystallamps,ab_brightbeams,
     rocks,crates,npcs,spiders,boss,light_shards,
-    breakabletiles;    
+    breakabletiles,light_bursts;    
     var new_enemy;
     var spawner;
     var spawnlayer;

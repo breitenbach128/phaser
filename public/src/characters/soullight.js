@@ -209,7 +209,7 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
             .setPosition(x, y)
             .setIgnoreGravity(true)
             .setCollisionCategory(CATEGORY.BULLET)
-            .setCollidesWith([ CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.BRIGHT, CATEGORY.SOLANA, CATEGORY.DARK ]);
+            .setCollidesWith([ CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.ENEMY, CATEGORY.BRIGHT, CATEGORY.SOLANA, CATEGORY.DARK ]);
           //Custom properties
         this.parent = parent;
         this.timer = this.scene.time.addEvent({ delay: 2000, callback: this.kill, callbackScope: this, loop: false });
@@ -224,6 +224,12 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
             this.parent.readyPass();
             this.timer = this.scene.time.addEvent({ delay: 100, callback: this.kill, callbackScope: this, loop: false });
         }
+    }
+    burn(){
+        this.timer = this.scene.time.addEvent({ delay: 100, callback: this.kill, callbackScope: this, loop: false });
+        //Need to make it inactive here.
+        this.setVelocity(0,0);
+        this.setPosition(-1000,-1000);
     }
     update(time,delta)
     {

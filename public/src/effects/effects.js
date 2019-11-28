@@ -177,4 +177,47 @@ class LightShard extends Phaser.Physics.Matter.Sprite{
     }
 
 };
+//Light Burst
+class LightBurst extends Phaser.Physics.Matter.Sprite{
 
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'light_burst_2', 0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this);
+        //Bodies
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; 
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.circle(0,0,w*.40);
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.05,
+            friction: 0.1,
+            restitution : 0.0,
+            label: "LIGHT_BURST"
+        });
+        this.setExistingBody(compoundBody)
+        .setCollidesWith([0]).setPosition(x, y)
+        .setScale(.25).setIgnoreGravity(true);
+
+        this.on('animationcomplete',this.death,this); 
+        this.anims.play('light_burst_action', true);
+
+        //Add into game. When a soullight transfer hits an non-player target, and burns, it generates the LightBurst effect, which is just a visual
+    }
+    death(){
+        this.setPosition(-1000,-1000);
+        this.setActive(false);
+        this.setVisible(false);
+    }
+    update(time, delta)
+    {
+        if(this.active){
+
+        }
+
+    }
+
+};
+//light_burst_2

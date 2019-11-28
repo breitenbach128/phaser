@@ -263,7 +263,12 @@ var GameScene = new Phaser.Class({
             classType: BreakableTile,
             runChildUpdate: true 
         });
-
+        //Light Bursts
+        light_bursts = this.add.group({ 
+            classType: LightBurst,
+            runChildUpdate: true 
+        });
+        
         //Clear Boss
         boss = -1;
 
@@ -882,6 +887,28 @@ var GameScene = new Phaser.Class({
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
                     if (gObjs[0].active){
                         gObjs[0].hit(0);
+                    }  
+                }
+                //Between SoulTransfer and Solid
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'SOLID') || (bodyA.label === 'SOLID' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
+                    if (gObjs[0].active){
+                        gObjs[0].burn();
+                    }  
+                }
+                //Between SoulTransfer and Ground
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'GROUND') || (bodyA.label === 'GROUND' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
+                    if (gObjs[0].active){
+                        gObjs[0].burn();
+                    }  
+                }
+                //Between SoulTransfer and Enemies
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'ENEMY') || (bodyA.label === 'ENEMY' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
+                    if (gObjs[0].active){
+                        gObjs[0].burn();
+                        gObjs[1].receiveDamage(1);
                     }  
                 }
                 //Between SoulTransfer and Bright
@@ -1613,6 +1640,18 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'boss-hive',
         frames: scene.anims.generateFrameNumbers('boss_spiderhive', { frames:[0,1] }),
+        frameRate: 3,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'light_burst_action',
+        frames: scene.anims.generateFrameNumbers('light_burst_2', { frames:[0,1,2,3,4,5] }),
+        frameRate: 3,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'light_burst_idle',
+        frames: scene.anims.generateFrameNumbers('light_burst_2', { frames:[0] }),
         frameRate: 3,
         repeat: 0
     });
