@@ -45,7 +45,7 @@
     var global_gravity = 400;
     //Tiles
     var map; 
-    var current_map = "map5";
+    var current_map = "map2";
     var current_exit = "west1";
     var world_background;
     //Game Objects

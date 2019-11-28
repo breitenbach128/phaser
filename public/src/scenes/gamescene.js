@@ -806,7 +806,7 @@ var GameScene = new Phaser.Class({
                     if (gObjs[0].ready == false && gObjs[0].y < gObjs[1].tile.pixelY){
                         emitter0.active = true;
                         emitter0.explode(5,gObjs[0].x,gObjs[0].y);
-                        gObjs[0].destroy();
+                        gObjs[0].setDead();
                     }  
                 }
                 //Between Bullets and SOLID

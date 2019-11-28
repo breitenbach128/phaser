@@ -203,14 +203,20 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
         .setStatic(true);
         //Custom Props
         this.ready = true;
+        this.dead = false;
     }
     setup(x,y){
         this.setActive(true);
         this.setPosition(x,y); 
     }
+    setDead(){
+        this.dead = true;
+    }
     update(time, delta)
     {       
-
+        if(this.dead){
+            this.destroy();
+        }
     }
     touched(){
         //Gradual Wobble and then fall
