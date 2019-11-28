@@ -81,6 +81,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.debug = this.scene.add.text(this.x, this.y-16, 'Solana', { resolution: 2,fontSize: '10px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 }).setOrigin(.5);
         //Sounds
         this.soundJump = game.sound.add('jumpSolana');
+        this.soundHurt = game.sound.add('impact_hurt_groan',{volume: 0.04});
 
         //JumpTimer
         this.jumpTimer = this.scene.time.addEvent({ delay: 10, callback: this.forgiveJump, callbackScope: this, loop: false });
@@ -217,7 +218,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 //Check for shooting 
                 if(control_shoot && this.equipment[0].equiped){
                     if(!this.isAnimLocked){solana.sprite.anims.play('solana-shoot', true);};    
-                    let costToFireWeapon = -9000;//Was 10     
+                    let costToFireWeapon = 10;//Was 10     
                     let wpRof = 350;
 
                     
@@ -229,9 +230,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         let targVector = {x:pointer.worldX,y:pointer.worldY};
                         if(this.ctrlDeviceId >=0){
                             //Overwrite target vector with gamePad coords
-                            let gpVec = gamePad[this.ctrlDeviceId].getStickRight(0);
+                            let stickRight = gamePad[this.ctrlDeviceId].getStickRight(.1);
+                            let stickLeft = gamePad[this.ctrlDeviceId].getStickLeft(.1);
+                            let gpVec = stickRight.x == 0 && stickRight.y == 0 ? stickLeft : stickRight;
                             targVector = {x:this.x+gpVec.x,y:this.y+gpVec.y};
-                            console.log(gpVec);
+                            //console.log(gpVec,stickLeft,stickRight);
                         }
                         let angle = Phaser.Math.Angle.Between(this.x,this.y, targVector.x,targVector.y);
                         let bulletSpeed = 6;
@@ -475,7 +478,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.invuln = true;
             this.setTint(0xFF0000);
             //invuln timer
-            this.energyTimer = this.scene.time.addEvent({ delay: 100, callback: this.disableInvuln, callbackScope: this, loop: true });
+            this.energyTimer = this.scene.time.addEvent({ delay: 300, callback: this.disableInvuln, callbackScope: this, loop: true });
             //Kill Blips
             this.scene.events.emit('playerHurt');
             hud.setHealth(this.hp,this.max_hp);
@@ -483,7 +486,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.hp -= damage; 
             emitter_blood.active = true;
             emitter_blood.explode(24,this.x,this.y);
-
+            // Play Sound
+            this.soundHurt.play();
             // if hp drops below 0, die
             if(this.hp <= 0) {
                 this.alive = false;                         

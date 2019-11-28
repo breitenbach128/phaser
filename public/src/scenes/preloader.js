@@ -142,7 +142,9 @@ var Preloader = new Phaser.Class({
 		this.load.image('tmxwindow', 'assets/objects/tmxwindow.png');
 		// - HUD
 		this.load.spritesheet('hud_interaction_control_arrows','assets/hud/hud_interaction_control_arrows.png',{frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('hud_energybar1','assets/hud/hud_energybar1.png',{frameWidth: 16, frameHeight: 96});
+		this.load.spritesheet('hud_energybar1','assets/hud/hud_energybar1.png',{frameWidth: 16, frameHeight: 96});		
+		this.load.spritesheet('hud_corruptionbar1','assets/hud/hud_corruptionbar1.png',{frameWidth: 16, frameHeight: 96});
+		
 		this.load.spritesheet('hud_boss_health_bar','assets/hud/boss_health_bar.png',{frameWidth: 64, frameHeight: 16});
 		//Effects / Particles
 		this.load.atlas('shapes', 'assets/effects/shapes.png', 'assets/effects/shapes.json');
@@ -160,6 +162,7 @@ var Preloader = new Phaser.Class({
 		this.load.audio('jumpSolana',  ['snd/jump1.mp3']);
 		this.load.audio('switch1',  ['snd/switch1.mp3']);
 		this.load.audio('switch2',  ['snd/switch2.mp3']);
+		this.load.audio('impact_hurt_groan',['snd/johnj_human_impact_hit_punch_head_slam_male_groan.mp3'])
 		
 		// !! TESTING !! load the same image 500 times just to slow down the load and test the loading bar
 		// for (var i = 0; i < 500; i++) {

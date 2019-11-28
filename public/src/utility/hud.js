@@ -6,9 +6,11 @@ class HudScene extends Phaser.Scene {
 
         this.hp_blips = [];
         this.energy_bar = [];
+        this.corruption_bar = [];
         this.boss_bar = [];
         this.ready = false;
-        this.energy = {n:100,max:100,h:100,w:16};
+        this.energy = {n:300,max:300,h:100,w:16};
+        this.corruption = {n:100,max:100,h:100,w:16};
         this.inventory;
         this.shard_totals = {light:0,dark:0};
         this.showBossBar = false;
@@ -39,6 +41,12 @@ class HudScene extends Phaser.Scene {
             this.energy_bar[h].destroy();
         }  
         this.energy_bar = [];
+
+        for(var h = 0;h < this.corruption_bar.length;h++){
+            this.corruption_bar[h].destroy();
+        }          
+        this.corruption_bar = [];
+
         this.shards_light.destroy();
         this.shard_data_l.destroy();
         this.shards_dark.destroy();
@@ -74,12 +82,16 @@ class HudScene extends Phaser.Scene {
     {
         this.ready = true;
         for(var h = 0;h < player.hp;h++){
-            this.hp_blips.push(this.add.image(36,16+(h*16), 'health_blip'));    
+            this.hp_blips.push(this.add.image(32,16+(h*16), 'health_blip'));    
         }
         //Add energy bar
         this.energy_bar.push(this.add.image(12, 48, 'hud_energybar1',1));//BG
         this.energy_bar.push(this.add.image(12, 48, 'hud_energybar1',2));//ENERGY
         this.energy_bar.push(this.add.image(12, 48, 'hud_energybar1',0));//FG
+        //Add corruption bar
+        this.corruption_bar.push(this.add.image(52, 48, 'hud_corruptionbar1',1));//BG
+        this.corruption_bar.push(this.add.image(52, 48, 'hud_corruptionbar1',2));//ENERGY
+        this.corruption_bar.push(this.add.image(52, 48, 'hud_corruptionbar1',0));//FG
         //Add Boss Health Bar
         this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',2).setScale(6,3));//BG
         this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',1).setScale(6,3));//Health
@@ -99,7 +111,7 @@ class HudScene extends Phaser.Scene {
         this.shard_data_d = this.add.text(this.cameras.main.width-64, 96, '0 x', { fontFamily: 'visitorTT1', fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 }).setOrigin(.5);
 
         //DEBUG
-        this.debug = this.add.text(48, 16, 'DEBUG-HUD', { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
+        this.debug = this.add.text(64, 16, 'DEBUG-HUD', { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
         //HUD Energy Bar Flash/Scale Effect: When energy is added, alter the look for a few MS to show energy has been gained.
         this.energy_bar_effect = this.time.addEvent({ delay: 200, callback: this.resetEnergyScale, callbackScope: this, loop: false });
         this.inventory = new Inventory(this);
@@ -130,6 +142,14 @@ class HudScene extends Phaser.Scene {
             this.energy_bar.forEach(function(e){e.setScale(1.10)});
             this.energy_bar_effect = this.time.addEvent({ delay: 200, callback: this.resetEnergyScale, callbackScope: this, loop: false });
         }
+    }
+    alertCorruption(corruptionChange){
+        let n = this.corruption.n + corruptionChange;
+        if(n < 0){n=0;};
+        if(n > this.corruption.max){n=this.corruption.max;};
+        this.corruption.n = n;
+        let newValue = Math.round((this.corruption.n/this.corruption.max)*this.corruption.h);
+        this.corruption_bar[1].setCrop(0,this.energy.h-newValue,this.energy.w,newValue);
     }
     resetEnergyScale(){
         this.energy_bar.forEach(function(e){e.setScale(1)});

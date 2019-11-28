@@ -1067,7 +1067,14 @@ var GameScene = new Phaser.Class({
         if(Phaser.Math.Distance.Between(soullight.sprite.x,soullight.y,solana.sprite.x,solana.sprite.y) <= soullight.protection_radius.value){solana_in_light = true;}
 
         //is the solana outside the light? Do damage!
+
+        //Instead of doing damage right away, do drain energy. IF totally drained, then take damage.
         solana.inLight = solana_in_light;
+        let rate_of_energy_drain_outside_light = 1;
+        if(!solana_in_light){
+            hud.alterEnergy(-rate_of_energy_drain_outside_light);
+            if(hud.energy.n <= 0){solana.receiveDamage(1);};
+        };
 
         shadow_layer.refresh();
 

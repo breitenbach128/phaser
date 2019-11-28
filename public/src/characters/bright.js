@@ -54,6 +54,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.touching = {up:0,down:0,left:0,right:0};
         this.airTime = 0;//For Camera Shake
         this.light_radius = 50;
+        this.corruption = {c:0, m: 60};
         //Dialogue    
         this.dialogue = new Dialogue(this.scene,[{speaker:this,ttl:0,text:""}],54,-40);  
         //FollowMode Solana
@@ -143,6 +144,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     } 
                 }
                 if(this.light_status == brightMode){
+                    this.corruption.c++;
+                    if(this.corruption.c >= this.corruption.m){this.corruption.c = 0;this.applyCorruption(1);}
                     //BRIGHT CONTROLS 
                     if(control_beam && this.beamReady ){
                         this.beamReady = false;
@@ -183,6 +186,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
                 }else{
                     //DARK CONTROLS
+                    this.corruption.c++;
+                    if(this.corruption.c >= this.corruption.m){this.corruption.c = 0;this.applyCorruption(-1);}
                     if (control_left) {          
                         this.sprite.setAngularVelocity(-this.roll_speed);            
                         this.sprite.anims.play('dark-idle', true);      
@@ -305,6 +310,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     }
     resetBeam(){
        this.beamReady = true; 
+    }
+    applyCorruption(n){
+        hud.alertCorruption(n);
     }
     toDark(){
         this.light_status = 1;
