@@ -136,6 +136,7 @@ class Rock extends Phaser.Physics.Matter.Sprite{
             }
         });
         this.max_speed = 8;
+        this.sound_gotCrushed = game.sound.add('hitting_wall',{volume: 0.04});
     }
     setup(x,y,scale){
         this.setActive(true);
@@ -157,6 +158,7 @@ class Rock extends Phaser.Physics.Matter.Sprite{
     }
     impact(obj){
         if(this.readyCrush){
+            this.sound_gotCrushed.play();
             let fromBody = obj.body;
             let speed = Math.sqrt(Math.pow(fromBody.velocity.x,2)+Math.pow(fromBody.velocity.y,2));
             let force = speed*fromBody.density*100;

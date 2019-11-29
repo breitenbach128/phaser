@@ -1646,13 +1646,13 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'light_burst_action',
         frames: scene.anims.generateFrameNumbers('light_burst_2', { frames:[0,1,2,3,4,5] }),
-        frameRate: 3,
+        frameRate: 12,
         repeat: 0
     });
     scene.anims.create({
         key: 'light_burst_idle',
         frames: scene.anims.generateFrameNumbers('light_burst_2', { frames:[0] }),
-        frameRate: 3,
+        frameRate: 1,
         repeat: 0
     });
 }

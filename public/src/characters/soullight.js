@@ -214,9 +214,14 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         this.parent = parent;
         this.timer = this.scene.time.addEvent({ delay: 2000, callback: this.kill, callbackScope: this, loop: false });
         this.alive = true;
+
+        this.soundfling = game.sound.add('wavingtorch',{volume: 0.04});
+        this.soundfling.addMarker({name:'soul-fling',start:.25,duration:.5});        
+        this.soundfling.addMarker({name:'soul-burn-impact',start:1,duration:.2});
     }
     fire(angle,speed){
         this.setVelocity(Math.cos(angle)*speed,Math.sin(angle)*speed);
+        this.soundfling.play('soul-fling');
     }
     hit(id){
         //Hit other target, so trigger the launch of the soulight.
@@ -226,7 +231,12 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         }
     }
     burn(){
+        this.soundfling.play('soul-burn-impact');
         this.timer = this.scene.time.addEvent({ delay: 100, callback: this.kill, callbackScope: this, loop: false });
+        //DO effect
+        let burst = light_bursts.get(this.x,this.y);
+        burst.burst(this.x,this.y);
+        
         //Need to make it inactive here.
         this.setVelocity(0,0);
         this.setPosition(-1000,-1000);

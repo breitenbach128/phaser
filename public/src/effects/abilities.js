@@ -259,11 +259,6 @@ class SolarBlast extends Phaser.Physics.Matter.Sprite{
 
     }
     hit(){
-        for(let i=0;i < Phaser.Math.Between(1,5);i++){
-            let ls = light_shards.get();
-            ls.spawn(this.x,this.y,300,solana);
-        }
-
         this.lifespan = 0;
         this.kill();
     }

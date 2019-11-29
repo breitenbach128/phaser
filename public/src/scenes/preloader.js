@@ -101,7 +101,7 @@ var Preloader = new Phaser.Class({
         this.load.spritesheet('slime1', 'assets/characters/slimemonster2.png', {frameWidth: 64, frameHeight: 37});    
         this.load.spritesheet('bullet', 'assets/objects/projectiles.png', {frameWidth: 16, frameHeight: 16});
         this.load.image('impact1', 'assets/effects/particles.png');
-        this.load.image('light_burst_2', 'assets/effects/lightburst-2.png');
+        this.load.spritesheet('light_burst_2', 'assets/effects/lightburst-2.png', {frameWidth: 64, frameHeight: 64});
         this.load.image('crate', 'assets/objects/crate.png');
         this.load.image('rocks', 'assets/objects/rocks.png');
         this.load.spritesheet('solana', 'assets/characters/solana.png', {frameWidth: 96, frameHeight: 64});
@@ -164,6 +164,8 @@ var Preloader = new Phaser.Class({
 		this.load.audio('switch1',  ['snd/switch1.mp3']);
 		this.load.audio('switch2',  ['snd/switch2.mp3']);
 		this.load.audio('impact_hurt_groan',['snd/johnj_human_impact_hit_punch_head_slam_male_groan.mp3'])
+		this.load.audio('hitting_wall',  ['snd/Hitting_Wall.wav']);
+		this.load.audio('wavingtorch',  ['snd/WavingTorch.wav']);
 		
 		// !! TESTING !! load the same image 500 times just to slow down the load and test the loading bar
 		// for (var i = 0; i < 500; i++) {

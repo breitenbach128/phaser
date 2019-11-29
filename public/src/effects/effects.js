@@ -202,9 +202,15 @@ class LightBurst extends Phaser.Physics.Matter.Sprite{
         .setScale(.25).setIgnoreGravity(true);
 
         this.on('animationcomplete',this.death,this); 
-        this.anims.play('light_burst_action', true);
+        
 
         //Add into game. When a soullight transfer hits an non-player target, and burns, it generates the LightBurst effect, which is just a visual
+    }
+    burst(x,y){
+        this.setPosition(x,y);
+        this.setActive(true);
+        this.setVisible(true);
+        this.anims.play('light_burst_action', true);
     }
     death(){
         this.setPosition(-1000,-1000);

@@ -301,7 +301,10 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         console.log("Enemy Set Behavior",this.behavior);
     }
     death(animation, frame){
-        
+        for(let i=0;i < Phaser.Math.Between(1,5);i++){
+            let ls = light_shards.get();
+            ls.spawn(this.x,this.y,300,solana);
+        }
         if(animation.key == this.texture.key+'-death'){
             this.setActive(false);
             this.setVisible(false);
