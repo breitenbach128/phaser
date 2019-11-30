@@ -918,6 +918,13 @@ var GameScene = new Phaser.Class({
                         gObjs[0].hit(1);
                     }  
                 }
+                //Between SoulTransfer and Bright
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'MIRROR') || (bodyA.label === 'MIRROR' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'MIRROR');
+                    if (gObjs[0].active){
+                        gObjs[0].hit();
+                    }  
+                }
                 //Solana and Fireflies
                 if ((bodyA.label === 'FIREFLY' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'FIREFLY')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'FIREFLY');
@@ -947,6 +954,13 @@ var GameScene = new Phaser.Class({
                     }
                     bulletObj.hit();
                     lampObj.turnOn();
+
+                }
+                //Lamps and Soul Tranfser
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'CRYSTAL_LAMP') || (bodyA.label === 'CRYSTAL_LAMP' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
+                    gObjs[0].burn();
+                    gObjs[1].turnOn();
 
                 }
                 //Catch any non-event projectiles and destory them if they hit anything else they would not interact with.

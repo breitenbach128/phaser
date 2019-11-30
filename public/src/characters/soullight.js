@@ -39,8 +39,9 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.threshhold_distance = 64;  
         this.move_speed = 1;
         this.base_speed = 1;
-        this.max_speed = 25; 
+        this.max_speed = 10;//25 
         this.accel = 1;
+        this.projectile_speed = 6;//12
         this.sprite.setFriction(.3,.3);
         this.sprite.setIgnoreGravity(true);
         this.protection_radius = {value:250, max: 250, original: 250};//How much does the light protect;
@@ -51,7 +52,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.aimer.setVisible(false);
         this.aimer.ready = true;
         this.aimer.started = false;
-        this.aimerRadius = 64;
+        this.aimerRadius = 52;
         this.aimerCircle = new Phaser.Geom.Circle(this.x, this.y, this.aimerRadius);
 
         // this.aimLine = this.scene.add.line(200,200,25,0,50,0,0xff66ff)
@@ -142,9 +143,9 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         if(this.aimer.ready && this.aimer.started){
             this.aimer.ready = false;
             this.aimer.started = false;
-            let transfer = new SoulTransfer(this.scene,this.x,this.y,'soullightblast',0,this);
+            let transfer = new SoulTransfer(this.scene,this.aimer.x,this.aimer.y,'soullightblast',0,this);
             transfer.rotation = this.aimer.rotation;
-            transfer.fire(transfer.rotation,12);
+            transfer.fire(transfer.rotation,this.projectile_speed);
         }
     }
     homeLight(){
@@ -186,7 +187,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 class SoulTransfer extends Phaser.Physics.Matter.Sprite{
     constructor(scene, x, y, sprite, frame, parent) {
         super(scene.matter.world, x, y, sprite, frame)
-        this.setScale(.3);
+        this.setScale(.10);
         this.scene = scene;
         scene.matter.world.add(this);
         scene.add.existing(this); 
@@ -194,14 +195,14 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         this.setActive(true);
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this;
-        const mainBody = Bodies.circle(0,0,w*.20, {isSensor:true});
+        const mainBody = Bodies.circle(0,0,w*.10, {isSensor:false});
 
         const compoundBody = Body.create({
             parts: [mainBody],
             frictionStatic: 0,
             frictionAir: 0.00,
             friction: 0.0,
-            restitution: 1,
+            restitution: 0.7,
             label: "SOULTRANSFER"
           });
           this
@@ -209,7 +210,7 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
             .setPosition(x, y)
             .setIgnoreGravity(true)
             .setCollisionCategory(CATEGORY.BULLET)
-            .setCollidesWith([ CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.ENEMY, CATEGORY.BRIGHT, CATEGORY.SOLANA, CATEGORY.DARK ]);
+            .setCollidesWith([ CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.ENEMY, CATEGORY.BRIGHT, CATEGORY.SOLANA, CATEGORY.DARK, CATEGORY.MIRROR ]);
           //Custom properties
         this.parent = parent;
         this.timer = this.scene.time.addEvent({ delay: 2000, callback: this.kill, callbackScope: this, loop: false });
