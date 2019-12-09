@@ -1660,6 +1660,30 @@ function createAnimations(scene){
         repeat: 0
     });
     scene.anims.create({
+        key: 'boss-hive-egg-idle',
+        frames: scene.anims.generateFrameNumbers('boss_spideregg', { frames:[0] }),
+        frameRate: 3,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'boss-hive-egg-grow',
+        frames: scene.anims.generateFrameNumbers('boss_spideregg', { frames:[3,2,1,0] }),
+        frameRate: 3,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'boss-hive-egg-crack',
+        frames: scene.anims.generateFrameNumbers('boss_spideregg', { frames:[4,5,6,7,8] }),
+        frameRate: 3,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'boss-hive-egg-pulse',
+        frames: scene.anims.generateFrameNumbers('boss_spideregg', { frames:[8,9,10,9] }),
+        frameRate: 3,
+        repeat: 0
+    });
+    scene.anims.create({
         key: 'light_burst_action',
         frames: scene.anims.generateFrameNumbers('light_burst_2', { frames:[0,1,2,3,4,5] }),
         frameRate: 12,

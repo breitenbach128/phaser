@@ -112,3 +112,40 @@ class SpiderHive extends Phaser.Physics.Matter.Sprite{
         
     // }
 }
+class SpiderHiveEgg extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'boss_spideregg', 0)        
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+        this.setActive(true);
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+
+        const coreArea =  Bodies.circle(0, 0, this.width*.80, {isSensor: false });
+        
+        const mainBody = Body.create({
+            parts: [coreArea],
+            frictionStatic: 0,
+            frictionAir: 0.00,
+            friction: 1,
+            restitution: 0.00,
+            label: "BossSpiderHiveEgg"
+        });
+
+        this
+        .setExistingBody(mainBody)
+        .setFixedRotation()
+        .setStatic(true); 
+
+        console.log("BOSS: SPIDERHIVE EGG SPAWNED",x,y);
+
+        //Custom Properties
+ 
+ 
+        this.setDepth(DEPTH_LAYERS.ENEMIES);
+        
+    }
+    update(time,delta){
+
+    }
+}
