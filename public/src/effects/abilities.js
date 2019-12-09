@@ -212,7 +212,6 @@ class BrightBeamBlock extends Phaser.Physics.Matter.Image{
         };
     }
     cleanUp(tween, targets, beam){
-        console.log("death of brick");
         this.destroy();
     }
 

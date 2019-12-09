@@ -95,11 +95,21 @@
    <properties>
     <property name="collides" type="bool" value="true"/>
    </properties>
+   <objectgroup draworder="index" id="2">
+    <object id="3" x="32" y="32">
+     <polygon points="0,0 0,-16 -2,-16 -17,-1 -17,0"/>
+    </object>
+   </objectgroup>
   </tile>
   <tile id="15">
    <properties>
     <property name="collides" type="bool" value="true"/>
    </properties>
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="16" y="32">
+     <polygon points="1,-1 -15,-17 -16,-17 -16,0 1,0"/>
+    </object>
+   </objectgroup>
   </tile>
   <tile id="16">
    <properties>
@@ -258,7 +268,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,568,157,157,157,157,157,157,186,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="11" name="collision" width="64" height="16" visible="0">
+ <layer id="11" name="collision" width="64" height="16">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,852,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,852,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,852,852,852,852,852,852,852,852,852,852,852,852,852,852,852,852,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

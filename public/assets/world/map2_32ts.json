@@ -65,7 +65,7 @@
          "name":"collision",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":64,
          "x":0,
          "y":0
@@ -755,8 +755,8 @@
                  "type":"mirror",
                  "visible":true,
                  "width":32,
-                 "x":1416.16666666667,
-                 "y":25.9166666666667
+                 "x":1416.17,
+                 "y":25.9167
                 }, 
                 {
                  "gid":571,
@@ -1328,6 +1328,50 @@
                 }, 
                 {
                  "id":14,
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "id":2,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":0,
+                             "id":3,
+                             "name":"",
+                             "polygon":[
+                                    {
+                                     "x":0,
+                                     "y":0
+                                    }, 
+                                    {
+                                     "x":0,
+                                     "y":-16
+                                    }, 
+                                    {
+                                     "x":-2,
+                                     "y":-16
+                                    }, 
+                                    {
+                                     "x":-17,
+                                     "y":-1
+                                    }, 
+                                    {
+                                     "x":-17,
+                                     "y":0
+                                    }],
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":0,
+                             "x":32,
+                             "y":32
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "x":0,
+                     "y":0
+                    },
                  "properties":[
                         {
                          "name":"collides",
@@ -1337,6 +1381,50 @@
                 }, 
                 {
                  "id":15,
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "id":2,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":0,
+                             "id":1,
+                             "name":"",
+                             "polygon":[
+                                    {
+                                     "x":1,
+                                     "y":-1
+                                    }, 
+                                    {
+                                     "x":-15,
+                                     "y":-17
+                                    }, 
+                                    {
+                                     "x":-16,
+                                     "y":-17
+                                    }, 
+                                    {
+                                     "x":-16,
+                                     "y":0
+                                    }, 
+                                    {
+                                     "x":1,
+                                     "y":0
+                                    }],
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":0,
+                             "x":16,
+                             "y":32
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "x":0,
+                     "y":0
+                    },
                  "properties":[
                         {
                          "name":"collides",

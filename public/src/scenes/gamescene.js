@@ -1012,7 +1012,9 @@ var GameScene = new Phaser.Class({
         //Need to push all debug graphics into a single debug array for easy enable
         this.cameraLevel = 1;
 
-
+        //Lights2d
+        // solana.setPipeline('Light2D');
+        // let light  = this.lights.addLight(0, 0, 200).setScrollFactor(0.0).setIntensity(2);
         
     },
     update: function (time, delta)
