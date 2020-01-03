@@ -42,6 +42,7 @@ class SpiderHive extends Phaser.Physics.Matter.Sprite{
         this.spawnGlob.owner = this;          
         this.spawnGlob.setIgnoreGravity(false);
         this.spiderlings = [];
+        this.eggSacs = [];
         this.acidGroup = this.scene.add.group({
             classType: Bullet,
             //maxSize: 50,
@@ -51,11 +52,16 @@ class SpiderHive extends Phaser.Physics.Matter.Sprite{
 
         //As the hive takes more damage, it can get a new gun with a magizine side of 1-2-3. each one is a burst 
         this.setDepth(DEPTH_LAYERS.ENEMIES);
+
+        this.eggSacs.push(new SpiderHiveEgg(scene, x + 48 + this.width/2, y - 24 + this.height/2));
+        this.eggSacs.push(new SpiderHiveEgg(scene, x + 48 + this.width/2, y + this.height/2));
+        this.eggSacs.push(new SpiderHiveEgg(scene, x - 48 + this.width/2, y - 32 + this.height/2));
         
     }
     update(time,delta){
         this.anims.play('boss-hive', true);
         this.spew();
+        this.eggSacs.forEach(function(e){e.update()});
     }
     spew(){
         
@@ -121,7 +127,7 @@ class SpiderHiveEgg extends Phaser.Physics.Matter.Sprite{
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this;
 
-        const coreArea =  Bodies.circle(0, 0, this.width*.80, {isSensor: false });
+        const coreArea =  Bodies.circle(0, 0, this.width*.80, {isSensor: true });
         
         const mainBody = Body.create({
             parts: [coreArea],
@@ -135,10 +141,9 @@ class SpiderHiveEgg extends Phaser.Physics.Matter.Sprite{
         this
         .setExistingBody(mainBody)
         .setFixedRotation()
-        .setStatic(true); 
-
-        console.log("BOSS: SPIDERHIVE EGG SPAWNED",x,y);
-
+        .setStatic(true)
+        .setPosition(x,y);
+        
         //Custom Properties
  
  
@@ -146,6 +151,6 @@ class SpiderHiveEgg extends Phaser.Physics.Matter.Sprite{
         
     }
     update(time,delta){
-
+        this.anims.play('boss-hive-egg-grow', true);
     }
 }
