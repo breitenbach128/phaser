@@ -76,7 +76,7 @@ var Preloader = new Phaser.Class({
 		this.load.image('red_cross','img/red_cross.png')
 		// Menu
         this.load.atlas('sprites', 'img/spritearray.png', 'img/spritearray.json');
-        this.load.image('Title1', 'img/Title1.png');
+        this.load.image('Title1', 'img/Title2.png');
 		this.load.image('button_sun', 'img/sun1.png');
 		this.load.image('128games', 'img/128studiobg.png');
 		//Gameover Scene

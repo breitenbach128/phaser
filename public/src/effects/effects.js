@@ -45,6 +45,43 @@ var ShaderGlow = new Phaser.Class({
         });
     } 
 });
+//Rotational Shader
+var ShaderTest = new Phaser.Class({
+    Extends: Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline,
+    initialize:
+    function CustomPipeline (game)
+    {
+    Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline.call(this, {
+            game: game,
+            renderer: game.renderer,
+            fragShader: [
+                    "#ifdef GL_ES",
+                    "precision mediump float;",
+                    "#endif",
+                    "#extension GL_OES_standard_derivatives : enable",
+                    "uniform float time;",
+                    "uniform vec2 mouse;",
+                    "uniform vec2 resolution;",
+                    "void main(void){",
+                    "vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);",
+                    "vec3 color = vec3(0.0, 0.3, 0.5);",
+                    "float f = 0.0;",
+                    "float PI = 3.141592;",
+                    "for(float i = 0.0; i < 20.0; i++){",
+                    "float s = sin(time*1.1 + i * PI / 10.0) * 0.80 ;",
+                    "float c = cos(time*1.1 + i * PI / 10.0) * 0.80;",
+                    "f += 0.001 / pow( pow(abs(p.x + c),2.) + pow(abs(p.y + s),2.),.534+0.5*sin(-time*3.321+i/3.14159265+s*c*0.1));",
+                    "s = s*0.3;",
+                    "f += 0.001 / pow( pow(abs(p.x + c),2.) + pow(abs(p.y - s),2.),.534+0.5*sin(+time*3.321+i/3.14159265+s*c*0.1));",
+                    "s = s*0.4;",
+                    "f += 0.001 / pow( pow(abs(p.x + c),2.) + pow(abs(p.y + s),2.),.534+0.5*sin(-time*3.321+i/3.14159265+s*c*0.1));",
+                    "}",
+                    "gl_FragColor = vec4(vec3(  f*color), 1.0);",
+                    "}"
+            ].join('\n')
+        });
+    } 
+});
 
 //Flash Effect
 function FlashSpriteTint(scene,sprite,color,time){

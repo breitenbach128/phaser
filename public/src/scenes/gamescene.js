@@ -227,7 +227,7 @@ var GameScene = new Phaser.Class({
             classType: Entrance,
             runChildUpdate: true 
         });
-        //Entrances
+        //Fireflies
         fireflies = this.add.group({ 
             classType: Firefly,
             runChildUpdate: true 

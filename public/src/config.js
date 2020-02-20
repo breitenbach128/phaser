@@ -36,7 +36,7 @@
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-12-27-2019";
+    var buildVersion = "a-2-20-2020";
     var game;
     var hud;
     var playScene;
@@ -45,7 +45,7 @@
     var global_gravity = 400;
     //Tiles
     var map; 
-    var current_map = "map5";
+    var current_map = "map3";
     var current_exit = "west1";
     var world_background;
     //Game Objects

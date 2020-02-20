@@ -27,10 +27,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         const compoundBody = Body.create({
           parts: [mainBody, this.sensors.bottom, this.sensors.left, this.sensors.right],
           //parts: [mainBody],
-          frictionStatic: 0.1,
-          frictionAir: 0.02,
-          friction: 0.35,
-          restitution: 0.05,
+          frictionStatic: 0.0,
+          frictionAir: 0.01,
+          friction: 0.01,
+          restitution: 0.01,
           density: 0.01
         });
        //Fix the draw offsets for the compound sprite.
@@ -47,6 +47,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
         //this.sprite.setIgnoreGravity(true);
         //Custom Properties
+        this.max_mv_speed = 2;
         this.hp = 5;
         this.max_hp = 5;
         this.mv_speed = 2;
@@ -58,6 +59,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.onGround = false;
         this.onWall = false;
         this.jumpReady = false;
+        this.beingThrown = {ready: false, vec: {x:0,y:0}, max_speed: 4};
         this.alive = true;
         this.invuln = false;
         this.inLight = true;
@@ -183,21 +185,23 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 if (control_left && this.jumpLock == false) {
 
                     this.sprite.flipX= true; // flip the sprite to the left                    
-                    this.mv_direction.x = -1;                   
-                    this.sprite.setVelocityX(-mv);
+                    this.mv_direction.x = -1;
+                    this.sprite.applyForce({x:-mv/500,y:0})                   
+                    //this.sprite.setVelocityX(-mv);
                     
                 }
                 else if (control_right && this.jumpLock == false) {
 
                     this.sprite.flipX= false; // flip the sprite to the left                    
                     this.mv_direction.x = 1;
-                    this.sprite.setVelocityX(mv);
+                    this.sprite.applyForce({x:mv/500,y:0})
+                    //this.sprite.setVelocityX(mv);
                 }
                 else if(!control_right && !control_left && this.jumpLock == false){
 
                     //This is fucking with friction and platform movement.
 
-                    if(!this.onGround){this.sprite.setVelocityX(0)};  
+                    //if(!this.onGround){this.sprite.setVelocityX(0)};  
 
                     this.mv_direction.x = 0; 
                 }
@@ -207,7 +211,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     if(control_passRelease){soullight.aimStop();};
                 }
                 if(this.jumpLock){
-                    this.sprite.setVelocityX(this.kickOff);
+                    //this.sprite.setVelocityX(this.kickOff);
+                    this.sprite.applyForce({x:this.kickOff/500,y:0})
                 }    
 
                 if (control_jump && this.jumpReady) {
@@ -252,15 +257,30 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             }
 
         }
+        if(this.beingThrown.ready == true){
+            this.getThrown();            
+            if(this.body.velocity.x > this.beingThrown.max_speed ){this.setVelocityX(this.beingThrown.max_speed);};
+            if(this.body.velocity.x < -this.beingThrown.max_speed ){this.setVelocityX(-this.beingThrown.max_speed );};
+        }else{
+            //Set Max Velocities
+            if(this.body.velocity.x > this.max_mv_speed ){this.setVelocityX(this.max_mv_speed );};
+            if(this.body.velocity.x < -this.max_mv_speed ){this.setVelocityX(-this.max_mv_speed );};
+        }
 
+        let grnd_max_mv_sp = 2;
+        
+
+        //Gravity caps Y
+        // if(this.body.velocity.y > this.max_mv_speed ){this.body.velocity.y = this.max_mv_speed };
+        // if(this.body.velocity.y < -this.max_mv_speed ){this.body.velocity.y = -this.max_mv_speed };
 
         this.debug.setPosition(this.sprite.x, this.sprite.y-32);
-        // this.debug.setText("Ground:"+String(this.touching.down)
-        // +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(Math.round(this.sprite.body.velocity.y))
-        // +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right) + " oW:"+String(this.onWall)
-        // +" \njr:"+String(this.jumpReady)
-        // +" \njlck:"+String(this.jumpLock)
-        // +" \nFriction:"+String(this.body.friction));
+        this.debug.setText("Ground:"+String(this.touching.down)
+        +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(Math.round(this.sprite.body.velocity.y))
+        +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right) + " oW:"+String(this.onWall)
+        +" \njr:"+String(this.jumpReady)
+        +" \njlck:"+String(this.jumpLock)
+        +" \nFriction:"+String(this.body.friction));
 
         //DO THIS LAST
         this.mv_Xdiff = Math.round(this.x - this.prev_position.x);
@@ -340,11 +360,14 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.jumpReady = false;
         this.jumpTimerRunning = false; 
     }
-    getThrown(xVel,yVel,time){
-        //this.jumpLock = true;
-        //this.applyForce({x:0,y:-.025});//forces are VERY SMALL. .001 is a small force. .05 is huge.
-        //this.jumpLockTimer = this.scene.time.addEvent({ delay: time, callback: this.jumpLockReset, callbackScope: this, loop: false });
-        this.sprite.setVelocityY(yVel*200);        
+    readyThrown(xVel,yVel,time){
+        this.beingThrown.vec.x = xVel;
+        this.beingThrown.vec.y = yVel;
+        this.beingThrown.ready = true;
+    }
+    getThrown(){        
+        this.beingThrown.ready = false;
+        this.sprite.applyForce(this.beingThrown.vec);   
     }
     getVelocity(){
         return this.body.velocity;
@@ -353,14 +376,16 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //Make vertical jump weaker if on wall
         
         if(this.touching.left > 0 && !this.onGround){
-            this.sprite.setVelocityX(mvVel);
+            this.sprite.applyForce({x:mvVel/1000,y:0})
+            //this.sprite.setVelocityX(mvVel);
             this.jumpLock = true;
             this.kickOff = mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
             
         }
         if(this.touching.right > 0 && !this.onGround){
-            this.sprite.setVelocityX(-mvVel);
+            this.sprite.applyForce({x:-mvVel/1000,y:0})
+            //this.sprite.setVelocityX(-mvVel);
             this.jumpLock = true;
             this.kickOff = -mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });

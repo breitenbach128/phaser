@@ -478,7 +478,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             }
             if(this.zonedata.type == "force"){
                 let vectorParse = JSON.parse(this.zonedata.value);
-                obj.getThrown(vectorParse.x,vectorParse.y,vectorParse.time);
+                obj.readyThrown(vectorParse.x,vectorParse.y,vectorParse.time);                
             }
             if(this.zonedata.type == "teleport"){
                 let positionParse = JSON.parse(this.zonedata.value)

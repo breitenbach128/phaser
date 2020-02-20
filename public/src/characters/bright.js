@@ -386,6 +386,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             let power =  this.abPulse.c/1000;
             let vecX = Math.cos(angleToThrow)*power;
             let vecY = Math.sin(angleToThrow)*power;  
+            console.log("bright burst force vector",{x:vecX,y:vecY});
             object.applyForce({x:vecX,y:vecY});
         }
         this.abPulse.c = 0;
