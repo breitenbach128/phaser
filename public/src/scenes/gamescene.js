@@ -673,11 +673,15 @@ var GameScene = new Phaser.Class({
             callback: eventData => {
               const { bodyB, gameObjectB, bodyA, gameObjectA } = eventData;
 
-              if (gameObjectB !== undefined && gameObjectB instanceof TMXPlate) {
-                  if(gameObjectA.light_status == 1){//Only in Dark Mode
-                    gameObjectB.usePlate();
-                  }
-              }
+                if (gameObjectB !== undefined && gameObjectB instanceof TMXPlate) {
+                    if (gameObjectA.light_status == 1) {//Only in Dark Mode
+                        gameObjectB.usePlate();
+                    }
+                }
+
+                if (gameObjectB !== undefined && gameObjectB instanceof TMXZone) {
+                    gameObjectB.enterZone(bright);
+                } 
             }
         });
         this.matterCollision.addOnCollideActive({
@@ -736,14 +740,11 @@ var GameScene = new Phaser.Class({
 
                 }
               }
+              //Solana Enters a zone trigger
               if (gameObjectB !== undefined && gameObjectB instanceof TMXZone) {
-                //Solana Touching a lever?
-                if(curr_player==players.SOLANA){
-
                     gameObjectB.enterZone(solana);
-
-                }
               }
+
               if (gameObjectB !== undefined && gameObjectB instanceof EquipItem) {
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA){
@@ -1693,6 +1694,12 @@ function createAnimations(scene){
         key: 'light_burst_idle',
         frames: scene.anims.generateFrameNumbers('light_burst_2', { frames:[0] }),
         frameRate: 1,
+        repeat: 0
+    });    
+    scene.anims.create({
+        key: 'double_jump_burst',
+        frames: scene.anims.generateFrameNumbers('doublejump-1', { frames:[0,1,2,3] }),
+        frameRate: 12,
         repeat: 0
     });
 }

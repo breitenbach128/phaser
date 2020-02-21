@@ -468,18 +468,21 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         //Do something base on zome type
         if(this.ready == true){
             this.ready = false;
+            //Solana Specific Functions
+            if(obj instanceof Solana){
+                if(this.zonedata.type == "target"){
+                    this.triggerTarget();
+                }
+                if(this.zonedata.type == "hurt"){
+                    let hurtParse = JSON.parse(this.zonedata.value);
+                    obj.receiveDamage(hurtParse.damage);
+                }
+                if(this.zonedata.type == "force"){
+                    let vectorParse = JSON.parse(this.zonedata.value);
+                    obj.readyThrown(vectorParse.x,vectorParse.y,vectorParse.time);                
+                }
+            }
 
-            if(this.zonedata.type == "target"){
-                this.triggerTarget();
-            }
-            if(this.zonedata.type == "hurt"){
-                let hurtParse = JSON.parse(this.zonedata.value);
-                obj.receiveDamage(hurtParse.damage);
-            }
-            if(this.zonedata.type == "force"){
-                let vectorParse = JSON.parse(this.zonedata.value);
-                obj.readyThrown(vectorParse.x,vectorParse.y,vectorParse.time);                
-            }
             if(this.zonedata.type == "teleport"){
                 let positionParse = JSON.parse(this.zonedata.value)
                 obj.setPosition(positionParse.x,positionParse.y);

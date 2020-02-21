@@ -91,6 +91,7 @@ var Preloader = new Phaser.Class({
 		this.load.tilemapTiledJSON('map3', 'assets/world/map3_32ts.json');  
 		this.load.tilemapTiledJSON('map4', 'assets/world/map4_32ts.json');  
 		this.load.tilemapTiledJSON('map5', 'assets/world/map5_32ts.json');  
+		this.load.tilemapTiledJSON('map6', 'assets/world/map6_32ts.json');  
 		//StoryBoard Maps 
 		this.load.tilemapTiledJSON('storymap_forest_1', 'assets/world/storyboard_forest1.json');  
 		this.load.spritesheet('tiles32', 'assets/world/oldTileset32.png', {frameWidth: 32, frameHeight: 32, spacing: 2}); 
@@ -153,6 +154,7 @@ var Preloader = new Phaser.Class({
 		this.load.atlas('shapes', 'assets/effects/shapes.png', 'assets/effects/shapes.json');
   		this.load.text('effect-bright-sparks', 'assets/effects/bright_sparks.json');
 		this.load.image('lightburst-1', 'assets/effects/lightburst-1.png');
+		this.load.spritesheet('doublejump-1', 'assets/effects/doublejmp.png',{frameWidth: 24, frameHeight: 24});
 
 		// font
 		this.load.bitmapFont('fontwhite', 'img/fontwhite.png', 'img/fontwhite.xml');

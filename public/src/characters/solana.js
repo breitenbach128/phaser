@@ -59,6 +59,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.onGround = false;
         this.onWall = false;
         this.jumpReady = false;
+        this.jumpCount = 0;
         this.beingThrown = {ready: false, vec: {x:0,y:0}, max_speed: 4};
         this.alive = true;
         this.invuln = false;
@@ -139,10 +140,12 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             }else{
                 this.onGround = false;
             }
-
+            
             //Check Jump ready
-            if(this.onGround || this.onWall){
+            if(this.onGround || this.onWall || (soullight.ownerid == 0 && this.jumpCount < 2)){
                 this.jumpReady = true;
+                //Touching a surface resets jump counter                
+                if(this.onGround || this.onWall){this.jumpCount = 0};
 
                 if(this.mv_direction.x == 0){
                     if(!this.isAnimLocked){this.sprite.anims.play('solana-idle', true);};//Idle
@@ -393,12 +396,18 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         }   
         //this.applyForce({x:0,y:-.025});
         if(this.onWall && this.onGround){
-            this.sprite.setVelocityY(-jumpVel*1.40);
+            //this.sprite.setVelocityY(-jumpVel*1.40);
+            this.sprite.applyForce({x:0,y:-jumpVel/400});
         }else{
-            this.sprite.setVelocityY(-jumpVel);
+            //this.sprite.setVelocityY(-jumpVel);
+            this.sprite.applyForce({x:0,y:-jumpVel/400});
         }
         
         this.soundJump.play("",{volume:.025});
+        if(this.jumpCount > 0){
+            let jumpBurst = new JumpBurst(this.scene,this.x,this.y);
+        }
+        this.jumpCount++;
     }
     addEffects(effects){
         //Loop through effect array. If found of same type, set new duration.
