@@ -413,7 +413,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         .setStatic(true)
         .setIgnoreGravity(true);    
 
-        this.debug = scene.add.text(this.x, this.y-16, 'Zone', { fontSize: '10px', fill: '#00FF00' });             
+        this.debug = scene.add.text(this.x, this.y, 'Zone', { fontSize: '10px', fill: '#00FF00', resolution: 2 }).setOrigin(0.5);             
 
 
     }
@@ -444,6 +444,15 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         //Force: Sends a force to a player
         //Teleport: Teleports the player via transform
        //console.log("setup",name, properties,this.target);
+       if(this.zonedata.type == "force"){
+            //Apply Wind Animation if wind
+            //Rotate direction to match x/y vector
+            this.sprite.anims.play('wind-1', true);
+            let vectorParse = JSON.parse(this.zonedata.value);
+            //var rad = Math.atan2(vectorParse.x, vectorParse.y);
+            //this.setRotation(rad);
+            if(vectorParse.x < 0){this.sprite.flipX  = true;};
+       }
  
     }
     update(time, delta)

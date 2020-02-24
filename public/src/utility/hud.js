@@ -121,6 +121,40 @@ class HudScene extends Phaser.Scene {
                 this.inventory.equipItem(e);
             }
         }
+
+        //Setup SOL Pieces
+        
+        this.anims.create({
+            key: 'sol_burning-1',
+            frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[0,1,2,3] }),
+            frameRate: 4,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'sol_dead-1',
+            frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[4,5,6,7] }),
+            frameRate: 4,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'sol_shardglow-1',
+            frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[8,9] }),
+            frameRate: 4,
+            repeat: -1
+        });
+        
+        this.anims.create({
+            key: 'sol_shardglow-2',
+            frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[10,11] }),
+            frameRate: 4,
+            repeat: -1
+        });
+        let sol_pieces_ui = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
+        sol_pieces_ui.anims.play('sol_dead-1', true);
+        let sol_pieces_collected_1 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
+        sol_pieces_collected_1.anims.play('sol_shardglow-1', true);
+        let sol_pieces_collected_2 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
+        sol_pieces_collected_2.anims.play('sol_shardglow-2', true);
     }
     alterEnergy(energyChange){
         let n = this.energy.n + energyChange;

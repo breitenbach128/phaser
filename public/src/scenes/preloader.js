@@ -124,6 +124,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('shard_dark', 'assets/objects/dark_shard.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('breakables', 'assets/objects/breakables.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('burstwave', 'assets/objects/burstwave1.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('sol_pieces', 'assets/objects/Sol_pieces.png', {frameWidth: 64, frameHeight: 64});
 		
 		//Bosses		
 		this.load.spritesheet('spider', 'assets/characters/spider_x2.png', {frameWidth: 64, frameHeight: 64});
@@ -153,8 +154,10 @@ var Preloader = new Phaser.Class({
 		//Effects / Particles
 		this.load.atlas('shapes', 'assets/effects/shapes.png', 'assets/effects/shapes.json');
   		this.load.text('effect-bright-sparks', 'assets/effects/bright_sparks.json');
+  		this.load.text('effect-flame-fall', 'assets/effects/particles_flame_fall.json');
 		this.load.image('lightburst-1', 'assets/effects/lightburst-1.png');
 		this.load.spritesheet('doublejump-1', 'assets/effects/doublejmp.png',{frameWidth: 24, frameHeight: 24});
+		this.load.spritesheet('wind-1', 'assets/effects/wind1.png',{frameWidth: 32, frameHeight: 32});
 
 		// font
 		this.load.bitmapFont('fontwhite', 'img/fontwhite.png', 'img/fontwhite.xml');

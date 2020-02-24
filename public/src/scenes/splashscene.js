@@ -94,6 +94,9 @@ var SplashScene = new Phaser.Class({
         +"\n - Testing Controls: X - Switch Scene test(map2-map3 toggle), P - Self hurt for testing death, O for DEBUG draws"
         +"\n - Testing Controls: (KB-F) (GP-B) - Bright Pulse, B - Beam Bridge, Dark - Hold down to hit the brakes");
 
+        let particle_flame_fall = this.add.particles('shapes',  new Function('return ' + this.cache.text.get('effect-flame-fall'))());
+        console.log(particle_flame_fall)
+
     },
     update: function(){
         glowPipeline.setFloat1('time', this.glowTime);

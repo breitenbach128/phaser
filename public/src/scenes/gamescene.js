@@ -1511,7 +1511,7 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'bright-sway',
         frames: scene.anims.generateFrameNumbers('bright', { frames:[0,2,3,4,5,6,7,8,9,10,11,0,2,3,18,17,16,15,14,13,12,11] }),
-        frameRate: 12,
+        frameRate: 24,
         repeat: -1
     });
     scene.anims.create({
@@ -1701,5 +1701,11 @@ function createAnimations(scene){
         frames: scene.anims.generateFrameNumbers('doublejump-1', { frames:[0,1,2,3] }),
         frameRate: 12,
         repeat: 0
-    });
+    });  
+    scene.anims.create({
+        key: 'wind-1',
+        frames: scene.anims.generateFrameNumbers('wind-1', { frames:[0,1,2,3,4,5,6] }),
+        frameRate: 12,
+        repeat: -1
+    }); 
 }
