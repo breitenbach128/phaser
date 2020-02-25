@@ -121,6 +121,10 @@ var GameScene = new Phaser.Class({
         solana = new Solana(this,192,160);  
         bright = new Bright(this,192,128);
         soullight =new SoulLight({scene: this, x:192,y:128,sprite:'bright',frame:0},bright);
+
+        //Create Soulight Effect
+        this.particle_soulight = this.add.particles('shapes',  this.cache.json.get('effect-flame-fall'));   
+        
         //
         this.changePlayerReady = true;
         //Emit Events
@@ -1082,6 +1086,9 @@ var GameScene = new Phaser.Class({
         solana.update(time,delta);
         bright.update(time,delta);
         soullight.update(time,delta);
+        this.particle_soulight.emitters.list[0].setPosition(soullight.x,soullight.y);
+        this.particle_soulight.emitters.list[0].setSpeedX(soullight.body.velocity.x);
+        this.particle_soulight.emitters.list[0].setSpeedY(soullight.body.velocity.y);
         if(boss != -1){boss.update(time,delta);}
         if(tutorialRunning){
             polaris.update(time,delta);

@@ -154,7 +154,7 @@ var Preloader = new Phaser.Class({
 		//Effects / Particles
 		this.load.atlas('shapes', 'assets/effects/shapes.png', 'assets/effects/shapes.json');
   		this.load.text('effect-bright-sparks', 'assets/effects/bright_sparks.json');
-  		this.load.text('effect-flame-fall', 'assets/effects/particles_flame_fall.json');
+  		this.load.json('effect-flame-fall', 'assets/effects/particles_flame_fall.json');
 		this.load.image('lightburst-1', 'assets/effects/lightburst-1.png');
 		this.load.spritesheet('doublejump-1', 'assets/effects/doublejmp.png',{frameWidth: 24, frameHeight: 24});
 		this.load.spritesheet('wind-1', 'assets/effects/wind1.png',{frameWidth: 32, frameHeight: 32});

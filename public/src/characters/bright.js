@@ -26,11 +26,11 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
         const compoundBody = Body.create({
           parts: [mainBody, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
-          frictionStatic: 0.5,
+          frictionStatic: 0.3,
           frictionAir: 0.3,
-          friction: 0.5,
-          restitution: 0.00,
-          density: 0.05,
+          friction: 0.3,
+          restitution: 0.01,
+          density: .05,
           label: "BRIGHT"
         });
         this.sprite
@@ -48,6 +48,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.mv_speed = 3;
         this.roll_speed = .3;
         this.jump_speed = 6;
+        this.max_speed = {air:2,ground:6};
         this.alive = true;
         this.falling = false;
         this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { fontSize: '10px', fill: '#00FF00' });
@@ -189,11 +190,13 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     this.corruption.c++;
                     if(this.corruption.c >= this.corruption.m){this.corruption.c = 0;this.applyCorruption(-1);}
                     if (control_left) {          
-                        this.sprite.setAngularVelocity(-this.roll_speed);            
+                        this.sprite.setAngularVelocity(-this.roll_speed);   
+                        //this.applyForce({x:-this.roll_speed/50,y:0});          
                         this.sprite.anims.play('dark-idle', true);      
                     }
                     if (control_right) {     
-                        this.sprite.setAngularVelocity(this.roll_speed);                    
+                        this.sprite.setAngularVelocity(this.roll_speed);  
+                        //this.applyForce({x:this.roll_speed/50,y:0});                  
                         this.sprite.anims.play('dark-idle', true);                 
                     }
                     if(!control_left && !control_right){
@@ -217,6 +220,17 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         this.sprite.setVelocityY(-this.jump_speed);
                     }
                 }
+
+                //This does not look right.
+                //Max Velocities
+                // if(this.airTime >  0){        
+                //     if(this.body.velocity.x > this.max_speed.air ){this.setVelocityX(this.max_speed.air);};
+                //     if(this.body.velocity.x < -this.max_speed.air ){this.setVelocityX(-this.max_speed.air );};
+                // }else{
+                //     //Set Max Velocities
+                //     if(this.body.velocity.x > this.max_speed.ground ){this.setVelocityX(this.max_speed.ground );};
+                //     if(this.body.velocity.x < -this.max_speed.ground ){this.setVelocityX(-this.max_speed.ground);};
+                // }
 
                 this.debug.setPosition(this.sprite.x, this.sprite.y-64);
                 this.debug.setText("ctrl-pass:"+String(control_passPress)
@@ -321,7 +335,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite.anims.play('dark-idle', false);
         this.sprite.setIgnoreGravity(false);
         this.sprite.setCollisionCategory(CATEGORY.DARK);
-        this.sprite.setDensity(0.01);
+        this.sprite.setDensity(0.001);//0.01
     }
     toBright(){
         this.light_status = 0;
