@@ -97,7 +97,8 @@ var SplashScene = new Phaser.Class({
         this.particle_flame_fall = this.add.particles('shapes',  this.cache.json.get('effect-flame-fall'));          
         this.particle_flame_fall.createEmitter((this.cache.json.get('effect-flame-fall'))[0]);
         this.particle_flame_fall.createEmitter((this.cache.json.get('effect-flame-fall'))[0]); 
-        this.particle_flame_fall.createEmitter((this.cache.json.get('effect-flame-fall'))[0]);   
+        this.particle_flame_fall.createEmitter((this.cache.json.get('effect-flame-fall'))[0]);
+        console.log(this.particle_flame_fall)
         //Emmitter List      
         this.particle_flame_fall.emitters.list[0].setPosition(50,Phaser.Math.Between(-450,150));
         this.particle_flame_fall.emitters.list[1].setPosition(525,Phaser.Math.Between(-450,150));
