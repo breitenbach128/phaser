@@ -123,8 +123,10 @@ var GameScene = new Phaser.Class({
         soullight =new SoulLight({scene: this, x:192,y:128,sprite:'bright',frame:0},bright);
 
         //Create Soulight Effect
+        //This should be inactive until the player retrieves the soulight gem for the first time.
         this.particle_soulight = this.add.particles('shapes',  this.cache.json.get('effect-flame-fall'));   
-        
+        //this.particle_soulight.emitters.list[0].setScale(0.5);
+        this.particle_soulight.emitters.list[0].setLifespan(160);
         //
         this.changePlayerReady = true;
         //Emit Events
