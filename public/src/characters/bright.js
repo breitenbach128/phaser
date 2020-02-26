@@ -335,7 +335,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite.anims.play('dark-idle', false);
         this.sprite.setIgnoreGravity(false);
         this.sprite.setCollisionCategory(CATEGORY.DARK);
-        this.sprite.setDensity(0.001);//0.01
+        this.sprite.setDensity(0.01);//0.01
     }
     toBright(){
         this.light_status = 0;

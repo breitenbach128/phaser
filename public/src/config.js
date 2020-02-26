@@ -239,12 +239,15 @@
         scene.input.gamepad.on('down', function (pad, button, index) {
             let iagp = getInactiveGamePad();
             if(iagp != -1){
-                if(!gamePad[pad.index].ready){
+                console.log("DEBUG: NEWGP:",pad,index)
+                //if(!gamePad[pad.index].ready){
+                //Just check for the iagp value to make sure we can add it. Nothing is gamed by having it check a second time.
+
                     console.log(scene.scene.key,'Playing with ' + pad.id, pad.index);    
                     //addGamePads(new GamepadControl(pad));  
                     addGamePadsByIndex(new GamepadControl(pad),pad.index);
                     callback(scene,pad.index); 
-                }
+               // }
             }
         }, scene);
        
@@ -270,6 +273,10 @@
             }
         }
         return c;
+    }
+    function checkPadIsActive(index){ 
+        return gamePad[index].ready;
+             
     }
     function getActiveGamePad(){
         for(let i=0;i < gamePad.length;i++){

@@ -62,7 +62,7 @@ var Storyboard = new Phaser.Class({
         this.cameras.main.roundPixels = true;
         this.cameras.main.setScroll(map.widthInPixels,0);
         //pan(x, y [, duration] [, ease] [, force] [, callback] [, context])
-        this.cameras.main.pan(0,0,5000, Phaser.Math.Easing.Linear,false,this.nextScene,this);
+        this.cameras.main.pan(0,0,1000, Phaser.Math.Easing.Linear,false,this.nextScene,this);
     },
     update: function (time, delta)
     { 
