@@ -34,10 +34,12 @@ class SpeechBubble extends Phaser.GameObjects.Sprite {
 				color: '#000000',
 				align: 'center',
 				lineSpacing: 4,
+				resolution:2,
 			}
 			};
-		this.setScale(4);
+		this.setScale(2);
 		this.speechtext = scene.make.text(tconfig);
+		this.speechtext.setScale(.5);
 		this.speechtext.setWordWrapWidth(this.width*4-8, false);
 
 		this.speechtext.setOrigin(0.5);
@@ -66,6 +68,7 @@ class Dialogue {
 		this.scene = scene;
 		this.curr = 0;
 		this.isRunning = false;
+		this.isComplete = false;
 		this.bubbles = [];
 		this.timer;
 		this.offset = {x:oX, y:oY};
@@ -77,7 +80,11 @@ class Dialogue {
 		let text = this.chain[this.curr].text;
 		let ttl = this.chain[this.curr].ttl;
 		if(speaker != undefined && text && ttl){
-			this.bubbles.push(new SpeechBubble(this.scene,speaker.x,speaker.y,ttl));
+			let offX = this.offset.x;
+			if(speaker.flipX){
+				offX = -this.offset.x;
+			}
+			this.bubbles.push(new SpeechBubble(this.scene,speaker.x+offX,speaker.y+this.offset.y,ttl));
 			this.bubbles[this.bubbles.length-1].newText(text);
 			//Set Progress Time
 			this.timer = this.scene.time.addEvent({ delay: ttl, callback: this.nextSpeech, callbackScope: this, loop: false });
@@ -88,6 +95,7 @@ class Dialogue {
 	
 	}
 	update(){
+		
 		let i = this.curr;
 		let speaker = this.chain[i].speaker;
 		let worldScale=camera_main.zoom;
@@ -99,10 +107,13 @@ class Dialogue {
 				offX = -this.offset.x;
 			}
 			//Adjust for real HUD position offset from camera movement and scale
-			this.bubbles[i].x = (speaker.x+offX-camera_main.worldView.x)*worldScale;
-			this.bubbles[i].y = (speaker.y+this.offset.y-camera_main.worldView.y)*worldScale;
+			// this.bubbles[i].x = (speaker.x+offX-camera_main.worldView.x)*worldScale;
+			// this.bubbles[i].y = (speaker.y+this.offset.y-camera_main.worldView.y)*worldScale;
+			this.bubbles[i].x = (speaker.x+offX);
+			this.bubbles[i].y = (speaker.y+this.offset.y);
 			this.bubbles[i].update();
 		}
+		
 	}
 	nextSpeech(){		
 		if(this.curr < this.chain.length-1){
@@ -123,6 +134,7 @@ class Dialogue {
 	destroyDialogue(){
 		this.timer.remove();
 		this.isRunning = false;
+		this.isComplete = true;
 		this.bubbles.forEach(function(e){
 			e.timeUp();
 		});

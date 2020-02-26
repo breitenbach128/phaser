@@ -1,7 +1,6 @@
 class Bullet extends Phaser.Physics.Matter.Sprite{
-
-    constructor(scene,x,y) {
-        super(scene.matter.world, x, y, 'bullet', 0)
+    constructor(scene,x,y,texture) {
+        super(scene.matter.world, x, y, texture, 0)
         this.scene = scene;
         // Create the physics-based sprite that we will move around and animate
         scene.matter.world.add(this);
@@ -30,11 +29,14 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
         .setCollisionCategory(CATEGORY.BULLET)
         .setPosition(x, y)
         .setScale(.5)
-        .setIgnoreGravity(false);
+        .setIgnoreGravity(true);
                     
         this.damage = 1;    
         this.lifespan = 0;
         this.bounced = false;
+        this.effects = [];
+        this.deathEffects = [];
+        this.owner = null;
     }
     fire(x, y, xV, yV, life)
     {       
@@ -49,6 +51,18 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
         this.setVelocity(xV,yV);
 
     }
+    setOwner(object){
+        this.owner = object;
+    }
+    setEffects(effectsArray){
+        this.effects = effectsArray;
+    }
+    setDeathEffects(effectsArray){
+        this.deathEffects = effectsArray;
+    }
+    getEffects(){
+        return this.effects;
+    }
     hit(){
         this.lifespan = 0;
         this.kill();
@@ -59,6 +73,9 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
         this.setActive(false);
         this.setVisible(false);
         //mayeb toggle static on and off for the kill and fire 
+    }
+    onDeathEffect(){
+        //Trigger this on death.
     }
     bounceOff(angle,mirrorSize,mirrorX,mirrorY){
         //Bounce off of object
@@ -83,3 +100,77 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
     }
 
 };
+class SpiderSilk extends Bullet{
+
+    constructor(scene,x,y,texture) {
+        super(scene,x,y,texture);
+    }
+    update(time, delta)
+    {
+        if(this.active){
+        this.lifespan--;
+            if (this.lifespan <= 0)
+            {
+                this.kill();
+            }
+        }
+
+    }
+    //Set actiom to move spider vertical
+    hit(){
+        this.lifespan = 0;
+        if(this.owner){
+            this.owner.climbToTile();
+        }
+        this.kill();
+    }
+}
+class SpiderSpawnOrb extends Bullet{
+
+    constructor(scene,x,y,texture) {
+        super(scene,x,y,texture);
+    }
+    update(time, delta)
+    {
+        if(this.active){
+        this.lifespan--;
+            if (this.lifespan <= 0)
+            {
+                this.kill();
+            }
+        }
+
+    }
+    //Set actiom to move spider vertical
+    hit(){
+        this.lifespan = 0;
+        if(this.owner){
+            this.owner.spawnSpider(this.x,this.y);
+        }
+        this.kill();
+    }
+}
+
+//What happens when the bullet dies?
+//Explode: Spawn more projectiles
+//Spawn Item: Spawn an item
+//Spawn Enemy: Spawn an enemy
+//Visual Effect: Create a visual effect.
+function deathEffects(){
+
+}
+//Stunned: Can't move or shoot.
+//Slowed: Half Movement speed
+//DOT: Take damage over time
+//Darkened: Lose light power
+//Steal Light: Lose Light shards
+//Steal Dark: Lose Dark shards
+//Throw: Move player in a direction relative to projectile movement vector
+function bulletEffect(type,chance,duration,value,visualType,visualData){
+    this.type = type;
+    this.chance = chance;
+    this.duration = duration;
+    this.value = value;//If a numeric value is used;
+    this.visualType = visualType; //Anim, Particle, None
+    this.visualData = visualData;
+}

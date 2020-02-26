@@ -6,11 +6,15 @@ class HudScene extends Phaser.Scene {
 
         this.hp_blips = [];
         this.energy_bar = [];
+        this.corruption_bar = [];
+        this.boss_bar = [];
         this.ready = false;
-        this.energy = {n:100,max:100,h:100,w:16};
-        this.dialogueArea;
+        this.energy = {n:300,max:300,h:100,w:16};
+        this.corruption = {n:100,max:100,h:100,w:16};
         this.inventory;
-
+        this.shard_totals = {light:0,dark:0};
+        this.showBossBar = false;
+        this.bossCropRect = new Phaser.Geom.Rectangle(0,0, 1, 1);
     }
 
     update()
@@ -22,9 +26,8 @@ class HudScene extends Phaser.Scene {
             +"\nDisPlayers:"+String(Math.round(Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y)));
             this.debug.setText(debugString);
 
-            if(this.dialogueArea.isRunning){
-                this.dialogueArea.update();
-            }
+            this.shard_data_l.setText(this.shard_totals.light+" x");
+            this.shard_data_d.setText(this.shard_totals.dark+" x");
         }
     }
     clearHud()
@@ -38,34 +41,120 @@ class HudScene extends Phaser.Scene {
             this.energy_bar[h].destroy();
         }  
         this.energy_bar = [];
-        this.dialogueArea.destroyDialogue();
+
+        for(var h = 0;h < this.corruption_bar.length;h++){
+            this.corruption_bar[h].destroy();
+        }          
+        this.corruption_bar = [];
+
+        this.shards_light.destroy();
+        this.shard_data_l.destroy();
+        this.shards_dark.destroy();
+        this.shard_data_d.destroy();
+        
         this.debug.destroy();
+    }
+    setBossVisible(value){
+        for(let i=0;i < this.boss_bar.length;i++){this.boss_bar[i].setVisible(value)};
+    }
+    initBossHealth(){
+        let bossBarWidth = this.boss_bar[0].width;//BG
+        let bossBarHeight = this.boss_bar[0].height;//BG
+        this.bossCropRect.setSize(bossBarWidth,bossBarHeight);
+    }
+    alertBossHealth(current_hp,max_hp){
+        let bossBarWidth = this.boss_bar[0].width;//BG
+        let bossBarHeight = this.boss_bar[0].height;//BG
+        let newWidth = Math.round((current_hp/max_hp)*bossBarWidth);
+
+        let tween = this.tweens.add({
+            targets: this.bossCropRect,
+            width: newWidth,
+            ease: 'Power1',
+            duration: 5000,
+            delay: 1000,
+            onComplete: function(){},
+            onUpdate: function () {hud.boss_bar[1].setCrop(hud.bossCropRect)},
+        });
+
     }
     setupHud(player)
     {
         this.ready = true;
         for(var h = 0;h < player.hp;h++){
-            this.hp_blips.push(this.add.image(36,16+(h*16), 'health_blip'));    
+            this.hp_blips.push(this.add.image(32,16+(h*16), 'health_blip'));    
         }
         //Add energy bar
         this.energy_bar.push(this.add.image(12, 48, 'hud_energybar1',1));//BG
         this.energy_bar.push(this.add.image(12, 48, 'hud_energybar1',2));//ENERGY
         this.energy_bar.push(this.add.image(12, 48, 'hud_energybar1',0));//FG
+        //Add corruption bar
+        this.corruption_bar.push(this.add.image(52, 48, 'hud_corruptionbar1',1));//BG
+        this.corruption_bar.push(this.add.image(52, 48, 'hud_corruptionbar1',2));//ENERGY
+        this.corruption_bar.push(this.add.image(52, 48, 'hud_corruptionbar1',0));//FG
+        //Add Boss Health Bar
+        this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',2).setScale(6,3));//BG
+        this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',1).setScale(6,3));//Health
+        this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',0).setScale(6,3));//FG
+        //Inital set to not visible
+        this.setBossVisible(false);
+
+        //this.alertBossHealth(5,10);
+
         //Update energy bar values
         this.energy.h = this.energy_bar[1].height;
         this.energy.w = this.energy_bar[1].width;
-        //Add test dialogue
-        let dialogueChain = [{speaker:player,ttl:3000,text:"How did I get here?"},
-        {speaker:player,ttl:2000,text:"Why is everything so dark?"},
-        {speaker:player,ttl:5000,text:"I can switch to Bright by pressing K."}];
-        this.dialogueArea = new Dialogue(this,dialogueChain,54,-40);
-        this.dialogueArea.start();
+        //Add Shard Counts
+        this.shards_light = this.add.image(this.cameras.main.width-32, 48, 'shard_light',0);
+        this.shards_dark = this.add.image(this.cameras.main.width-32, 96, 'shard_dark',0);        
+        this.shard_data_l = this.add.text(this.cameras.main.width-64, 48, '0 x', { fontFamily: 'visitorTT1', fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 }).setOrigin(.5);
+        this.shard_data_d = this.add.text(this.cameras.main.width-64, 96, '0 x', { fontFamily: 'visitorTT1', fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 }).setOrigin(.5);
+
         //DEBUG
-        this.debug = this.add.text(48, 16, 'DEBUG-HUD', { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
+        this.debug = this.add.text(64, 16, 'DEBUG-HUD', { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
         //HUD Energy Bar Flash/Scale Effect: When energy is added, alter the look for a few MS to show energy has been gained.
         this.energy_bar_effect = this.time.addEvent({ delay: 200, callback: this.resetEnergyScale, callbackScope: this, loop: false });
         this.inventory = new Inventory(this);
+        //Check Global equipment
+        for(let e=0;e<solanaEquipment.length;e++){
+            if(solanaEquipment[e].equiped){
+                this.inventory.equipItem(e);
+            }
+        }
 
+        //Setup SOL Pieces
+        
+        this.anims.create({
+            key: 'sol_burning-1',
+            frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[0,1,2,3] }),
+            frameRate: 4,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'sol_dead-1',
+            frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[4,5,6,7] }),
+            frameRate: 4,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'sol_shardglow-1',
+            frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[8,9] }),
+            frameRate: 4,
+            repeat: -1
+        });
+        
+        this.anims.create({
+            key: 'sol_shardglow-2',
+            frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[10,11] }),
+            frameRate: 4,
+            repeat: -1
+        });
+        let sol_pieces_ui = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
+        sol_pieces_ui.anims.play('sol_dead-1', true);
+        let sol_pieces_collected_1 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
+        sol_pieces_collected_1.anims.play('sol_shardglow-1', true);
+        let sol_pieces_collected_2 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
+        sol_pieces_collected_2.anims.play('sol_shardglow-2', true);
     }
     alterEnergy(energyChange){
         let n = this.energy.n + energyChange;
@@ -88,8 +177,23 @@ class HudScene extends Phaser.Scene {
             this.energy_bar_effect = this.time.addEvent({ delay: 200, callback: this.resetEnergyScale, callbackScope: this, loop: false });
         }
     }
+    alertCorruption(corruptionChange){
+        let n = this.corruption.n + corruptionChange;
+        if(n < 0){n=0;};
+        if(n > this.corruption.max){n=this.corruption.max;};
+        this.corruption.n = n;
+        let newValue = Math.round((this.corruption.n/this.corruption.max)*this.corruption.h);
+        this.corruption_bar[1].setCrop(0,this.energy.h-newValue,this.energy.w,newValue);
+    }
     resetEnergyScale(){
         this.energy_bar.forEach(function(e){e.setScale(1)});
+    }
+    collectShard(type,value){
+        if(type == 'light'){
+            this.shard_totals.light = this.shard_totals.light + value;
+        }else{
+            this.shard_totals.dark = this.shard_totals.dark + value;
+        }
     }
     setHealth(hp,max)
     {

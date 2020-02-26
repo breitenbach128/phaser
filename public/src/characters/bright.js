@@ -26,11 +26,11 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
         const compoundBody = Body.create({
           parts: [mainBody, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
-          frictionStatic: 0.5,
+          frictionStatic: 0.3,
           frictionAir: 0.3,
-          friction: 0.5,
+          friction: 0.3,
           restitution: 0.00,
-          density: 0.05,
+          density: .05,
           label: "BRIGHT"
         });
         this.sprite
@@ -48,12 +48,18 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.mv_speed = 3;
         this.roll_speed = .3;
         this.jump_speed = 6;
+        this.max_speed = {air:2,ground:6};
         this.alive = true;
         this.falling = false;
         this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { fontSize: '10px', fill: '#00FF00' });
         this.touching = {up:0,down:0,left:0,right:0};
         this.airTime = 0;//For Camera Shake
         this.light_radius = 50;
+        this.corruption = {c:0, m: 60};
+        //Dialogue    
+        this.dialogue = new Dialogue(this.scene,[{speaker:this,ttl:0,text:""}],54,-40);  
+        //FollowMode Solana
+        this.followMode = false;
 
         //Create Effects
         this.effect=[
@@ -81,16 +87,20 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     {
             if(this.alive){
 
-            if(this.touching.up==0 && this.touching.down == 0 && this.touching.left == 0 && this.touching.right == 0){
-                this.airTime++;
-            }else{
-                this.airTime=0;
-            };
-            if(this.abPulse.doCharge){
-                if(this.abPulse.c < this.abPulse.max){
-                this.abPulse.c++;
+                if(this.dialogue.isRunning){
+                    this.dialogue.update();
                 }
-            }
+
+                if(this.touching.up==0 && this.touching.down == 0 && this.touching.left == 0 && this.touching.right == 0){
+                    this.airTime++;
+                }else{
+                    this.airTime=0;
+                };
+                if(this.abPulse.doCharge){
+                    if(this.abPulse.c < this.abPulse.max){
+                    this.abPulse.c++;
+                    }
+                }
 
 
             //Do Dark Updates
@@ -111,6 +121,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 }
             }
             //Movement Code
+            //Control Based on Light or Dark Modes
+            let darkMode = 1;
+            let brightMode = 0;
             if(curr_player==players.BRIGHT || playerMode > 0){
                 //Only control if currently the active control object
                 let control_left = this.getControllerAction('left');
@@ -124,9 +137,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 let control_pulsePress = this.getControllerAction('pulse');
                 let control_pulseRelease = this.getControllerAction('pulseR');
                 let control_change = this.getControllerAction('changeplayer');
-                //Control Based on Light or Dark Modes
-                let darkMode = 1;
-                let brightMode = 0;
+
                 //Change Player in Single Mode
                 if(playerMode == 0){
                     if(control_change){
@@ -134,6 +145,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     } 
                 }
                 if(this.light_status == brightMode){
+                    this.corruption.c++;
+                    if(this.corruption.c >= this.corruption.m){this.corruption.c = 0;this.applyCorruption(1);}
                     //BRIGHT CONTROLS 
                     if(control_beam && this.beamReady ){
                         this.beamReady = false;
@@ -174,12 +187,16 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
                 }else{
                     //DARK CONTROLS
+                    this.corruption.c++;
+                    if(this.corruption.c >= this.corruption.m){this.corruption.c = 0;this.applyCorruption(-1);}
                     if (control_left) {          
-                        this.sprite.setAngularVelocity(-this.roll_speed);            
+                        this.sprite.setAngularVelocity(-this.roll_speed);   
+                        //this.applyForce({x:-this.roll_speed/50,y:0});          
                         this.sprite.anims.play('dark-idle', true);      
                     }
                     if (control_right) {     
-                        this.sprite.setAngularVelocity(this.roll_speed);                    
+                        this.sprite.setAngularVelocity(this.roll_speed);  
+                        //this.applyForce({x:this.roll_speed/50,y:0});                  
                         this.sprite.anims.play('dark-idle', true);                 
                     }
                     if(!control_left && !control_right){
@@ -204,11 +221,38 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     }
                 }
 
+                //This does not look right.
+                //Max Velocities
+                // if(this.airTime >  0){        
+                //     if(this.body.velocity.x > this.max_speed.air ){this.setVelocityX(this.max_speed.air);};
+                //     if(this.body.velocity.x < -this.max_speed.air ){this.setVelocityX(-this.max_speed.air );};
+                // }else{
+                //     //Set Max Velocities
+                //     if(this.body.velocity.x > this.max_speed.ground ){this.setVelocityX(this.max_speed.ground );};
+                //     if(this.body.velocity.x < -this.max_speed.ground ){this.setVelocityX(-this.max_speed.ground);};
+                // }
+
                 this.debug.setPosition(this.sprite.x, this.sprite.y-64);
                 this.debug.setText("ctrl-pass:"+String(control_passPress)
                 +"\nctrl-passR:"+String(control_passRelease)
                 +"\nR-StatusKPGlobal:"+String(keyPad.checkKeyState('R'))
                 +"\nR-KP_R:"+String(keyPad.buttons.R.b.isDown));
+            }else if(curr_player==players.SOLANA && playerMode == 0){
+                //Allow Single Player Follow Mode
+                if(this.followMode){
+                    if(this.light_status == brightMode){
+                        if(this.x < solana.x - 64){
+                            this.sprite.setVelocityX(this.mv_speed);
+                        }else if(this.x > solana.x + 64){
+                            this.sprite.setVelocityX(-this.mv_speed);
+                        }
+                        if(this.y < solana.y-32 - 64){
+                            this.sprite.setVelocityY(this.mv_speed);
+                        }else if(this.y > solana.y-32 + 64){
+                            this.sprite.setVelocityY(-this.mv_speed);
+                        }
+                    }
+                }
             }
         }
 
@@ -217,13 +261,13 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         if(this.ctrlDeviceId >=0){
             switch(action){
                 case 'up':
-                    return (gamePad[this.ctrlDeviceId].getStickLeft().y < 0);
+                    return (gamePad[this.ctrlDeviceId].getStickLeft(.5).y < 0);
                 case 'down':
-                    return (gamePad[this.ctrlDeviceId].getStickLeft().y > 0);
+                    return (gamePad[this.ctrlDeviceId].getStickLeft(.5).y > 0);
                 case 'left':
-                    return (gamePad[this.ctrlDeviceId].getStickLeft().x < 0);
+                    return (gamePad[this.ctrlDeviceId].getStickLeft(.5).x < 0);
                 case 'right':
-                    return (gamePad[this.ctrlDeviceId].getStickLeft().x > 0);
+                    return (gamePad[this.ctrlDeviceId].getStickLeft(.5).x > 0);
                 case 'jump':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('A') == 1);
                 case 'beam':
@@ -281,6 +325,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     resetBeam(){
        this.beamReady = true; 
     }
+    applyCorruption(n){
+        hud.alertCorruption(n);
+    }
     toDark(){
         this.light_status = 1;
         this.setFrictionAir(0.01);
@@ -288,7 +335,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite.anims.play('dark-idle', false);
         this.sprite.setIgnoreGravity(false);
         this.sprite.setCollisionCategory(CATEGORY.DARK);
-        this.sprite.setDensity(0.01);
+        this.sprite.setDensity(0.001);//0.01
     }
     toBright(){
         this.light_status = 0;
@@ -353,6 +400,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             let power =  this.abPulse.c/1000;
             let vecX = Math.cos(angleToThrow)*power;
             let vecY = Math.sin(angleToThrow)*power;  
+            console.log("bright burst force vector",{x:vecX,y:vecY});
             object.applyForce({x:vecX,y:vecY});
         }
         this.abPulse.c = 0;

@@ -99,18 +99,31 @@ var LobbyScene = new Phaser.Class({
         this.debug = this.add.text(12, 12, "", { fontFamily:'visitorTT1',fontSize: '64px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
         this.startText = this.add.text(game.canvas.width/2, game.canvas.height-128, 'START', { fontFamily:'visitorTT1',fontSize: '32px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 }).setOrigin(0.5).setData({button:"start"}).setInteractive();
     },
-    detectedNewGP(scene){
-        console.log("Lobby New GP Detected",getActiveGamePadCount());
-        let activePads = getActiveGamePadCount();
-        scene.disconnectedIcons[activePads-1].setVisible(false);
-        scene.disconnectedIcons[activePads-1+1].setVisible(false);
-        playerConfig[activePads-1].ctrl = activePads-1;
-        playerConfig[activePads-1].ctrlSN = gamePad[activePads-1].pad.id
-        //If only pad, default player 2 to keyboard;
-        if(activePads == 1){playerConfig[1].ctrl = -1;playerConfig[1].ctrlSN = 0;}
+    getPlayerWithoutGamepad(){
+        for(let p=0;p < playerConfig.length;p++){
+            if(playerConfig[p].ctrl == -1){                
+                return p;
+            }
+        }
+        return -1;
+    },
+    detectedNewGP(scene,navIndex){
+
+        //Find First Player without gamepad
+        let playerWithout = scene.getPlayerWithoutGamepad();
+        console.log("Player selected to receive new gamepad",playerWithout+1);        
+        console.log("Assigning to player with this index, Controller #",navIndex+1);
+
+        playerConfig[playerWithout].ctrl = navIndex;
+        playerConfig[playerWithout].ctrlSN = gamePad[navIndex].pad.id
+
+        scene.disconnectedIcons[(navIndex*2)].setVisible(false);
+        scene.disconnectedIcons[(navIndex*2)+1].setVisible(false);
+
+
         //Setup Icons
         scene.setupControlsIcons();
-        console.log("GPTOTAL",scene.input.gamepad.total,gamePad[activePads-1].pad.id);
+        
     },
     setupControlsIcons(){
         //Player1
@@ -203,8 +216,8 @@ var LobbyScene = new Phaser.Class({
         if(gamePad[0].checkButtonState('start') > 0 || gamePad[1].checkButtonState('start') > 0){
             this.doStart();
         }
-        this.debug.setText("P1-CTRL:"+String(playerConfig[0].ctrl)+" "+String(playerConfig[1].ctrlSN)
-        +"\nP2-CTRL:"+String(playerConfig[1].ctrl)+" "+String(playerConfig[1].ctrlSN));
+        this.debug.setText("P1-CTRL_ID:"+String(playerConfig[0].ctrl)+" Name:"+String(playerConfig[0].ctrlSN)
+        +"\nP2-CTRL_ID:"+String(playerConfig[1].ctrl)+" Name:"+String(playerConfig[1].ctrlSN));
     },
     onObjectClicked(pointer,gameObject)
     {

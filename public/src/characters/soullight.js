@@ -39,8 +39,9 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.threshhold_distance = 64;  
         this.move_speed = 1;
         this.base_speed = 1;
-        this.max_speed = 25; 
+        this.max_speed = 10;//25 
         this.accel = 1;
+        this.projectile_speed = 6;//12
         this.sprite.setFriction(.3,.3);
         this.sprite.setIgnoreGravity(true);
         this.protection_radius = {value:250, max: 250, original: 250};//How much does the light protect;
@@ -51,7 +52,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.aimer.setVisible(false);
         this.aimer.ready = true;
         this.aimer.started = false;
-        this.aimerRadius = 64;
+        this.aimerRadius = 52;
         this.aimerCircle = new Phaser.Geom.Circle(this.x, this.y, this.aimerRadius);
 
         // this.aimLine = this.scene.add.line(200,200,25,0,50,0,0xff66ff)
@@ -71,6 +72,9 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         //Handle position and light growth and shrinking
         if(!this.passing){
             this.setPosition(this.owner.x,this.owner.y);            
+        }else{
+            //Home in on target
+            this.homeLight();
         }
         
         if(this.readyThrow){
@@ -90,17 +94,32 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
     setAimer(){ 
 
         let gameScale = camera_main.zoom;
-        let targVector = {x:pointer.x/gameScale,y:pointer.y/gameScale};
+        let targVector = {x:pointer.worldX,y:pointer.worldY};
+        //Adjust for Split Screen
+        if(this.scene.cameraLevel == 3){
+            let cam_p1 = this.scene.cameras.getCamera('cam_p1');
+            let cam_p2 = this.scene.cameras.getCamera('cam_p2');
+            let camVec = {x:0,y:0};
+            if(this.ownerid == 0){
+                camVec= pointer.positionToCamera(cam_p1);
+            }else{
+                camVec= pointer.positionToCamera(cam_p2);
+            }
+            targVector = camVec;
+        }
+        
         
         if(this.owner.ctrlDeviceId >= 0){
             //Overwrite target vector with gamePad coords
-            let gpVec = gamePad[this.owner.ctrlDeviceId].getStickLeft();
+            let stickRight = gamePad[this.owner.ctrlDeviceId].getStickRight(.1);
+            let stickLeft = gamePad[this.owner.ctrlDeviceId].getStickLeft(.1);
+            let gpVec = stickRight.x == 0 && stickRight.y == 0 ? stickLeft : stickRight;
             targVector = {x:this.x+gpVec.x*this.aimerRadius,y:this.y+gpVec.y*this.aimerRadius};
         }
         this.aimerCircle.x = this.x;
         this.aimerCircle.y = this.y;
 
-        let angle = Phaser.Math.Angle.Between(this.x-camera_main.worldView.x,this.y-camera_main.worldView.y, targVector.x,targVector.y);
+        let angle = Phaser.Math.Angle.Between(this.x,this.y, targVector.x,targVector.y);
         let normAngle = Phaser.Math.Angle.Normalize(angle);
         let deg = Phaser.Math.RadToDeg(normAngle);
 
@@ -124,19 +143,22 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         if(this.aimer.ready && this.aimer.started){
             this.aimer.ready = false;
             this.aimer.started = false;
-            let transfer = new SoulTransfer(this.scene,this.x,this.y,'soullightblast',0,this);
+            let transfer = new SoulTransfer(this.scene,this.aimer.x,this.aimer.y,'soullightblast',0,this);
             transfer.rotation = this.aimer.rotation;
-            transfer.fire(transfer.rotation,12);
+            transfer.fire(transfer.rotation,this.projectile_speed);
         }
+    }
+    homeLight(){
+        let target = this.ownerid == 0 ? bright : solana;
+        let angle = Phaser.Math.Angle.Between(this.x,this.y,target.x,target.y);
+        this.throw.x = Math.cos(angle);
+        this.throw.y = Math.sin(angle);  
     }
     passLight(){
         if(!this.passing){
             this.passing = true;
             //Get owner to set X/Y target
-            let target = this.ownerid == 0 ? bright : solana;
-            let angle = Phaser.Math.Angle.Between(this.x,this.y,target.x,target.y);
-            this.throw.x = Math.cos(angle);
-            this.throw.y = Math.sin(angle);            
+            this.homeLight();
         }
 
     }
@@ -165,7 +187,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 class SoulTransfer extends Phaser.Physics.Matter.Sprite{
     constructor(scene, x, y, sprite, frame, parent) {
         super(scene.matter.world, x, y, sprite, frame)
-        this.setScale(.3);
+        this.setScale(.10);
         this.scene = scene;
         scene.matter.world.add(this);
         scene.add.existing(this); 
@@ -173,14 +195,14 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         this.setActive(true);
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this;
-        const mainBody = Bodies.circle(0,0,w*.20, {isSensor:true});
+        const mainBody = Bodies.circle(0,0,w*.10, {isSensor:false});
 
         const compoundBody = Body.create({
             parts: [mainBody],
             frictionStatic: 0,
             frictionAir: 0.00,
             friction: 0.0,
-            restitution: 1,
+            restitution: 0.7,
             label: "SOULTRANSFER"
           });
           this
@@ -188,14 +210,19 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
             .setPosition(x, y)
             .setIgnoreGravity(true)
             .setCollisionCategory(CATEGORY.BULLET)
-            .setCollidesWith([ CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.BRIGHT, CATEGORY.SOLANA, CATEGORY.DARK ]);
+            .setCollidesWith([ CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.ENEMY, CATEGORY.BRIGHT, CATEGORY.SOLANA, CATEGORY.DARK, CATEGORY.MIRROR ]);
           //Custom properties
         this.parent = parent;
         this.timer = this.scene.time.addEvent({ delay: 2000, callback: this.kill, callbackScope: this, loop: false });
         this.alive = true;
+
+        this.soundfling = game.sound.add('wavingtorch',{volume: 0.04});
+        this.soundfling.addMarker({name:'soul-fling',start:.25,duration:.5});        
+        this.soundfling.addMarker({name:'soul-burn-impact',start:1,duration:.2});
     }
     fire(angle,speed){
         this.setVelocity(Math.cos(angle)*speed,Math.sin(angle)*speed);
+        this.soundfling.play('soul-fling');
     }
     hit(id){
         //Hit other target, so trigger the launch of the soulight.
@@ -203,6 +230,17 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
             this.parent.readyPass();
             this.timer = this.scene.time.addEvent({ delay: 100, callback: this.kill, callbackScope: this, loop: false });
         }
+    }
+    burn(){
+        this.soundfling.play('soul-burn-impact');
+        this.timer = this.scene.time.addEvent({ delay: 100, callback: this.kill, callbackScope: this, loop: false });
+        //DO effect
+        let burst = light_bursts.get(this.x,this.y);
+        burst.burst(this.x,this.y);
+        
+        //Need to make it inactive here.
+        this.setVelocity(0,0);
+        this.setPosition(-1000,-1000);
     }
     update(time,delta)
     {

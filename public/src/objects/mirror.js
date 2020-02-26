@@ -13,11 +13,11 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
         
         const compoundBody = Body.create({
             parts: [mainBody],
-            frictionStatic: 0,
-            frictionAir: 0.08,
-            friction: 0.1,
+            frictionStatic: 1,//0.0
+            frictionAir: 1,//0.08
+            friction: 1,//0.1
             restitution: 0,
-            density: 0.009,
+            density: 1.0,//0.009
             label: "MIRROR"
         });
 

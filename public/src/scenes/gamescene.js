@@ -14,7 +14,7 @@ var GameScene = new Phaser.Class({
 
     preload: function ()
     {
-        //this.load.scenePlugin('Slopes', 'src/phaser-slopes.min.js');
+        //this.load.scenePlugin('Slopes', 'src/plugins/phaser-slopes.min.js');
     },
 
     create: function ()
@@ -26,8 +26,7 @@ var GameScene = new Phaser.Class({
         hud = this.scene.get('UIScene');;
         hud.handleEvents();
         
-        //Create Background
-        world_background = this.add.tileSprite(512, 256, 4096, 512, 'forest_background');
+
 
        
    
@@ -40,13 +39,22 @@ var GameScene = new Phaser.Class({
 
         //Map the map
         map = this.make.tilemap({key: current_map});
-        
+
+        //Create Background
+        world_background = this.add.tileSprite(512, 256, 4096, map.heightInPixels, 'forest_background');
+
         // tiles for the ground layer
-        var Tiles = map.addTilesetImage('32Tileset','tiles32');//called it map1_tiles in tiled
-        var CollisionTiles = map.addTilesetImage('collision','collisions32');//called it map1_tiles in tiled
+        var TilesForest = map.addTilesetImage('32Tileset','tiles32');//called it 32Tileset in tiled
+        var TilesCastle = map.addTilesetImage('32Castle','castle32');//called it 32Castle in tiled
+        var CollisionTiles = map.addTilesetImage('collision','collisions32');//called it collision in tiled
         // create the ground layer
-        let bglayer = map.createStaticLayer('bg', Tiles, 0, 0);
-        let fglayer = map.createStaticLayer('fg', Tiles, 0, 0);
+      
+        let bglayer3 = map.createStaticLayer('bg3', [TilesCastle,TilesForest], 0, 0);
+        let bglayer2 = map.createStaticLayer('bg2', [TilesCastle,TilesForest], 0, 0);
+        let bglayer = map.createStaticLayer('bg', [TilesCastle,TilesForest], 0, 0);
+        let fglayer = map.createStaticLayer('fg', [TilesCastle,TilesForest], 0, 0); 
+
+
 
         this.collisionLayer = map.createDynamicLayer('collision', CollisionTiles, 0, 0);
         this.collisionLayer.setVisible(false);
@@ -79,23 +87,53 @@ var GameScene = new Phaser.Class({
             //if (tile.properties.type === 'lava' || tile.properties.type === 'spike')
             //{
                 if(tile.physics.matterBody){
-                    tile.physics.matterBody.body.label = 'SOLID';
+                    tile.physics.matterBody.body.label = 'GROUND';
                     tile.physics.matterBody.setCollisionCategory(CATEGORY.GROUND);
                     tile.physics.matterBody.setFriction(.9,0);
+
+                    //Fix "Gaps between tiles small bodies can squeeze thru" //TESTED 1.1 DOES NOT WORK
+                    //Phaser.Physics.Matter.Matter.Body.scale(tile.physics.matterBody.body, 1.1, 1.0)
                 }
                
             //}
         });
 
+        //NEED TO TEST THIS OUT WITH JUMP CODE. I NEED TO CREATE A TRUE GAME OBJECT HERE, SO I CAN REFERENCE THE TYPE.
+        //NOT ABSOLUTELY NEEDED, BUT PROBABLY BETTER.
+
+        //Test Hulls Layer for Object Creation for collision. Very Effecient.
+        //See http://labs.phaser.io/edit.html?src=src/game%20objects/tilemap/collision/matter%20ghost%20collisions.js
+        // let rectCarve = map.findObject('hulls', function (obj) { return obj.name === 'hull'; });
+        // let rectHull = this.matter.add.rectangle(
+        //     rectCarve.x + (rectCarve.width / 2), rectCarve.y + (rectCarve.height / 2),
+        //     rectCarve.width, rectCarve.height,
+        //     { isStatic: true }
+        // );
+        
+        // rectHull.label = 'GROUND';
+        // rectHull.collisionFilter.category = CATEGORY.GROUND;
+        // rectHull.friction = .9;
+
+        // console.log("RectHull",rectHull,rectCarve)
+
         //CREATE PLAYER ENTITIES
         // create the solana sprite    
-        solana = new Solana(this,128,128);  
-        bright = new Bright(this,128,96);
-        soullight =new SoulLight({scene: this, x:128,y:96,sprite:'bright',frame:0},bright);
+        solana = new Solana(this,192,160);  
+        bright = new Bright(this,192,128);
+        soullight =new SoulLight({scene: this, x:192,y:128,sprite:'bright',frame:0},bright);
+
+        //Create Soulight Effect
+        //This should be inactive until the player retrieves the soulight gem for the first time.
+        this.particle_soulight = this.add.particles('shapes',  this.cache.json.get('effect-flame-fall'));   
+        //this.particle_soulight.emitters.list[0].setScale(0.5);
+        this.particle_soulight.emitters.list[0].setLifespan(160);
         //
         this.changePlayerReady = true;
         //Emit Events
         //this.events.emit('solanaSetup'); 
+
+        //Setup HUD
+        hud.setupHud(solana);
 
         //Animations - Move to JSON later, if it makes sense       
         createAnimations(this);
@@ -106,6 +144,7 @@ var GameScene = new Phaser.Class({
         this.cameras.main.setZoom(2);
         this.cameras.main.roundPixels = true;
         camera_main = this.cameras.main;
+        
         
 
         //Controls
@@ -194,7 +233,7 @@ var GameScene = new Phaser.Class({
             classType: Entrance,
             runChildUpdate: true 
         });
-        //Entrances
+        //Fireflies
         fireflies = this.add.group({ 
             classType: Firefly,
             runChildUpdate: true 
@@ -209,6 +248,35 @@ var GameScene = new Phaser.Class({
             classType: Crate,
             runChildUpdate: true 
         });
+        //NPCs
+        npcs = this.add.group({ 
+            classType: NPC,
+            runChildUpdate: true 
+        });
+        //spiders
+        spiders = this.add.group({ 
+            classType: EnemySpider,
+            runChildUpdate: true 
+        });
+        //Light Shards
+        light_shards = this.add.group({ 
+            classType: LightShard,
+            runChildUpdate: true 
+        });
+        //Dark Shards
+        //Breakable Tiles
+        breakabletiles = this.add.group({ 
+            classType: BreakableTile,
+            runChildUpdate: true 
+        });
+        //Light Bursts
+        light_bursts = this.add.group({ 
+            classType: LightBurst,
+            runChildUpdate: true 
+        });
+        
+        //Clear Boss
+        boss = -1;
 
         speed = Phaser.Math.GetSpeed(300, 1);
        
@@ -223,29 +291,90 @@ var GameScene = new Phaser.Class({
         let triggerlayer = map.getObjectLayer('triggers');
         //Create exit layer
         let exitlayer = map.getObjectLayer('exit');
+        //Create NPC layer
+        let npclayer = map.getObjectLayer('npcs');
+
+        //Spawn NPCs from Layer if the layer exist
+        tutorialRunning = false;
+        if(npclayer){
+            for(e=0;e<npclayer.objects.length;e++){
+                let tmxObjRef = npclayer.objects[e];
+                let props = getTileProperties(tmxObjRef.properties);
+
+                if(tmxObjRef.type == "guide"){
+                    tutorialRunning = true;                    
+                    polaris = new Polaris(this,tmxObjRef.x,tmxObjRef.y);
+
+                    //Check for state saves
+                    let findState = findWithAttr(guideStates,'map',current_map);
+                    if(findState == -1){
+                        guideStates.push(new stateData('polaris',current_map,polaris.x,polaris.y))
+                    }else{
+                        polaris.setPosition(guideStates[findState].pos.x,guideStates[findState].pos.y);
+                    };//Set this so it starts the running guide
+                }else{
+                    npcs.get(tmxObjRef.x,tmxObjRef.y,'npc1');
+                }
+            }
+        }
+
+
         //Spawn Enemies from Enemy TMX Object layer
         for(e=0;e<enemylayer.objects.length;e++){
-            let props = getTileProperties(enemylayer.objects[e].properties);
+            let tmxObjRef = enemylayer.objects[e];
+            let props = getTileProperties(tmxObjRef.properties);
             let EnemyType = props.enemyType;
             let EnemyClass = props.enemyClass;
             let PassiveBehavior = props.pBehav;
             let AggressivBehavior = props.aBehav;
-            if(EnemyClass == 'ground'){
-                new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
-            }else if(EnemyClass == 'air'){
-                new_enemy = enemiesFly.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);                
-            }else{
-                new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
-            }
+            let weapon = props.weapon;
+            let new_enemy;
+            let path = '[{"x":0,"y":0}]';
 
-            if(new_enemy){
-                //Setup Enemy
-                new_enemy.setActive(true);
-                new_enemy.setVisible(true);
-                new_enemy.setBehavior(PassiveBehavior,AggressivBehavior);
-                
-                
-            } 
+            //Boss?
+            if(tmxObjRef.type == "boss"){
+                console.log('boss',props);
+                boss = new SpiderHive(this,tmxObjRef.x,tmxObjRef.y);
+                boss.setPosition(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2+18);
+                //Setup boss HUD info
+                hud.setBossVisible(true);
+                hud.initBossHealth();
+            //SPIDER
+            }else if(tmxObjRef.type == "spider"){
+                spider = spiders.get(tmxObjRef.x,tmxObjRef.y);
+                spider.setPosition(tmxObjRef.x,tmxObjRef.y);
+            }else{
+
+                //Standard Types            
+                if(EnemyClass == 'ground'){
+                    new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
+                }else if(EnemyClass == 'air'){
+                    new_enemy = enemiesFly.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);                
+                }else{
+                    new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
+                }
+
+                if(props.path){
+                    path = props.path;
+                }
+                if(props.tint){
+                    let newTint =  (Phaser.Display.Color.HexStringToColor(props.tint))._color; //0x333333
+                    new_enemy.setTint(newTint);
+                }
+                if(props.scale){
+                    new_enemy.setScale(props.scale);
+                }
+
+                if(new_enemy){
+                    //Setup Enemy
+                    new_enemy.setActive(true);
+                    new_enemy.setVisible(true);
+                    new_enemy.setBehavior(PassiveBehavior,AggressivBehavior,weapon);
+                    new_enemy.setPath(path);
+                    
+                    
+                } 
+            }
         }
         //Spawn Mirrors
         for(e=0;e<objectlayer.objects.length;e++){
@@ -272,8 +401,16 @@ var GameScene = new Phaser.Class({
                 x_offset = tmxObjRef.width/2;
                 y_offset = tmxObjRef.height/2;
                 let newFallPlat = new Fallplat(this,tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-1);
+            }else if(tmxObjRef.type == "breakabletile"){  
+                x_offset = tmxObjRef.width/2;
+                y_offset = tmxObjRef.height/2;
+                let newbreakabletile = breakabletiles.get();
+                let breakabletileProps = getTileProperties(tmxObjRef.properties);
+                console.log("New Breakable",breakabletileProps);
+                newbreakabletile.setup(tmxObjRef.x+x_offset,tmxObjRef.y+y_offset,1,breakabletileProps.frames);
             }else if(tmxObjRef.type == "rock"){  
-                let newRock = rocks.get(tmxObjRef.x,tmxObjRef.y);
+                let newRock = rocks.get();
+                newRock.setup(tmxObjRef.x,tmxObjRef.y,1);
             }else if(tmxObjRef.type == "crate"){  
                 let newCrate = crates.get(tmxObjRef.x,tmxObjRef.y);
             }else if(tmxObjRef.type == "item"){
@@ -321,12 +458,11 @@ var GameScene = new Phaser.Class({
             //console.log(tmxObjRef)
             if(tmxObjRef.type == "entrance"){
                 exitObj = entrances.get();
-                exitObj.setup(tmxObjRef.x+16,tmxObjRef.y+16,tmxObjRef.name);
-                
+                exitObj.setup(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,tmxObjRef.name);
                 //Re-position player to match entrance to exit they left.
                 if(exitObj.name == current_exit){
                     
-                    solana.sprite.setPosition(exitObj.x,exitObj.y);
+                    solana.sprite.setPosition(exitObj.x,exitObj.y+exitObj.height/2-solana.sprite.height/2);
                     bright.sprite.setPosition(exitObj.x,exitObj.y-32);
                     soullight.sprite.setPosition(exitObj.x,exitObj.y-32);
                     
@@ -336,7 +472,7 @@ var GameScene = new Phaser.Class({
                 }
             }else{
                 exitObj = exits.get();
-                exitObj.setup(tmxObjRef.x+16,tmxObjRef.y+16,getTileProperties(tmxObjRef.properties),tmxObjRef.name);
+                exitObj.setup(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,getTileProperties(tmxObjRef.properties),tmxObjRef.name);
                 exitObj.setDisplaySize(tmxObjRef.width,tmxObjRef.height);
             } 
         }
@@ -406,8 +542,6 @@ var GameScene = new Phaser.Class({
 
          //Start soulight play
          soullight.sprite.anims.play('soulight-move', true);//Idle
-
-        hud.setupHud(solana);
 
         solana.setDepth(DEPTH_LAYERS.FRONT);
         bright.setDepth(DEPTH_LAYERS.FRONT);
@@ -540,7 +674,22 @@ var GameScene = new Phaser.Class({
                 }
             }
         });
+        this.matterCollision.addOnCollideActive({
+            objectA: bright,
+            callback: eventData => {
+              const { bodyB, gameObjectB, bodyA, gameObjectA } = eventData;
 
+                if (gameObjectB !== undefined && gameObjectB instanceof TMXPlate) {
+                    if (gameObjectA.light_status == 1) {//Only in Dark Mode
+                        gameObjectB.usePlate();
+                    }
+                }
+
+                if (gameObjectB !== undefined && gameObjectB instanceof TMXZone) {
+                    gameObjectB.enterZone(bright);
+                } 
+            }
+        });
         this.matterCollision.addOnCollideActive({
             objectA: solana.sprite,
             callback: eventData => {
@@ -574,8 +723,8 @@ var GameScene = new Phaser.Class({
               if (gameObjectB !== undefined && gameObjectB instanceof TMXPlate) {
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA){
-
-                    gameObjectB.usePlate();
+                    //Solana is not heavy enough to use plates
+                    //gameObjectB.usePlate();
 
                 }
               }
@@ -593,24 +742,27 @@ var GameScene = new Phaser.Class({
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA){
 
-                    gameObjectB.exitLevel();
+                    gameObjectB.exitLevel(solana);
 
                 }
               }
+              //Solana Enters a zone trigger
               if (gameObjectB !== undefined && gameObjectB instanceof TMXZone) {
-                //Solana Touching a lever?
-                if(curr_player==players.SOLANA){
-
                     gameObjectB.enterZone(solana);
-
-                }
               }
+
               if (gameObjectB !== undefined && gameObjectB instanceof EquipItem) {
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA){
 
                     gameObjectB.equipTo(solana);
 
+                }
+              }
+              if (gameObjectB !== undefined && gameObjectB instanceof NPCSensor) {
+                //Solana Touching a lever?
+                if(curr_player==players.SOLANA && control_up){
+                    gameObjectB.parent.interact(solana);
                 }
               }
               if (gameObjectB !== undefined && bodyB.label == "GATE_BOTTOM") {
@@ -660,17 +812,26 @@ var GameScene = new Phaser.Class({
                     }  
                 }
                 //Between Fallplat and Ground at velocity
-                if ((bodyA.label === 'FALLPLAT' && bodyB.label === 'SOLID') || (bodyA.label === 'SOLID' && bodyB.label === 'FALLPLAT')) {
+                if ((bodyA.label === 'FALLPLAT' && bodyB.label === 'GROUND') || (bodyA.label === 'GROUND' && bodyB.label === 'FALLPLAT')) {
                     //Get Bullet Object and run hit function
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'FALLPLAT');
                     if (gObjs[0].ready == false && gObjs[0].y < gObjs[1].tile.pixelY){
                         emitter0.active = true;
                         emitter0.explode(5,gObjs[0].x,gObjs[0].y);
-                        gObjs[0].destroy();
+                        gObjs[0].setDead();
                     }  
                 }
-                //Between Bullets and Ground
+                //Between Bullets and SOLID
                 if ((bodyA.label === 'BULLET' && bodyB.label === 'SOLID') || (bodyA.label === 'SOLID' && bodyB.label === 'BULLET')) {
+                    //Get Bullet Object and run hit function
+                    const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;
+                    const bulletObj = bulletBody.gameObject;
+                    emitter0.active = true;
+                    emitter0.explode(5,bulletObj.x,bulletObj.y);
+                    bulletObj.hit();
+                }
+                //Between Bullets and GROUND
+                if ((bodyA.label === 'BULLET' && bodyB.label === 'GROUND') || (bodyA.label === 'GROUND' && bodyB.label === 'BULLET')) {
                     //Get Bullet Object and run hit function
                     const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;
                     const bulletObj = bulletBody.gameObject;
@@ -683,7 +844,17 @@ var GameScene = new Phaser.Class({
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'BULLET');
                     if (gObjs[0].active){
                         gObjs[0].hit();
+                        let applyTargetEffects = gObjs[0].getEffects();
+                        if(applyTargetEffects.length > 0){gObjs[1].addEffects(applyTargetEffects)};
                         gObjs[1].receiveDamage(1);
+                    }  
+                }
+                //Between Light Shards and Solana
+                if ((bodyA.label === 'LIGHT_SHARD' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'LIGHT_SHARD')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'LIGHT_SHARD');
+                    if (gObjs[0].active){
+                        gObjs[0].hit();
+                        hud.collectShard('light',1);
                     }  
                 }
                 //Between Solar blast and Enemies
@@ -725,11 +896,40 @@ var GameScene = new Phaser.Class({
                         gObjs[0].hit(0);
                     }  
                 }
+                //Between SoulTransfer and Solid
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'SOLID') || (bodyA.label === 'SOLID' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
+                    if (gObjs[0].active){
+                        gObjs[0].burn();
+                    }  
+                }
+                //Between SoulTransfer and Ground
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'GROUND') || (bodyA.label === 'GROUND' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
+                    if (gObjs[0].active){
+                        gObjs[0].burn();
+                    }  
+                }
+                //Between SoulTransfer and Enemies
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'ENEMY') || (bodyA.label === 'ENEMY' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
+                    if (gObjs[0].active){
+                        gObjs[0].burn();
+                        gObjs[1].receiveDamage(1);
+                    }  
+                }
                 //Between SoulTransfer and Bright
                 if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'BRIGHT') || (bodyA.label === 'BRIGHT' && bodyB.label === 'SOULTRANSFER')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
                     if (gObjs[0].active){
                         gObjs[0].hit(1);
+                    }  
+                }
+                //Between SoulTransfer and Bright
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'MIRROR') || (bodyA.label === 'MIRROR' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'MIRROR');
+                    if (gObjs[0].active){
+                        gObjs[0].hit();
                     }  
                 }
                 //Solana and Fireflies
@@ -750,6 +950,7 @@ var GameScene = new Phaser.Class({
                     }  
                     continue;
                 }
+                //Lamps and Blast
                 if ((bodyA.label === 'ABILITY-SOLAR-BLAST' && bodyB.label === 'CRYSTAL_LAMP') || (bodyA.label === 'CRYSTAL_LAMP' && bodyB.label === 'ABILITY-SOLAR-BLAST')) {
                     console.log("blast hit lamp");
                     let bulletObj = GameObjectB;
@@ -760,6 +961,13 @@ var GameScene = new Phaser.Class({
                     }
                     bulletObj.hit();
                     lampObj.turnOn();
+
+                }
+                //Lamps and Soul Tranfser
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'CRYSTAL_LAMP') || (bodyA.label === 'CRYSTAL_LAMP' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
+                    gObjs[0].burn();
+                    gObjs[1].turnOn();
 
                 }
                 //Catch any non-event projectiles and destory them if they hit anything else they would not interact with.
@@ -774,9 +982,6 @@ var GameScene = new Phaser.Class({
 
         //Mouse
         pointer = this.input.activePointer;
-
-        //Controller management
-        //initGamePads(this,this.gamepadCallback);
 
         keyPad = new KeyboardMouseControl(this,pointer)
 
@@ -812,13 +1017,12 @@ var GameScene = new Phaser.Class({
         //Debug Properties
         this.debugAimLine = this.add.graphics(0, 0);
         //Need to push all debug graphics into a single debug array for easy enable
+        this.cameraLevel = 1;
+
+        //Lights2d
+        // solana.setPipeline('Light2D');
+        // let light  = this.lights.addLight(0, 0, 200).setScrollFactor(0.0).setIntensity(2);
         
-    },
-    gamepadCallback(scene){  
-        console.log("GameScene GP Callback");   
-        let activePads = getActiveGamePadCount();   
-        bright.setController(activePads-2);//IF activepads  == 1, bright goes Keyboard (-1), solana goes GP[0]
-        solana.setController(activePads-1);//If activepads == 2, bright goes GP[1], soland goes GP[0]
     },
     update: function (time, delta)
     {
@@ -831,33 +1035,66 @@ var GameScene = new Phaser.Class({
 
         let midPoint = {x:(solana.x+bright.x)/2,y:(solana.y+bright.y)/2}
         this.cameras.main.centerOn(midPoint.x,midPoint.y);
-        if(disPlayers > 500 && this.cameras.main.zoom != 1.75){
-            this.cameras.main.zoomTo(1.75,1000,'Linear');
-        }
-        if(disPlayers < 500 && this.cameras.main.zoom != 2){
+        //Lvl 1, Normal Mode
+        if(disPlayers < 500 && this.cameraLevel != 1){
+            this.cameraLevel = 1;
             this.cameras.main.zoomTo(2,1000,'Linear');
         }
-        //Teleport Bright
-        if(disPlayers > 1000){bright.setPosition(solana.x,solana.y - 48)}
+        //Lvl 2, Zoom out
+        if(disPlayers >= 500 && disPlayers < 750 && this.cameraLevel != 2){
+            if( this.cameraLevel == 3){this.splitScreen(false);}//If it was split screen, cancel that.
+            this.cameraLevel = 2;
+            this.cameras.main.zoomTo(1.75,1000,'Linear');            
+        }
+        //Lvl 3, Split the Camera
+        if(disPlayers >= 750 && this.cameraLevel != 3){  
+            this.cameraLevel = 3;          
+            this.splitScreen(true);
+        }
 
         //DEBUG
         if(GLOBAL_DEBUG){
             //Draw Pointer - DEBUG
-            this.debugPointer.x = pointer.worldX-8;
-            this.debugPointer.y = pointer.worldY-8;
             this.debugAimLine.clear();
             this.debugAimLine.lineStyle(5, 0xFF00FF, 1.0);
             this.debugAimLine.beginPath();
-            this.debugAimLine.moveTo(solana.x, solana.y);
-            this.debugAimLine.lineTo(pointer.worldX, pointer.worldY);
+            if(curr_player == players.SOLANA){
+                this.debugAimLine.moveTo(solana.x, solana.y);
+            }else{
+                this.debugAimLine.moveTo(bright.x, bright.y);
+            }
+            
+            let targVector = {x:pointer.worldX,y:pointer.worldY};
+            //Adjust for Split Screen
+            if(this.cameraLevel == 3){
+                let cam_p1 = this.cameras.getCamera('cam_p1');
+                let cam_p2 = this.cameras.getCamera('cam_p2');
+                let camVec = {x:0,y:0};
+                if(curr_player == players.SOLANA){
+                    camVec= pointer.positionToCamera(cam_p1);
+                }else{
+                    camVec= pointer.positionToCamera(cam_p2);
+                }
+                targVector = camVec;
+            }
+            this.debugAimLine.lineTo(targVector.x, targVector.y);
             this.debugAimLine.closePath();
             this.debugAimLine.strokePath();
+            this.debugPointer.x = targVector.x-8;
+            this.debugPointer.y = targVector.y-8;
         }
 
         //Updates
         solana.update(time,delta);
         bright.update(time,delta);
         soullight.update(time,delta);
+        this.particle_soulight.emitters.list[0].setPosition(soullight.x,soullight.y);
+        this.particle_soulight.emitters.list[0].setSpeedX(soullight.body.velocity.x);
+        this.particle_soulight.emitters.list[0].setSpeedY(soullight.body.velocity.y);
+        if(boss != -1){boss.update(time,delta);}
+        if(tutorialRunning){
+            polaris.update(time,delta);
+        };
 
         //Draw lighting        
         shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels);    
@@ -877,11 +1114,20 @@ var GameScene = new Phaser.Class({
 
         shadow_context = this.cutCanvasCircle(soullight.sprite.x,soullight.sprite.y,soullight.protection_radius.value,shadow_context);
         shadow_context = this.cutCanvasCircle(bright.x,bright.y,bright.light_radius,shadow_context);
-
+        if(tutorialRunning){
+            shadow_context = this.cutCanvasCircle(polaris.x,polaris.y,128,shadow_context);
+        }
         if(Phaser.Math.Distance.Between(soullight.sprite.x,soullight.y,solana.sprite.x,solana.sprite.y) <= soullight.protection_radius.value){solana_in_light = true;}
 
         //is the solana outside the light? Do damage!
+
+        //Instead of doing damage right away, do drain energy. IF totally drained, then take damage.
         solana.inLight = solana_in_light;
+        let rate_of_energy_drain_outside_light = 1;
+        if(!solana_in_light){
+            hud.alterEnergy(-rate_of_energy_drain_outside_light);
+            if(hud.energy.n <= 0){solana.receiveDamage(1);};
+        };
 
         shadow_layer.refresh();
 
@@ -916,13 +1162,12 @@ var GameScene = new Phaser.Class({
             //this.matter.world.engine.world.bodies
             console.log(Phaser.Physics.Matter.Matter.Query.point(this.matter.world.localWorld.bodies, {x:pointer.worldX, y:pointer.worldY}));
         }
-        //Quick Change Map and Restart Scene
+        
         if(keyPad.checkKeyState('X') == 1){  
             if(current_map == "map2"){current_map = "map3"}else{current_map = "map2"}; 
             hud.clearHud();       
             this.scene.restart();
-        }     
-
+        }   
         
         //Scroll parallax based on movement of bright or solana
         if(solana.mv_Xdiff != 0){
@@ -931,6 +1176,16 @@ var GameScene = new Phaser.Class({
             world_background.tilePositionX += paraMove;
         }   
       
+    },
+    brightFollowMode: function(){
+        bright.followMode = !bright.followMode;
+        if(!bright.dialogue.isRunning){
+            let stext = "Alright, I'll follow you.";
+            if(!bright.followMode){stext = "Staying put.";};
+            let brightFollowSpeech = [{speaker:bright,ttl:2000,text:stext}];
+            bright.dialogue = new Dialogue(this,brightFollowSpeech,54,-40);
+            bright.dialogue.start();
+        }
     },
     changePlayer: function(){
         //this.cameras.main.stopFollow();
@@ -949,6 +1204,23 @@ var GameScene = new Phaser.Class({
         }
         
 
+    },
+    splitScreen(enable){
+        if(enable){
+            let cam_p1 = this.cameras.add(0,0,camera_main.width/2,camera_main.height,false,'cam_p1');//Second Camera
+            let cam_p2 = this.cameras.add(camera_main.width/2,0,camera_main.width/2,camera_main.height,false,'cam_p2');//Second Camera
+            cam_p1.setBounds(0, 0, map.widthInPixels, map.heightInPixels+128);  
+            cam_p2.setBounds(0, 0, map.widthInPixels, map.heightInPixels+128);  
+            cam_p1.setZoom(2);
+            cam_p2.setZoom(2);
+            cam_p1.startFollow(solana,true,.8,.8,0,0);
+            cam_p2.startFollow(bright,true,.8,.8,0,0);
+        }else{
+            let cam_p1 = this.cameras.getCamera('cam_p1');
+            let cam_p2 = this.cameras.getCamera('cam_p2');
+            this.cameras.remove(cam_p1);
+            this.cameras.remove(cam_p2);
+        }
     },
     cutCanvasCircle: function(x,y,radius,ctx){
         ctx.save();         
@@ -1007,6 +1279,24 @@ var GameScene = new Phaser.Class({
                 } 
             }
         }   
+    },
+    saveData(){
+        //Save Polaris Data
+        if(tutorialRunning){
+            let findState = findWithAttr(guideStates,'map',current_map);
+            if(findState != -1){
+                guideStates[findState].pos.x = polaris.x;
+                guideStates[findState].pos.y = polaris.y;
+            }else{
+                console.log("Error: No Polaris State data to update");
+            }
+        }
+    },
+    gameOver(){
+        //Remove HUD
+        hud.scene.remove();
+        //Run game Over
+        this.scene.start('gameover');
     }
 });
 //External Functions
@@ -1216,15 +1506,21 @@ function createAnimations(scene){
         repeat: -1
     });
     scene.anims.create({
+        key: 'solana-webbed',
+        frames: scene.anims.generateFrameNumbers('solana', { start: 22, end: 22 }),
+        frameRate: 6,
+        repeat: -1
+    });
+    scene.anims.create({
         key: 'bright-idle',
         frames: scene.anims.generateFrameNumbers('bright', { start: 0, end: 1 }),
-        frameRate: 6,
+        frameRate: 2,
         repeat: -1
     });
     scene.anims.create({
         key: 'bright-sway',
         frames: scene.anims.generateFrameNumbers('bright', { frames:[0,2,3,4,5,6,7,8,9,10,11,0,2,3,18,17,16,15,14,13,12,11] }),
-        frameRate: 12,
+        frameRate: 24,
         repeat: -1
     });
     scene.anims.create({
@@ -1361,4 +1657,64 @@ function createAnimations(scene){
         frameRate: 16,
         repeat: 0
     });
+    scene.anims.create({
+        key: 'boss-spider',
+        frames: scene.anims.generateFrameNumbers('spider', { frames:[0,1,2,3,4] }),
+        frameRate: 12,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'boss-hive',
+        frames: scene.anims.generateFrameNumbers('boss_spiderhive', { frames:[0,1] }),
+        frameRate: 3,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'boss-hive-egg-idle',
+        frames: scene.anims.generateFrameNumbers('boss_spideregg', { frames:[0] }),
+        frameRate: 3,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'boss-hive-egg-grow',
+        frames: scene.anims.generateFrameNumbers('boss_spideregg', { frames:[3,2,1,0] }),
+        frameRate: 3,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'boss-hive-egg-crack',
+        frames: scene.anims.generateFrameNumbers('boss_spideregg', { frames:[4,5,6,7,8] }),
+        frameRate: 3,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'boss-hive-egg-pulse',
+        frames: scene.anims.generateFrameNumbers('boss_spideregg', { frames:[8,9,10,9] }),
+        frameRate: 3,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'light_burst_action',
+        frames: scene.anims.generateFrameNumbers('light_burst_2', { frames:[0,1,2,3,4,5] }),
+        frameRate: 12,
+        repeat: 0
+    });
+    scene.anims.create({
+        key: 'light_burst_idle',
+        frames: scene.anims.generateFrameNumbers('light_burst_2', { frames:[0] }),
+        frameRate: 1,
+        repeat: 0
+    });    
+    scene.anims.create({
+        key: 'double_jump_burst',
+        frames: scene.anims.generateFrameNumbers('doublejump-1', { frames:[0,1,2,3] }),
+        frameRate: 12,
+        repeat: 0
+    });  
+    scene.anims.create({
+        key: 'wind-1',
+        frames: scene.anims.generateFrameNumbers('wind-1', { frames:[0,1,2,3,4,5,6] }),
+        frameRate: 12,
+        repeat: -1
+    }); 
 }

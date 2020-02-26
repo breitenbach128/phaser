@@ -39,20 +39,33 @@ class Exit extends Phaser.Physics.Matter.Sprite{
         this.setPosition(x,y);
         this.targetMap = properties.targetMap;
         this.targetExit = properties.targetExit;
+        this.manualTrigger = properties.manualTrigger ? true : false;
     }
     update(time, delta)
     {
 
 
     }
-    exitLevel(){
+    exitLevel(obj){
         if(!this.triggered && this.targetMap != "none" && this.targetExit != "none"){
-            current_map = this.targetMap;
-            current_exit = this.targetExit;
-            this.triggered = true;
-            hud.clearHud();       
-            this.scene.scene.restart();
+            if(this.manualTrigger){
+                if(obj.getControllerAction('up') > 0){
+                    this.nextLevel();
+                }
+            }else{
+                this.nextLevel();
+            }
         }
+    }
+    nextLevel(){
+        //First, Save State
+        this.scene.saveData();
+        //Then, Transition to new map
+        current_map = this.targetMap;
+        current_exit = this.targetExit;
+        this.triggered = true;
+        hud.clearHud();       
+        this.scene.scene.restart();
     }
 
 };
