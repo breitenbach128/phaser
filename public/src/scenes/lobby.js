@@ -99,30 +99,37 @@ var LobbyScene = new Phaser.Class({
         this.debug = this.add.text(12, 12, "", { fontFamily:'visitorTT1',fontSize: '64px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
         this.startText = this.add.text(game.canvas.width/2, game.canvas.height-128, 'START', { fontFamily:'visitorTT1',fontSize: '32px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 }).setOrigin(0.5).setData({button:"start"}).setInteractive();
     },
-    getPlayerWithoutGamepad(){
+    getPlayerWithoutGamepad(navIndex){
+        let alreadyInUse = false;
         for(let p=0;p < playerConfig.length;p++){
-            if(playerConfig[p].ctrl == -1){                
+            if(playerConfig[p].ctrl == navIndex){alreadyInUse = true;};
+            if(playerConfig[p].ctrl == -1 && !alreadyInUse){                
                 return p;
             }
         }
         return -1;
+        //This still is not perfect. It is not not loading the gamepad, so it runs the down button event and attempts to reload it each time, sine there are still inactive gamepads
+
     },
     detectedNewGP(scene,navIndex){
 
         //Find First Player without gamepad
-        let playerWithout = scene.getPlayerWithoutGamepad();
-        console.log("Player selected to receive new gamepad",playerWithout+1);        
-        console.log("Assigning to player with this index, Controller #",navIndex+1);
+        let playerWithout = scene.getPlayerWithoutGamepad(navIndex);
+        if(playerWithout != -1){
+            console.log("Player selected to receive new gamepad",playerWithout+1);        
+            console.log("Assigning to player with this index, Controller #",navIndex+1);
 
-        playerConfig[playerWithout].ctrl = navIndex;
-        playerConfig[playerWithout].ctrlSN = gamePad[navIndex].pad.id
+            playerConfig[playerWithout].ctrl = navIndex;
+            playerConfig[playerWithout].ctrlSN = gamePad[navIndex].pad.id
 
-        scene.disconnectedIcons[(navIndex*2)].setVisible(false);
-        scene.disconnectedIcons[(navIndex*2)+1].setVisible(false);
+            scene.disconnectedIcons[(navIndex*2)].setVisible(false);
+            scene.disconnectedIcons[(navIndex*2)+1].setVisible(false);
 
 
-        //Setup Icons
-        scene.setupControlsIcons();
+            //Setup Icons
+            scene.setupControlsIcons();
+        }
+        
         
     },
     setupControlsIcons(){
