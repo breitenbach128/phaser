@@ -98,6 +98,9 @@ var LobbyScene = new Phaser.Class({
         this.setupControlsIcons();
         this.debug = this.add.text(12, 12, "", { fontFamily:'visitorTT1',fontSize: '64px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
         this.startText = this.add.text(game.canvas.width/2, game.canvas.height-128, 'START', { fontFamily:'visitorTT1',fontSize: '32px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 }).setOrigin(0.5).setData({button:"start"}).setInteractive();
+
+        //Controll DEBUG Text
+        this.controllerDebugText = this.add.text(55, 200, 'CTRL-DEBUG\n', { fontFamily:'visitorTT1',fontSize: '24px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 })
     },
     getPlayerWithoutGamepad(navIndex){
         let alreadyInUse = false;
@@ -225,6 +228,25 @@ var LobbyScene = new Phaser.Class({
         }
         this.debug.setText("P1-CTRL_ID:"+String(playerConfig[0].ctrl)+" Name:"+String(playerConfig[0].ctrlSN)
         +"\nP2-CTRL_ID:"+String(playerConfig[1].ctrl)+" Name:"+String(playerConfig[1].ctrlSN));
+
+        this.controllerDebugText.setText("DEBUG-GP\n"
+        +"\nGP0-LeftStick:"+String(gamePad[0].getStickLeft(.5).x)+":"+String(gamePad[0].getStickLeft(.5).y)
+        +"\nGP0-RightStick:"+String(gamePad[0].getStickRight(.5).x)+":"+String(gamePad[0].getStickRight(.5).y)
+        +"\nGP0-A:"+String(gamePad[0].checkButtonState('A'))
+        +"\nGP0-Y:"+String(gamePad[0].checkButtonState('Y'))
+        +"\nGP0-RTRG:"+String(gamePad[0].checkButtonState('rightTrigger'))
+        +"\nGP0-LTRG:"+String(gamePad[0].checkButtonState('leftTrigger'))
+        +"\nGP0-LSHLD:"+String(gamePad[0].checkButtonState('leftShoulder'))
+        +"\n\n\n\n"
+        +"\nGP1-LeftStick:"+String(gamePad[1].getStickLeft(.5).x)+":"+String(gamePad[1].getStickLeft(.5).y)
+        +"\nGP1-RightStick:"+String(gamePad[1].getStickRight(.5).x)+":"+String(gamePad[1].getStickRight(.5).y)
+        +"\nGP1-A:"+String(gamePad[1].checkButtonState('A'))
+        +"\nGP1-Y:"+String(gamePad[1].checkButtonState('Y'))
+        +"\nGP1-RTRG:"+String(gamePad[1].checkButtonState('rightTrigger'))
+        +"\nGP1-LTRG:"+String(gamePad[1].checkButtonState('leftTrigger'))
+        +"\nGP1-LSHLD:"+String(gamePad[1].checkButtonState('leftShoulder'))
+        );
+
     },
     onObjectClicked(pointer,gameObject)
     {

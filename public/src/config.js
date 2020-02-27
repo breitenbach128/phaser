@@ -238,8 +238,8 @@
 
         scene.input.gamepad.on('down', function (pad, button, index) {
             let iagp = getInactiveGamePad();
-            if(iagp != -1){
-                console.log("DEBUG: NEWGP:",pad,index)
+            if(iagp != -1 && pad.index == iagp){
+                console.log("DEBUG: NEWGP:",pad,pad.index,index,iagp)
                 //if(!gamePad[pad.index].ready){
                 //Just check for the iagp value to make sure we can add it. Nothing is gamed by having it check a second time.
 
