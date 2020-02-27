@@ -13,15 +13,20 @@ class GamepadControl {
             console.log("game Controller class booted - no controller. Loaded with empty values");
             this.loadDefaults();
         }else{
-            console.log("game Controller class booted");
+            console.log("game Controller class booted - loading device.");
             //this.ready = true;
-            this.loadGamePadConfiguration(device);
+            this.loadGamePadConfiguration(device);            
             
 
         }
 
         this.pad = device;
-        this.index = -1;
+        if(device == 0){
+            this.index = -1;
+        }else{
+            this.index = device.index;
+        }
+        
         
         //Button State - 0-up, 1-Down, 2-Held
         //pad.axes
@@ -85,13 +90,15 @@ class GamepadControl {
 
             if(foundConfig){
                 //Found Config, so load it.
-                console.log("Found Matching Config:",gamepadConfigs[curr_config]);
-                this.buttons = gamepadConfigs[curr_config].setupButtons;
-                this.analogs = gamepadConfigs[curr_config].setupAxes;
+                console.log("Found Matching Config: " + id);
+
+                ///THI IS THE BUGGGGG!!! THis is global, so it is causing the conflict since both reference the "same" buttons.
+                this.buttons = JSON.parse(JSON.stringify(gamepadConfigs[curr_config].setupButtons));
+                this.analogs = JSON.parse(JSON.stringify(gamepadConfigs[curr_config].setupAxes));
 
                 if(gamepadConfigs[curr_config].setupAnalogDirPad){
                     this.usesAnalogDirPad = true;
-                    this.dirPadAnalogs = gamepadConfigs[curr_config].setupDirPad;
+                    this.dirPadAnalogs = JSON.parse(JSON.stringify(gamepadConfigs[curr_config].setupDirPad));
                 }
 
 
@@ -107,8 +114,8 @@ class GamepadControl {
 
             //In future, have player setup controller, for now, just load defaults from xbox
             let curr_config = configs['XBOX360'];
-            this.buttons = curr_config.setupButtons;
-            this.analogs = curr_config.setupAxes;
+            this.buttons = JSON.parse(JSON.stringify(gamepadConfigs[curr_config].setupButtons));
+            this.analogs = JSON.parse(JSON.stringify(gamepadConfigs[curr_config].setupAxes));
         }
 
     }
@@ -119,17 +126,32 @@ class GamepadControl {
             pad = navigator.getGamepads()[this.index];
             if(pad != 0 && pad != null && pad != undefined){
                 //Update each botton by name
-                this.keys.forEach(function(name) {        
+                for(let k=0;k < this.keys.length;k++){
+                    let name = this.keys[k];
                     let state = false;                     
                     state = pad.buttons[this.buttons[name].i].pressed;
                     
-                    //If not change, then return current state        
+                    //If no change, then return current state        
                     if(!state){
                         this.buttons[name].s = this.buttons[name].s > 0 ? -1 : 0;                
                     }else{            
                         this.buttons[name].s++; 
                     } 
-                },this)
+                    
+                }
+
+                // this.keys.forEach(function(name) {        
+                //     let state = false;                     
+                //     state = pad.buttons[this.buttons[name].i].pressed;
+                    
+                //     //If not change, then return current state        
+                //     if(!state){
+                //         this.buttons[name].s = this.buttons[name].s > 0 ? -1 : 0;                
+                //     }else{            
+                //         this.buttons[name].s++; 
+                //     } 
+                // },this)
+
                 //Update Axis 
                 this.sticks.left.x = pad.axes[this.analogs.left.x];
                 this.sticks.left.y = pad.axes[this.analogs.left.y];
@@ -152,13 +174,13 @@ class GamepadControl {
     }
     //Need a single state updater to check the state conditions for each button.
     //Then use the check button state to just pull out the number.
-    checkButtonState(name){  
+    checkButtonState(name){          
         if(this.usesAnalogDirPad){
             if((Object.keys(this.dirPadAnalogs)).includes(name)){
                 return this.dirPadAnalogs[name].s
             }
         }
-        return this.buttons[name].s;              
+        return this.buttons[name].s;             
     }
     getStickLeft(threshold){
         if(this.ready){

@@ -228,8 +228,13 @@ var LobbyScene = new Phaser.Class({
         }
         this.debug.setText("P1-CTRL_ID:"+String(playerConfig[0].ctrl)+" Name:"+String(playerConfig[0].ctrlSN)
         +"\nP2-CTRL_ID:"+String(playerConfig[1].ctrl)+" Name:"+String(playerConfig[1].ctrlSN));
-
+        if(gamePad[0].checkButtonState('Y') > 0){
+            console.log(gamePad[0].pad);
+            console.log(gamePad[1].pad);
+        }
+        
         this.controllerDebugText.setText("DEBUG-GP\n"
+        +"\nGP0-INDEX:"+String(gamePad[0].index)
         +"\nGP0-LeftStick:"+String(gamePad[0].getStickLeft(.5).x)+":"+String(gamePad[0].getStickLeft(.5).y)
         +"\nGP0-RightStick:"+String(gamePad[0].getStickRight(.5).x)+":"+String(gamePad[0].getStickRight(.5).y)
         +"\nGP0-A:"+String(gamePad[0].checkButtonState('A'))
@@ -238,6 +243,7 @@ var LobbyScene = new Phaser.Class({
         +"\nGP0-LTRG:"+String(gamePad[0].checkButtonState('leftTrigger'))
         +"\nGP0-LSHLD:"+String(gamePad[0].checkButtonState('leftShoulder'))
         +"\n\n\n\n"
+        +"\nGP1-INDEX:"+String(gamePad[1].index)
         +"\nGP1-LeftStick:"+String(gamePad[1].getStickLeft(.5).x)+":"+String(gamePad[1].getStickLeft(.5).y)
         +"\nGP1-RightStick:"+String(gamePad[1].getStickRight(.5).x)+":"+String(gamePad[1].getStickRight(.5).y)
         +"\nGP1-A:"+String(gamePad[1].checkButtonState('A'))

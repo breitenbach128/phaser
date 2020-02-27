@@ -238,20 +238,20 @@
 
         scene.input.gamepad.on('down', function (pad, button, index) {
             let iagp = getInactiveGamePad();
-            if(iagp != -1 && pad.index == iagp){
-                console.log("DEBUG: NEWGP:",pad,pad.index,index,iagp)
-                //if(!gamePad[pad.index].ready){
-                //Just check for the iagp value to make sure we can add it. Nothing is gamed by having it check a second time.
+            if(iagp != -1){
+                if(checkPadIsTaken(pad.index) == false){
+                    console.log("DEBUG: NEWGP:",pad)
 
-                    console.log(scene.scene.key,'Playing with ' + pad.id, pad.index);    
-                    //addGamePads(new GamepadControl(pad));  
-                    addGamePadsByIndex(new GamepadControl(pad),pad.index);
-                    callback(scene,pad.index); 
-               // }
+                    gamePad[iagp] = new GamepadControl(pad);
+                    console.log(scene.scene.key,'Playing with ' + pad.id, pad.index,"Slot",iagp,gamePad);    
+                    callback(scene,pad.index);      
+
+                }
             }
         }, scene);
        
     }
+    //Update Buttons on GamePads per update loop in scenes.
     function updateGamePads(){
         for(let i=0;i < gamePad.length;i++){            
             gamePad[i].updateButtonState();            
@@ -264,6 +264,15 @@
             }
         }
         return -1;
+    }
+    //Check if the pad has already been added.
+    function checkPadIsTaken(padIndex){
+        for(let i=0;i < gamePad.length;i++){
+            if(gamePad[i].index == padIndex){
+                return true;
+            }
+        }
+        return false;
     }
     function getActiveGamePadCount(){
         let c = 0;
@@ -294,12 +303,6 @@
             }
         }
         return la;
-    }
-    function addGamePadsByIndex(pad,i){
-        if(gamePad[i].ready == false && i < 2){
-            gamePad[i] = pad;
-            gamePad[i].index = i;
-        }
     }
     function addGamePads(pad){
         let availPad = getInactiveGamePad();
