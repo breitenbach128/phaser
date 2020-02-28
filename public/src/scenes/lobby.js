@@ -98,31 +98,41 @@ var LobbyScene = new Phaser.Class({
         this.setupControlsIcons();
         this.debug = this.add.text(12, 12, "", { fontFamily:'visitorTT1',fontSize: '64px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
         this.startText = this.add.text(game.canvas.width/2, game.canvas.height-128, 'START', { fontFamily:'visitorTT1',fontSize: '32px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 }).setOrigin(0.5).setData({button:"start"}).setInteractive();
+
+        //Controll DEBUG Text
+        this.controllerDebugText = this.add.text(55, 200, 'CTRL-DEBUG\n', { fontFamily:'visitorTT1',fontSize: '24px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 })
     },
-    getPlayerWithoutGamepad(){
+    getPlayerWithoutGamepad(navIndex){
+        let alreadyInUse = false;
         for(let p=0;p < playerConfig.length;p++){
-            if(playerConfig[p].ctrl == -1){                
+            if(playerConfig[p].ctrl == navIndex){alreadyInUse = true;};
+            if(playerConfig[p].ctrl == -1 && !alreadyInUse){                
                 return p;
             }
         }
         return -1;
+        //This still is not perfect. It is not not loading the gamepad, so it runs the down button event and attempts to reload it each time, sine there are still inactive gamepads
+
     },
     detectedNewGP(scene,navIndex){
 
         //Find First Player without gamepad
-        let playerWithout = scene.getPlayerWithoutGamepad();
-        console.log("Player selected to receive new gamepad",playerWithout+1);        
-        console.log("Assigning to player with this index, Controller #",navIndex+1);
+        let playerWithout = scene.getPlayerWithoutGamepad(navIndex);
+        if(playerWithout != -1){
+            console.log("Player selected to receive new gamepad",playerWithout+1);        
+            console.log("Assigning to player with this index, Controller #",navIndex+1);
 
-        playerConfig[playerWithout].ctrl = navIndex;
-        playerConfig[playerWithout].ctrlSN = gamePad[navIndex].pad.id
+            playerConfig[playerWithout].ctrl = navIndex;
+            playerConfig[playerWithout].ctrlSN = gamePad[navIndex].pad.id
 
-        scene.disconnectedIcons[(navIndex*2)].setVisible(false);
-        scene.disconnectedIcons[(navIndex*2)+1].setVisible(false);
+            scene.disconnectedIcons[(navIndex*2)].setVisible(false);
+            scene.disconnectedIcons[(navIndex*2)+1].setVisible(false);
 
 
-        //Setup Icons
-        scene.setupControlsIcons();
+            //Setup Icons
+            scene.setupControlsIcons();
+        }
+        
         
     },
     setupControlsIcons(){
@@ -218,6 +228,31 @@ var LobbyScene = new Phaser.Class({
         }
         this.debug.setText("P1-CTRL_ID:"+String(playerConfig[0].ctrl)+" Name:"+String(playerConfig[0].ctrlSN)
         +"\nP2-CTRL_ID:"+String(playerConfig[1].ctrl)+" Name:"+String(playerConfig[1].ctrlSN));
+        if(gamePad[0].checkButtonState('Y') > 0){
+            console.log(gamePad[0].pad);
+            console.log(gamePad[1].pad);
+        }
+        
+        this.controllerDebugText.setText("DEBUG-GP\n"
+        +"\nGP0-INDEX:"+String(gamePad[0].index)
+        +"\nGP0-LeftStick:"+String(gamePad[0].getStickLeft(.5).x)+":"+String(gamePad[0].getStickLeft(.5).y)
+        +"\nGP0-RightStick:"+String(gamePad[0].getStickRight(.5).x)+":"+String(gamePad[0].getStickRight(.5).y)
+        +"\nGP0-A:"+String(gamePad[0].checkButtonState('A'))
+        +"\nGP0-Y:"+String(gamePad[0].checkButtonState('Y'))
+        +"\nGP0-RTRG:"+String(gamePad[0].checkButtonState('rightTrigger'))
+        +"\nGP0-LTRG:"+String(gamePad[0].checkButtonState('leftTrigger'))
+        +"\nGP0-LSHLD:"+String(gamePad[0].checkButtonState('leftShoulder'))
+        +"\n\n\n\n"
+        +"\nGP1-INDEX:"+String(gamePad[1].index)
+        +"\nGP1-LeftStick:"+String(gamePad[1].getStickLeft(.5).x)+":"+String(gamePad[1].getStickLeft(.5).y)
+        +"\nGP1-RightStick:"+String(gamePad[1].getStickRight(.5).x)+":"+String(gamePad[1].getStickRight(.5).y)
+        +"\nGP1-A:"+String(gamePad[1].checkButtonState('A'))
+        +"\nGP1-Y:"+String(gamePad[1].checkButtonState('Y'))
+        +"\nGP1-RTRG:"+String(gamePad[1].checkButtonState('rightTrigger'))
+        +"\nGP1-LTRG:"+String(gamePad[1].checkButtonState('leftTrigger'))
+        +"\nGP1-LSHLD:"+String(gamePad[1].checkButtonState('leftShoulder'))
+        );
+
     },
     onObjectClicked(pointer,gameObject)
     {
