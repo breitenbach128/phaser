@@ -144,7 +144,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             
             //Check Jump ready
             if(this.onGround || this.onWall || (soullight.ownerid == 0 && this.jumpCount < 2)){
-                this.jumpReady = true;
+                this.jumpReady = true;                
+                this.jumpTimerRunning = false;
                 //Touching a surface resets jump counter                
                 if(this.onGround || this.onWall){this.jumpCount = 0};
 
@@ -157,7 +158,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 if(!this.isAnimLocked){this.sprite.anims.play('solana-jump', true);};  
                 //Add Jump Forgiveness of 100ms  
                 if(this.jumpTimerRunning == false){
-                    this.jumpTimer = this.scene.time.addEvent({ delay: 100, callback: this.forgiveJump, callbackScope: this, loop: false });
+                    //console.log("JMP-FORGIVE-START");
+                    this.jumpTimer = this.scene.time.addEvent({ delay: 300, callback: this.forgiveJump, callbackScope: this, loop: false });
                     this.jumpTimerRunning = true;         
                 }   
                 
@@ -361,8 +363,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.jumpLock = false;
     }
     forgiveJump(){
-        this.jumpReady = false;
-        this.jumpTimerRunning = false; 
+        this.jumpReady = false; 
+        //console.log("JMP-FORGIVE-END");
     }
     readyThrown(xVel,yVel,time){
         this.beingThrown.vec.x = xVel;
@@ -378,7 +380,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     }
     jump(jumpVel,mvVel){
         //Make vertical jump weaker if on wall
-        
+        this.setVelocityY(0);
+
         if(this.touching.left > 0 && !this.onGround){
             this.sprite.applyForce({x:mvVel/1000,y:0})
             //this.sprite.setVelocityX(mvVel);
@@ -398,6 +401,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //this.applyForce({x:0,y:-.025});
         if(this.onWall && this.onGround){
             //this.sprite.setVelocityY(-jumpVel*1.40);
+
             this.sprite.applyForce({x:0,y:-jumpVel/325});
         }else{
             //this.sprite.setVelocityY(-jumpVel);
