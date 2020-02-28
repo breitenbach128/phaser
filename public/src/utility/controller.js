@@ -3,20 +3,17 @@ class GamepadControl {
         //Map the Controls to names
         this.ready = false;
         if(device == 0){
-            device = {id:1,buttons:[],axes:[]} //Load with empty values if pad is not valid
-            for(var i=0;i<99;i++){
-                device.buttons[i]=0;
-            }
-            for(var i=0;i<4;i++){
-                device.axes[i]=0;
-            }
+            device = this.nulldevice();
             console.log("game Controller class booted - no controller. Loaded with empty values");
             this.loadDefaults();
         }else{
             console.log("game Controller class booted - loading device.");
             //this.ready = true;
-            this.loadGamePadConfiguration(device);            
-            
+            let loadConfigResult = this.loadGamePadConfiguration(device);            
+            if(!loadConfigResult){
+                device = this.nulldevice();
+                this.loadDefaults();
+            }
 
         }
 
@@ -37,6 +34,16 @@ class GamepadControl {
 
         this.keys = Object.keys(this.buttons);
        
+    }
+    nulldevice(){
+        let device = {id:1,buttons:[],axes:[]} //Load with empty values if pad is not valid
+        for(var i=0;i<99;i++){
+            device.buttons[i]=0;
+        }
+        for(var i=0;i<4;i++){
+            device.axes[i]=0;
+        }
+        return device;
     }
     loadDefaults(){
         //pad.buttons
@@ -104,18 +111,14 @@ class GamepadControl {
 
                 //Set device to ready
                 this.ready = true;
-                break;
+                return true;
             }
         };
 
         if(!foundConfig){
             //no config found! Send back error: Unrecognized Controller
             console.log("Controller not recognized!");
-
-            //In future, have player setup controller, for now, just load defaults from xbox
-            let curr_config = configs['XBOX360'];
-            this.buttons = JSON.parse(JSON.stringify(gamepadConfigs[curr_config].setupButtons));
-            this.analogs = JSON.parse(JSON.stringify(gamepadConfigs[curr_config].setupAxes));
+            return false;
         }
 
     }
