@@ -199,6 +199,37 @@
                 right: {i:9,v:-0.4285714030265808,s:0},
             }
 
+        },
+        SWITCH:{
+            ids:["Core \\(Plus\\) Wired Controller"],
+            setupButtons:  {      
+                Y: {i:0,s:0}, 
+                B: {i:1,s:0}, 
+                A: {i:2,s:0}, 
+                X: {i:3,s:0}, 
+                leftShoulder: {i:4,s:0}, //Left Shoulder
+                rightShoulder: {i:5,s:0}, // Right Shoulder
+                leftTrigger: {i:6,s:0}, //Left Trigger
+                rightTrigger: {i:7,s:0}, // Right Trigger
+                select : {i:8,s:0},//minus
+                start: {i:9,s:0},//plus
+                leftPush: {i:10,s:0},
+                rightPush: {i:11,s:0},
+                home: {i:12,s:0},//home
+                circle: {i:13,s:0}//Circle
+            },
+            setupAxes:{
+                left : {x : 0, y : 1 },
+                right: {x : 2, y : 5 }
+            },
+            setupAnalogDirPad: true,
+            setupDirPad: {
+                up: {i:9,v:-1,s:0},
+                down: {i:9,v:0.14285719394683838,s:0},
+                left: {i:9,v:0.7142857313156128,s:0},
+                right: {i:9,v:-0.4285714030265808,s:0},
+            }
+
         }
     }
     //Global Gamepad Mozilla API functions
