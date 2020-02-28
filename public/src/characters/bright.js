@@ -36,6 +36,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite
         .setExistingBody(compoundBody)          
         .setCollisionCategory(CATEGORY.BRIGHT)
+        .setCollidesWith([ ~CATEGORY.SOLANA ])
         .setScale(1.5)
         //.setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setPosition(config.x, config.y)

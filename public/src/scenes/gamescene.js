@@ -41,7 +41,7 @@ var GameScene = new Phaser.Class({
         map = this.make.tilemap({key: current_map});
 
         //Create Background
-        world_background = this.add.tileSprite(512, 256, 4096, map.heightInPixels, 'forest_background');
+        world_background = this.add.tileSprite(512, 256, map.widthInPixels*2, map.heightInPixels*2, 'forest_background');
 
         // tiles for the ground layer
         var TilesForest = map.addTilesetImage('32Tileset','tiles32');//called it 32Tileset in tiled
@@ -525,7 +525,7 @@ var GameScene = new Phaser.Class({
          //timeEventName.remove();spawnEnemies(spawnlayer.objects)
          
          //Pass Energy Regen
-         //this.energyTimer = this.time.addEvent({ delay: 200, callback: this.generateEnergy, callbackScope: this, loop: true });
+         this.energyTimer = this.time.addEvent({ delay: 200, callback: this.generateEnergy, callbackScope: this, loop: true });
 
       
         
@@ -543,7 +543,7 @@ var GameScene = new Phaser.Class({
          //Start soulight play
          soullight.sprite.anims.play('soulight-move', true);//Idle
 
-        solana.setDepth(DEPTH_LAYERS.FRONT);
+        solana.setDepth(DEPTH_LAYERS.FRONT + 2);
         bright.setDepth(DEPTH_LAYERS.FRONT);
 
         //*********************************//
