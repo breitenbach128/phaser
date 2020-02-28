@@ -510,8 +510,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.debug.setVisible(true);
         this.alive = true; 
         hud.setHealth(this.hp,this.max_hp);
+        hud.alterEnergy(300);
         if(this.lastEntrance != null){
             this.sprite.setPosition(this.lastEntrance.x,this.lastEntrance.y+this.lastEntrance.height/2-solana.sprite.height/2);
+            bright.sprite.setPosition(this.lastEntrance.x,this.lastEntrance.y-32);
         }
     }
     equipItem(id){
