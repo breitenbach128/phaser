@@ -62,6 +62,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.jumpCount = 0;
         this.beingThrown = {ready: false, vec: {x:0,y:0}, max_speed: 4};
         this.alive = true;
+        this.lastEntrance = null;
         this.invuln = false;
         this.inLight = true;
         this.equipment = [
@@ -189,7 +190,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
                     this.sprite.flipX= true; // flip the sprite to the left                    
                     this.mv_direction.x = -1;
-                    this.sprite.applyForce({x:-mv/500,y:0})                   
+                    this.sprite.applyForce({x:-mv/700,y:0})                   
                     //this.sprite.setVelocityX(-mv);
                     
                 }
@@ -197,7 +198,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
                     this.sprite.flipX= false; // flip the sprite to the left                    
                     this.mv_direction.x = 1;
-                    this.sprite.applyForce({x:mv/500,y:0})
+                    this.sprite.applyForce({x:mv/700,y:0})
                     //this.sprite.setVelocityX(mv);
                 }
                 else if(!control_right && !control_left && this.jumpLock == false){
@@ -491,16 +492,27 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.debug.setVisible(false);
             
             console.log("Solanas DEAD!")
-            this.scene.gameOver();
+            //For debugging, reset to last entrance used
+            //this.scene.gameOver();
+
+            this.scene.time.addEvent({ delay: 2000, callback: this.resurrect, callbackScope: this, loop: false });
         }
         
     }
-    resurect(){
+    setLastEntrance(entrance){
+        this.lastEntrance = entrance;
+    }
+    resurrect(){
+        this.sprite.anims.play('solana-idle', true);
         this.hp = this.max_hp;
         this.setActive(true);
         this.setVisible(true);
         this.debug.setVisible(true);
         this.alive = true; 
+        hud.setHealth(this.hp,this.max_hp);
+        if(this.lastEntrance != null){
+            this.sprite.setPosition(this.lastEntrance.x,this.lastEntrance.y+this.lastEntrance.height/2-solana.sprite.height/2);
+        }
     }
     equipItem(id){
         this.equipment[id].equiped = true;
@@ -527,8 +539,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 this.alive = false;                         
                 this.sprite.setVelocityX(0);
                 this.sprite.on('animationcomplete',this.death,this);            
-                this.sprite.anims.play('solana-death', false);  
-                console.log("deadly damage recv. Play death anim")              
+                this.sprite.anims.play('solana-death', false);              
             }
         }   
     }

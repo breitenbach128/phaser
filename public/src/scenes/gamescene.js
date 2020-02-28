@@ -465,7 +465,7 @@ var GameScene = new Phaser.Class({
                     solana.sprite.setPosition(exitObj.x,exitObj.y+exitObj.height/2-solana.sprite.height/2);
                     bright.sprite.setPosition(exitObj.x,exitObj.y-32);
                     soullight.sprite.setPosition(exitObj.x,exitObj.y-32);
-                    
+                    solana.setLastEntrance(exitObj);
                     this.cameras.main.centerOn(exitObj.x,exitObj.y);
                     // make the camera follow the solana
                     //this.cameras.main.startFollow(solana.sprite,true,.1,.1,0,0);
