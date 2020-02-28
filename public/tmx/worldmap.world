@@ -24,6 +24,11 @@
             "fileName": "map6_32ts.tmx",
             "x": 5120,
             "y": 0
+        },
+        {
+            "fileName": "map7_32ts.tmx",
+            "x": 0,
+            "y": 512
         }
     ],
     "type": "world"

@@ -398,10 +398,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //this.applyForce({x:0,y:-.025});
         if(this.onWall && this.onGround){
             //this.sprite.setVelocityY(-jumpVel*1.40);
-            this.sprite.applyForce({x:0,y:-jumpVel/400});
+            this.sprite.applyForce({x:0,y:-jumpVel/325});
         }else{
             //this.sprite.setVelocityY(-jumpVel);
-            this.sprite.applyForce({x:0,y:-jumpVel/400});
+            this.sprite.applyForce({x:0,y:-jumpVel/325});
         }
         
         this.soundJump.play("",{volume:.025});
