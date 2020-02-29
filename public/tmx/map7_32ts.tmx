@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="64" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="16" nextobjectid="72">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="64" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="16" nextobjectid="74">
  <editorsettings>
   <export target="../assets/world/map7_32ts.json" format="json"/>
  </editorsettings>
@@ -379,7 +379,19 @@
   </object>
   <object id="11" name="west1" type="entrance" x="30" y="734" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="10" name="triggers" offsetx="2" offsety="2"/>
+ <objectgroup id="10" name="triggers" offsetx="2" offsety="2">
+  <object id="72" name="gate1" type="gate" x="672" y="704" width="32" height="96">
+   <properties>
+    <property name="source" value="lever1"/>
+   </properties>
+  </object>
+  <object id="73" name="plate2" type="plate" x="544" y="794" width="32" height="6">
+   <properties>
+    <property name="targetName" value="gate1"/>
+    <property name="targetType" value="gate"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="9" name="objects" offsetx="2" offsety="2"/>
  <objectgroup id="12" name="hulls" offsetx="2" offsety="2">
   <object id="70" x="320" y="736" width="192" height="32"/>

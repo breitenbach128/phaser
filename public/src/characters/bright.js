@@ -11,13 +11,13 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
-        const mainBody = Bodies.circle(0,0,w*.18);
+        const mainBody = Bodies.circle(0,0,w*.12);
 
         this.sensors = {
-          bottom: Bodies.rectangle(0, h * 0.18, w * 0.22, 2, { isSensor: true }),
-          top: Bodies.rectangle(0, -h * 0.18, w * 0.22, 2, { isSensor: true }),
-          left: Bodies.rectangle(-w * 0.18, 0, 2, h * 0.22, { isSensor: true }),
-          right: Bodies.rectangle(w * 0.18, 0, 2, h * 0.22, { isSensor: true })
+          bottom: Bodies.rectangle(0, h * 0.12, w * 0.16, 2, { isSensor: true }),
+          top: Bodies.rectangle(0, -h * 0.12, w * 0.16, 2, { isSensor: true }),
+          left: Bodies.rectangle(-w * 0.12, 0, 2, h * 0.16, { isSensor: true }),
+          right: Bodies.rectangle(w * 0.12, 0, 2, h * 0.16, { isSensor: true })
         };
         this.sensors.bottom.label = "BRIGHT_BOTTOM";
         this.sensors.top.label = "BRIGHT_TOP";
@@ -37,7 +37,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         .setExistingBody(compoundBody)          
         .setCollisionCategory(CATEGORY.BRIGHT)
         .setCollidesWith([ ~CATEGORY.SOLANA ])
-        .setScale(1.5)
+        .setScale(1.0)
         //.setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setPosition(config.x, config.y)
         .setIgnoreGravity(true);
@@ -193,12 +193,19 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     if (control_left) {          
                         this.sprite.setAngularVelocity(-this.roll_speed);   
                         //this.applyForce({x:-this.roll_speed/50,y:0});          
-                        this.sprite.anims.play('dark-idle', true);      
+                        this.sprite.anims.play('dark-idle', true);
+                        if(this.airTime > 0 && this.airTime < 3){
+                            this.sprite.setVelocityX(-this.mv_speed); 
+                        }
+
                     }
                     if (control_right) {     
                         this.sprite.setAngularVelocity(this.roll_speed);  
                         //this.applyForce({x:this.roll_speed/50,y:0});                  
-                        this.sprite.anims.play('dark-idle', true);                 
+                        this.sprite.anims.play('dark-idle', true);
+                        if(this.airTime > 0 && this.airTime < 3){
+                            this.sprite.setVelocityX(this.mv_speed); 
+                        }                 
                     }
                     if(!control_left && !control_right){
                         this.sprite.anims.play('dark-idle', true);//Idle

@@ -153,6 +153,7 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
         this.ready = true;
         this.isClosed = true;
         this.prevVel = {x:0,y:0};
+        console.log("Gate Props",properties);
  
     }
     update(time, delta)
