@@ -168,7 +168,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
 
             //Slow Descent if on Wall
-            if(this.onWall){
+            if(this.onWall && !this.onGround){
                if(Math.round(this.body.velocity.y) >= 0){ //Upwards
                     this.setVelocityY(0);
                     if(!this.isAnimLocked){this.sprite.anims.play('solana-wallslide', true);};

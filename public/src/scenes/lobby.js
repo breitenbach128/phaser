@@ -114,17 +114,18 @@ var LobbyScene = new Phaser.Class({
         //This still is not perfect. It is not not loading the gamepad, so it runs the down button event and attempts to reload it each time, sine there are still inactive gamepads
 
     },
-    detectedNewGP(scene,navIndex){
+    detectedNewGP(scene,navIndex,gpIndex){
 
         //Find First Player without gamepad
         let playerWithout = scene.getPlayerWithoutGamepad(navIndex);
         if(playerWithout != -1){
             console.log("Player selected to receive new gamepad",playerWithout+1);        
-            console.log("Assigning to player with this index, Controller #",navIndex+1);
+            console.log("Controller Index:",navIndex);
+            console.log("GamePad Index:",gpIndex);
 
-            playerConfig[playerWithout].ctrl = navIndex;
-            playerConfig[playerWithout].ctrlSN = gamePad[navIndex].pad.id
-
+            playerConfig[playerWithout].ctrl = gpIndex;
+            playerConfig[playerWithout].ctrlSN = gamePad[gpIndex].pad.id;
+            playerConfig[playerWithout].ctrlIndex = navIndex;
             scene.disconnectedIcons[(navIndex*2)].setVisible(false);
             scene.disconnectedIcons[(navIndex*2)+1].setVisible(false);
 
@@ -138,7 +139,7 @@ var LobbyScene = new Phaser.Class({
     setupControlsIcons(){
         //Player1
         for(let i=-1;i<2;i++){
-            if(i == playerConfig[0].ctrl){
+            if(i == playerConfig[0].ctrlIndex){
                 this.ctrlIcons[i+1].setAlpha(1);
             }else{
                 this.ctrlIcons[i+1].setAlpha(.5);
@@ -146,7 +147,7 @@ var LobbyScene = new Phaser.Class({
         }
         //Player2
         for(let i=-1;i<2;i++){
-            if(i == playerConfig[1].ctrl){
+            if(i == playerConfig[1].ctrlIndex){
                 this.ctrlIcons[i+4].setAlpha(1);
             }else{
                 this.ctrlIcons[i+4].setAlpha(.5);
@@ -228,10 +229,7 @@ var LobbyScene = new Phaser.Class({
         }
         this.debug.setText("P1-CTRL_ID:"+String(playerConfig[0].ctrl)+" Name:"+String(playerConfig[0].ctrlSN)
         +"\nP2-CTRL_ID:"+String(playerConfig[1].ctrl)+" Name:"+String(playerConfig[1].ctrlSN));
-        if(gamePad[0].checkButtonState('Y') > 0){
-            console.log(gamePad[0].pad);
-            console.log(gamePad[1].pad);
-        }
+
         
         this.controllerDebugText.setText("DEBUG-GP\n"
         +"\nGP0-INDEX:"+String(gamePad[0].index)
