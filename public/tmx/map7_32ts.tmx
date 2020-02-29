@@ -380,8 +380,10 @@
   <object id="11" name="west1" type="entrance" x="30" y="734" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="10" name="triggers" offsetx="2" offsety="2">
-  <object id="72" name="gate1" type="gate" x="672" y="704" width="32" height="96">
+  <object id="72" name="gate1" type="gate" x="672" y="768" width="32" height="32">
    <properties>
+    <property name="customScale" value="{&quot;x&quot;:32,&quot;y&quot;:32}"/>
+    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:-32}"/>
     <property name="source" value="lever1"/>
    </properties>
   </object>
