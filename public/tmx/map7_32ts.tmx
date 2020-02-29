@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="64" height="28" tilewidth="32" tileheight="32" infinite="0" nextlayerid="16" nextobjectid="85">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="64" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="16" nextobjectid="74">
  <editorsettings>
   <export target="../assets/world/map7_32ts.json" format="json"/>
  </editorsettings>
@@ -401,10 +401,26 @@
    </properties>
   </object>
  </objectgroup>
+
  <objectgroup id="9" name="objects" offsetx="2" offsety="2">
   <object id="78" name="window1" type="window" gid="571" x="352" y="511" width="32" height="33" rotation="90"/>
   <object id="79" name="window1" type="window" gid="571" x="384" y="511" width="32" height="33" rotation="90"/>
   <object id="82" name="window1" type="window" gid="571" x="128" y="415" width="32" height="33" rotation="-180"/>
+</objectgroup>
+ <objectgroup id="10" name="triggers" offsetx="2" offsety="2">
+  <object id="72" name="gate1" type="gate" x="672" y="768" width="32" height="32">
+   <properties>
+    <property name="customScale" value="{&quot;x&quot;:32,&quot;y&quot;:32}"/>
+    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:-32}"/>
+    <property name="source" value="lever1"/>
+   </properties>
+  </object>
+  <object id="73" name="plate2" type="plate" x="544" y="794" width="32" height="6">
+   <properties>
+    <property name="targetName" value="gate1"/>
+    <property name="targetType" value="gate"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="12" name="hulls" offsetx="2" offsety="2"/>
+
 </map>

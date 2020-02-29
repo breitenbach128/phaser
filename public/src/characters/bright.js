@@ -37,7 +37,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         .setExistingBody(compoundBody)          
         .setCollisionCategory(CATEGORY.BRIGHT)
         .setCollidesWith([ ~CATEGORY.SOLANA ])
-        .setScale(1.5)
+        .setScale(1.0)
         //.setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setPosition(config.x, config.y)
         .setIgnoreGravity(true);
@@ -194,17 +194,22 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         this.sprite.setAngularVelocity(-this.roll_speed);   
                         //this.applyForce({x:-this.roll_speed/50,y:0});          
                         this.sprite.anims.play('dark-idle', true);
-                        if(this.airTime > 0){
-                            this.sprite.setVelocityX(-this.mv_speed);  
-                        }     
+
+                        if(this.airTime > 0 && this.airTime < 3){
+                            this.sprite.setVelocityX(-this.mv_speed); 
+                        }
+
+
                     }
                     if (control_right) {     
                         this.sprite.setAngularVelocity(this.roll_speed);  
                         //this.applyForce({x:this.roll_speed/50,y:0});                  
-                        this.sprite.anims.play('dark-idle', true); 
-                        if(this.airTime > 0){
-                            this.sprite.setVelocityX(this.mv_speed);   
-                        }              
+
+                        this.sprite.anims.play('dark-idle', true);
+                        if(this.airTime > 0 && this.airTime < 3){
+                            this.sprite.setVelocityX(this.mv_speed); 
+                        }                 
+
                     }
                     if(!control_left && !control_right){
                         this.sprite.anims.play('dark-idle', true);//Idle
