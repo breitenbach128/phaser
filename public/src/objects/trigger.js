@@ -143,24 +143,32 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
 
 
     }
-    setup(x,y, properties,name){
+    setup(x,y,properties,name){
         this.setActive(true);
         
         this.setPosition(x,y);
-        this.name = name;
-        this.closedY = y;
-        this.openY = y - this.height;
+        this.name = name;        
         this.ready = true;
+        this.prevVel = {x:0,y:0};       
+        this.mvdir = JSON.parse(properties.mvdir)
         this.isClosed = true;
-        this.prevVel = {x:0,y:0};
-        console.log("Gate Props",properties);
- 
+        this.closedPos = {x:x,y:y};
+        this.openPos = {x:x+this.mvdir.x,y:y+this.mvdir.y}
+        if(properties.customScale){
+            //Run Custom Scaling
+            let newScale = JSON.parse(properties.customScale);
+            this.setSize(newScale.x,newScale.y);
+            this.setDisplaySize(newScale.x,newScale.y);
+            console.log("Gate Props",newScale);
+        }
+
+        console.log("Gate Props",this.mvdir);
     }
     update(time, delta)
     {       
-
+        //DEBUG TEXT
         this.debug.setPosition(this.x, this.y-16);
-        this.debug.setText("Gate Position:"+String(this.y));
+        //BECAUSE IT IS STATIC, THIS GIVES IT MOMENTUM TO AFFECT OTHER ENTITIES
         this.setVelocity(this.x - this.prevVel.x,this.y - this.prevVel.y);
         this.bottom.velocity.y = this.body.velocity.y;
         this.prevVel.x = this.x;
@@ -172,10 +180,11 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
             //console.log("Gate not moving: Trigger Gate");
             this.ready = false;
 
-            if(this.y == this.closedY){
+            if(this.x == this.closedPos.x && this.y == this.closedPos.y){
                 this.scene.tweens.add({
                     targets: this,
-                    y: this.openY,
+                    x: this.openPos.x,
+                    y: this.openPos.y,
                     ease: 'Power1',
                     duration: 3000,
                     onComplete: this.openComplete,
@@ -184,7 +193,8 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
             }else{
                 this.scene.tweens.add({
                     targets: this,
-                    y: this.closedY,
+                    x: this.closedPos.x,
+                    y: this.closedPos.y,
                     ease: 'Power1',
                     duration: 3000,
                     onComplete: this.openComplete,
