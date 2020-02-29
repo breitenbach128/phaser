@@ -11,13 +11,13 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
-        const mainBody = Bodies.circle(0,0,w*.18);
+        const mainBody = Bodies.circle(0,0,w*.1);
 
         this.sensors = {
-          bottom: Bodies.rectangle(0, h * 0.18, w * 0.22, 2, { isSensor: true }),
-          top: Bodies.rectangle(0, -h * 0.18, w * 0.22, 2, { isSensor: true }),
-          left: Bodies.rectangle(-w * 0.18, 0, 2, h * 0.22, { isSensor: true }),
-          right: Bodies.rectangle(w * 0.18, 0, 2, h * 0.22, { isSensor: true })
+          bottom: Bodies.rectangle(0, h * 0.12, w * 0.16, 2, { isSensor: true }),
+          top: Bodies.rectangle(0, -h * 0.12, w * 0.16, 2, { isSensor: true }),
+          left: Bodies.rectangle(-w * 0.12, 0, 2, h * 0.16, { isSensor: true }),
+          right: Bodies.rectangle(w * 0.12, 0, 2, h * 0.16, { isSensor: true })
         };
         this.sensors.bottom.label = "BRIGHT_BOTTOM";
         this.sensors.top.label = "BRIGHT_TOP";
@@ -36,7 +36,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite
         .setExistingBody(compoundBody)          
         .setCollisionCategory(CATEGORY.BRIGHT)
-        .setScale(1.5)
+        .setCollidesWith([ ~CATEGORY.SOLANA ])
+        .setScale(1.0)
         //.setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setPosition(config.x, config.y)
         .setIgnoreGravity(true);
@@ -45,10 +46,10 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.light_status = 0;//0 - Bright, 1 - Dark;
         this.hp = 1;
         this.max_hp = 1;
-        this.mv_speed = 3;
-        this.roll_speed = .3;
+        this.mv_speed = 2;
+        this.roll_speed = .4;
         this.jump_speed = 6;
-        this.max_speed = {air:2,ground:6};
+        this.max_speed = {air:2,ground:5};
         this.alive = true;
         this.falling = false;
         this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { fontSize: '10px', fill: '#00FF00' });
@@ -192,12 +193,23 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     if (control_left) {          
                         this.sprite.setAngularVelocity(-this.roll_speed);   
                         //this.applyForce({x:-this.roll_speed/50,y:0});          
-                        this.sprite.anims.play('dark-idle', true);      
+                        this.sprite.anims.play('dark-idle', true);
+
+                        if(this.airTime > 0 && this.airTime < 3){
+                            this.sprite.setVelocityX(-this.mv_speed); 
+                        }
+
+
                     }
                     if (control_right) {     
                         this.sprite.setAngularVelocity(this.roll_speed);  
                         //this.applyForce({x:this.roll_speed/50,y:0});                  
-                        this.sprite.anims.play('dark-idle', true);                 
+
+                        this.sprite.anims.play('dark-idle', true);
+                        if(this.airTime > 0 && this.airTime < 3){
+                            this.sprite.setVelocityX(this.mv_speed); 
+                        }                 
+
                     }
                     if(!control_left && !control_right){
                         this.sprite.anims.play('dark-idle', true);//Idle
@@ -241,14 +253,14 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 //Allow Single Player Follow Mode
                 if(this.followMode){
                     if(this.light_status == brightMode){
-                        if(this.x < solana.x - 64){
+                        if(this.x < solana.x - 32){
                             this.sprite.setVelocityX(this.mv_speed);
-                        }else if(this.x > solana.x + 64){
+                        }else if(this.x > solana.x + 32){
                             this.sprite.setVelocityX(-this.mv_speed);
                         }
-                        if(this.y < solana.y-32 - 64){
+                        if(this.y < solana.y - 64){
                             this.sprite.setVelocityY(this.mv_speed);
-                        }else if(this.y > solana.y-32 + 64){
+                        }else if(this.y > solana.y){
                             this.sprite.setVelocityY(-this.mv_speed);
                         }
                     }

@@ -445,16 +445,6 @@
     <property name="targetType" value="gate"/>
    </properties>
   </object>
-  <object id="69" name="zone99" type="zone" x="96" y="96" width="160" height="96">
-   <properties>
-    <property name="allowReset" type="bool" value="true"/>
-    <property name="resetDelay" type="int" value="1"/>
-    <property name="targetName" value="gate1"/>
-    <property name="targetType" value="gate"/>
-    <property name="zoneType" value="force"/>
-    <property name="zoneValue" value="{&quot;x&quot;: 0.009 ,&quot;y&quot;: -0.0015, &quot;time&quot;: 30}"/>
-   </properties>
-  </object>
  </objectgroup>
  <objectgroup id="9" name="objects">
   <object id="8" name="mirror1" type="mirror" gid="534" x="392" y="295" width="32" height="32" rotation="-45"/>

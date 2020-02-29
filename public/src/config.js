@@ -45,7 +45,7 @@
     var global_gravity = 400;
     //Tiles
     var map; 
-    var current_map = "map6";
+    var current_map = "map7";
     var current_exit = "west1";
     var world_background;
     //Game Objects
@@ -132,14 +132,16 @@
     var playerConfig = 
     [{
         id:0,
-        ctrl:CTRLS.KB,
-        ctrlSN: 0,
+        ctrl:CTRLS.KB, // What is the index in the GAMEPAD array this is linked to?
+        ctrlSN: 0, // WHat is the serial number / id?
+        ctrlIndex: -1,// What is the index in the Gamepad API listing is this linked to?
         char:players.SOLANA
     },
     {
         id:1,
         ctrl:CTRLS.KB,
         ctrlSN: 0,
+        ctrlIndex: -1,// What is the index in the Gamepad API listing is this linked to?
         char:players.BRIGHT
     }];
     var curr_player = playerConfig[0].char;
@@ -275,7 +277,7 @@
 
                     gamePad[iagp] = new GamepadControl(pad);
                     console.log(scene.scene.key,'Playing with ' + pad.id, pad.index,"Slot",iagp,gamePad);    
-                    callback(scene,pad.index);      
+                    callback(scene,pad.index,iagp);      
 
                 }
             }
