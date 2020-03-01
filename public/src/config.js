@@ -72,6 +72,8 @@
     var scoreText;
     //Graphics
     var shadow_layer,shadow_context;
+    var lightPolygons = [];
+    var lightCanvas;
     //Shaders
     var glowPipeline;
     //Camera
