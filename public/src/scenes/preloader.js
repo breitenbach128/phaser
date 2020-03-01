@@ -97,6 +97,7 @@ var Preloader = new Phaser.Class({
 		this.load.tilemapTiledJSON('storymap_forest_1', 'assets/world/storyboard_forest1.json');  
 		this.load.spritesheet('tiles32', 'assets/world/oldTileset32.png', {frameWidth: 32, frameHeight: 32, spacing: 2}); 
 		this.load.spritesheet('castle32', 'assets/world/tile_castle_grey.png', {frameWidth: 32, frameHeight: 32}); 
+		this.load.spritesheet('corruption32', 'assets/world/corruption.png', {frameWidth: 32, frameHeight: 32}); 
 		this.load.spritesheet('collisions32', 'assets/world/map_collision.png', {frameWidth: 32, frameHeight: 32}); 
 		
 		//Entity Assets

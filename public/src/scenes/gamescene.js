@@ -46,16 +46,27 @@ var GameScene = new Phaser.Class({
         // tiles for the ground layer
         var TilesForest = map.addTilesetImage('32Tileset','tiles32');//called it 32Tileset in tiled
         var TilesCastle = map.addTilesetImage('32Castle','castle32');//called it 32Castle in tiled
+        var TilesCorruption = map.addTilesetImage('32Corruption','corruption32');//called it 32Corruption in tiled
         var CollisionTiles = map.addTilesetImage('collision','collisions32');//called it collision in tiled
         // create the ground layer
       
-        let bglayer3 = map.createStaticLayer('bg3', [TilesCastle,TilesForest], 0, 0);
-        let bglayer2 = map.createStaticLayer('bg2', [TilesCastle,TilesForest], 0, 0);
-        let bglayer = map.createStaticLayer('bg', [TilesCastle,TilesForest], 0, 0);
-        let fglayer = map.createStaticLayer('fg', [TilesCastle,TilesForest], 0, 0); 
-
-
-
+        let bglayer3 = map.createStaticLayer('bg3', [TilesCastle,TilesForest,TilesCorruption], 0, 0);
+        let bglayer2 = map.createStaticLayer('bg2', [TilesCastle,TilesForest,TilesCorruption], 0, 0);
+        let bglayer = map.createStaticLayer('bg', [TilesCastle,TilesForest,TilesCorruption], 0, 0);
+        let fglayer = map.createStaticLayer('fg', [TilesCastle,TilesForest,TilesCorruption], 0, 0); 
+        let fghiddenlayer= map.createDynamicLayer('fg_hidden', [TilesCastle,TilesForest,TilesCorruption], 0, 0); 
+       
+        //CREATE SECRET AREAS WITH HIDDEN FOREGROUND
+        //fghiddenlayer.setDepth(DEPTH_LAYERS.FG);
+        fghiddenlayer.forEachTile(function (tile) {
+            if(tile.index != -1){
+                console.log(tile);
+                let newImgIndex = tile.index - tile.tileset.firstgid;
+                let secretTile = new SecretTile(this,tile.pixelX+tile.width/2,tile.pixelY+tile.height/2,tile.tileset.image.key,newImgIndex).setOrigin(0.5).setDepth(DEPTH_LAYERS.FG);
+            }
+        },this);
+        fghiddenlayer.destroy();
+        
         this.collisionLayer = map.createDynamicLayer('collision', CollisionTiles, 0, 0);
         this.collisionLayer.setVisible(false);
         this.collisionLayer.setCollisionByProperty({ collides: true });
@@ -76,7 +87,6 @@ var GameScene = new Phaser.Class({
         shadow_context = shadow_layer.getContext();
         shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels); 
         shadow_layer.refresh();
-
         //Draw Debug
         
         this.matter.world.createDebugGraphic();
@@ -115,6 +125,10 @@ var GameScene = new Phaser.Class({
         // rectHull.friction = .9;
 
         // console.log("RectHull",rectHull,rectCarve)
+        
+
+
+
 
         //CREATE PLAYER ENTITIES
         // create the solana sprite    
@@ -532,6 +546,7 @@ var GameScene = new Phaser.Class({
          //Lightning construct using preloaded cavnas called canvasShadow (See Preloader)
         var shadTexture = this.add.image(map.widthInPixels/2, map.heightInPixels/2, 'canvasShadow');
         shadTexture.alpha = .6;
+        shadTexture.setDepth(DEPTH_LAYERS.FRONT)
 
         var light1 = this.add.image(256,64,'light1');
         light1.alpha = .5;
@@ -543,8 +558,8 @@ var GameScene = new Phaser.Class({
          //Start soulight play
          soullight.sprite.anims.play('soulight-move', true);//Idle
 
-        solana.setDepth(DEPTH_LAYERS.FRONT + 2);
-        bright.setDepth(DEPTH_LAYERS.FRONT);
+        solana.setDepth(DEPTH_LAYERS.PLAYERS + 2);
+        bright.setDepth(DEPTH_LAYERS.PLAYERS);
 
         //*********************************//
         // PHYSICS IMPLEMENTATION          //
