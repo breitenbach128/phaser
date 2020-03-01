@@ -159,10 +159,10 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
             let newScale = JSON.parse(properties.customScale);
             this.setSize(newScale.x,newScale.y);
             this.setDisplaySize(newScale.x,newScale.y);
-            console.log("Gate Props",newScale);
+           //console.log("Gate Props",newScale);
         }
 
-        console.log("Gate Props",this.mvdir);
+        //console.log("Gate Props",this.mvdir);
     }
     update(time, delta)
     {       

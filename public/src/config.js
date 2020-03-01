@@ -72,6 +72,8 @@
     var scoreText;
     //Graphics
     var shadow_layer,shadow_context;
+    var lightPolygons = [];
+    var lightCanvas;
     //Shaders
     var glowPipeline;
     //Camera
@@ -118,7 +120,7 @@
     }
     const DEPTH_LAYERS = {
         BG: 10,
-        FG: 100,
+        FG: 600,
         ENEMIES: 200,
         PLAYERS: 300,
         FRONT: 999
