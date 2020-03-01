@@ -37,7 +37,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.debug = this.scene.add.text(this.x, this.y-16, 'SoulLight', { fontSize: '10px', fill: '#00FF00' });              
         this.passing = false;  
         this.threshhold_distance = 64;  
-        this.move_speed = 1;
+        this.move_speed = 50;
         this.base_speed = 1;
         this.max_speed = 50;//25 
         this.accel = 1;
@@ -63,11 +63,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
     update(time,delta)
     {
         
-        this.setVelocity(this.throw.x*this.max_speed,this.throw.y*this.max_speed);
-        if(this.body.velocity.x > this.max_speed){this.setVelocityX(this.max_speed)};
-        if(this.body.velocity.x < -this.max_speed){this.setVelocityX(-this.max_speed)};
-        if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed)};
-        if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
+
 
         //Handle position and light growth and shrinking
         if(!this.passing){
@@ -75,6 +71,11 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         }else{
             //Home in on target
             this.homeLight();
+            this.setVelocity(this.throw.x*this.move_speed,this.throw.y*this.move_speed);
+            if(this.body.velocity.x > this.max_speed){this.setVelocityX(this.max_speed)};
+            if(this.body.velocity.x < -this.max_speed){this.setVelocityX(-this.max_speed)};
+            if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed)};
+            if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
         }
         
         if(this.readyThrow){
@@ -151,6 +152,8 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
     homeLight(){
         let target = this.ownerid == 0 ? bright : solana;
         let angle = Phaser.Math.Angle.Between(this.x,this.y,target.x,target.y);
+        let targetDistance = Phaser.Math.Distance.Between(this.x,this.y,target.x,target.y);
+        if(targetDistance <= this.move_speed){this.move_speed = targetDistance};
         this.throw.x = Math.cos(angle);
         this.throw.y = Math.sin(angle);  
     }
@@ -159,6 +162,8 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
             this.passing = true;
             //Get owner to set X/Y target
             this.homeLight();
+            //Reset Basic Movement Speed
+            this.move_speed = this.max_speed;
         }
 
     }
