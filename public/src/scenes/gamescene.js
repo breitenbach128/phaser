@@ -46,16 +46,27 @@ var GameScene = new Phaser.Class({
         // tiles for the ground layer
         var TilesForest = map.addTilesetImage('32Tileset','tiles32');//called it 32Tileset in tiled
         var TilesCastle = map.addTilesetImage('32Castle','castle32');//called it 32Castle in tiled
+        var TilesCorruption = map.addTilesetImage('32Corruption','corruption32');//called it 32Corruption in tiled
         var CollisionTiles = map.addTilesetImage('collision','collisions32');//called it collision in tiled
         // create the ground layer
       
-        let bglayer3 = map.createStaticLayer('bg3', [TilesCastle,TilesForest], 0, 0);
-        let bglayer2 = map.createStaticLayer('bg2', [TilesCastle,TilesForest], 0, 0);
-        let bglayer = map.createStaticLayer('bg', [TilesCastle,TilesForest], 0, 0);
-        let fglayer = map.createStaticLayer('fg', [TilesCastle,TilesForest], 0, 0); 
-
-
-
+        let bglayer3 = map.createStaticLayer('bg3', [TilesCastle,TilesForest,TilesCorruption], 0, 0);
+        let bglayer2 = map.createStaticLayer('bg2', [TilesCastle,TilesForest,TilesCorruption], 0, 0);
+        let bglayer = map.createStaticLayer('bg', [TilesCastle,TilesForest,TilesCorruption], 0, 0);
+        let fglayer = map.createStaticLayer('fg', [TilesCastle,TilesForest,TilesCorruption], 0, 0); 
+        let fghiddenlayer= map.createDynamicLayer('fg_hidden', [TilesCastle,TilesForest,TilesCorruption], 0, 0); 
+       
+        //CREATE SECRET AREAS WITH HIDDEN FOREGROUND
+        //fghiddenlayer.setDepth(DEPTH_LAYERS.FG);
+        fghiddenlayer.forEachTile(function (tile) {
+            if(tile.index != -1){
+                console.log(tile);
+                let newImgIndex = tile.index - tile.tileset.firstgid;
+                let secretTile = new SecretTile(this,tile.pixelX+tile.width/2,tile.pixelY+tile.height/2,tile.tileset.image.key,newImgIndex).setOrigin(0.5).setDepth(DEPTH_LAYERS.FG);
+            }
+        },this);
+        fghiddenlayer.destroy();
+        
         this.collisionLayer = map.createDynamicLayer('collision', CollisionTiles, 0, 0);
         this.collisionLayer.setVisible(false);
         this.collisionLayer.setCollisionByProperty({ collides: true });
@@ -93,10 +104,20 @@ var GameScene = new Phaser.Class({
 
                     //Fix "Gaps between tiles small bodies can squeeze thru" //TESTED 1.1 DOES NOT WORK
                     //Phaser.Physics.Matter.Matter.Body.scale(tile.physics.matterBody.body, 1.1, 1.0)
+
+                    //Make them as light blocking polygons
+                    lightPolygons.push(createLightObstacleRect(tile.x*32,tile.y*32,32,32));
                 }
                
             //}
         });
+        //Raycasting
+        lightCanvas = this.add.graphics(0, 0);
+        lightCanvas.setAlpha(0.5);
+        //Perimeter Block
+        lightPolygons.push([[-1, -1], [(map.widthInPixels + 1), -1], [(map.widthInPixels + 1), (map.heightInPixels + 1)], [-1, (map.heightInPixels + 1)]]);
+        console.log("Raycasting :",lightCanvas,lightPolygons);
+
 
         //NEED TO TEST THIS OUT WITH JUMP CODE. I NEED TO CREATE A TRUE GAME OBJECT HERE, SO I CAN REFERENCE THE TYPE.
         //NOT ABSOLUTELY NEEDED, BUT PROBABLY BETTER.
@@ -115,6 +136,10 @@ var GameScene = new Phaser.Class({
         // rectHull.friction = .9;
 
         // console.log("RectHull",rectHull,rectCarve)
+        
+
+
+
 
         //CREATE PLAYER ENTITIES
         // create the solana sprite    
@@ -532,6 +557,7 @@ var GameScene = new Phaser.Class({
          //Lightning construct using preloaded cavnas called canvasShadow (See Preloader)
         var shadTexture = this.add.image(map.widthInPixels/2, map.heightInPixels/2, 'canvasShadow');
         shadTexture.alpha = .6;
+        shadTexture.setDepth(DEPTH_LAYERS.FRONT)
 
         var light1 = this.add.image(256,64,'light1');
         light1.alpha = .5;
@@ -543,8 +569,8 @@ var GameScene = new Phaser.Class({
          //Start soulight play
          soullight.sprite.anims.play('soulight-move', true);//Idle
 
-        solana.setDepth(DEPTH_LAYERS.FRONT + 2);
-        bright.setDepth(DEPTH_LAYERS.FRONT);
+        solana.setDepth(DEPTH_LAYERS.PLAYERS + 2);
+        bright.setDepth(DEPTH_LAYERS.PLAYERS);
 
         //*********************************//
         // PHYSICS IMPLEMENTATION          //
@@ -1132,6 +1158,8 @@ var GameScene = new Phaser.Class({
         shadow_layer.refresh();
 
 
+        //Update Light Source
+        moveLightSource(soullight.sprite.x,soullight.sprite.y);
 
         //KEYPRESS DETECTION - USING CUSTOM CONTROLLER CLASS
         //Suicide to test animation
@@ -1300,6 +1328,47 @@ var GameScene = new Phaser.Class({
     }
 });
 //External Functions
+function createLightObstacleRect(x,y,w,h){    
+    return  [[x, y], [x + w, y], [x + w, y + h], [x, y + h]];
+}
+function moveLightSource(x,y) {
+    // when the mouse is moved, we determine the new visibility polygon 
+    let shapes = [];
+    lightPolygons.forEach(function(e){
+        let d = Phaser.Math.Distance.Between(x,y,e[0][0],e[0][1]);
+        if(d < 256){
+            shapes.push(e);            
+        }
+    });	
+    shapes.push(createLightObstacleRect(x-256,y-256,x+512,y+512));
+
+    var visibility = createLightPolygon(x, y, shapes);
+    if(visibility){
+        // then we draw it
+        lightCanvas.clear();
+        lightCanvas.lineStyle(2, 0xff8800, 1);
+        lightCanvas.fillStyle(0xffff00,1);
+        lightCanvas.beginPath();
+        lightCanvas.moveTo(visibility[0][0], visibility[0][1]);
+        for (var i = 1; i <= visibility.length; i++) {
+            lightCanvas.lineTo(visibility[i % visibility.length][0], visibility[i % visibility.length][1]);
+        }
+        lightCanvas.closePath();
+        lightCanvas.fillPath();
+    }
+}
+
+// and this is how the library generates the visibility polygon starting
+// from an array of polygons and a source point
+function createLightPolygon(x, y, polyset) {
+    var segments = VisibilityPolygon.convertToSegments(polyset);
+    segments = VisibilityPolygon.breakIntersections(segments);
+    var position = [x, y];
+    if (VisibilityPolygon.inPolygon(position, polyset[polyset.length - 1])) {
+        return VisibilityPolygon.compute(position, segments);
+    }
+    return null;
+}
 function setupTriggerTargets(triggerGroup,triggerGroupName,scene){
     
     triggerGroup.children.each(function(trigger) {

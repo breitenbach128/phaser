@@ -328,3 +328,67 @@ class BreakableTile extends Phaser.Physics.Matter.Sprite{
         }
     }
 };
+class SecretTile extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y,texture,frame) {
+        super(scene.matter.world, x, y, texture, frame)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+        this.setActive(true);
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.rectangle(0, 0, w, h, { isSensor: true });
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.00,
+            friction: 0.0,
+            label: "SECRETTILE"
+        });
+
+        this        
+        .setExistingBody(compoundBody)
+        .setPosition(x, y)
+        .setFixedRotation() // Sets inertia to infinity so the player can't rotate
+        .setStatic(true)
+        .setIgnoreGravity(true);   
+
+        //Setup Collisions
+        this.scene.matterCollision.addOnCollideActive({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                if (gameObjectB !== undefined && (gameObjectB instanceof Solana || gameObjectB instanceof Bright || gameObjectB instanceof SoulLight)) {                    
+                        this.enter();                    
+                }
+            }
+        });
+        this.scene.matterCollision.addOnCollideEnd({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                if (gameObjectB !== undefined && (gameObjectB instanceof Solana || gameObjectB instanceof Bright || gameObjectB instanceof SoulLight)) {
+                    this.leave();
+                }
+            }
+        });
+    }
+    setup(x,y){
+        this.setActive(true);
+        this.setPosition(x,y); 
+    }
+    update(time, delta)
+    {       
+
+    }
+    enter(){
+        if(this.alpha == 1.0){
+            this.setAlpha(0.7);
+        }
+    }
+    leave(){
+        this.setAlpha(1.0);
+    }
+};
