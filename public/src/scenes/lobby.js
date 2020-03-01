@@ -105,7 +105,8 @@ var LobbyScene = new Phaser.Class({
     getPlayerWithoutGamepad(navIndex){
         let alreadyInUse = false;
         for(let p=0;p < playerConfig.length;p++){
-            if(playerConfig[p].ctrl == navIndex){alreadyInUse = true;};
+            console.log("GP in Use Check-LOBBY: ","NavIndex:",navIndex,"PCtrl",playerConfig[p].ctrl,"Player Assigned",p);
+            if(playerConfig[p].ctrlIndex == navIndex){alreadyInUse = true;};
             if(playerConfig[p].ctrl == -1 && !alreadyInUse){                
                 return p;
             }
