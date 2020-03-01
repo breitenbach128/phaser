@@ -304,36 +304,11 @@
          "name":"triggers",
          "objects":[
                 {
+
                  "height":32,
+
                  "id":72,
-                 "name":"gate1",
-                 "properties":[
-                        {
-                         "name":"customScale",
-                         "type":"string",
-                         "value":"{\"x\":32,\"y\":32}"
-                        }, 
-                        {
-                         "name":"mvdir",
-                         "type":"string",
-                         "value":"{\"x\":0,\"y\":32}"
-                        }, 
-                        {
-                         "name":"source",
-                         "type":"string",
-                         "value":"plate1"
-                        }],
-                 "rotation":0,
-                 "type":"gate",
-                 "visible":true,
-                 "width":32,
-                 "x":318,
-                 "y":736
-                }, 
-                {
-                 "height":6,
-                 "id":73,
-                 "name":"plate1",
+                 "name":"plate3",
                  "properties":[
                         {
                          "name":"targetName",
@@ -349,9 +324,83 @@
                  "type":"plate",
                  "visible":true,
                  "width":32,
+                 "x":288,
+                 "y":667
+                }, 
+                {
+                 "height":96,
+                 "id":73,
+                 "name":"gate1",
+                 "properties":[
+                        {
+                         "name":"mvdir",
+                         "type":"string",
+                         "value":"{\"x\":0,\"y\":32}"
+                        }, 
+                        {
+                         "name":"source",
+                         "type":"string",
+
+                         "value":"plate1"
+
+                        }],
+                 "rotation":0,
+                 "type":"crystallamp",
+                 "visible":true,
+                 "width":16,
+                 "x":399,
+                 "y":417
+                }, 
+                {
+                 "height":96,
+                 "id":80,
+                 "name":"gate2",
+                 "properties":[
+                        {
+                         "name":"mvdir",
+                         "type":"string",
+                         "value":"{\"x\":0,\"y\":-32}"
+                        }, 
+                        {
+                         "name":"source",
+                         "type":"string",
+                         "value":"plate1"
+                        }],
+                 "rotation":-360,
+                 "type":"gate",
+                 "visible":true,
+                 "width":32,
+
+                 "x":318,
+                 "y":736
+                }, 
+                {
+                 "height":6,
+                 "id":73,
+                 "name":"plate1",
+
+                 "properties":[
+                        {
+                         "name":"targetName",
+                         "type":"string",
+
+                         "value":"gate1"
+
+                        }, 
+                        {
+                         "name":"targetType",
+                         "type":"string",
+                         "value":"gate"
+                        }],
+                 "rotation":0,
+                 "type":"plate",
+                 "visible":true,
+                 "width":32,
+
                  "x":321,
                  "y":667
                 }, 
+
                 {
                  "height":16,
                  "id":75,
@@ -480,6 +529,7 @@
                 {
                  "height":6,
                  "id":78,
+
                  "name":"plate4",
                  "properties":[
                         {
@@ -494,6 +544,7 @@
                         }],
                  "rotation":0,
                  "type":"plate",
+
                  "visible":true,
                  "width":32,
                  "x":417,
@@ -502,6 +553,7 @@
                 {
                  "height":32,
                  "id":79,
+
                  "name":"gate4",
                  "properties":[
                         {
@@ -521,6 +573,7 @@
                         }],
                  "rotation":0,
                  "type":"gate",
+
                  "visible":true,
                  "width":64,
                  "x":288,
@@ -604,9 +657,11 @@
          "visible":true,
          "x":0,
          "y":0
+
         }],
  "nextlayerid":16,
  "nextobjectid":90,
+
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.1",
