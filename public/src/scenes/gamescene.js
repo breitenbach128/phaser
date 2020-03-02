@@ -228,6 +228,11 @@ var GameScene = new Phaser.Class({
             classType: TMXPlatform,
             runChildUpdate: true 
         });
+        //Falling Platforms
+        platfalls = this.add.group({ 
+            classType: Fallplat,
+            runChildUpdate: true 
+        });
         //Buttons 
         buttons = this.add.group({ 
             classType: TMXButton,
@@ -425,7 +430,9 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == "platfall"){ 
                 x_offset = tmxObjRef.width/2;
                 y_offset = tmxObjRef.height/2;
-                let newFallPlat = new Fallplat(this,tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-1);
+                //let newFallPlat = new Fallplat(this,tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-1);
+                platfalls.get(tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-1);
+
             }else if(tmxObjRef.type == "breakabletile"){  
                 x_offset = tmxObjRef.width/2;
                 y_offset = tmxObjRef.height/2;
@@ -840,11 +847,12 @@ var GameScene = new Phaser.Class({
                         gObjs[0].touched();
                     }  
                 }
-                //Between Fallplat and Ground at velocity
-                if ((bodyA.label === 'FALLPLAT' && bodyB.label === 'GROUND') || (bodyA.label === 'GROUND' && bodyB.label === 'FALLPLAT')) {
+                //Between Fallplat and ANYTHING ELSE
+                if ((bodyA.label === 'FALLPLAT' && bodyB.label !== 'SOLANA') || (bodyA.label !== 'SOLANA' && bodyB.label === 'FALLPLAT')) {
                     //Get Bullet Object and run hit function
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'FALLPLAT');
-                    if (gObjs[0].ready == false && gObjs[0].y < gObjs[1].tile.pixelY){
+                    //if (gObjs[0].ready == false && gObjs[0].y < gObjs[1].tile.pixelY){
+                    if (gObjs[0].ready == false){
                         emitter0.active = true;
                         emitter0.explode(5,gObjs[0].x,gObjs[0].y);
                         gObjs[0].setDead();
