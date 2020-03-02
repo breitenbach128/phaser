@@ -604,7 +604,10 @@ var GameScene = new Phaser.Class({
         });
 
         this.matterCollision.addOnCollideActive({
-            objectA: [bright.sensors.bottom,bright.sensors.left,bright.sensors.right,bright.sensors.top],
+            objectA: [bright.sensor.sensors.bottom,
+                bright.sensor.sensors.left,
+                bright.sensor.sensors.right,
+                bright.sensor.sensors.top],
             callback: eventData => {
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 

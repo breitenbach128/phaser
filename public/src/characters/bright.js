@@ -11,21 +11,10 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
-        const mainBody = Bodies.circle(0,0,w*.1);
-
-        this.sensors = {
-          bottom: Bodies.rectangle(0, h * 0.12, w * 0.16, 2, { isSensor: true }),
-          top: Bodies.rectangle(0, -h * 0.12, w * 0.16, 2, { isSensor: true }),
-          left: Bodies.rectangle(-w * 0.12, 0, 2, h * 0.16, { isSensor: true }),
-          right: Bodies.rectangle(w * 0.12, 0, 2, h * 0.16, { isSensor: true })
-        };
-        this.sensors.bottom.label = "BRIGHT_BOTTOM";
-        this.sensors.top.label = "BRIGHT_TOP";
-        this.sensors.left.label = "BRIGHT_LEFT";
-        this.sensors.right.label = "BRIGHT_RIGHT";
+        const mainBody = Bodies.circle(0,0,w*.1);     
 
         const compoundBody = Body.create({
-          parts: [mainBody, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
+          parts: [mainBody],
           frictionStatic: 0.3,
           frictionAir: 0.3,
           friction: 0.3,
@@ -39,9 +28,13 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         .setCollidesWith([ ~CATEGORY.SOLANA ])
         .setScale(1.0)
         //.setFixedRotation() // Sets inertia to infinity so the player can't rotate
-        .setPosition(config.x, config.y)
+        .setPosition(x, y)
         .setIgnoreGravity(true);
           
+        //Sensors
+        this.sensor = new BrightSensors(scene,x,y);
+
+
         //Custom properties
         this.light_status = 0;//0 - Bright, 1 - Dark;
         this.hp = 1;
@@ -52,7 +45,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.max_speed = {air:2,ground:5};
         this.alive = true;
         this.falling = false;
-        this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { fontSize: '10px', fill: '#00FF00' });
+        this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { resolution: 2, fontSize: '10px', fill: '#00FF00' });
         this.touching = {up:0,down:0,left:0,right:0};
         this.airTime = 0;//For Camera Shake
         this.light_radius = 50;
@@ -87,12 +80,13 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     update()
     {
             if(this.alive){
-
+                this.sensor.setPosition(this.x,this.y);
                 if(this.dialogue.isRunning){
                     this.dialogue.update();
                 }
-
-                if(this.touching.up==0 && this.touching.down == 0 && this.touching.left == 0 && this.touching.right == 0){
+                //REMOVE WALL JUMPING by allowing on a jump when touching down
+                //if(this.touching.up==0 && this.touching.down == 0 && this.touching.left == 0 && this.touching.right == 0){
+                if(this.touching.down == 0){
                     this.airTime++;
                 }else{
                     this.airTime=0;
@@ -419,3 +413,54 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     }
 }
 
+class BrightSensors extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'bright', 0)
+        this.scene = scene;       
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+        this.setActive(true);
+        this.sprite = this;
+    
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody = Bodies.circle(0,0,w*.1);
+
+        this.sensors = {
+          bottom: Bodies.rectangle(0, h * 0.12, w * 0.16, 2, { isSensor: true }),
+          top: Bodies.rectangle(0, -h * 0.12, w * 0.16, 2, { isSensor: true }),
+          left: Bodies.rectangle(-w * 0.12, 0, 2, h * 0.16, { isSensor: true }),
+          right: Bodies.rectangle(w * 0.12, 0, 2, h * 0.16, { isSensor: true })
+        };
+        this.sensors.bottom.label = "BRIGHT_BOTTOM";
+        this.sensors.top.label = "BRIGHT_TOP";
+        this.sensors.left.label = "BRIGHT_LEFT";
+        this.sensors.right.label = "BRIGHT_RIGHT";
+
+        const compoundBody = Body.create({
+          parts: [mainBody, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
+          frictionStatic: 0.3,
+          frictionAir: 0.3,
+          friction: 0.3,
+          restitution: 0.00,
+          density: .05,
+          label: "BRIGHTSENSORS"
+        });
+        this.sprite
+        .setExistingBody(compoundBody)          
+        .setCollisionCategory(CATEGORY.BRIGHT)
+        .setCollidesWith([ CATEGORY.GROUND ])
+        .setScale(1.0)
+        .setFixedRotation() 
+        .setPosition(x, y)
+        .setIgnoreGravity(true)
+        .setVisible(false);
+
+ 
+
+    }
+    update(time, delta)
+    {       
+
+    }
+};
