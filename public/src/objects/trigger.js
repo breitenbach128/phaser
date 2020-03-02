@@ -674,11 +674,13 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
             this.target.name = properties.targetName;
             this.target.type = properties.targetType;
             this.max_brightness = properties.brightness_max;
+            if(properties.alwaysOn){this.alwaysOn = properties.alwaysOn;}else{this.alwaysOn=false;};
+            if(properties.decayRate){this.decayRate = properties.decayRate;}else{this.decayRate=0;};
         }
         this.brightness = 0;
         
        //console.log("setup",name, properties,this.target);
- 
+        if(this.alwaysOn){this.turnOn();};
     }
     setTarget(targetObject){
         this.target.object = targetObject;
@@ -698,9 +700,16 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
         this.anims.play('lamp-turn-off', true); 
         this.brightness = 0;
     }
+    decay(){
+        this.brightness = (this.brightness - this.decayRate );
+        if(this.brightness  < 0){this.brightness = 0;};
+    }
     update()
     {
         //Count brightness by animation frame? Might look good.
+        if(this.decayRate > 0 && this.brightness > 0){
+            this.decay();
+        }
     }
 
 }
