@@ -206,18 +206,33 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
         //Custom Props
         this.ready = true;
         this.dead = false;
+        this.spawnPos = {x:x,y:y};
+        
     }
     setup(x,y){
         this.setActive(true);
         this.setPosition(x,y); 
+        this.spawnPos.x = x;
+        this.spawnPos.y = y;
+
+    }
+    reset(){
+        this.setActive(true);
+        this.setPosition(this.spawnPos.x,this.spawnPos.y); 
+        this.ready = true;
+        this.dead = false;
+        this.setStatic(true);
+        console.log("platfall reset");
     }
     setDead(){
         this.dead = true;
+        this.resetTimer = this.scene.time.addEvent({ delay: 4000, callback: this.reset, callbackScope: this, loop: false });
     }
     update(time, delta)
     {       
         if(this.dead){
-            this.destroy();
+            this.setActive(false);
+            this.setPosition(-1000,-1000);
         }
     }
     touched(){
@@ -240,7 +255,6 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
     }
     openComplete(tween, targets, myPlat){
         myPlat.setStatic(false);
-        //myPlat.setVelocityY(6);//Fall faster than player
     }
 };
 
@@ -385,7 +399,7 @@ class SecretTile extends Phaser.Physics.Matter.Sprite{
     }
     enter(){
         if(this.alpha == 1.0){
-            this.setAlpha(0.7);
+            this.setAlpha(0.5);
         }
     }
     leave(){

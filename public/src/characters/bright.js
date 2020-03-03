@@ -62,7 +62,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         //console.log(this.effect[0].emitters.list[0]);
         this.effect[0].setVisible(false);
         this.effect[0].emitters.list[0].setPosition(this.x,this.y);
-        this.effect[0].emitters.list[0].startFollow(this);
+        //this.effect[0].emitters.list[0].startFollow(this);
         
         this.abPulse = {c:0,max:100,doCharge:false};
 
@@ -80,6 +80,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     update()
     {
             if(this.alive){
+                this.effect[0].emitters.list[0].setPosition(this.x,this.y);
                 this.sensor.setPosition(this.x,this.y);
                 if(this.dialogue.isRunning){
                     this.dialogue.update();
