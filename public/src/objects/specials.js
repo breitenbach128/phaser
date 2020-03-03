@@ -406,3 +406,129 @@ class SecretTile extends Phaser.Physics.Matter.Sprite{
         this.setAlpha(1.0);
     }
 };
+class PlatSwing extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'platform_160x16', 0)
+        this.scene = scene;
+        // Create the physics-based sprite that we will move around and animate
+        scene.matter.world.add(this);
+        // config.scene.sys.displayList.add(this);
+        // config.scene.sys.updateList.add(this);
+        scene.add.existing(this); // This adds to the two listings of update and display.
+
+        this.setActive(true);
+
+        this.sprite = this;
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody =  Bodies.rectangle(0, 0, w, h);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.00,
+            friction: 0,//Was 0.1
+            label: 'PLATSWING'
+        });
+
+        this.sprite
+        .setExistingBody(compoundBody)
+        .setPosition(x, y)  
+        //.setFixedRotation(); 
+
+
+        //Matter JS Constraint 
+        let swing_constraint = Phaser.Physics.Matter.Matter.Constraint.create({
+            pointA: { x: this.x, y: this.y-48 },
+            bodyB: this.sprite.body,
+            length: 64,
+            stiffness: .3
+        });
+        this.scene.matter.world.add(swing_constraint);              
+
+    }
+    setup(x,y, properties,name){
+        this.setActive(true); 
+        this.setPosition(x,y);
+        this.name = name;
+ 
+    }
+    update(time, delta)
+    {       
+
+
+    }
+};
+class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'platform_160x16', 0)
+        this.scene = scene;
+        // Create the physics-based sprite that we will move around and animate
+        scene.matter.world.add(this);
+        // config.scene.sys.displayList.add(this);
+        // config.scene.sys.updateList.add(this);
+        scene.add.existing(this); // This adds to the two listings of update and display.
+
+        this.setActive(true);
+
+        this.sprite = this;
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody =  Bodies.rectangle(0, 0, w, h);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.00,
+            friction: 0,//Was 0.1
+            label: 'PLATSWING'
+        });
+
+        this.sprite
+        .setExistingBody(compoundBody)
+        .setPosition(x, y)  
+        .setFixedRotation() 
+        .setStatic(true)
+        .setIgnoreGravity(true);  
+        
+        this.offsets = {x:x,y:y};
+        this.swingDeg = 0;
+        ;
+        var derp = this;
+        //Setup Half Circle Tween
+        this.scene.tweens.add({
+            targets: this,
+            swingDeg: 180,
+            duration: 2000,
+            yoyo: true,
+            repeat: -1,
+            ease: "Sine.easeInOut",
+            callbackScope: this,
+            onUpdate: function(tween, target){
+                let angle = Phaser.Math.DegToRad(target.swingDeg);
+                target.x = Math.cos(angle)*32+target.offsets.x;
+                target.y = Math.sin(angle)*32+target.offsets.y;
+                console.log(target.swingDeg);
+            }
+        });
+        this.scene.events.on("update", this.update, this);
+        //Fake Velocity
+        this.prev = {x:x,y:y};
+    }
+    setup(x,y, properties,name){
+        this.setActive(true); 
+        this.setPosition(x,y);
+        this.name = name;
+ 
+    }
+    update(time, delta)
+    {       
+        this.setVelocityX((this.x - this.prev.x));
+        this.setVelocityY((this.y - this.prev.y));
+        this.prev.x = this.x;
+        this.prev.y = this.y;
+
+    }
+};

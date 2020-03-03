@@ -15,7 +15,7 @@
                 gravity: { y: 400 }
             },
             matter: {
-                gravity: { y: .70 },
+                gravity: { y: 0.70 },
                 positionIterations: 8, //6
                 velocityIterations: 6, //4
                 constraintIterations: 4 //2

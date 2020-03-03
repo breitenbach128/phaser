@@ -60,7 +60,7 @@ var GameScene = new Phaser.Class({
         //fghiddenlayer.setDepth(DEPTH_LAYERS.FG);
         fghiddenlayer.forEachTile(function (tile) {
             if(tile.index != -1){
-                console.log(tile);
+                //console.log(tile);
                 let newImgIndex = tile.index - tile.tileset.firstgid;
                 let secretTile = new SecretTile(this,tile.pixelX+tile.width/2,tile.pixelY+tile.height/2,tile.tileset.image.key,newImgIndex).setOrigin(0.5).setDepth(DEPTH_LAYERS.FG);
             }
@@ -116,7 +116,7 @@ var GameScene = new Phaser.Class({
         lightCanvas.setAlpha(0.5);
         //Perimeter Block
         lightPolygons.push([[-1, -1], [(map.widthInPixels + 1), -1], [(map.widthInPixels + 1), (map.heightInPixels + 1)], [-1, (map.heightInPixels + 1)]]);
-        console.log("Raycasting :",lightCanvas,lightPolygons);
+        //console.log("Raycasting :",lightCanvas,lightPolygons);
 
 
         //NEED TO TEST THIS OUT WITH JUMP CODE. I NEED TO CREATE A TRUE GAME OBJECT HERE, SO I CAN REFERENCE THE TYPE.
@@ -686,6 +686,8 @@ var GameScene = new Phaser.Class({
                 || gameObjectB instanceof TMXGate
                 || gameObjectB instanceof TMXPlate
                 || gameObjectB instanceof Fallplat
+                || gameObjectB instanceof PlatSwingTween  
+                || gameObjectB instanceof PlatSwing              
                 || gameObjectB instanceof BrightBeamBlock)) {  
 
                     //handle plaform jumping allowance             
@@ -1059,6 +1061,10 @@ var GameScene = new Phaser.Class({
         //Lights2d
         // solana.setPipeline('Light2D');
         // let light  = this.lights.addLight(0, 0, 200).setScrollFactor(0.0).setIntensity(2);
+
+        //TEST PLATSWING
+        //let swing = new PlatSwing(this,solana.x+32,solana.y-32);
+        //let swing = new PlatSwingTween(this,solana.x+32,solana.y-32);
         
     },
     update: function (time, delta)
