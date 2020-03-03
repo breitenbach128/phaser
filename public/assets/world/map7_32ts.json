@@ -733,6 +733,7 @@
                  "y":505
                 }, 
                 {
+
                  "height":96,
                  "id":91,
                  "name":"zone2",
@@ -773,6 +774,7 @@
                  "width":1231,
                  "x":813,
                  "y":664
+
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -781,7 +783,9 @@
          "y":0
         }],
  "nextlayerid":17,
+
  "nextobjectid":115,
+
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.1",

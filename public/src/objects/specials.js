@@ -240,7 +240,7 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
     }
     openComplete(tween, targets, myPlat){
         myPlat.setStatic(false);
-        myPlat.setVelocityY(6);//Fall faster than player
+        //myPlat.setVelocityY(6);//Fall faster than player
     }
 };
 
