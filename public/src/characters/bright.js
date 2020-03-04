@@ -248,12 +248,12 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 //Allow Single Player Follow Mode
                 if(this.followMode){
                     if(this.light_status == brightMode){
-                        if(this.x < solana.x - 32){
+                        if(this.x < solana.x - 16){
                             this.sprite.setVelocityX(this.mv_speed + 3);
                         }else if(this.x > solana.x + 32){
                             this.sprite.setVelocityX(-this.mv_speed - 3);
                         }
-                        if(this.y < solana.y - 64){
+                        if(this.y < solana.y - 32){
                             this.sprite.setVelocityY(this.mv_speed + 3);
                         }else if(this.y > solana.y){
                             this.sprite.setVelocityY(-this.mv_speed - 3);
