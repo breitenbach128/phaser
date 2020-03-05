@@ -93,6 +93,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.jumpLock = false;
         this.jumpLockTimer;
         this.kickOff = this.mv_speed;
+        this.hjs = 0;//Highest Jump Speed (-)
         //Controller
         this.controller;
         this.ctrlDevice;
@@ -279,18 +280,20 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         // if(this.body.velocity.y < -this.max_mv_speed ){this.body.velocity.y = -this.max_mv_speed };
 
         this.debug.setPosition(this.sprite.x, this.sprite.y-32);
-        this.debug.setText("Ground:"+String(this.touching.down)
-        +" \Velocity:"+String(this.sprite.body.velocity.x)+":"+String(Math.round(this.sprite.body.velocity.y))
-        +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right) + " oW:"+String(this.onWall)
-        +" \njr:"+String(this.jumpReady)
-        +" \njlck:"+String(this.jumpLock)
-        +" \nFriction:"+String(this.body.friction));
+        this.debug.setText("HJV:"+String(this.hjs)
+        +" \nVelocity:"+String(this.sprite.body.velocity.x)+":"+String(Math.round(this.sprite.body.velocity.y)));
+        // +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right) + " oW:"+String(this.onWall)
+        // +" \njr:"+String(this.jumpReady)
+        // +" \njlck:"+String(this.jumpLock)
+        // +" \nFriction:"+String(this.body.friction));
 
         //DO THIS LAST
         this.mv_Xdiff = Math.round(this.x - this.prev_position.x);
         this.mv_Ydiff = Math.round(this.y - this.prev_position.y);
         this.prev_position.x = this.x;
         this.prev_position.y = this.y;
+
+        if(this.body.velocity.y < this.hjs){this.hjs = this.body.velocity.y};
         
     }
     getControllerAction(action){

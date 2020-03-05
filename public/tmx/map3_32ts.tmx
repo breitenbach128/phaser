@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="15">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="17">
  <editorsettings>
   <export target="../assets/world/map3_32ts.json" format="json"/>
  </editorsettings>
@@ -412,28 +412,20 @@
   </object>
  </objectgroup>
  <objectgroup id="9" name="objects">
-  <object id="12" name="swing1" type="swingTween" x="96" y="192" width="64" height="8">
+  <object id="12" name="swing1" type="swingTween" x="128" y="192" width="64" height="8">
    <properties>
-    <property name="duration" type="int" value="2000"/>
+    <property name="duration" type="int" value="1000"/>
     <property name="end" type="int" value="0"/>
     <property name="radius" type="int" value="32"/>
     <property name="start" type="int" value="180"/>
    </properties>
   </object>
-  <object id="13" name="swing1" type="swingTween" x="256" y="192" width="64" height="8">
+  <object id="13" name="swing2" type="swingTween" x="320" y="160" width="64" height="8">
    <properties>
     <property name="duration" type="int" value="2000"/>
     <property name="end" type="int" value="180"/>
     <property name="radius" type="int" value="32"/>
     <property name="start" type="int" value="0"/>
-   </properties>
-  </object>
-  <object id="14" name="swing1" type="swingTween" x="160" y="64" width="96" height="24">
-   <properties>
-    <property name="duration" type="int" value="6000"/>
-    <property name="end" type="int" value="0"/>
-    <property name="radius" type="int" value="64"/>
-    <property name="start" type="int" value="180"/>
    </properties>
   </object>
  </objectgroup>

@@ -434,6 +434,7 @@ class PlatSwing extends Phaser.Physics.Matter.Sprite{
 
         this.sprite
         .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.SOLID)
         .setPosition(x, y)  
         //.setFixedRotation(); 
 
@@ -488,6 +489,7 @@ class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
 
         this.sprite
         .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.SOLID)
         .setPosition(x, y)  
         .setFixedRotation() 
         .setStatic(true)

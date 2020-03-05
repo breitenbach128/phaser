@@ -651,8 +651,13 @@ var GameScene = new Phaser.Class({
               }
               if (gameObjectB !== undefined &&
                 (gameObjectB instanceof TMXPlatform
-                || gameObjectB instanceof Barrier
-                || gameObjectB instanceof TMXGate)) {   
+                      || gameObjectB instanceof Barrier
+                      || gameObjectB instanceof TMXGate
+                      || gameObjectB instanceof TMXPlate
+                      || gameObjectB instanceof Fallplat
+                      || gameObjectB instanceof PlatSwingTween
+                      || gameObjectB instanceof PlatSwing
+                      || gameObjectB instanceof BrightBeamBlock)) {   
                 
                 //handle plaform jumping allowance             
                 if(bodyA.label == "BRIGHT_BOTTOM"){

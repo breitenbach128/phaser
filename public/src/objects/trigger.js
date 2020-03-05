@@ -134,6 +134,7 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
 
         this.sprite
         .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.BARRIER)
         .setPosition(x, y)
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setStatic(true)
