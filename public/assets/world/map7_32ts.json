@@ -139,8 +139,8 @@
                  "type":"entrance",
                  "visible":true,
                  "width":32,
-                 "x":737,
-                 "y":150
+                 "x":36,
+                 "y":748
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -209,8 +209,8 @@
                  "type":"item",
                  "visible":true,
                  "width":32,
-                 "x":749,
-                 "y":149
+                 "x":53,
+                 "y":753
                 }, 
                 {
                  "gid":571,

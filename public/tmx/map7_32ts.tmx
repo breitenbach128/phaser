@@ -393,14 +393,14 @@
     <property name="targetMap" value="none"/>
    </properties>
   </object>
-  <object id="11" name="west1" type="entrance" x="737" y="150" width="32" height="32"/>
+  <object id="11" name="west1" type="entrance" x="36" y="748" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="9" name="objects">
   <object id="78" name="window1" type="window" gid="571" x="352" y="511" width="32" height="33" rotation="90"/>
   <object id="79" name="window1" type="window" gid="571" x="319" y="511" width="32" height="33" rotation="90"/>
   <object id="82" name="window1" type="window" gid="571" x="122" y="447" width="32" height="33" rotation="-180"/>
   <object id="80" name="window1" type="window" gid="571" x="229" y="448" width="32" height="33" rotation="-180"/>
-  <object id="83" name="wand" type="item" x="749" y="149" width="32" height="32"/>
+  <object id="83" name="wand" type="item" x="53" y="753" width="32" height="32"/>
   <object id="84" name="window1" type="window" gid="571" x="320" y="225" width="32" height="33" rotation="90"/>
   <object id="88" name="wand" type="item" x="544" y="351" width="32" height="32"/>
   <object id="92" name="platfall4" type="platfall" gid="379" x="897" y="225" width="32" height="32"/>
