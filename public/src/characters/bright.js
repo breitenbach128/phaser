@@ -240,10 +240,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 // }
 
                 this.debug.setPosition(this.sprite.x, this.sprite.y-64);
-                this.debug.setText("ctrl-pass:"+String(control_passPress)
-                +"\nctrl-passR:"+String(control_passRelease)
-                +"\nR-StatusKPGlobal:"+String(keyPad.checkKeyState('R'))
-                +"\nR-KP_R:"+String(keyPad.buttons.R.b.isDown));
+                this.debug.setText("Touch-Down:"+String(this.touching.down));
             }else if(curr_player==players.SOLANA && playerMode == 0){
                 //Allow Single Player Follow Mode
                 if(this.followMode){
@@ -450,7 +447,7 @@ class BrightSensors extends Phaser.Physics.Matter.Sprite{
         this.sprite
         .setExistingBody(compoundBody)          
         .setCollisionCategory(CATEGORY.BRIGHT)
-        .setCollidesWith([ CATEGORY.GROUND ])
+        .setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.BARRIER ])
         .setScale(1.0)
         .setFixedRotation() 
         .setPosition(x, y)

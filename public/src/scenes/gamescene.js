@@ -233,6 +233,12 @@ var GameScene = new Phaser.Class({
             classType: Fallplat,
             runChildUpdate: true 
         });
+        //Swings
+        platSwingTweens = this.add.group({ 
+            classType: PlatSwingTween,
+            runChildUpdate: true 
+        });
+
         //Buttons 
         buttons = this.add.group({ 
             classType: TMXButton,
@@ -406,7 +412,7 @@ var GameScene = new Phaser.Class({
                 } 
             }
         }
-        //Spawn Mirrors
+        //Spawn Objects
         for(e=0;e<objectlayer.objects.length;e++){
             let mapObject;
             let x_offset = 0;
@@ -447,6 +453,13 @@ var GameScene = new Phaser.Class({
                 let newCrate = crates.get(tmxObjRef.x,tmxObjRef.y);
             }else if(tmxObjRef.type == "item"){
                 let newitem = new EquipItem(this,tmxObjRef.x,tmxObjRef.y,'gameitems',GAMEITEM[tmxObjRef.name.toUpperCase()]);
+
+            }else if(tmxObjRef.type == "swingTween"){  
+                let swingTw = platSwingTweens.get(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                //Dynamically Resize platforms Swing
+                swingTw.setSize(tmxObjRef.width,tmxObjRef.height);
+                swingTw.setDisplaySize(tmxObjRef.width,tmxObjRef.height);
+                swingTw.setup(swingTw.x,swingTw.y, getTileProperties(tmxObjRef.properties),tmxObjRef.name);
 
             }
 
@@ -638,8 +651,13 @@ var GameScene = new Phaser.Class({
               }
               if (gameObjectB !== undefined &&
                 (gameObjectB instanceof TMXPlatform
-                || gameObjectB instanceof Barrier
-                || gameObjectB instanceof TMXGate)) {   
+                      || gameObjectB instanceof Barrier
+                      || gameObjectB instanceof TMXGate
+                      || gameObjectB instanceof TMXPlate
+                      || gameObjectB instanceof Fallplat
+                      || gameObjectB instanceof PlatSwingTween
+                      || gameObjectB instanceof PlatSwing
+                      || gameObjectB instanceof BrightBeamBlock)) {   
                 
                 //handle plaform jumping allowance             
                 if(bodyA.label == "BRIGHT_BOTTOM"){
@@ -1065,6 +1083,7 @@ var GameScene = new Phaser.Class({
         //TEST PLATSWING
         //let swing = new PlatSwing(this,solana.x+32,solana.y-32);
         //let swing = new PlatSwingTween(this,solana.x+32,solana.y-32);
+
         
     },
     update: function (time, delta)
