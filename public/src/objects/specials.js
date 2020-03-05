@@ -495,33 +495,35 @@ class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
         
         this.offsets = {x:x,y:y};
         this.swingDeg = 0;
-        ;
-        var derp = this;
-        //Setup Half Circle Tween
-        this.scene.tweens.add({
+        this.swingRadius = 32;
+
+
+        //this.scene.events.on("update", this.update, this);
+        //Fake Velocity
+        this.prev = {x:x,y:y};
+    }
+    setup(x,y,properties,name){
+        this.setActive(true); 
+        this.setPosition(x,y);
+        this.name = name;
+        this.swingDeg = properties.start;
+        this.swingRadius = properties.radius;
+        console.log(properties,this.swingDeg,this.swingRadius,this.swingDuration)
+         //Setup Half Circle Tween
+         this.scene.tweens.add({
             targets: this,
-            swingDeg: 180,
-            duration: 2000,
+            swingDeg: properties.end,
+            duration: properties.duration,
             yoyo: true,
             repeat: -1,
             ease: "Sine.easeInOut",
             callbackScope: this,
             onUpdate: function(tween, target){
                 let angle = Phaser.Math.DegToRad(target.swingDeg);
-                target.x = Math.cos(angle)*32+target.offsets.x;
-                target.y = Math.sin(angle)*32+target.offsets.y;
-                console.log(target.swingDeg);
+                target.x = Math.cos(angle)*target.swingRadius+target.offsets.x;
+                target.y = Math.sin(angle)*target.swingRadius+target.offsets.y;
             }
         });
-        this.scene.events.on("update", this.update, this);
-        //Fake Velocity
-        this.prev = {x:x,y:y};
-    }
-    setup(x,y, properties,name){
-        this.setActive(true); 
-        this.setPosition(x,y);
-        this.name = name;
- 
     }
     update(time, delta)
     {       

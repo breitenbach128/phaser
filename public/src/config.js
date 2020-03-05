@@ -45,14 +45,14 @@
     var global_gravity = 400;
     //Tiles
     var map; 
-    var current_map = "map7";
+    var current_map = "map3";
     var current_exit = "west1";
     var world_background;
     //Game Objects
     var solana,bright,soullight,polaris,
     enemies,enemiesFly,bullets,
     mirrors,exits,entrances,
-    levers,gates,plates,buttons,platfalls,
+    levers,gates,plates,buttons,platfalls,platSwings,platSwingTweens,
     triggerzones,platforms,barriers,
     ab_solarblasts,crystallamps,ab_brightbeams,
     rocks,crates,npcs,spiders,boss,light_shards,

@@ -28,7 +28,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
           parts: [mainBody, this.sensors.bottom, this.sensors.left, this.sensors.right],
           //parts: [mainBody],
           frictionStatic: 0.0,
-          frictionAir: 0.91,
+          frictionAir: 0.01,
           friction: 0.01,
           restitution: 0.01,
           density: 0.01
