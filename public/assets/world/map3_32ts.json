@@ -325,6 +325,23 @@
                  "width":128,
                  "x":768,
                  "y":96
+                }, 
+                {
+                 "height":16,
+                 "id":17,
+                 "name":"platform2",
+                 "properties":[
+                        {
+                         "name":"path",
+                         "type":"string",
+                         "value":"[{\"x\":0,\"y\":0,\"t\":0,\"h\":0},{\"x\":24,\"y\":0,\"t\":2000,\"h\":0},{\"x\":24,\"y\":24,\"t\":2000,\"h\":0},{\"x\":0,\"y\":24,\"t\":2000,\"h\":0},{\"x\":0,\"y\":0,\"t\":2000,\"h\":0}]"
+                        }],
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":160,
+                 "x":96,
+                 "y":128
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -366,7 +383,7 @@
                  "type":"swingTween",
                  "visible":true,
                  "width":64,
-                 "x":128,
+                 "x":352,
                  "y":192
                 }, 
                 {
@@ -398,8 +415,8 @@
                  "type":"swingTween",
                  "visible":true,
                  "width":64,
-                 "x":320,
-                 "y":160
+                 "x":448,
+                 "y":128
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -419,7 +436,7 @@
          "y":0
         }],
  "nextlayerid":14,
- "nextobjectid":17,
+ "nextobjectid":18,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.2",

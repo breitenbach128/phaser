@@ -534,9 +534,15 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
         const mainBody =  Bodies.rectangle(0, 0, w, h);
+        this.sensors = {
+            top: Bodies.rectangle(0, h*0.65, w , h*0.20, { isSensor: true }),
+            bottom: Bodies.rectangle(0, -h*0.65, w , h*0.20, { isSensor: true })
+          };
+        this.sensors.top.label = "PLAT_TOP";
+        this.sensors.bottom.label = "PLAT_BOTTOM";
 
         const compoundBody = Body.create({
-            parts: [mainBody],
+            parts: [mainBody, this.sensors.bottom, this.sensors.top],
             frictionStatic: 0,
             frictionAir: 0.02,
             friction: 1,//Was 0.1
