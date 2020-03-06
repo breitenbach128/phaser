@@ -380,6 +380,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         return this.body.velocity;
     }
     jump(jumpVel,mvVel){
+        //Reduce Downwards force to zero, if it exists. Keeps platforms from stealing the jump
+        if(this.body.velocity.y > 0){
+            this.setVelocityY(0);
+        }
         //Make vertical jump weaker if on wall
         
         if(this.touching.left > 0 && !this.onGround){
