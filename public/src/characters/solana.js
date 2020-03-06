@@ -28,7 +28,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
           parts: [mainBody, this.sensors.bottom, this.sensors.left, this.sensors.right],
           //parts: [mainBody],
           frictionStatic: 0.0,
-          frictionAir: 0.01,
+          frictionAir: 0.005,
           friction: 0.01,
           restitution: 0.01,
           density: 0.01
@@ -274,10 +274,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
         let grnd_max_mv_sp = 2;
         
-
+           
         //Gravity caps Y
-        // if(this.body.velocity.y > this.max_mv_speed ){this.body.velocity.y = this.max_mv_speed };
+        // if(this.body.velocity.y > this.max_mv_speed ){this.body.velocity.y = this.max_mv_speed};
         // if(this.body.velocity.y < -this.max_mv_speed ){this.body.velocity.y = -this.max_mv_speed };
+           if(this.body.velocity.y > 4.9 ){this.setVelocityY(5);};
 
         this.debug.setPosition(this.sprite.x, this.sprite.y-32);
         this.debug.setText("HJV:"+String(this.hjs)
@@ -387,7 +388,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //Make vertical jump weaker if on wall
         
         if(this.touching.left > 0 && !this.onGround){
-            this.sprite.applyForce({x:mvVel/1000,y:0})
+            this.sprite.applyForce({x:mvVel/1000,y:-0.003})
             //this.sprite.setVelocityX(mvVel);
             this.jumpLock = true;
             this.kickOff = mvVel;
@@ -395,7 +396,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             
         }
         if(this.touching.right > 0 && !this.onGround){
-            this.sprite.applyForce({x:-mvVel/1000,y:0})
+            this.sprite.applyForce({x:-mvVel/1000,y:-0.003})
             //this.sprite.setVelocityX(-mvVel);
             this.jumpLock = true;
             this.kickOff = -mvVel;

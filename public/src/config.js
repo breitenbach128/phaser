@@ -15,7 +15,7 @@
                 gravity: { y: 400 }
             },
             matter: {
-                gravity: { y: 0.70 },
+                gravity: { y: 0.65 },
                 positionIterations: 8, //6
                 velocityIterations: 6, //4
                 constraintIterations: 4 //2
@@ -42,10 +42,10 @@
     var playScene;
     var GLOBAL_DEBUG = false;
     //Physics
-    var global_gravity = 400;
+    var global_gravity = 380;
     //Tiles
     var map; 
-    var current_map = "map3";
+    var current_map = "map8";
     var current_exit = "west1";
     var world_background;
     //Game Objects
