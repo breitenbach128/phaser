@@ -677,13 +677,16 @@ var GameScene = new Phaser.Class({
         });
 
         this.matterCollision.addOnCollideActive({
-            objectA:[solana.sensors.bottom,solana.sensors.left,solana.sensors.right],
+            objectA:[solana.sensors.top,solana.sensors.bottom,solana.sensors.left,solana.sensors.right],
             callback: eventData => {
               const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
               //console.log(bodyA.label,bodyB.label)
               if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
                 // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
                 if (gameObjectB.properties.collides){
+                    if(bodyA.label == "SOLANA_TOP"){
+                        solana.touching.up++;
+                    }
                     if(bodyA.label == "SOLANA_BOTTOM"){
                         solana.touching.down++;
                     }
@@ -709,6 +712,13 @@ var GameScene = new Phaser.Class({
                 || gameObjectB instanceof BrightBeamBlock)) {  
 
                     //handle plaform jumping allowance             
+                    if(bodyA.label == "SOLANA_TOP"){
+                        solana.touching.up++;
+                        if(bodyB.label == "PLAT_BOTTOM" && gameObjectA.body.velocity.y < 0){
+                            //Start tracking and disable collisions
+                            gameObjectB.oneWayStart(gameObjectA);
+                        }                       
+                    }
                     if(bodyA.label == "SOLANA_BOTTOM"){
                         solana.touching.down++;
                     }
@@ -719,7 +729,9 @@ var GameScene = new Phaser.Class({
                         solana.touching.left++;
                     }                            
               }
-            //Dont count rocks and crates as walls.
+            //Handle Platform Pass thru
+
+            //Count rocks and crates as walls.
             if (gameObjectB !== undefined &&
                 (gameObjectB instanceof Rock
                 || gameObjectB instanceof Crate)) {   

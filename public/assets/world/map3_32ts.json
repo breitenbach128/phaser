@@ -329,6 +329,23 @@
                 {
                  "height":16,
                  "id":17,
+                 "name":"platform1",
+                 "properties":[
+                        {
+                         "name":"path",
+                         "type":"string",
+                         "value":"[{\"x\":0,\"y\":0,\"t\":0,\"h\":0},{\"x\":24,\"y\":0,\"t\":2000,\"h\":0},{\"x\":24,\"y\":24,\"t\":2000,\"h\":0},{\"x\":0,\"y\":24,\"t\":2000,\"h\":0},{\"x\":0,\"y\":0,\"t\":2000,\"h\":0}]"
+                        }],
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":160,
+                 "x":64,
+                 "y":192
+                }, 
+                {
+                 "height":16,
+                 "id":18,
                  "name":"platform2",
                  "properties":[
                         {
@@ -340,8 +357,25 @@
                  "type":"platform",
                  "visible":true,
                  "width":160,
-                 "x":96,
+                 "x":160,
                  "y":128
+                }, 
+                {
+                 "height":16,
+                 "id":19,
+                 "name":"platform3",
+                 "properties":[
+                        {
+                         "name":"path",
+                         "type":"string",
+                         "value":"[{\"x\":0,\"y\":0,\"t\":0,\"h\":0},{\"x\":24,\"y\":0,\"t\":2000,\"h\":0},{\"x\":24,\"y\":24,\"t\":2000,\"h\":0},{\"x\":0,\"y\":24,\"t\":2000,\"h\":0},{\"x\":0,\"y\":0,\"t\":2000,\"h\":0}]"
+                        }],
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":160,
+                 "x":256,
+                 "y":64
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -436,7 +470,7 @@
          "y":0
         }],
  "nextlayerid":14,
- "nextobjectid":18,
+ "nextobjectid":20,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.2",

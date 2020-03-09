@@ -15,17 +15,19 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
         const mainBody = Bodies.rectangle(0, 0, w * 0.2, h*.65, { chamfer: { radius: 5 } });
         this.sensors = {
+          top: Bodies.rectangle(0, -h*0.35, w * 0.15, 2, { isSensor: true }),
           bottom: Bodies.rectangle(0, h*0.35, w * 0.15, 2, { isSensor: true }),
           left: Bodies.rectangle(-w * 0.11, 0, 2, h * 0.45, { isSensor: true }),
           right: Bodies.rectangle(w * 0.11, 0, 2, h * 0.45, { isSensor: true })
         };
+        this.sensors.top.label = "SOLANA_TOP";
         this.sensors.bottom.label = "SOLANA_BOTTOM";
         this.sensors.left.label = "SOLANA_LEFT";
         this.sensors.right.label = "SOLANA_RIGHT";
         this.touching = {up:0,down:0,left:0,right:0};
 
         const compoundBody = Body.create({
-          parts: [mainBody, this.sensors.bottom, this.sensors.left, this.sensors.right],
+          parts: [mainBody, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
           //parts: [mainBody],
           frictionStatic: 0.0,
           frictionAir: 0.005,
@@ -295,6 +297,14 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.prev_position.y = this.y;
 
         if(this.body.velocity.y < this.hjs){this.hjs = this.body.velocity.y};
+
+        //This had a lot of bugginess. Not sure why it was suggested. Was too easy to be true.
+        //CHange dynamic Body Property based on Y vel "UP"
+        // if(this.body.velocity.y < 0 && this.body.collisionFilter.category != CATEGORY.SOLANA_UP){
+        //     this.setCollisionCategory(CATEGORY.SOLANA_UP)
+        // }else if(this.body.velocity.y >= 0 && this.body.collisionFilter.category != CATEGORY.SOLANA){
+        //     this.setCollisionCategory(CATEGORY.SOLANA)
+        // }
         
     }
     getControllerAction(action){

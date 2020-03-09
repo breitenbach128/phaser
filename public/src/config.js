@@ -36,7 +36,7 @@
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-2-20-2020";
+    var buildVersion = "a-3-8-2020";
     var game;
     var hud;
     var playScene;
@@ -45,7 +45,7 @@
     var global_gravity = 380;
     //Tiles
     var map; 
-    var current_map = "map8";
+    var current_map = "map3";
     var current_exit = "west1";
     var world_background;
     //Game Objects
@@ -116,7 +116,8 @@
         BARRIER: 64,
         GROUND: 128,
         SOLID: 256,
-        ENEMY: 512
+        ENEMY: 512,
+        SOLANA_UP: 1024
     }
     const DEPTH_LAYERS = {
         BG: 10,
