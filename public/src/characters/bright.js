@@ -180,7 +180,10 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     }
                     //Throw Pulse. Can only do it if you have the soulight
                     if(control_pulsePress && soullight.ownerid == 1){
-                        bright.pulseCharge(solana);
+                        //This needs a solid visual indicator that they players can perform this merge
+                        if(Phaser.Math.Distance.Between(this.x,this.y,solana.x,solana.y) < 64){
+                            bright.pulseCharge(solana);
+                        }
                     }
                     if(control_pulseRelease && this.abPulse.doCharge){
                         bright.pulseThrow(solana);//Add stick vector to throw, to get direction
@@ -397,15 +400,20 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     }
     pulseCharge(object){
         //Move Solana Off Screen
-        //object.setControlLock();
-        //object.setActive(false);
-        //object.setPosition(-2000,0);
+        object.setControlLock();
+        object.setActive(false);
+        object.setVisible(false);
 
         this.abPulse.doCharge = true;
         this.effect[0].setVisible(true);
+        camera_main.flash(500,255,255,255);
         
     }
     pulseUpdate(){
+        //Update Solana "Hold"
+        solana.x = this.x;
+        solana.y = this.y;
+        //Update Vectors
         let targVector = this.scene.getMouseVectorByCamera(this.ownerid); 
         if(this.ctrlDeviceId >= 0){
             let selectStick = stickRight.x == 0 && stickRight.y == 0 ? 'left' : 'right';
@@ -426,18 +434,16 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.abPulse.vec = {x:Math.cos(angle)*power,y:Math.sin(angle)*power};
     }
     pulseThrow(object){
-        //object.removeControlLock();
-        //object.setActive(true);
-        //object.setPosition(this.x,this.y);
+        object.removeControlLock();
+        object.setActive(true);
+        object.setVisible(true);
+
 
         this.abPulse.doCharge = false;
         this.effect[0].setVisible(false);
-        //Bright charges up, sending nearby objects flying away, including Solana, bullets, crates, etc.
-        //Will have a min power and a max power level, based on charge time. The Charge drains light.
-        if(Phaser.Math.Distance.Between(this.x,this.y,object.x,object.y) < 64){
  
-            object.applyForce(this.abPulse.vec);
-        }
+        object.applyForce(this.abPulse.vec);
+        
         this.abPulse.c = 0;
     }
 }
