@@ -1373,7 +1373,31 @@ var GameScene = new Phaser.Class({
         hud.scene.remove();
         //Run game Over
         this.scene.start('gameover');
+    },
+    getMouseVectorByCamera(playerId){ //Player source is the source from where the mouse vector is generated. 0 - Solana, 1 - Bright
+        
+        let gameScale = camera_main.zoom;
+        let targVector = {x:pointer.worldX,y:pointer.worldY};
+        //Adjust for Split Screen
+        if(this.cameraLevel == 3 && (playerId == 0 || playerId == 2)){
+            let cameraSources = ['cam_p1','cam_p2'];
+            let camera = this.cameras.getCamera(cameraSources[playerId]);
+            let camVec = pointer.positionToCamera(camera);
+            
+            targVector = camVec;
+        }
+        return targVector;
+    },
+    getGamepadVectorByStick(gamePadID,stick,radius,x,y){
+        let targVector = {x:0,y:0};
+        let stickRight = gamePad[gamePadID].getStickRight(.1);
+        let stickLeft = gamePad[gamePadID].getStickLeft(.1);
+        let gpVec = stick == 'left' && stick == 'right' ? stickLeft : stickRight;
+        targVector = {x:x+gpVec.x*radius,y:y+gpVec.y*radius};
+        
+        return targVector;
     }
+    
 });
 //External Functions
 function createLightObstacleRect(x,y,w,h){    

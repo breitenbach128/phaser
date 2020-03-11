@@ -478,9 +478,15 @@ class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
         const mainBody =  Bodies.rectangle(0, 0, w, h);
-
+        this.sensors = {
+            top: Bodies.rectangle(0, -h*0.70, w , h*0.60, { isSensor: true }),
+            bottom: Bodies.rectangle(0, h*0.70, w , h*0.60, { isSensor: true })
+          };
+        this.sensors.top.label = "PLAT_TOP";
+        this.sensors.bottom.label = "PLAT_BOTTOM";
+        
         const compoundBody = Body.create({
-            parts: [mainBody],
+            parts: [mainBody, this.sensors.bottom, this.sensors.top],
             frictionStatic: 0,
             frictionAir: 0.00,
             friction: 0,//Was 0.1
@@ -503,6 +509,7 @@ class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
         //this.scene.events.on("update", this.update, this);
         //Fake Velocity
         this.prev = {x:x,y:y};
+        this.onWayTracker = -1;
     }
     setup(x,y,properties,name){
         this.setActive(true); 
@@ -533,6 +540,28 @@ class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
         this.setVelocityY((this.y - this.prev.y));
         this.prev.x = this.x;
         this.prev.y = this.y;
+        //OneWay Tracking for enabling/disabling collisions
+        if(this.onWayTracker != -1){
+            let targetObjTop = this.onWayTracker.getTopCenter();
+            let targetObjBottom = this.onWayTracker.getBottomCenter();
+            let platObjTop = this.getTopCenter();
+            let platObjBottom = this.getBottomCenter();
+            if(targetObjBottom.y < platObjTop.y){
+                this.oneWayEnd();
+            }else if(targetObjTop.y > platObjBottom.y && this.onWayTracker.body.velocity.y > 0){
+                this.oneWayEnd();
+            }
+        }
+    }
+    oneWayStart(player){
+        this.setCollidesWith([~CATEGORY.SOLANA]);
+        this.onWayTracker = player;
+        console.log("One Way Start");
 
+    }
+    oneWayEnd(){
+        console.log("One Way end");
+        this.setCollidesWith(CATEGORY.SOLANA);
+        this.onWayTracker = -1;
     }
 };

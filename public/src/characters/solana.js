@@ -31,9 +31,9 @@ class Solana extends Phaser.Physics.Matter.Sprite{
           //parts: [mainBody],
           frictionStatic: 0.0,
           frictionAir: 0.005,
-          friction: 0.01,
+          friction: 0.005, //0.01
           restitution: 0.01,
-          density: 0.01
+          density: 0.01 //0.01
         });
        //Fix the draw offsets for the compound sprite.
         compoundBody.render.sprite.xOffset = .51;
@@ -52,9 +52,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.max_mv_speed = 2;
         this.hp = 5;
         this.max_hp = 5;
-        this.mv_speed = 2;
+        this.mv_speed = 1.5; //Was 2
         this.mv_direction = {x:0,y:0};
         this.prev_position = {x:0,y:0};
+        this.control_lock = false;
         this.mv_Xdiff = 0;
         this.mv_Ydiff = 0;
         this.jump_speed = 6;
@@ -123,146 +124,146 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             let control_passRelease = this.getControllerAction('passR');
             let control_brightFollow = this.getControllerAction('brightFollow');
 
-
-            //Toggle Bright follow in single player mode. In Multiplayer mode, send an alert/highlight position/ping
-            if(control_brightFollow && playerMode == 0){
-                this.scene.brightFollowMode();
-            }
-            //Detection Code for Jumping
-
-            if(this.touching.left > 0 && control_left){                
-                this.onWall = true;
-            }else if(this.touching.right > 0 && control_right){
-                this.onWall = true;
-            }else{
-                this.onWall = false;
-            }
-
-            //Ground Check
-            if(this.touching.down > 0){
-                this.onGround = true;
-            }else{
-                this.onGround = false;
-            }
-            
-            //Check Jump ready
-            if(this.onGround || this.onWall || (soullight.ownerid == 0 && this.jumpCount < 2)){
-                this.jumpReady = true;
-                //Touching a surface resets jump counter                
-                if(this.onGround || this.onWall){this.jumpCount = 0};
-
-                if(this.mv_direction.x == 0){
-                    if(!this.isAnimLocked){this.sprite.anims.play('solana-idle', true);};//Idle
-                }else{
-                    if(!this.isAnimLocked){this.sprite.anims.play('solana-walk', true);};
+            if (this.control_lock == false) {
+                //Toggle Bright follow in single player mode. In Multiplayer mode, send an alert/highlight position/ping
+                if (control_brightFollow && playerMode == 0) {
+                    this.scene.brightFollowMode();
                 }
-            }else{
-                if(!this.isAnimLocked){this.sprite.anims.play('solana-jump', true);};  
-                //Add Jump Forgiveness of 100ms  
-                if(this.jumpTimerRunning == false){
-                    this.jumpTimer = this.scene.time.addEvent({ delay: 100, callback: this.forgiveJump, callbackScope: this, loop: false });
-                    this.jumpTimerRunning = true;         
-                }   
-                
-            }
-            
+                //Detection Code for Jumping
 
-
-            //Slow Descent if on Wall
-            if(this.onWall && !this.onGround){
-               if(Math.round(this.body.velocity.y) >= 0){ //Upwards
-                    this.setVelocityY(0);
-                    if(!this.isAnimLocked){this.sprite.anims.play('solana-wallslide', true);};
-               }
-            }
-
-            //Movement Code
-            if(curr_player==players.SOLANA || playerMode > 0){
-                //Reduce Air Control
-                let control_jump = this.getControllerAction('jump');
-                let control_change = this.getControllerAction('changeplayer');
-                //Change Player in Single Mode
-                if(playerMode == 0){
-                    if(control_change){
-                        this.scene.changePlayer();
-                    } 
-                }
-                let mv = this.onGround ? mv_speed : mv_speed*.75;
-                //Move left/right
-                if (control_left && this.jumpLock == false) {
-
-                    this.sprite.flipX= true; // flip the sprite to the left                    
-                    this.mv_direction.x = -1;
-                    this.sprite.applyForce({x:-mv/700,y:0})                   
-                    //this.sprite.setVelocityX(-mv);
-                    
-                }
-                else if (control_right && this.jumpLock == false) {
-
-                    this.sprite.flipX= false; // flip the sprite to the left                    
-                    this.mv_direction.x = 1;
-                    this.sprite.applyForce({x:mv/700,y:0})
-                    //this.sprite.setVelocityX(mv);
-                }
-                else if(!control_right && !control_left && this.jumpLock == false){
-
-                    //This is fucking with friction and platform movement.
-
-                    //if(!this.onGround){this.sprite.setVelocityX(0)};  
-
-                    this.mv_direction.x = 0; 
-                }
-                //Passing Soulight
-                if(soullight.ownerid == 0){
-                    if(control_passPress){soullight.aimStart()};
-                    if(control_passRelease){soullight.aimStop();};
-                }
-                if(this.jumpLock){
-                    //this.sprite.setVelocityX(this.kickOff);
-                    this.sprite.applyForce({x:this.kickOff/500,y:0})
-                }    
-
-                if (control_jump && this.jumpReady) {
-                    this.jump(this.jump_speed,mv_speed);   
-
+                if (this.touching.left > 0 && control_left) {
+                    this.onWall = true;
+                } else if (this.touching.right > 0 && control_right) {
+                    this.onWall = true;
+                } else {
+                    this.onWall = false;
                 }
 
-                //Check for shooting 
-                if(control_shoot && this.equipment[0].equiped){
-                    if(!this.isAnimLocked){solana.sprite.anims.play('solana-shoot', true);};    
-                    let costToFireWeapon = 10;//Was 10     
-                    let wpRof = 350;
+                //Ground Check
+                if (this.touching.down > 0) {
+                    this.onGround = true;
+                } else {
+                    this.onGround = false;
+                }
 
-                    
-                    if ((time-lastFired) >  wpRof && hud.energy.n > costToFireWeapon)//ROF(MS)
-                    {
-                        
-                        let blast = ab_solarblasts.get();
-                        let gameScale = camera_main.zoom;
-                        let targVector = {x:pointer.worldX,y:pointer.worldY};
-                        if(this.ctrlDeviceId >=0){
-                            //Overwrite target vector with gamePad coords
-                            let stickRight = gamePad[this.ctrlDeviceId].getStickRight(.1);
-                            let stickLeft = gamePad[this.ctrlDeviceId].getStickLeft(.1);
-                            let gpVec = stickRight.x == 0 && stickRight.y == 0 ? stickLeft : stickRight;
-                            targVector = {x:this.x+gpVec.x,y:this.y+gpVec.y};
-                            //console.log(gpVec,stickLeft,stickRight);
-                        }
-                        let angle = Phaser.Math.Angle.Between(this.x,this.y, targVector.x,targVector.y);
-                        let bulletSpeed = 6;
-                        let vecX = Math.cos(angle)*bulletSpeed;
-                        let vecY = Math.sin(angle)*bulletSpeed;  
-                        
-                        blast.fire(this.x,this.y, vecX, vecY, 150);
-                        
+                //Check Jump ready
+                if (this.onGround || this.onWall || (soullight.ownerid == 0 && this.jumpCount < 2)) {
+                    this.jumpReady = true;
+                    //Touching a surface resets jump counter                
+                    if (this.onGround || this.onWall) { this.jumpCount = 0 };
 
-                        lastFired = time;
-                        //Remove Energy for the shooting
-                        hud.alterEnergy(-costToFireWeapon);
+                    if (this.mv_direction.x == 0) {
+                        if (!this.isAnimLocked) { this.sprite.anims.play('solana-idle', true); };//Idle
+                    } else {
+                        if (!this.isAnimLocked) { this.sprite.anims.play('solana-walk', true); };
                     }
-                }  
-            }
+                } else {
+                    if (!this.isAnimLocked) { this.sprite.anims.play('solana-jump', true); };
+                    //Add Jump Forgiveness of 100ms  
+                    if (this.jumpTimerRunning == false) {
+                        this.jumpTimer = this.scene.time.addEvent({ delay: 100, callback: this.forgiveJump, callbackScope: this, loop: false });
+                        this.jumpTimerRunning = true;
+                    }
 
+                }
+
+
+
+                //Slow Descent if on Wall
+                if (this.onWall && !this.onGround) {
+                    if (Math.round(this.body.velocity.y) >= 0) { //Upwards
+                        this.setVelocityY(0);
+                        if (!this.isAnimLocked) { this.sprite.anims.play('solana-wallslide', true); };
+                    }
+                }
+
+                //Movement Code
+                if (curr_player == players.SOLANA || playerMode > 0) {
+                    //Reduce Air Control
+                    let control_jump = this.getControllerAction('jump');
+                    let control_change = this.getControllerAction('changeplayer');
+                    //Change Player in Single Mode
+                    if (playerMode == 0) {
+                        if (control_change) {
+                            this.scene.changePlayer();
+                        }
+                    }
+                    let mv = this.onGround ? mv_speed : mv_speed * .75;
+                    //Move left/right
+                    if (control_left && this.jumpLock == false) {
+
+                        this.sprite.flipX = true; // flip the sprite to the left                    
+                        this.mv_direction.x = -1;
+                        this.sprite.applyForce({ x: -mv / 700, y: 0 })
+                        //this.sprite.setVelocityX(-mv);
+
+                    }
+                    else if (control_right && this.jumpLock == false) {
+
+                        this.sprite.flipX = false; // flip the sprite to the left                    
+                        this.mv_direction.x = 1;
+                        this.sprite.applyForce({ x: mv / 700, y: 0 })
+                        //this.sprite.setVelocityX(mv);
+                    }
+                    else if (!control_right && !control_left && this.jumpLock == false) {
+
+                        //This is fucking with friction and platform movement.
+
+                        //if(!this.onGround){this.sprite.setVelocityX(0)};  
+
+                        this.mv_direction.x = 0;
+                    }
+                    //Passing Soulight
+                    if (soullight.ownerid == 0) {
+                        if (control_passPress) { soullight.aimStart() };
+                        if (control_passRelease) { soullight.aimStop(); };
+                    }
+                    if (this.jumpLock) {
+                        //this.sprite.setVelocityX(this.kickOff);
+                        this.sprite.applyForce({ x: this.kickOff / 500, y: 0 })
+                    }
+
+                    if (control_jump && this.jumpReady) {
+                        this.jump(this.jump_speed, mv_speed);
+
+                    }
+
+                    //Check for shooting 
+                    if (control_shoot && this.equipment[0].equiped) {
+                        if (!this.isAnimLocked) { solana.sprite.anims.play('solana-shoot', true); };
+                        let costToFireWeapon = 10;//Was 10     
+                        let wpRof = 350;
+
+
+                        if ((time - lastFired) > wpRof && hud.energy.n > costToFireWeapon)//ROF(MS)
+                        {
+
+                            let blast = ab_solarblasts.get();
+                            let gameScale = camera_main.zoom;
+                            let targVector = { x: pointer.worldX, y: pointer.worldY };
+                            if (this.ctrlDeviceId >= 0) {
+                                //Overwrite target vector with gamePad coords
+                                let stickRight = gamePad[this.ctrlDeviceId].getStickRight(.1);
+                                let stickLeft = gamePad[this.ctrlDeviceId].getStickLeft(.1);
+                                let gpVec = stickRight.x == 0 && stickRight.y == 0 ? stickLeft : stickRight;
+                                targVector = { x: this.x + gpVec.x, y: this.y + gpVec.y };
+                                //console.log(gpVec,stickLeft,stickRight);
+                            }
+                            let angle = Phaser.Math.Angle.Between(this.x, this.y, targVector.x, targVector.y);
+                            let bulletSpeed = 6;
+                            let vecX = Math.cos(angle) * bulletSpeed;
+                            let vecY = Math.sin(angle) * bulletSpeed;
+
+                            blast.fire(this.x, this.y, vecX, vecY, 150);
+
+
+                            lastFired = time;
+                            //Remove Energy for the shooting
+                            hud.alterEnergy(-costToFireWeapon);
+                        }
+                    }
+                }
+            }
         }
         if(this.beingThrown.ready == true){
             this.getThrown();            
@@ -567,5 +568,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     disableInvuln(){
         this.invuln = false;
         this.clearTint();
+    }
+    setControlLock(){
+        this.control_lock = true;
+    }
+    removeControlLock(){
+        this.control_lock = false;
     }
 }

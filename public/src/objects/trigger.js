@@ -652,11 +652,11 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
     oneWayStart(player){
         this.setCollidesWith([~CATEGORY.SOLANA]);
         this.onWayTracker = player;
-        console.log("One Way Start");
+        //console.log("One Way Start");
 
     }
     oneWayEnd(){
-        console.log("One Way end");
+        //console.log("One Way end");
         this.setCollidesWith(CATEGORY.SOLANA);
         this.onWayTracker = -1;
     }
