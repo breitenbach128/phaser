@@ -60,7 +60,7 @@ var GameScene = new Phaser.Class({
         //fghiddenlayer.setDepth(DEPTH_LAYERS.FG);
         fghiddenlayer.forEachTile(function (tile) {
             if(tile.index != -1){
-                console.log(tile);
+                //console.log(tile);
                 let newImgIndex = tile.index - tile.tileset.firstgid;
                 let secretTile = new SecretTile(this,tile.pixelX+tile.width/2,tile.pixelY+tile.height/2,tile.tileset.image.key,newImgIndex).setOrigin(0.5).setDepth(DEPTH_LAYERS.FG);
             }
@@ -116,7 +116,7 @@ var GameScene = new Phaser.Class({
         lightCanvas.setAlpha(0.5);
         //Perimeter Block
         lightPolygons.push([[-1, -1], [(map.widthInPixels + 1), -1], [(map.widthInPixels + 1), (map.heightInPixels + 1)], [-1, (map.heightInPixels + 1)]]);
-        console.log("Raycasting :",lightCanvas,lightPolygons);
+        //console.log("Raycasting :",lightCanvas,lightPolygons);
 
 
         //NEED TO TEST THIS OUT WITH JUMP CODE. I NEED TO CREATE A TRUE GAME OBJECT HERE, SO I CAN REFERENCE THE TYPE.
@@ -228,6 +228,17 @@ var GameScene = new Phaser.Class({
             classType: TMXPlatform,
             runChildUpdate: true 
         });
+        //Falling Platforms
+        platfalls = this.add.group({ 
+            classType: Fallplat,
+            runChildUpdate: true 
+        });
+        //Swings
+        platSwingTweens = this.add.group({ 
+            classType: PlatSwingTween,
+            runChildUpdate: true 
+        });
+
         //Buttons 
         buttons = this.add.group({ 
             classType: TMXButton,
@@ -401,7 +412,7 @@ var GameScene = new Phaser.Class({
                 } 
             }
         }
-        //Spawn Mirrors
+        //Spawn Objects
         for(e=0;e<objectlayer.objects.length;e++){
             let mapObject;
             let x_offset = 0;
@@ -425,7 +436,9 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == "platfall"){ 
                 x_offset = tmxObjRef.width/2;
                 y_offset = tmxObjRef.height/2;
-                let newFallPlat = new Fallplat(this,tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-1);
+                //let newFallPlat = new Fallplat(this,tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-1);
+                platfalls.get(tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-1);
+
             }else if(tmxObjRef.type == "breakabletile"){  
                 x_offset = tmxObjRef.width/2;
                 y_offset = tmxObjRef.height/2;
@@ -440,6 +453,13 @@ var GameScene = new Phaser.Class({
                 let newCrate = crates.get(tmxObjRef.x,tmxObjRef.y);
             }else if(tmxObjRef.type == "item"){
                 let newitem = new EquipItem(this,tmxObjRef.x,tmxObjRef.y,'gameitems',GAMEITEM[tmxObjRef.name.toUpperCase()]);
+
+            }else if(tmxObjRef.type == "swingTween"){  
+                let swingTw = platSwingTweens.get(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                //Dynamically Resize platforms Swing
+                swingTw.setSize(tmxObjRef.width,tmxObjRef.height);
+                swingTw.setDisplaySize(tmxObjRef.width,tmxObjRef.height);
+                swingTw.setup(swingTw.x,swingTw.y, getTileProperties(tmxObjRef.properties),tmxObjRef.name);
 
             }
 
@@ -631,8 +651,13 @@ var GameScene = new Phaser.Class({
               }
               if (gameObjectB !== undefined &&
                 (gameObjectB instanceof TMXPlatform
-                || gameObjectB instanceof Barrier
-                || gameObjectB instanceof TMXGate)) {   
+                      || gameObjectB instanceof Barrier
+                      || gameObjectB instanceof TMXGate
+                      || gameObjectB instanceof TMXPlate
+                      || gameObjectB instanceof Fallplat
+                      || gameObjectB instanceof PlatSwingTween
+                      || gameObjectB instanceof PlatSwing
+                      || gameObjectB instanceof BrightBeamBlock)) {   
                 
                 //handle plaform jumping allowance             
                 if(bodyA.label == "BRIGHT_BOTTOM"){
@@ -652,13 +677,16 @@ var GameScene = new Phaser.Class({
         });
 
         this.matterCollision.addOnCollideActive({
-            objectA:[solana.sensors.bottom,solana.sensors.left,solana.sensors.right],
+            objectA:[solana.sensors.top,solana.sensors.bottom,solana.sensors.left,solana.sensors.right],
             callback: eventData => {
               const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
               //console.log(bodyA.label,bodyB.label)
               if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
                 // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
                 if (gameObjectB.properties.collides){
+                    if(bodyA.label == "SOLANA_TOP"){
+                        solana.touching.up++;
+                    }
                     if(bodyA.label == "SOLANA_BOTTOM"){
                         solana.touching.down++;
                     }
@@ -679,9 +707,18 @@ var GameScene = new Phaser.Class({
                 || gameObjectB instanceof TMXGate
                 || gameObjectB instanceof TMXPlate
                 || gameObjectB instanceof Fallplat
+                || gameObjectB instanceof PlatSwingTween  
+                || gameObjectB instanceof PlatSwing              
                 || gameObjectB instanceof BrightBeamBlock)) {  
 
                     //handle plaform jumping allowance             
+                    if(bodyA.label == "SOLANA_TOP"){
+                        solana.touching.up++;
+                        if(bodyB.label == "PLAT_BOTTOM" && gameObjectA.body.velocity.y < 0){
+                            //Start tracking and disable collisions
+                            gameObjectB.oneWayStart(gameObjectA);
+                        }                       
+                    }
                     if(bodyA.label == "SOLANA_BOTTOM"){
                         solana.touching.down++;
                     }
@@ -692,7 +729,9 @@ var GameScene = new Phaser.Class({
                         solana.touching.left++;
                     }                            
               }
-            //Dont count rocks and crates as walls.
+            //Handle Platform Pass thru
+
+            //Count rocks and crates as walls.
             if (gameObjectB !== undefined &&
                 (gameObjectB instanceof Rock
                 || gameObjectB instanceof Crate)) {   
@@ -840,11 +879,12 @@ var GameScene = new Phaser.Class({
                         gObjs[0].touched();
                     }  
                 }
-                //Between Fallplat and Ground at velocity
-                if ((bodyA.label === 'FALLPLAT' && bodyB.label === 'GROUND') || (bodyA.label === 'GROUND' && bodyB.label === 'FALLPLAT')) {
+                //Between Fallplat and ANYTHING ELSE
+                if ((bodyA.label === 'FALLPLAT' && bodyB.label !== 'SOLANA') || (bodyA.label !== 'SOLANA' && bodyB.label === 'FALLPLAT')) {
                     //Get Bullet Object and run hit function
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'FALLPLAT');
-                    if (gObjs[0].ready == false && gObjs[0].y < gObjs[1].tile.pixelY){
+                    //if (gObjs[0].ready == false && gObjs[0].y < gObjs[1].tile.pixelY){
+                    if (gObjs[0].ready == false){
                         emitter0.active = true;
                         emitter0.explode(5,gObjs[0].x,gObjs[0].y);
                         gObjs[0].setDead();
@@ -1051,6 +1091,11 @@ var GameScene = new Phaser.Class({
         //Lights2d
         // solana.setPipeline('Light2D');
         // let light  = this.lights.addLight(0, 0, 200).setScrollFactor(0.0).setIntensity(2);
+
+        //TEST PLATSWING
+        //let swing = new PlatSwing(this,solana.x+32,solana.y-32);
+        //let swing = new PlatSwingTween(this,solana.x+32,solana.y-32);
+
         
     },
     update: function (time, delta)
@@ -1328,7 +1373,31 @@ var GameScene = new Phaser.Class({
         hud.scene.remove();
         //Run game Over
         this.scene.start('gameover');
+    },
+    getMouseVectorByCamera(playerId){ //Player source is the source from where the mouse vector is generated. 0 - Solana, 1 - Bright
+        
+        let gameScale = camera_main.zoom;
+        let targVector = {x:pointer.worldX,y:pointer.worldY};
+        //Adjust for Split Screen
+        if(this.cameraLevel == 3 && (playerId == 0 || playerId == 2)){
+            let cameraSources = ['cam_p1','cam_p2'];
+            let camera = this.cameras.getCamera(cameraSources[playerId]);
+            let camVec = pointer.positionToCamera(camera);
+            
+            targVector = camVec;
+        }
+        return targVector;
+    },
+    getGamepadVectorByStick(gamePadID,stick,radius,x,y){
+        let targVector = {x:0,y:0};
+        let stickRight = gamePad[gamePadID].getStickRight(.1);
+        let stickLeft = gamePad[gamePadID].getStickLeft(.1);
+        let gpVec = stick == 'left' && stick == 'right' ? stickLeft : stickRight;
+        targVector = {x:x+gpVec.x*radius,y:y+gpVec.y*radius};
+        
+        return targVector;
     }
+    
 });
 //External Functions
 function createLightObstacleRect(x,y,w,h){    

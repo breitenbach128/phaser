@@ -93,6 +93,7 @@ var Preloader = new Phaser.Class({
 		this.load.tilemapTiledJSON('map5', 'assets/world/map5_32ts.json');  
 		this.load.tilemapTiledJSON('map6', 'assets/world/map6_32ts.json');
 		this.load.tilemapTiledJSON('map7', 'assets/world/map7_32ts.json');
+		this.load.tilemapTiledJSON('map8', 'assets/world/map8_32ts.json');
 		//StoryBoard Maps 
 		this.load.tilemapTiledJSON('storymap_forest_1', 'assets/world/storyboard_forest1.json');  
 		this.load.spritesheet('tiles32', 'assets/world/oldTileset32.png', {frameWidth: 32, frameHeight: 32, spacing: 2}); 

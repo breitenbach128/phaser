@@ -206,18 +206,33 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
         //Custom Props
         this.ready = true;
         this.dead = false;
+        this.spawnPos = {x:x,y:y};
+        
     }
     setup(x,y){
         this.setActive(true);
         this.setPosition(x,y); 
+        this.spawnPos.x = x;
+        this.spawnPos.y = y;
+
+    }
+    reset(){
+        this.setActive(true);
+        this.setPosition(this.spawnPos.x,this.spawnPos.y); 
+        this.ready = true;
+        this.dead = false;
+        this.setStatic(true);
+        console.log("platfall reset");
     }
     setDead(){
         this.dead = true;
+        this.resetTimer = this.scene.time.addEvent({ delay: 4000, callback: this.reset, callbackScope: this, loop: false });
     }
     update(time, delta)
     {       
         if(this.dead){
-            this.destroy();
+            this.setActive(false);
+            this.setPosition(-1000,-1000);
         }
     }
     touched(){
@@ -240,7 +255,6 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
     }
     openComplete(tween, targets, myPlat){
         myPlat.setStatic(false);
-        myPlat.setVelocityY(6);//Fall faster than player
     }
 };
 
@@ -385,10 +399,169 @@ class SecretTile extends Phaser.Physics.Matter.Sprite{
     }
     enter(){
         if(this.alpha == 1.0){
-            this.setAlpha(0.7);
+            this.setAlpha(0.5);
         }
     }
     leave(){
         this.setAlpha(1.0);
+    }
+};
+class PlatSwing extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'platform_160x16', 0)
+        this.scene = scene;
+        // Create the physics-based sprite that we will move around and animate
+        scene.matter.world.add(this);
+        // config.scene.sys.displayList.add(this);
+        // config.scene.sys.updateList.add(this);
+        scene.add.existing(this); // This adds to the two listings of update and display.
+
+        this.setActive(true);
+
+        this.sprite = this;
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody =  Bodies.rectangle(0, 0, w, h);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.00,
+            friction: 0,//Was 0.1
+            label: 'PLATSWING'
+        });
+
+        this.sprite
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.SOLID)
+        .setPosition(x, y)  
+        //.setFixedRotation(); 
+
+
+        //Matter JS Constraint 
+        let swing_constraint = Phaser.Physics.Matter.Matter.Constraint.create({
+            pointA: { x: this.x, y: this.y-48 },
+            bodyB: this.sprite.body,
+            length: 64,
+            stiffness: .3
+        });
+        this.scene.matter.world.add(swing_constraint);              
+
+    }
+    setup(x,y, properties,name){
+        this.setActive(true); 
+        this.setPosition(x,y);
+        this.name = name;
+ 
+    }
+    update(time, delta)
+    {       
+
+
+    }
+};
+class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'platform_160x16', 0)
+        this.scene = scene;
+        // Create the physics-based sprite that we will move around and animate
+        scene.matter.world.add(this);
+        // config.scene.sys.displayList.add(this);
+        // config.scene.sys.updateList.add(this);
+        scene.add.existing(this); // This adds to the two listings of update and display.
+
+        this.setActive(true);
+
+        this.sprite = this;
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this.sprite;
+        const mainBody =  Bodies.rectangle(0, 0, w, h);
+        this.sensors = {
+            top: Bodies.rectangle(0, -h*0.70, w , h*0.60, { isSensor: true }),
+            bottom: Bodies.rectangle(0, h*0.70, w , h*0.60, { isSensor: true })
+          };
+        this.sensors.top.label = "PLAT_TOP";
+        this.sensors.bottom.label = "PLAT_BOTTOM";
+        
+        const compoundBody = Body.create({
+            parts: [mainBody, this.sensors.bottom, this.sensors.top],
+            frictionStatic: 0,
+            frictionAir: 0.00,
+            friction: 0,//Was 0.1
+            label: 'PLATSWING'
+        });
+
+        this.sprite
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.SOLID)
+        .setPosition(x, y)  
+        .setFixedRotation() 
+        .setStatic(true)
+        .setIgnoreGravity(true);  
+        
+        this.offsets = {x:x,y:y};
+        this.swingDeg = 0;
+        this.swingRadius = 32;
+
+
+        //this.scene.events.on("update", this.update, this);
+        //Fake Velocity
+        this.prev = {x:x,y:y};
+        this.onWayTracker = -1;
+    }
+    setup(x,y,properties,name){
+        this.setActive(true); 
+        this.setPosition(x,y);
+        this.name = name;
+        this.swingDeg = properties.start;
+        this.swingRadius = properties.radius;
+        console.log(properties,this.swingDeg,this.swingRadius,this.swingDuration)
+         //Setup Half Circle Tween
+         this.scene.tweens.add({
+            targets: this,
+            swingDeg: properties.end,
+            duration: properties.duration,
+            yoyo: true,
+            repeat: -1,
+            ease: "Sine.easeInOut",
+            callbackScope: this,
+            onUpdate: function(tween, target){
+                let angle = Phaser.Math.DegToRad(target.swingDeg);
+                target.x = Math.cos(angle)*target.swingRadius+target.offsets.x;
+                target.y = Math.sin(angle)*target.swingRadius+target.offsets.y;
+            }
+        });
+    }
+    update(time, delta)
+    {       
+        this.setVelocityX((this.x - this.prev.x));
+        this.setVelocityY((this.y - this.prev.y));
+        this.prev.x = this.x;
+        this.prev.y = this.y;
+        //OneWay Tracking for enabling/disabling collisions
+        if(this.onWayTracker != -1){
+            let targetObjTop = this.onWayTracker.getTopCenter();
+            let targetObjBottom = this.onWayTracker.getBottomCenter();
+            let platObjTop = this.getTopCenter();
+            let platObjBottom = this.getBottomCenter();
+            if(targetObjBottom.y < platObjTop.y){
+                this.oneWayEnd();
+            }else if(targetObjTop.y > platObjBottom.y && this.onWayTracker.body.velocity.y > 0){
+                this.oneWayEnd();
+            }
+        }
+    }
+    oneWayStart(player){
+        this.setCollidesWith([~CATEGORY.SOLANA]);
+        this.onWayTracker = player;
+        console.log("One Way Start");
+
+    }
+    oneWayEnd(){
+        console.log("One Way end");
+        this.setCollidesWith(CATEGORY.SOLANA);
+        this.onWayTracker = -1;
     }
 };

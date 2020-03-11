@@ -15,7 +15,7 @@
                 gravity: { y: 400 }
             },
             matter: {
-                gravity: { y: .70 },
+                gravity: { y: 0.65 },
                 positionIterations: 8, //6
                 velocityIterations: 6, //4
                 constraintIterations: 4 //2
@@ -36,23 +36,23 @@
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-2-20-2020";
+    var buildVersion = "a-3-8-2020";
     var game;
     var hud;
     var playScene;
     var GLOBAL_DEBUG = false;
     //Physics
-    var global_gravity = 400;
+    var global_gravity = 380;
     //Tiles
     var map; 
-    var current_map = "map7";
+    var current_map = "map3";
     var current_exit = "west1";
     var world_background;
     //Game Objects
     var solana,bright,soullight,polaris,
     enemies,enemiesFly,bullets,
     mirrors,exits,entrances,
-    levers,gates,plates,buttons,
+    levers,gates,plates,buttons,platfalls,platSwings,platSwingTweens,
     triggerzones,platforms,barriers,
     ab_solarblasts,crystallamps,ab_brightbeams,
     rocks,crates,npcs,spiders,boss,light_shards,
@@ -116,7 +116,8 @@
         BARRIER: 64,
         GROUND: 128,
         SOLID: 256,
-        ENEMY: 512
+        ENEMY: 512,
+        SOLANA_UP: 1024
     }
     const DEPTH_LAYERS = {
         BG: 10,

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="12">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="20">
  <editorsettings>
   <export target="../assets/world/map3_32ts.json" format="json"/>
  </editorsettings>
@@ -311,6 +311,26 @@
 76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,76,114,303,303,303,303,303,303,303,303,303,303,303,303,303,303,303,303,303
 </data>
  </layer>
+ <layer id="13" name="fg_hidden" width="64" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
  <layer id="11" name="collision" width="64" height="16">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,852,852,852,852,852,852,852,852,
@@ -360,16 +380,6 @@
   <object id="7" name="east1" type="entrance" x="1952" y="352" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="10" name="triggers">
-  <object id="8" name="zone1" type="zone" x="256" y="128" width="256" height="96">
-   <properties>
-    <property name="allowReset" type="bool" value="true"/>
-    <property name="resetDelay" type="int" value="1"/>
-    <property name="targetName" value="gate1"/>
-    <property name="targetType" value="gate"/>
-    <property name="zoneType" value="force"/>
-    <property name="zoneValue" value="{&quot;x&quot;: 0.009 ,&quot;y&quot;: -0.0015, &quot;time&quot;: 30}"/>
-   </properties>
-  </object>
   <object id="9" name="zone2" type="zone" x="576" y="160" width="128" height="96">
    <properties>
     <property name="allowReset" type="bool" value="true"/>
@@ -400,7 +410,39 @@
     <property name="zoneValue" value="{&quot;x&quot;: 0.000 ,&quot;y&quot;: -0.0035, &quot;time&quot;: 30}"/>
    </properties>
   </object>
+  <object id="17" name="platform1" type="platform" x="64" y="192" width="160" height="16">
+   <properties>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:24,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:24,&quot;y&quot;:24,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:24,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0}]"/>
+   </properties>
+  </object>
+  <object id="18" name="platform2" type="platform" x="160" y="128" width="160" height="16">
+   <properties>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:24,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:24,&quot;y&quot;:24,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:24,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0}]"/>
+   </properties>
+  </object>
+  <object id="19" name="platform3" type="platform" x="256" y="64" width="160" height="16">
+   <properties>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:24,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:24,&quot;y&quot;:24,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:24,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0}]"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="9" name="objects"/>
+ <objectgroup id="9" name="objects">
+  <object id="12" name="swing1" type="swingTween" x="352" y="192" width="64" height="8">
+   <properties>
+    <property name="duration" type="int" value="1000"/>
+    <property name="end" type="int" value="0"/>
+    <property name="radius" type="int" value="32"/>
+    <property name="start" type="int" value="180"/>
+   </properties>
+  </object>
+  <object id="13" name="swing2" type="swingTween" x="448" y="128" width="64" height="8">
+   <properties>
+    <property name="duration" type="int" value="2000"/>
+    <property name="end" type="int" value="180"/>
+    <property name="radius" type="int" value="32"/>
+    <property name="start" type="int" value="0"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="12" name="hulls"/>
 </map>
