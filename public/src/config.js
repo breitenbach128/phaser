@@ -53,7 +53,7 @@
     enemies,enemiesFly,bullets,
     mirrors,exits,entrances,
     levers,gates,plates,buttons,platfalls,platSwings,platSwingTweens,
-    triggerzones,platforms,barriers,
+    triggerzones,platforms,barriers,secretTiles,
     ab_solarblasts,crystallamps,ab_brightbeams,
     rocks,crates,npcs,spiders,boss,light_shards,
     breakabletiles,light_bursts;    

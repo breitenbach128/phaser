@@ -370,24 +370,29 @@ class SecretTile extends Phaser.Physics.Matter.Sprite{
         .setIgnoreGravity(true);   
 
         //Setup Collisions
-        this.scene.matterCollision.addOnCollideActive({
-            objectA: [this],
-            callback: eventData => {
-                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
-                if (gameObjectB !== undefined && (gameObjectB instanceof Solana || gameObjectB instanceof Bright || gameObjectB instanceof SoulLight)) {                    
-                        this.enter();                    
-                }
-            }
-        });
-        this.scene.matterCollision.addOnCollideEnd({
-            objectA: [this],
-            callback: eventData => {
-                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
-                if (gameObjectB !== undefined && (gameObjectB instanceof Solana || gameObjectB instanceof Bright || gameObjectB instanceof SoulLight)) {
-                    this.leave();
-                }
-            }
-        });
+        // this.scene.matterCollision.addOnCollideStart({
+        //     objectA: [this],
+        //     callback: eventData => {
+        //         const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+        //         if (gameObjectB !== undefined && (gameObjectB instanceof Solana || gameObjectB instanceof Bright || gameObjectB instanceof SoulLight)) {                    
+        //                 //this.enter(gameObjectB);
+        //                 this.check();                    
+        //         }
+        //     }
+        // });
+        // this.scene.matterCollision.addOnCollideEnd({
+        //     objectA: [this],
+        //     callback: eventData => {
+        //         const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+        //         if (gameObjectB !== undefined && (gameObjectB instanceof Solana || gameObjectB instanceof Bright || gameObjectB instanceof SoulLight)) {
+        //             //this.leave();
+        //             this.check();
+        //         }
+        //     }
+        // });
+
+        this.ready = true;
+        this.debug = this.scene.add.text(this.x, this.y, 'SECRET', { resolution: 2, fontSize: '8px', fill: '#00FF00' }).setDepth(DEPTH_LAYERS.FG).setOrigin(0.5);
     }
     setup(x,y){
         this.setActive(true);
@@ -395,16 +400,49 @@ class SecretTile extends Phaser.Physics.Matter.Sprite{
     }
     update(time, delta)
     {       
+        if(this.ready){
+            let tileDistance = 2;
+            let thisTile = getObjectTilePosition(this.x,this.y,32);
+            let solanaTile = getObjectTilePosition(solana.x,solana.y,32);
+            let brightTile = getObjectTilePosition(bright.x,bright.y,32);
+            let soulightTile = getObjectTilePosition(soullight.x,soullight.y,32);
+            this.debug.setText(String(thisTile.x)+","+String(thisTile.y));
+            if(Phaser.Math.Distance.Between(thisTile.x,thisTile.y,solanaTile.x,solanaTile.y) < tileDistance
+                || Phaser.Math.Distance.Between(thisTile.x,thisTile.y,brightTile.x,brightTile.y) < tileDistance
+                || Phaser.Math.Distance.Between(thisTile.x,thisTile.y,soulightTile.x,soulightTile.y) < tileDistance){
 
-    }
-    enter(){
-        if(this.alpha == 1.0){
-            this.setAlpha(0.5);
+                    this.setAlpha(0.5);
+            }else{
+                if(this.alpha != 1.0){this.setAlpha(1.0)};
+            }
         }
     }
-    leave(){
-        this.setAlpha(1.0);
-    }
+    // check(){
+
+    //     if(secretTiles != null && secretTiles.getLength() > 0){
+    //         let stlist = secretTiles.getChildren();
+    //         stlist.forEach(e =>{
+    //             let disMax = e.width;
+    //             if(Phaser.Math.Distance.Between(e.x,e.y,solana.x,solana.y) < disMax
+    //                 || Phaser.Math.Distance.Between(e.x,e.y,bright.x,bright.y) < disMax
+    //                 || Phaser.Math.Distance.Between(e.x,e.y,soullight.x,soullight.y) < disMax){
+    //                 if(e.alpha == 1.0){
+    //                     e.setAlpha(0.5);
+    //                 }
+    //             }else{
+    //                 if(e.alpha != 1.0){
+    //                     e.setAlpha(1.0);
+    //                 }
+    //             }
+    //         });
+    //     }
+    // }
+    // leave(){
+    //     let stlist = secretTiles.getChildren();
+    //     stlist.forEach(e =>{
+    //         e.setAlpha(1.0);
+    //     });
+    // }
 };
 class PlatSwing extends Phaser.Physics.Matter.Sprite{
     constructor(scene,x,y) {
