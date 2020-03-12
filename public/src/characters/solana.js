@@ -145,12 +145,13 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 } else {
                     this.onGround = false;
                 }
+                //Touching a surface resets jump counter                
+                if ((this.onGround || this.onWall) && this.body.velocity.y >= 0) { this.jumpCount = 0 }; //Add velocity check to not reset jump count if going up.
 
                 //Check Jump ready
                 if (this.onGround || this.onWall || (soullight.ownerid == 0 && this.jumpCount < 2)) {
                     this.jumpReady = true;
-                    //Touching a surface resets jump counter                
-                    if (this.onGround || this.onWall) { this.jumpCount = 0 };
+                    
 
                     if (this.mv_direction.x == 0) {
                         if (!this.isAnimLocked) { this.sprite.anims.play('solana-idle', true); };//Idle
@@ -284,7 +285,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
            if(this.body.velocity.y > 4.9 ){this.setVelocityY(5);};
 
         this.debug.setPosition(this.sprite.x, this.sprite.y-32);
-        this.debug.setText("HJV:"+String(this.hjs)
+        this.debug.setText("jumpCount:"+String(this.jumpCount)
         +" \nVelocity:"+String(this.sprite.body.velocity.x)+":"+String(Math.round(this.sprite.body.velocity.y)));
         // +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right) + " oW:"+String(this.onWall)
         // +" \njr:"+String(this.jumpReady)
@@ -393,7 +394,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     }
     jump(jumpVel,mvVel){
         //Reduce Downwards force to zero, if it exists. Keeps platforms from stealing the jump
-        if(this.body.velocity.y > 0){
+        if(this.body.velocity.y != 0){ // Was >
             this.setVelocityY(0);
         }
         //Make vertical jump weaker if on wall
