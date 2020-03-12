@@ -1395,7 +1395,7 @@ var GameScene = new Phaser.Class({
         let targVector = {x:0,y:0};
         let stickRight = gamePad[gamePadID].getStickRight(.1);
         let stickLeft = gamePad[gamePadID].getStickLeft(.1);
-        let gpVec = stick == 'left' && stick == 'right' ? stickLeft : stickRight;
+        let gpVec = stick == 'left' ? stickLeft : stickRight;
         targVector = {x:x+gpVec.x*radius,y:y+gpVec.y*radius};
         
         return targVector;
