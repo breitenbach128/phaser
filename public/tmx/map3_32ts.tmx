@@ -319,8 +319,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,38,39,39,41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,75,76,76,2147483723,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -352,7 +352,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="enemies">
-  <object id="2" name="slime" type="ground" gid="497" x="481" y="224" width="32" height="32">
+  <object id="2" name="slime" type="ground" gid="497" x="640" y="224" width="32" height="32">
    <properties>
     <property name="aBehav" value="patrolFixed"/>
     <property name="enemyClass" value="ground"/>
@@ -380,7 +380,7 @@
   <object id="7" name="east1" type="entrance" x="1952" y="352" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="10" name="triggers">
-  <object id="9" name="zone2" type="zone" x="576" y="160" width="128" height="96">
+  <object id="9" name="zone2" type="zone" x="768" y="160" width="128" height="96">
    <properties>
     <property name="allowReset" type="bool" value="true"/>
     <property name="resetDelay" type="int" value="1"/>
@@ -390,7 +390,7 @@
     <property name="zoneValue" value="{&quot;x&quot;: 0.009 ,&quot;y&quot;: -0.0015, &quot;time&quot;: 30}"/>
    </properties>
   </object>
-  <object id="10" name="zone3" type="zone" x="960" y="64" width="256" height="96">
+  <object id="10" name="zone3" type="zone" x="1408" y="96" width="256" height="96">
    <properties>
     <property name="allowReset" type="bool" value="true"/>
     <property name="resetDelay" type="int" value="1"/>
@@ -400,7 +400,7 @@
     <property name="zoneValue" value="{&quot;x&quot;: -0.009 ,&quot;y&quot;: -0.0015, &quot;time&quot;: 30}"/>
    </properties>
   </object>
-  <object id="11" name="zone4" type="zone" x="768" y="96" width="128" height="160">
+  <object id="11" name="zone4" type="zone" x="960" y="96" width="128" height="160">
    <properties>
     <property name="allowReset" type="bool" value="true"/>
     <property name="resetDelay" type="int" value="1"/>
@@ -410,24 +410,24 @@
     <property name="zoneValue" value="{&quot;x&quot;: 0.000 ,&quot;y&quot;: -0.0035, &quot;time&quot;: 30}"/>
    </properties>
   </object>
-  <object id="17" name="platform1" type="platform" x="64" y="192" width="160" height="16">
+  <object id="17" name="platform1" type="platform" x="160" y="192" width="160" height="16">
    <properties>
     <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:24,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:24,&quot;y&quot;:24,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:24,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0}]"/>
    </properties>
   </object>
-  <object id="18" name="platform2" type="platform" x="160" y="128" width="160" height="16">
+  <object id="18" name="platform2" type="platform" x="288" y="128" width="160" height="16">
    <properties>
     <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:24,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:24,&quot;y&quot;:24,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:24,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0}]"/>
    </properties>
   </object>
-  <object id="19" name="platform3" type="platform" x="256" y="64" width="160" height="16">
+  <object id="19" name="platform3" type="platform" x="416" y="64" width="160" height="16">
    <properties>
     <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:24,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:24,&quot;y&quot;:24,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:24,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0}]"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="9" name="objects">
-  <object id="12" name="swing1" type="swingTween" x="352" y="192" width="64" height="8">
+  <object id="12" name="swing1" type="swingTween" x="480" y="192" width="64" height="8">
    <properties>
     <property name="duration" type="int" value="1000"/>
     <property name="end" type="int" value="0"/>
@@ -435,7 +435,7 @@
     <property name="start" type="int" value="180"/>
    </properties>
   </object>
-  <object id="13" name="swing2" type="swingTween" x="448" y="128" width="64" height="8">
+  <object id="13" name="swing2" type="swingTween" x="608" y="128" width="64" height="8">
    <properties>
     <property name="duration" type="int" value="2000"/>
     <property name="end" type="int" value="180"/>

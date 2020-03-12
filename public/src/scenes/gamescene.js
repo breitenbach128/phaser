@@ -58,11 +58,14 @@ var GameScene = new Phaser.Class({
        
         //CREATE SECRET AREAS WITH HIDDEN FOREGROUND
         //fghiddenlayer.setDepth(DEPTH_LAYERS.FG);
+        secretTiles = this.add.group({classType:SecretTile, runChildUpdate:true});
+        console.log("S Tile Grp",secretTiles);
         fghiddenlayer.forEachTile(function (tile) {
             if(tile.index != -1){
                 //console.log(tile);
                 let newImgIndex = tile.index - tile.tileset.firstgid;
                 let secretTile = new SecretTile(this,tile.pixelX+tile.width/2,tile.pixelY+tile.height/2,tile.tileset.image.key,newImgIndex).setOrigin(0.5).setDepth(DEPTH_LAYERS.FG);
+                secretTiles.add(secretTile);
             }
         },this);
         fghiddenlayer.destroy();
@@ -1400,6 +1403,9 @@ var GameScene = new Phaser.Class({
     
 });
 //External Functions
+function getObjectTilePosition(x,y,ts){
+    return {x: Math.floor(x/ts),y: Math.floor(y/ts)};
+}
 function createLightObstacleRect(x,y,w,h){    
     return  [[x, y], [x + w, y], [x + w, y + h], [x, y + h]];
 }
