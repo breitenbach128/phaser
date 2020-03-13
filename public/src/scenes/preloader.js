@@ -127,8 +127,9 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('shard_dark', 'assets/objects/dark_shard.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('breakables', 'assets/objects/breakables.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('burstwave', 'assets/objects/burstwave1.png', {frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('sol_pieces', 'assets/objects/Sol_pieces.png', {frameWidth: 64, frameHeight: 64});
-		
+		this.load.spritesheet('sol_pieces', 'assets/objects/Sol_pieces.png', {frameWidth: 64, frameHeight: 64});		
+		this.load.spritesheet('bright_pulse', 'assets/characters/pulse.png', {frameWidth: 48, frameHeight: 48});
+
 		//Bosses		
 		this.load.spritesheet('spider', 'assets/characters/spider_x2.png', {frameWidth: 64, frameHeight: 64});
 		this.load.spritesheet('boss_spiderhive', 'assets/characters/boss_spiderhive.png', {frameWidth: 128, frameHeight: 128});
@@ -155,8 +156,9 @@ var Preloader = new Phaser.Class({
 		
 		this.load.spritesheet('hud_boss_health_bar','assets/hud/boss_health_bar.png',{frameWidth: 64, frameHeight: 16});
 		//Effects / Particles
-		this.load.atlas('shapes', 'assets/effects/shapes.png', 'assets/effects/shapes.json');
-  		this.load.text('effect-bright-sparks', 'assets/effects/bright_sparks.json');
+		this.load.atlas('shapes', 'assets/effects/shapes.png', 'assets/effects/shapes.json');;
+		this.load.text('effect-bright-sparks', 'assets/effects/bright_sparks.json');
+		this.load.text('effect-bright-pulse1', 'assets/effects/bright_pulse1.json');		  
   		this.load.json('effect-flame-fall', 'assets/effects/particles_flame_fall.json');
 		this.load.image('lightburst-1', 'assets/effects/lightburst-1.png');
 		this.load.spritesheet('doublejump-1', 'assets/effects/doublejmp.png',{frameWidth: 24, frameHeight: 24});

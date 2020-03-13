@@ -555,7 +555,7 @@ class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
         this.name = name;
         this.swingDeg = properties.start;
         this.swingRadius = properties.radius;
-        console.log(properties,this.swingDeg,this.swingRadius,this.swingDuration)
+        //console.log(properties,this.swingDeg,this.swingRadius,this.swingDuration)
          //Setup Half Circle Tween
          this.scene.tweens.add({
             targets: this,

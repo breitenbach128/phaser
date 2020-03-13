@@ -57,10 +57,11 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
         //Create Effects
         this.effect=[
-            this.scene.add.particles('shapes',  new Function('return ' + this.scene.cache.text.get('effect-bright-sparks'))())
+            this.scene.add.particles('shapes',  new Function('return ' + this.scene.cache.text.get('effect-bright-pulse1'))())
         ];
         //console.log(this.effect[0].emitters.list[0]);
         this.effect[0].setVisible(false);
+        console.log("Bright Effect", this.effect[0]);
         this.effect[0].emitters.list[0].setPosition(this.x,this.y);
         //this.effect[0].emitters.list[0].startFollow(this);
 
@@ -155,24 +156,27 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     if(control_left){
                         this.sprite.setVelocityX(-this.mv_speed);
                         this.flipX= true; // flip the sprite to the left
-                        this.sprite.anims.play('bright-idle', true);//Idle
                     }
                     if(control_right){
                         this.sprite.setVelocityX(this.mv_speed);
                         this.flipX= false; // flip the sprite to the right
-                        this.sprite.anims.play('bright-idle', true);//Idle
                     }
                     if (control_up) {
                         this.sprite.setVelocityY(-this.mv_speed);
-                        this.sprite.anims.play('bright-idle', true);
                     }
                     if (control_down) {
                         this.sprite.setVelocityY(this.mv_speed);
-                        this.sprite.anims.play('bright-idle', true);
                     }
                     if(!control_left && !control_right && !control_up && !control_down){
-                        this.sprite.anims.play('bright-idle', true);//Idle
+                        //this.sprite.anims.play('bright-idle', true);//Idle
                     }
+                    //Handle Animations
+                    if(this.abPulse.doCharge){
+                        this.sprite.anims.play('bright-pulse', false);
+                    }else{
+                        this.sprite.anims.play('bright-idle', true);
+                    }
+
                     //Passing Soulight
                     if(soullight.ownerid == 1){
                         if(control_passPress){soullight.aimStart();};
@@ -405,6 +409,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         object.setVisible(false);
 
         this.abPulse.doCharge = true;
+        //As It charges, the max particles and size should increase, making it glow more.
         this.effect[0].setVisible(true);
         camera_main.flash(500,255,255,255);
         
@@ -426,8 +431,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         let normAngle = Phaser.Math.Angle.Normalize(angle);
 
         let point = Phaser.Geom.Circle.CircumferencePoint(this.abPulse.circle, normAngle);
-        //Emit Particles to mark target
-        this.effect[0].emitParticleAt(point.x,point.y,5);
+        //Emit Particles to mark target//Need Different particle style here
+        //this.effect[0].emitParticleAt(point.x,point.y,5);
         //Throw Power
         let power =  this.abPulse.c/1000;
 

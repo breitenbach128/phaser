@@ -1665,6 +1665,12 @@ function createAnimations(scene){
         repeat: -1
     });
     scene.anims.create({
+        key: 'bright-pulse',
+        frames: scene.anims.generateFrameNumbers('bright_pulse', { start: 0, end: 0 }),
+        frameRate: 2,
+        repeat: -1
+    });
+    scene.anims.create({
         key: 'bright-sway',
         frames: scene.anims.generateFrameNumbers('bright', { frames:[0,2,3,4,5,6,7,8,9,10,11,0,2,3,18,17,16,15,14,13,12,11] }),
         frameRate: 24,
