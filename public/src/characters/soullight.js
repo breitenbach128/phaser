@@ -98,8 +98,9 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         let targVector = this.scene.getMouseVectorByCamera(this.ownerid);        
         
         if(this.owner.ctrlDeviceId >= 0){
-            let selectStick = stickRight.x == 0 && stickRight.y == 0 ? 'left' : 'right';
-            targVector = this.scene.getGamepadVectorByStick(this.owner.ctrlDeviceId,selectStick,this.aimerRadius,this.x,this.y)
+            let gpVectors = this.scene.getGamepadVectors(this.ctrlDeviceId,this.aimerRadius,this.x,this.y)
+            let selectStick = gpVectors[1].x == 0 && gpVectors[1].y == 0 ? 0 : 1; // L / R , If right stick is not being used, us left stick.
+            targVector = gpVectors[selectStick];
         }
         this.aimerCircle.x = this.x;
         this.aimerCircle.y = this.y;
