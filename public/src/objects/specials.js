@@ -373,24 +373,29 @@ class SecretTile extends Phaser.Physics.Matter.Sprite{
         .setIgnoreGravity(true);   
 
         //Setup Collisions
-        this.scene.matterCollision.addOnCollideActive({
-            objectA: [this],
-            callback: eventData => {
-                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
-                if (gameObjectB !== undefined && (gameObjectB instanceof Solana || gameObjectB instanceof Bright || gameObjectB instanceof SoulLight)) {                    
-                        this.enter();                    
-                }
-            }
-        });
-        this.scene.matterCollision.addOnCollideEnd({
-            objectA: [this],
-            callback: eventData => {
-                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
-                if (gameObjectB !== undefined && (gameObjectB instanceof Solana || gameObjectB instanceof Bright || gameObjectB instanceof SoulLight)) {
-                    this.leave();
-                }
-            }
-        });
+        // this.scene.matterCollision.addOnCollideStart({
+        //     objectA: [this],
+        //     callback: eventData => {
+        //         const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+        //         if (gameObjectB !== undefined && (gameObjectB instanceof Solana || gameObjectB instanceof Bright || gameObjectB instanceof SoulLight)) {                    
+        //                 //this.enter(gameObjectB);
+        //                 this.check();                    
+        //         }
+        //     }
+        // });
+        // this.scene.matterCollision.addOnCollideEnd({
+        //     objectA: [this],
+        //     callback: eventData => {
+        //         const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+        //         if (gameObjectB !== undefined && (gameObjectB instanceof Solana || gameObjectB instanceof Bright || gameObjectB instanceof SoulLight)) {
+        //             //this.leave();
+        //             this.check();
+        //         }
+        //     }
+        // });
+
+        this.ready = true;
+        this.debug = this.scene.add.text(this.x, this.y, 'SECRET', { resolution: 2, fontSize: '8px', fill: '#00FF00' }).setDepth(DEPTH_LAYERS.FG).setOrigin(0.5);
     }
     setup(x,y){
         this.setActive(true);
@@ -398,16 +403,49 @@ class SecretTile extends Phaser.Physics.Matter.Sprite{
     }
     update(time, delta)
     {       
+        if(this.ready){
+            let tileDistance = 2;
+            let thisTile = getObjectTilePosition(this.x,this.y,32);
+            let solanaTile = getObjectTilePosition(solana.x,solana.y,32);
+            let brightTile = getObjectTilePosition(bright.x,bright.y,32);
+            let soulightTile = getObjectTilePosition(soullight.x,soullight.y,32);
+            this.debug.setText(String(thisTile.x)+","+String(thisTile.y));
+            if(Phaser.Math.Distance.Between(thisTile.x,thisTile.y,solanaTile.x,solanaTile.y) < tileDistance
+                || Phaser.Math.Distance.Between(thisTile.x,thisTile.y,brightTile.x,brightTile.y) < tileDistance
+                || Phaser.Math.Distance.Between(thisTile.x,thisTile.y,soulightTile.x,soulightTile.y) < tileDistance){
 
-    }
-    enter(){
-        if(this.alpha == 1.0){
-            this.setAlpha(0.5);
+                    this.setAlpha(0.5);
+            }else{
+                if(this.alpha != 1.0){this.setAlpha(1.0)};
+            }
         }
     }
-    leave(){
-        this.setAlpha(1.0);
-    }
+    // check(){
+
+    //     if(secretTiles != null && secretTiles.getLength() > 0){
+    //         let stlist = secretTiles.getChildren();
+    //         stlist.forEach(e =>{
+    //             let disMax = e.width;
+    //             if(Phaser.Math.Distance.Between(e.x,e.y,solana.x,solana.y) < disMax
+    //                 || Phaser.Math.Distance.Between(e.x,e.y,bright.x,bright.y) < disMax
+    //                 || Phaser.Math.Distance.Between(e.x,e.y,soullight.x,soullight.y) < disMax){
+    //                 if(e.alpha == 1.0){
+    //                     e.setAlpha(0.5);
+    //                 }
+    //             }else{
+    //                 if(e.alpha != 1.0){
+    //                     e.setAlpha(1.0);
+    //                 }
+    //             }
+    //         });
+    //     }
+    // }
+    // leave(){
+    //     let stlist = secretTiles.getChildren();
+    //     stlist.forEach(e =>{
+    //         e.setAlpha(1.0);
+    //     });
+    // }
 };
 class PlatSwing extends Phaser.Physics.Matter.Sprite{
     constructor(scene,x,y) {
@@ -481,9 +519,15 @@ class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
         const mainBody =  Bodies.rectangle(0, 0, w, h);
-
+        this.sensors = {
+            top: Bodies.rectangle(0, -h*0.70, w , h*0.60, { isSensor: true }),
+            bottom: Bodies.rectangle(0, h*0.70, w , h*0.60, { isSensor: true })
+          };
+        this.sensors.top.label = "PLAT_TOP";
+        this.sensors.bottom.label = "PLAT_BOTTOM";
+        
         const compoundBody = Body.create({
-            parts: [mainBody],
+            parts: [mainBody, this.sensors.bottom, this.sensors.top],
             frictionStatic: 0,
             frictionAir: 0.00,
             friction: 0,//Was 0.1
@@ -506,6 +550,7 @@ class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
         //this.scene.events.on("update", this.update, this);
         //Fake Velocity
         this.prev = {x:x,y:y};
+        this.onWayTracker = -1;
     }
     setup(x,y,properties,name){
         this.setActive(true); 
@@ -513,7 +558,7 @@ class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
         this.name = name;
         this.swingDeg = properties.start;
         this.swingRadius = properties.radius;
-        console.log(properties,this.swingDeg,this.swingRadius,this.swingDuration)
+        //console.log(properties,this.swingDeg,this.swingRadius,this.swingDuration)
          //Setup Half Circle Tween
          this.scene.tweens.add({
             targets: this,
@@ -536,6 +581,28 @@ class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
         this.setVelocityY((this.y - this.prev.y));
         this.prev.x = this.x;
         this.prev.y = this.y;
+        //OneWay Tracking for enabling/disabling collisions
+        if(this.onWayTracker != -1){
+            let targetObjTop = this.onWayTracker.getTopCenter();
+            let targetObjBottom = this.onWayTracker.getBottomCenter();
+            let platObjTop = this.getTopCenter();
+            let platObjBottom = this.getBottomCenter();
+            if(targetObjBottom.y < platObjTop.y){
+                this.oneWayEnd();
+            }else if(targetObjTop.y > platObjBottom.y && this.onWayTracker.body.velocity.y > 0){
+                this.oneWayEnd();
+            }
+        }
+    }
+    oneWayStart(player){
+        this.setCollidesWith([~CATEGORY.SOLANA]);
+        this.onWayTracker = player;
+        console.log("One Way Start");
 
+    }
+    oneWayEnd(){
+        console.log("One Way end");
+        this.setCollidesWith(CATEGORY.SOLANA);
+        this.onWayTracker = -1;
     }
 };

@@ -57,14 +57,17 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
         //Create Effects
         this.effect=[
-            this.scene.add.particles('shapes',  new Function('return ' + this.scene.cache.text.get('effect-bright-sparks'))())
+            this.scene.add.particles('shapes',  new Function('return ' + this.scene.cache.text.get('effect-bright-pulse1'))())
         ];
         //console.log(this.effect[0].emitters.list[0]);
         this.effect[0].setVisible(false);
+        console.log("Bright Effect", this.effect[0]);
         this.effect[0].emitters.list[0].setPosition(this.x,this.y);
         //this.effect[0].emitters.list[0].startFollow(this);
-        
-        this.abPulse = {c:0,max:100,doCharge:false};
+
+        //ABILITIES
+        this.abPulseRadius = 64;
+        this.abPulse = {c:0,max:100,doCharge:false,vec:{x:0,y:0},circle:new Phaser.Geom.Circle(x, y, this.abPulseRadius)};//32 Is the circle radius
 
         //Abilities
         this.beamAbility = new BrightBeam(this.scene,this.x,this.y,this.rotation);
@@ -93,6 +96,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     this.airTime=0;
                 };
                 if(this.abPulse.doCharge){
+                    this.pulseUpdate();
+                    
                     if(this.abPulse.c < this.abPulse.max){
                     this.abPulse.c++;
                     }
@@ -151,34 +156,41 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     if(control_left){
                         this.sprite.setVelocityX(-this.mv_speed);
                         this.flipX= true; // flip the sprite to the left
-                        this.sprite.anims.play('bright-idle', true);//Idle
                     }
                     if(control_right){
                         this.sprite.setVelocityX(this.mv_speed);
                         this.flipX= false; // flip the sprite to the right
-                        this.sprite.anims.play('bright-idle', true);//Idle
                     }
                     if (control_up) {
                         this.sprite.setVelocityY(-this.mv_speed);
-                        this.sprite.anims.play('bright-idle', true);
                     }
                     if (control_down) {
                         this.sprite.setVelocityY(this.mv_speed);
-                        this.sprite.anims.play('bright-idle', true);
                     }
                     if(!control_left && !control_right && !control_up && !control_down){
-                        this.sprite.anims.play('bright-idle', true);//Idle
+                        //this.sprite.anims.play('bright-idle', true);//Idle
                     }
+                    //Handle Animations
+                    if(this.abPulse.doCharge){
+                        this.sprite.anims.play('bright-pulse', false);
+                    }else{
+                        this.sprite.anims.play('bright-idle', true);
+                    }
+
                     //Passing Soulight
                     if(soullight.ownerid == 1){
                         if(control_passPress){soullight.aimStart();};
                         if(control_passRelease){soullight.aimStop();};
                     }
-                    if(control_pulsePress){
-                        bright.pulseCharge();
+                    //Throw Pulse. Can only do it if you have the soulight
+                    if(control_pulsePress && soullight.ownerid == 1){
+                        //This needs a solid visual indicator that they players can perform this merge
+                        if(Phaser.Math.Distance.Between(this.x,this.y,solana.x,solana.y) < 64){
+                            bright.pulseCharge(solana);
+                        }
                     }
-                    if(control_pulseRelease){
-                        bright.pulseThrow(solana);
+                    if(control_pulseRelease && this.abPulse.doCharge){
+                        bright.pulseThrow(solana);//Add stick vector to throw, to get direction
                     }
 
                 }else{
@@ -240,7 +252,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 // }
 
                 this.debug.setPosition(this.sprite.x, this.sprite.y-64);
-                this.debug.setText("Touch-Down:"+String(this.touching.down));
+                this.debug.setText("Pulse Power:"+String(this.abPulse.c));
             }else if(curr_player==players.SOLANA && playerMode == 0){
                 //Allow Single Player Follow Mode
                 if(this.followMode){
@@ -390,23 +402,54 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             
         }
     }
-    pulseCharge(){
+    pulseCharge(object){
+        //Move Solana Off Screen
+        object.setControlLock();
+        object.setActive(false);
+        object.setVisible(false);
+
         this.abPulse.doCharge = true;
+        //As It charges, the max particles and size should increase, making it glow more.
         this.effect[0].setVisible(true);
+        camera_main.flash(500,255,255,255);
+        
+    }
+    pulseUpdate(){
+        //Update Solana "Hold"
+        solana.x = this.x;
+        solana.y = this.y;
+        //Update Vectors
+        let targVector = this.scene.getMouseVectorByCamera(this.ownerid); 
+        if(this.ctrlDeviceId >= 0){
+            let gpVectors = this.scene.getGamepadVectors(this.ctrlDeviceId,this.abPulseRadius,this.x,this.y)
+            let selectStick = gpVectors[1].x == 0 && gpVectors[1].y == 0 ? 0 : 1; // L / R , If right stick is not being used, us left stick.
+            targVector = gpVectors[selectStick];
+        }
+        this.abPulse.circle.x = this.x;
+        this.abPulse.circle.y = this.y;
+
+        let angle = Phaser.Math.Angle.Between(this.x,this.y, targVector.x,targVector.y);
+        let normAngle = Phaser.Math.Angle.Normalize(angle);
+
+        let point = Phaser.Geom.Circle.CircumferencePoint(this.abPulse.circle, normAngle);
+        //Emit Particles to mark target//Need Different particle style here
+        //this.effect[0].emitParticleAt(point.x,point.y,5);
+        //Throw Power
+        let power =  this.abPulse.c/1000;
+
+        this.abPulse.vec = {x:Math.cos(angle)*power,y:Math.sin(angle)*power};
     }
     pulseThrow(object){
+        object.removeControlLock();
+        object.setActive(true);
+        object.setVisible(true);
+
+
         this.abPulse.doCharge = false;
         this.effect[0].setVisible(false);
-        //Bright charges up, sending nearby objects flying away, including Solana, bullets, crates, etc.
-        //Will have a min power and a max power level, based on charge time. The Charge drains light.
-        if(Phaser.Math.Distance.Between(this.x,this.y,object.x,object.y) < 64){
-            let angleToThrow = Phaser.Math.Angle.Between(this.x,this.y,object.x,object.y);
-            let power =  this.abPulse.c/1000;
-            let vecX = Math.cos(angleToThrow)*power;
-            let vecY = Math.sin(angleToThrow)*power;  
-            console.log("bright burst force vector",{x:vecX,y:vecY});
-            object.applyForce({x:vecX,y:vecY});
-        }
+ 
+        object.applyForce(this.abPulse.vec);
+        
         this.abPulse.c = 0;
     }
 }

@@ -59,11 +59,14 @@ var GameScene = new Phaser.Class({
        
         //CREATE SECRET AREAS WITH HIDDEN FOREGROUND
         //fghiddenlayer.setDepth(DEPTH_LAYERS.FG);
+        secretTiles = this.add.group({classType:SecretTile, runChildUpdate:true});
+        console.log("S Tile Grp",secretTiles);
         fghiddenlayer.forEachTile(function (tile) {
             if(tile.index != -1){
                 //console.log(tile);
                 let newImgIndex = tile.index - tile.tileset.firstgid;
                 let secretTile = new SecretTile(this,tile.pixelX+tile.width/2,tile.pixelY+tile.height/2,tile.tileset.image.key,newImgIndex).setOrigin(0.5).setDepth(DEPTH_LAYERS.FG);
+                secretTiles.add(secretTile);
             }
         },this);
         fghiddenlayer.destroy();
@@ -692,13 +695,16 @@ var GameScene = new Phaser.Class({
         });
 
         this.matterCollision.addOnCollideActive({
-            objectA:[solana.sensors.bottom,solana.sensors.left,solana.sensors.right],
+            objectA:[solana.sensors.top,solana.sensors.bottom,solana.sensors.left,solana.sensors.right],
             callback: eventData => {
               const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
               //console.log(bodyA.label,bodyB.label)
               if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
                 // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
                 if (gameObjectB.properties.collides){
+                    if(bodyA.label == "SOLANA_TOP"){
+                        solana.touching.up++;
+                    }
                     if(bodyA.label == "SOLANA_BOTTOM"){
                         solana.touching.down++;
                     }
@@ -725,6 +731,13 @@ var GameScene = new Phaser.Class({
                 || gameObjectB instanceof BrightBeamBlock)) {  
 
                     //handle plaform jumping allowance             
+                    if(bodyA.label == "SOLANA_TOP"){
+                        solana.touching.up++;
+                        if(bodyB.label == "PLAT_BOTTOM" && gameObjectA.body.velocity.y < 0){
+                            //Start tracking and disable collisions
+                            gameObjectB.oneWayStart(gameObjectA);
+                        }                       
+                    }
                     if(bodyA.label == "SOLANA_BOTTOM"){
                         solana.touching.down++;
                     }
@@ -735,7 +748,9 @@ var GameScene = new Phaser.Class({
                         solana.touching.left++;
                     }                            
               }
-            //Dont count rocks and crates as walls.
+            //Handle Platform Pass thru
+
+            //Count rocks and crates as walls.
             if (gameObjectB !== undefined &&
                 (gameObjectB instanceof Rock
                 || gameObjectB instanceof Crate)) {   
@@ -1377,9 +1392,35 @@ var GameScene = new Phaser.Class({
         hud.scene.remove();
         //Run game Over
         this.scene.start('gameover');
+    },
+    getMouseVectorByCamera(playerId){ //Player source is the source from where the mouse vector is generated. 0 - Solana, 1 - Bright
+        
+        let gameScale = camera_main.zoom;
+        let targVector = {x:pointer.worldX,y:pointer.worldY};
+        //Adjust for Split Screen
+        if(this.cameraLevel == 3 && (playerId == 0 || playerId == 2)){
+            let cameraSources = ['cam_p1','cam_p2'];
+            let camera = this.cameras.getCamera(cameraSources[playerId]);
+            let camVec = pointer.positionToCamera(camera);
+            
+            targVector = camVec;
+        }
+        return targVector;
+    },
+    getGamepadVectors(gamePadID,radius,x,y){
+        let stickRight = gamePad[gamePadID].getStickRight(.1);
+        let stickLeft = gamePad[gamePadID].getStickLeft(.1);
+        let rightVector = {x:x+stickRight.x*radius,y:y+stickRight.y*radius};
+        let leftVector = {x:x+stickLeft.x*radius,y:y+stickLeft.y*radius};
+        
+        return [leftVector,rightVector];
     }
+    
 });
 //External Functions
+function getObjectTilePosition(x,y,ts){
+    return {x: Math.floor(x/ts),y: Math.floor(y/ts)};
+}
 function createLightObstacleRect(x,y,w,h){    
     return  [[x, y], [x + w, y], [x + w, y + h], [x, y + h]];
 }
@@ -1635,6 +1676,12 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'bright-idle',
         frames: scene.anims.generateFrameNumbers('bright', { start: 0, end: 1 }),
+        frameRate: 2,
+        repeat: -1
+    });
+    scene.anims.create({
+        key: 'bright-pulse',
+        frames: scene.anims.generateFrameNumbers('bright_pulse', { start: 0, end: 0 }),
         frameRate: 2,
         repeat: -1
     });

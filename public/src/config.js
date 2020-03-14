@@ -36,7 +36,7 @@
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-2-20-2020";
+    var buildVersion = "a-3-8-2020";
     var game;
     var hud;
     var playScene;
@@ -45,7 +45,9 @@
     var global_gravity = 380;
     //Tiles
     var map; 
+
     var current_map = "map2";
+
     var current_exit = "west1";
     var world_background;
     //Game Objects
@@ -53,7 +55,7 @@
     enemies,enemiesFly,bullets,
     mirrors,exits,entrances,
     levers,gates,plates,buttons,platfalls,platSwings,platSwingTweens,
-    triggerzones,platforms,barriers,
+    triggerzones,platforms,barriers,secretTiles,
     ab_solarblasts,crystallamps,ab_brightbeams,
     rocks,crates,npcs,spiders,boss,light_shards,
     breakabletiles,light_bursts;    
@@ -116,7 +118,8 @@
         BARRIER: 64,
         GROUND: 128,
         SOLID: 256,
-        ENEMY: 512
+        ENEMY: 512,
+        SOLANA_UP: 1024
     }
     const DEPTH_LAYERS = {
         BG: 10,

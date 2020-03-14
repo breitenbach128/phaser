@@ -535,8 +535,8 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         const { width: w, height: h } = this.sprite;
         const mainBody =  Bodies.rectangle(0, 0, w, h);
         this.sensors = {
-            top: Bodies.rectangle(0, h*0.65, w , h*0.20, { isSensor: true }),
-            bottom: Bodies.rectangle(0, -h*0.65, w , h*0.20, { isSensor: true })
+            top: Bodies.rectangle(0, -h*0.70, w , h*0.60, { isSensor: true }),
+            bottom: Bodies.rectangle(0, h*0.70, w , h*0.60, { isSensor: true })
           };
         this.sensors.top.label = "PLAT_TOP";
         this.sensors.bottom.label = "PLAT_BOTTOM";
@@ -551,13 +551,14 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
 
         this.sprite
         .setExistingBody(compoundBody)
+        //.setCollidesWith([ ~CATEGORY.SOLANA_UP ])
         .setPosition(x, y)
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setStatic(true)
         .setIgnoreGravity(true);    
 
         this.debug = scene.add.text(this.x, this.y-16, 'platform', { fontSize: '10px', fill: '#00FF00' });             
-
+        this.onWayTracker = -1;
 
     }
     setup(x,y, properties,name){
@@ -582,14 +583,25 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
     {       
 
         this.debug.setPosition(this.x, this.y-16);
-        this.debug.setText(this.name
-            +"\nVel: X:"+String(this.body.velocity.x)+" Y:" + String(this.body.velocity.y)
-            +"\nVel: X:"+String(this.x)+" Y:" + String(this.y));
+        this.debug.setText(this.name);
         // body is static so must manually update velocity for friction to work
         this.setVelocityX((this.x - this.prev.x));
         this.setVelocityY((this.y - this.prev.y));
         this.prev.x = this.x;
         this.prev.y = this.y;
+
+        //OneWay Tracking for enabling/disabling collisions
+        if(this.onWayTracker != -1){
+            let targetObjTop = this.onWayTracker.getTopCenter();
+            let targetObjBottom = this.onWayTracker.getBottomCenter();
+            let platObjTop = this.getTopCenter();
+            let platObjBottom = this.getBottomCenter();
+            if(targetObjBottom.y < platObjTop.y){
+                this.oneWayEnd();
+            }else if(targetObjTop.y > platObjBottom.y && this.onWayTracker.body.velocity.y > 0){
+                this.oneWayEnd();
+            }
+        }
     }
     setTarget(targetObject){
         this.target.object = targetObject;
@@ -636,6 +648,17 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
     plateComplete(){
         //console.log("plate ready again");
         //this.ready = true;
+    }
+    oneWayStart(player){
+        this.setCollidesWith([~CATEGORY.SOLANA]);
+        this.onWayTracker = player;
+        //console.log("One Way Start");
+
+    }
+    oneWayEnd(){
+        //console.log("One Way end");
+        this.setCollidesWith(CATEGORY.SOLANA);
+        this.onWayTracker = -1;
     }
 };
 //Crystals can be charged with solar blasts to light up for a short period. They slowly get dimmer.
