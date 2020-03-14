@@ -55,6 +55,7 @@ var GameScene = new Phaser.Class({
         let bglayer = map.createStaticLayer('bg', [TilesCastle,TilesForest,TilesCorruption], 0, 0);
         let fglayer = map.createStaticLayer('fg', [TilesCastle,TilesForest,TilesCorruption], 0, 0); 
         let fghiddenlayer= map.createDynamicLayer('fg_hidden', [TilesCastle,TilesForest,TilesCorruption], 0, 0); 
+        let fgbreakablelayer= map.createDynamicLayer('fg_breakable', [TilesCastle,TilesForest,TilesCorruption], 0, 0); 
        
         //CREATE SECRET AREAS WITH HIDDEN FOREGROUND
         //fghiddenlayer.setDepth(DEPTH_LAYERS.FG);
@@ -66,7 +67,18 @@ var GameScene = new Phaser.Class({
             }
         },this);
         fghiddenlayer.destroy();
-        
+        //Make Breakable Tile Objects just like secret tiles
+        fgbreakablelayer.forEachTile(function (tile) {
+            if(tile.index != -1){
+                //console.log(tile);
+                let newImgIndex = tile.index - tile.tileset.firstgid;
+                console.log(newImgIndex,tile);
+                let breakTile = new BreakableTile(this,tile.pixelX+tile.width/2,tile.pixelY+tile.height/2,tile.tileset.image.key,newImgIndex).setOrigin(0.5).setDepth(DEPTH_LAYERS.FG);
+            }
+        },this);
+        fgbreakablelayer.destroy();
+
+
         this.collisionLayer = map.createDynamicLayer('collision', CollisionTiles, 0, 0);
         this.collisionLayer.setVisible(false);
         this.collisionLayer.setCollisionByProperty({ collides: true });
@@ -76,7 +88,7 @@ var GameScene = new Phaser.Class({
         // set the boundaries of our game world
         this.matter.world.convertTilemapLayer(this.collisionLayer);
         this.matter.world.setBounds(0,0,map.widthInPixels, map.heightInPixels);
-        console.log("Map size:",map.widthInPixels, map.heightInPixels);
+        console.log("Map size - Obj:",map.widthInPixels, map.heightInPixels,map);
         //Generate shadow canvas
         //Shadow Canvas
         if(this.textures.get("canvasShadow").key != "__MISSING"){  
@@ -87,6 +99,7 @@ var GameScene = new Phaser.Class({
         shadow_context = shadow_layer.getContext();
         shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels); 
         shadow_layer.refresh();
+
 
         //Draw Debug
         
@@ -440,6 +453,7 @@ var GameScene = new Phaser.Class({
                 platfalls.get(tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-1);
 
             }else if(tmxObjRef.type == "breakabletile"){  
+                //Changed this to layer object. I may still want this, so leave it in for now. 3/14/2020 - BNB
                 x_offset = tmxObjRef.width/2;
                 y_offset = tmxObjRef.height/2;
                 let newbreakabletile = breakabletiles.get();
@@ -657,6 +671,7 @@ var GameScene = new Phaser.Class({
                       || gameObjectB instanceof Fallplat
                       || gameObjectB instanceof PlatSwingTween
                       || gameObjectB instanceof PlatSwing
+                      || gameObjectB instanceof BreakableTile 
                       || gameObjectB instanceof BrightBeamBlock)) {   
                 
                 //handle plaform jumping allowance             
@@ -705,7 +720,8 @@ var GameScene = new Phaser.Class({
                 || gameObjectB instanceof TMXPlate
                 || gameObjectB instanceof Fallplat
                 || gameObjectB instanceof PlatSwingTween  
-                || gameObjectB instanceof PlatSwing              
+                || gameObjectB instanceof PlatSwing
+                || gameObjectB instanceof BreakableTile              
                 || gameObjectB instanceof BrightBeamBlock)) {  
 
                     //handle plaform jumping allowance             
