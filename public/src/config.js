@@ -36,7 +36,7 @@
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-3-8-2020";
+    var buildVersion = "a-3-14-2020";
     var game;
     var hud;
     var playScene;
@@ -46,7 +46,7 @@
     //Tiles
     var map; 
 
-    var current_map = "map2";
+    var current_map = "map3";
 
     var current_exit = "west1";
     var world_background;

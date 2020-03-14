@@ -88,8 +88,10 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         }else{
             if(this.protection_radius.value <  this.protection_radius.max){this.protection_radius.value+=25;};
         }
-        //Update Aimer
-        this.setAimer();
+        if(this.aimer.started){
+            //Update Aimer
+            this.setAimer();
+        }
     }
     
     setAimer(){ 
@@ -98,8 +100,8 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         let targVector = this.scene.getMouseVectorByCamera(this.ownerid);        
         
         if(this.owner.ctrlDeviceId >= 0){
-            let gpVectors = this.scene.getGamepadVectors(this.ctrlDeviceId,this.aimerRadius,this.x,this.y)
-            let selectStick = gpVectors[1].x == 0 && gpVectors[1].y == 0 ? 0 : 1; // L / R , If right stick is not being used, us left stick.
+            let gpVectors = this.scene.getGamepadVectors(this.owner.ctrlDeviceId,this.aimerRadius,this.x,this.y)
+            let selectStick = gpVectors[1].x == this.x && gpVectors[1].y == this.y ? 0 : 1; // L / R , If right stick is not being used, us left stick.
             targVector = gpVectors[selectStick];
         }
         this.aimerCircle.x = this.x;

@@ -422,7 +422,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         let targVector = this.scene.getMouseVectorByCamera(this.ownerid); 
         if(this.ctrlDeviceId >= 0){
             let gpVectors = this.scene.getGamepadVectors(this.ctrlDeviceId,this.abPulseRadius,this.x,this.y)
-            let selectStick = gpVectors[1].x == 0 && gpVectors[1].y == 0 ? 0 : 1; // L / R , If right stick is not being used, us left stick.
+            let selectStick = gpVectors[1].x == this.x && gpVectors[1].y == this.y ? 0 : 1; // L / R , If right stick is not being used, us left stick.
             targVector = gpVectors[selectStick];
         }
         this.abPulse.circle.x = this.x;
@@ -432,8 +432,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         let normAngle = Phaser.Math.Angle.Normalize(angle);
 
         let point = Phaser.Geom.Circle.CircumferencePoint(this.abPulse.circle, normAngle);
-        //Emit Particles to mark target//Need Different particle style here
-        //this.effect[0].emitParticleAt(point.x,point.y,5);
+        //Emit Particles to mark target//Need Different particle style here, THIS IS MASSIVE AND TAKES UP WAAAY too much space.
+        this.effect[0].emitParticleAt(point.x,point.y,5);
         //Throw Power
         let power =  this.abPulse.c/1000;
 

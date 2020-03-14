@@ -71,15 +71,19 @@ var GameScene = new Phaser.Class({
         },this);
         fghiddenlayer.destroy();
         //Make Breakable Tile Objects just like secret tiles
-        fgbreakablelayer.forEachTile(function (tile) {
-            if(tile.index != -1){
-                //console.log(tile);
-                let newImgIndex = tile.index - tile.tileset.firstgid;
-                console.log(newImgIndex,tile);
-                let breakTile = new BreakableTile(this,tile.pixelX+tile.width/2,tile.pixelY+tile.height/2,tile.tileset.image.key,newImgIndex).setOrigin(0.5).setDepth(DEPTH_LAYERS.FG);
-            }
-        },this);
-        fgbreakablelayer.destroy();
+        if(fgbreakablelayer){
+            fgbreakablelayer.forEachTile(function (tile) {
+                if(tile.index != -1){
+                    //console.log(tile);
+                    let newImgIndex = tile.index - tile.tileset.firstgid;
+                    console.log(newImgIndex,tile);
+                    let breakTile = new BreakableTile(this,tile.pixelX+tile.width/2,tile.pixelY+tile.height/2,tile.tileset.image.key,newImgIndex).setOrigin(0.5).setDepth(DEPTH_LAYERS.FG);
+                }
+            },this);
+            fgbreakablelayer.destroy();
+        }else{
+            console.log("DEBUG:", "No Breakable Tiles Layer found.")
+        }
 
 
         this.collisionLayer = map.createDynamicLayer('collision', CollisionTiles, 0, 0);
@@ -1408,12 +1412,15 @@ var GameScene = new Phaser.Class({
         return targVector;
     },
     getGamepadVectors(gamePadID,radius,x,y){
-        let stickRight = gamePad[gamePadID].getStickRight(.1);
-        let stickLeft = gamePad[gamePadID].getStickLeft(.1);
-        let rightVector = {x:x+stickRight.x*radius,y:y+stickRight.y*radius};
-        let leftVector = {x:x+stickLeft.x*radius,y:y+stickLeft.y*radius};
+        if(gamePad[gamePadID]){
+            let stickRight = gamePad[gamePadID].getStickRight(.1);
+            let stickLeft = gamePad[gamePadID].getStickLeft(.1);
+            let rightVector = {x:x+stickRight.x*radius,y:y+stickRight.y*radius};
+            let leftVector = {x:x+stickLeft.x*radius,y:y+stickLeft.y*radius};
+            return [leftVector,rightVector];
+        }
         
-        return [leftVector,rightVector];
+        return [{x:0,y:0},{x:0,y:0}];
     }
     
 });
