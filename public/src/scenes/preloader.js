@@ -127,7 +127,8 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('shard_dark', 'assets/objects/dark_shard.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('breakables', 'assets/objects/breakables.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('burstwave', 'assets/objects/burstwave1.png', {frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('sol_pieces', 'assets/objects/Sol_pieces.png', {frameWidth: 64, frameHeight: 64});		
+		this.load.spritesheet('sol_pieces', 'assets/objects/Sol_pieces.png', {frameWidth: 64, frameHeight: 64});
+		this.load.spritesheet('breakablecracks', 'assets/objects/breakablecracks.png', {frameWidth: 32, frameHeight: 32});	
 		this.load.spritesheet('bright_pulse', 'assets/characters/pulse.png', {frameWidth: 48, frameHeight: 48});
 
 		//Bosses		

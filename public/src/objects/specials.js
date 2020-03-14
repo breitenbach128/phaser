@@ -259,8 +259,8 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
 };
 
 class BreakableTile extends Phaser.Physics.Matter.Sprite{
-    constructor(scene,x,y) {
-        super(scene.matter.world, x, y, 'breakables', 0)
+    constructor(scene,x,y,texture,index) {
+        super(scene.matter.world, x, y, texture, index)
         this.scene = scene;
         scene.matter.world.add(this);
         scene.add.existing(this); 
@@ -296,9 +296,12 @@ class BreakableTile extends Phaser.Physics.Matter.Sprite{
                 }
             }
         });
+        //Breakable detail sprite
+        this.detailSprite = this.scene.add.sprite(this.x,this.y,'breakablecracks').setDepth(DEPTH_LAYERS.FG);
+
         this.max_speed = 8;
         this.breakFrame = 0;
-        this.breakFrames = [0,1,2,3];
+        this.breakFrames = [0,1,2,3,4];
         this.crushTimer = this.scene.time.addEvent({ delay: 300, callback: this.setReadyCrush, callbackScope: this, loop: false });
     }
     setup(x,y,scale,frames){
@@ -330,10 +333,10 @@ class BreakableTile extends Phaser.Physics.Matter.Sprite{
             let force = speed*fromBody.density*100;
             if(force >= 2){                
                 this.breakFrame++;
-                console.log("setting to frame:",this.breakFrames[this.breakFrame],this.breakFrame);
                 if(this.breakFrame < this.breakFrames.length){
-                    this.setFrame(this.breakFrames[this.breakFrame]);
+                    this.detailSprite.setFrame(this.breakFrames[this.breakFrame]);
                 }else{
+                    this.detailSprite.destroy();
                     this.destroy();
                 }
                 
