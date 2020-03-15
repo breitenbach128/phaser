@@ -133,6 +133,7 @@ var GameScene = new Phaser.Class({
         });
         //Raycasting
         lightCanvas = this.add.graphics(0, 0);
+        lightCanvas.setVisible(true);
         lightCanvas.setAlpha(0.5);
         //Perimeter Block
         lightPolygons.push([[-1, -1], [(map.widthInPixels + 1), -1], [(map.widthInPixels + 1), (map.heightInPixels + 1)], [-1, (map.heightInPixels + 1)]]);
@@ -1194,21 +1195,15 @@ var GameScene = new Phaser.Class({
         };
 
         //Draw lighting        
-        shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels);    
-        
-        //Do Crystal Lamps and Light Checking
+        shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels);
+        //Save Canvas and then do cuts
+        shadow_context.save();        
+        shadow_context.globalCompositeOperation='destination-out';    
+        //Cut out line of sight blockers
+        this.cutCanvasRaycastPolygon(soullight.x,soullight.y,soullight.protection_radius.value*2,shadow_context);
+     
         var solana_in_light = false;
-        let lamps = crystallamps.getChildren()
-        for(var x = 0;x < lamps.length;x++){
-            var lamp = lamps[x];
-            shadow_context = this.cutCanvasCircle(lamp.x,lamp.y,lamp.brightness,shadow_context);
-            
-            //Check if solana is inside at least one light, if not, flag them and damage them every x seconds.
-            if(Phaser.Math.Distance.Between(lamp.x,lamp.y,solana.sprite.x,solana.sprite.y) <= lamp.brightness){solana_in_light = true;}
-
-        }
         
-
         shadow_context = this.cutCanvasCircle(soullight.sprite.x,soullight.sprite.y,soullight.protection_radius.value,shadow_context);
         shadow_context = this.cutCanvasCircle(bright.x,bright.y,bright.light_radius,shadow_context);
         if(tutorialRunning){
@@ -1216,7 +1211,24 @@ var GameScene = new Phaser.Class({
         }
         if(Phaser.Math.Distance.Between(soullight.sprite.x,soullight.y,solana.sprite.x,solana.sprite.y) <= soullight.protection_radius.value){solana_in_light = true;}
 
-        //is the solana outside the light? Do damage!
+        //Restore Canvas
+        shadow_context.restore();
+        //Do Crystal Lamps and Light Checking
+        let lamps = crystallamps.getChildren()
+        for(var x = 0;x < lamps.length;x++){
+            var lamp = lamps[x];
+            //LAMPS PERMANANTLY LIGHT AREA
+            shadow_context.save(); 
+            shadow_context.globalCompositeOperation='destination-out';
+            shadow_context = this.cutCanvasCircle(lamp.x,lamp.y,lamp.brightness,shadow_context);
+            shadow_context.restore();
+
+            //Check if solana is inside at least one light, if not, flag them and damage them every x seconds.
+            if(Phaser.Math.Distance.Between(lamp.x,lamp.y,solana.sprite.x,solana.sprite.y) <= lamp.brightness){solana_in_light = true;}
+
+        }       
+
+        shadow_layer.refresh();
 
         //Instead of doing damage right away, do drain energy. IF totally drained, then take damage.
         solana.inLight = solana_in_light;
@@ -1225,9 +1237,6 @@ var GameScene = new Phaser.Class({
             hud.alterEnergy(-rate_of_energy_drain_outside_light);
             if(hud.energy.n <= 0){solana.receiveDamage(1);};
         };
-
-        shadow_layer.refresh();
-
 
         //Update Light Source
         moveLightSource(soullight.sprite.x,soullight.sprite.y);
@@ -1321,13 +1330,32 @@ var GameScene = new Phaser.Class({
             this.cameras.remove(cam_p2);
         }
     },
-    cutCanvasCircle: function(x,y,radius,ctx){
-        ctx.save();         
-        ctx.globalCompositeOperation='destination-out';
+    cutCanvasRaycastPolygon(x,y,range,ctx){
+        let shapes = [];
+        lightPolygons.forEach(function(e){
+            let d = Phaser.Math.Distance.Between(x,y,e[0][0],e[0][1]);
+            if(d < range){
+                shapes.push(e);            
+            }
+        });	
+        shapes.push(createLightObstacleRect(x-range/2,y-range/2,range,range));
+    
+        var visibility = createLightPolygon(x, y, shapes);
+        if(visibility){
+            ctx.beginPath();
+            ctx.moveTo(visibility[0][0], visibility[0][1]);
+            for (var i = 1; i <= visibility.length; i++) {
+                ctx.lineTo(visibility[i % visibility.length][0], visibility[i % visibility.length][1]);
+            }
+            ctx.closePath();
+            ctx.clip();
+        }
+        return ctx;
+    },
+    cutCanvasCircle: function(x,y,radius,ctx){    
         ctx.beginPath();
-        ctx.arc(x,y,radius, 0, 2 * Math.PI, false);
+        ctx.arc(x,y,radius, 0, 2 * Math.PI, false);        
         ctx.fill();
-        ctx.restore();
 
         return ctx;
     },

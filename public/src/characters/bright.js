@@ -151,6 +151,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     //BRIGHT CONTROLS 
                     if(control_beam && this.beamReady ){
                         this.beamReady = false;
+                        soullight.setAimer();
                         this.beamAbility.create(soullight.aimer.x,soullight.aimer.y,soullight.aimer.rotation);
                     }
                     if(control_left){
