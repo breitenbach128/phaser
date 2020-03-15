@@ -187,12 +187,10 @@ var GameScene = new Phaser.Class({
         //Create Camera        
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels+128);  
         this.cameras.main.setBackgroundColor('#ccccff'); 
-        this.cameras.main.setZoom(2);
         this.cameras.main.roundPixels = true;
+        this.cameras.main.setZoom(2);
         camera_main = this.cameras.main;
-        
-        
-
+        //camera_main.setRenderToTexture(glowPipeline);
         //Controls
         createControls(this);
 
@@ -1203,7 +1201,7 @@ var GameScene = new Phaser.Class({
         this.cutCanvasRaycastPolygon(soullight.x,soullight.y,soullight.protection_radius.value*2,shadow_context);
      
         var solana_in_light = false;
-        
+
         shadow_context = this.cutCanvasCircle(soullight.sprite.x,soullight.sprite.y,soullight.protection_radius.value,shadow_context);
         shadow_context = this.cutCanvasCircle(bright.x,bright.y,bright.light_radius,shadow_context);
         if(tutorialRunning){

@@ -48,7 +48,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.throw = {x:0,y:0};
         this.readyThrow = false;
 
-        this.aimer = this.scene.add.image(this.x,this.y,'soullightblast').setScale(.5);
+        this.aimer = this.scene.add.image(this.x,this.y,'soullightblast').setScale(.5).setOrigin(0.5);
         this.aimer.setVisible(false);
         this.aimer.ready = true;
         this.aimer.started = false;
@@ -131,7 +131,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         if(this.aimer.ready && this.aimer.started){
             this.aimer.ready = false;
             this.aimer.started = false;
-            let transfer = new SoulTransfer(this.scene,this.aimer.x,this.aimer.y,'soullightblast',0,this);
+            let transfer = new SoulTransfer(this.scene,this.x,this.y,'soullightblast',0,this);
             transfer.rotation = this.aimer.rotation;
             transfer.fire(transfer.rotation,this.projectile_speed);
         }
