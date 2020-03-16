@@ -17,7 +17,7 @@
          "name":"bg3",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":64,
          "x":0,
          "y":0
@@ -29,7 +29,7 @@
          "name":"bg2",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":64,
          "x":0,
          "y":0
@@ -41,7 +41,7 @@
          "name":"bg",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":64,
          "x":0,
          "y":0
@@ -65,7 +65,7 @@
          "name":"fg",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":64,
          "x":0,
          "y":0
@@ -1069,6 +1069,18 @@
                  "width":32,
                  "x":1344,
                  "y":288
+                }, 
+                {
+                 "gid":379,
+                 "height":32,
+                 "id":70,
+                 "name":"platfall6",
+                 "rotation":0,
+                 "type":"platfall",
+                 "visible":true,
+                 "width":32,
+                 "x":160,
+                 "y":128
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1099,7 +1111,7 @@
          "y":0
         }],
  "nextlayerid":18,
- "nextobjectid":70,
+ "nextobjectid":71,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.1",

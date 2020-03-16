@@ -380,6 +380,10 @@
         }
         return -1;
     }
+    //Wrap a number to a max. I.E: If the max is 1.0, 1.5 would give 0.5;
+    function wrapAtMax(x, m) {
+        return (x%m + m)%m;
+    }
     //SaveStateObject
     function stateData(id,map,x,y){
         this.id = id;

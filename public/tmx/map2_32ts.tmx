@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="18" nextobjectid="70">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="64" height="16" tilewidth="32" tileheight="32" infinite="0" nextlayerid="18" nextobjectid="71">
  <editorsettings>
   <export target="../assets/world/map2_32ts.json" format="json"/>
  </editorsettings>
@@ -531,6 +531,7 @@
    </properties>
   </object>
   <object id="68" name="shadow1" type="shadow" gid="900" x="1344" y="288" width="32" height="32"/>
+  <object id="70" name="platfall6" type="platfall" gid="379" x="160" y="128" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="12" name="hulls">
   <object id="66" name="hull" x="64" y="288" width="320" height="32"/>
