@@ -159,23 +159,27 @@ class HudScene extends Phaser.Scene {
     alterEnergy(energyChange){
         let n = this.energy.n + energyChange;
         if(n < 0){n=0;};
-        if(n > this.energy.max){n=this.energy.max;};
-
-        this.energy.n = n;
-        let newValue = Math.round((this.energy.n/this.energy.max)*this.energy.h);
-        //Alter the bar values
-        this.energy_bar[1].setCrop(0,this.energy.h-newValue,this.energy.w,newValue);
-        //Tint Energy to red if it is less than 10% of total
-        if(n <= (this.energy.max/5)){
-            this.energy_bar[1].setTint(0xFFB6B6);
+        if(n > this.energy.max){
+            n=this.energy.max;
         }else{
-            this.energy_bar[1].clearTint();
-        };
-        //Alter bar scale on gain only
-        if(energyChange > 0){
-            this.energy_bar.forEach(function(e){e.setScale(1.10)});
-            this.energy_bar_effect = this.time.addEvent({ delay: 200, callback: this.resetEnergyScale, callbackScope: this, loop: false });
+            this.energy.n = n;
+            let newValue = Math.round((this.energy.n/this.energy.max)*this.energy.h);
+            //Alter the bar values
+            this.energy_bar[1].setCrop(0,this.energy.h-newValue,this.energy.w,newValue);
+            //Tint Energy to red if it is less than 10% of total
+            if(n <= (this.energy.max/5)){
+                this.energy_bar[1].setTint(0xFFB6B6);
+            }else{
+                this.energy_bar[1].clearTint();
+            };
+            //Alter bar scale on gain only
+            if(energyChange > 0){
+                this.energy_bar.forEach(function(e){e.setScale(1.10)});
+                this.energy_bar_effect = this.time.addEvent({ delay: 200, callback: this.resetEnergyScale, callbackScope: this, loop: false });
+            }
         }
+
+
     }
     alertCorruption(corruptionChange){
         let n = this.corruption.n + corruptionChange;

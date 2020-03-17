@@ -590,7 +590,7 @@ var GameScene = new Phaser.Class({
          //timeEventName.remove();spawnEnemies(spawnlayer.objects)
          
          //Pass Energy Regen
-         this.energyTimer = this.time.addEvent({ delay: 200, callback: this.generateEnergy, callbackScope: this, loop: true });
+         this.energyTimer = this.time.addEvent({ delay: 500, callback: this.generateEnergy, callbackScope: this, loop: true });
 
       
         
@@ -599,12 +599,12 @@ var GameScene = new Phaser.Class({
         shadTexture.alpha = .6;
         shadTexture.setDepth(DEPTH_LAYERS.FRONT)
 
-        var light1 = this.add.image(256,64,'light1');
-        light1.alpha = .5;
-        light1.tint = 0xCCCC00;
+        // var light1 = this.add.image(256,64,'light1');
+        // light1.alpha = .5;
+        // light1.tint = 0xCCCC00;
 
-        solana.z = light1.z+1;
-        bright.z = light1.z+1;
+        // solana.z = light1.z+1;
+        // bright.z = light1.z+1;
 
          //Start soulight play
          soullight.sprite.anims.play('soulight-move', true);//Idle

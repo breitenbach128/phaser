@@ -550,7 +550,24 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
 
             if(this.zonedata.type == "teleport"){
                 let positionParse = JSON.parse(this.zonedata.value)
-                obj.setPosition(positionParse.x,positionParse.y);
+
+                this.scene.time.addEvent({ 
+                    delay: 1500, 
+                    callback: function(){
+                        //Need additional check to make sure I am still within zone completely. Only teleport if totally inside zone.
+                        obj.setPosition(positionParse.x,positionParse.y)
+                    }, 
+                    callbackScope: this, 
+                    loop: false 
+                });
+
+                //obj.setPosition(positionParse.x,positionParse.y);
+
+                //This should eventually have an effect where she and bright are teleported. They are beamed up
+                //and then beamed down into the spot where they end up. Once the animations are over, they are moved,
+                //and then once the second animations is done, they both appear.
+
+                //Use the get/apply/add effects method set. There is already a standard setup there for changing her animation.
             }
 
             if(this.allowReset){

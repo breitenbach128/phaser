@@ -499,7 +499,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 //If Effect duration is 0, remove the effect.
                 if(e.duration <= 0){
                     this.effects.splice(i);
-                    //Could Remove effect here?
+                    //Could Remove effect here? Trigger an onComplete function on this later.
                 };
             },this);
         }
