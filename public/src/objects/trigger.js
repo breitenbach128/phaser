@@ -244,7 +244,7 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
         .setStatic(true)
         .setIgnoreGravity(true);    
 
-        this.debug = scene.add.text(this.x, this.y-16, 'plate', { fontSize: '10px', fill: '#00FF00' });             
+        this.debug = scene.add.text(this.x, this.y-16, 'plate', { fontSize: '10px', fill: '#00FF00', resolution: 2 });             
 
 
     }
@@ -426,13 +426,13 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         .setIgnoreGravity(true);    
 
         this.debug = scene.add.text(this.x, this.y, 'Zone', { fontSize: '10px', fill: '#00FF00', resolution: 2 }).setOrigin(0.5);             
-
+        
 
     }
-    setup(x,y, properties,name){
+    setup(x,y, properties,name,w,h){
         this.setActive(true);
         this.setPosition(x,y);
-        this.alpha = .3;
+        this.alpha = 0.0;
         this.name = name;
         this.target = {name: -1,type: -1, object: -1};
         this.ready = true;
@@ -440,6 +440,9 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         this.allowReset = false;
         this.resetDelay = 100;
         this.resetTimer = -1;
+        this.effect = -1;
+        this.zoneWidth = w;
+        this.zoneHeight = h;
         //Zones can do certain things.
         //
         if(properties){
@@ -449,6 +452,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             this.zonedata.value = properties.zoneValue;
             this.allowReset = properties.allowReset;
             this.resetDelay =properties.resetDelay;
+            this.ready = properties.ready != undefined ? properties.ready : true;
         }
         //Types:
         //Target: Triggers a target
@@ -464,6 +468,39 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             //var rad = Math.atan2(vectorParse.x, vectorParse.y);
             //this.setRotation(rad);
             if(vectorParse.x < 0){this.sprite.flipX  = true;};
+       }else if(this.zonedata.type == "teleport"){
+            this.effect=[
+                this.scene.add.particles('shapes',  new Function('return ' + this.scene.cache.text.get('effect-trigger-teleporter'))())
+            ];
+            this.effect[0].setPosition(this.x,this.y);
+            //Set visual toggle here / active toggle to only show if ready
+            
+            this.effect[0].emitters.list[0].setPosition({ min: -this.zoneWidth/2, max: this.zoneWidth/2 },this.y-this.zoneHeight*(3/4));
+            this.effect[0].setActive(false);
+            //Teleporter Gradient
+            if(this.scene.textures.get("teleporter").key != "__MISSING"){  
+                let oldTexture = this.scene.textures.get("teleporter");
+                oldTexture.destroy();
+            }
+            this.texture = this.scene.textures.createCanvas('teleporter', this.zoneWidth , this.zoneHeight);
+           
+            //  We can access the underlying Canvas context like this:
+            let grd = this.texture.context.createLinearGradient(0, 0, this.zoneWidth, this.zoneHeight);
+            //let grd = this.texture.context.createRadialGradient(this.zoneWidth/2,this.zoneHeight/2,this.zoneWidth/4,this.zoneWidth/2,this.zoneHeight/2,this.zoneWidth+20);
+            //this.texture.context.globalCompositeOperation = "destination-out";
+            grd.addColorStop(0, "rgba(255, 255, 255, 0.0)");
+            grd.addColorStop(1, "rgba(255, 255, 255, 0.2)");
+        
+            this.texture.context.fillStyle = grd;
+            this.texture.context.fillRect(0, 0, this.zoneWidth, this.zoneHeight);
+        
+            //  Call this if running under WebGL, or you'll see nothing change
+            this.texture.refresh();
+            //this.setTexture('teleporter');
+            this.teleporterGradeient = this.scene.add.image(this.x, this.y, 'teleporter');
+            this.teleporterGradeient.setVisible(false);
+            //this.teleporterGradeient.setAlpha(0.2);
+
        }
  
     }
@@ -471,7 +508,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
     {       
 
         this.debug.setPosition(this.x, this.y-16);
-        this.debug.setText("Zone Status:"+String(this.name));
+        this.debug.setText("Zone Status:"+String(this.name)+":"+String(this.ready));
     }
     setTarget(targetObject){
         this.target.object = targetObject;
@@ -483,6 +520,13 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
     triggerTarget(){
         if(this.target.object != -1){
             this.target.object.activateTrigger();
+        }
+    }
+    activateTrigger(){
+        this.ready  = true;
+        if(this.zonedata.type == "teleport"){
+            this.effect[0].setActive(true);
+            this.teleporterGradeient.setVisible(true);
         }
     }
     enterZone(obj){
@@ -714,7 +758,7 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
     }
     setTarget(targetObject){
         this.target.object = targetObject;
-        //console.log("Set target for ", this.name);
+        //console.log("Set target for ", this.name,targetObject);
     }
     triggerTarget(){
         if(this.target.object != -1){

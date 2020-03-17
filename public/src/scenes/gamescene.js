@@ -131,9 +131,9 @@ var GameScene = new Phaser.Class({
                
             //}
         });
-        //Raycasting
+        //Raycasting - setup. For troubleshooting ONLY - REmove once no longer needed.
         lightCanvas = this.add.graphics(0, 0);
-        lightCanvas.setVisible(true);
+        lightCanvas.setVisible(false);
         lightCanvas.setAlpha(0.5);
         //Perimeter Block
         lightPolygons.push([[-1, -1], [(map.widthInPixels + 1), -1], [(map.widthInPixels + 1), (map.heightInPixels + 1)], [-1, (map.heightInPixels + 1)]]);
@@ -512,7 +512,7 @@ var GameScene = new Phaser.Class({
             if(triggerObj){
                 let trig_x_offset = tmxObjRef.width/2;
                 let trig_y_offset = tmxObjRef.height/2;
-                triggerObj.setup(tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,getTileProperties(tmxObjRef.properties),tmxObjRef.name);
+                triggerObj.setup(tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,getTileProperties(tmxObjRef.properties),tmxObjRef.name,tmxObjRef.width,tmxObjRef.height);
             }
         }
           
@@ -1496,7 +1496,7 @@ function createLightPolygon(x, y, polyset) {
     return null;
 }
 function setupTriggerTargets(triggerGroup,triggerGroupName,scene){
-    
+    //Currently restricted to types. I need to expand this
     triggerGroup.children.each(function(trigger) {
         //console.log(triggerGroupName,trigger.target);
         if(trigger.target.name){
@@ -1508,7 +1508,15 @@ function setupTriggerTargets(triggerGroup,triggerGroupName,scene){
                         trigger.setTarget(gate);
                     }
                 },trigger);
+            }else if(trigger.target.type == "zone"){
+                triggerzones.children.each(function(zone) {
+                    //console.log("Trigger had gate target, searching names");
+                    if(zone.name == trigger.target.name){
+                        trigger.setTarget(zone);
+                    }
+                },trigger);
             }
+
         }
     }, this);
 }

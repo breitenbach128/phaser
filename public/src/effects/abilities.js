@@ -64,8 +64,8 @@ class BrightBeam {
         let spark1 = this.scene.add.particles('lightburst-1');
         this.sparker = spark1.createEmitter({
             active:true,
-            x: this.x,
-            y: this.y,
+            x: 0,
+            y: 0,
             angle: 300,
             speed: { min: 50, max: -50 },
             gravityY: -400,

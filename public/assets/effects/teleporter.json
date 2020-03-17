@@ -1,0 +1,62 @@
+[
+    {
+        "active": true,
+        "visible": true,
+        "collideBottom": true,
+        "collideLeft": true,
+        "collideRight": true,
+        "collideTop": true,
+        "on": true,
+        "particleBringToTop": true,
+        "radial": true,
+        "frame": {
+            "frames": [
+                "trace_07"
+            ],
+            "cycle": false,
+            "quantity": 1
+        },
+        "frequency": 2,
+        "gravityX": 0,
+        "gravityY": -200,
+        "maxParticles": 200,
+        "timeScale": 1,
+        "blendMode": 1,
+        "accelerationX": 0,
+        "accelerationY": 0,
+        "alpha": 1,
+        "angle": {
+            "min": 0,
+            "max": 360,
+            "ease": "Linear"
+        },
+        "bounce": 0,
+        "delay": 0,
+        "lifespan": {
+            "ease": "Linear",
+            "min": 500,
+            "max": 1000
+        },
+        "maxVelocityX": 10000,
+        "maxVelocityY": 200,
+        "moveToX": 0,
+        "moveToY": 0,
+        "quantity": 1,
+        "rotate": 0,
+        "scale": {
+            "start": 0.5,
+            "end": 0,
+            "ease": "Linear"
+        },
+        "speed": 0,
+        "x": {
+            "ease": "Bounce.easeIn",
+            "min": 300,
+            "max": 500
+        },
+        "y": 300,
+        "tint": [
+            12829598
+        ]
+    }
+]
