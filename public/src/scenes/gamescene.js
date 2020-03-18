@@ -738,11 +738,15 @@ var GameScene = new Phaser.Class({
                         solana.touching.up++;
                         if(bodyB.label == "PLAT_BOTTOM" && gameObjectA.body.velocity.y < 0){
                             //Start tracking and disable collisions
-                            gameObjectB.oneWayStart(gameObjectA);
+                            gameObjectB.oneWayStart(gameObjectA,'up');
                         }                       
                     }
                     if(bodyA.label == "SOLANA_BOTTOM"){
-                        solana.touching.down++;
+                        solana.touching.down++;                        
+                        if(bodyB.label == "PLAT_TOP" && gameObjectA.getControllerAction('down')){
+                            //Allow Fall Thru of platform if pressing down
+                            gameObjectB.oneWayStart(gameObjectA,'down');
+                        }  
                     }
                     if(bodyA.label == "SOLANA_RIGHT"){
                         solana.touching.right++;

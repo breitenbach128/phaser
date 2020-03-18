@@ -118,6 +118,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             //Only control if currently the active control object
             let control_left = this.getControllerAction('left');
             let control_right = this.getControllerAction('right');
+            let control_down = this.getControllerAction('down');
             let control_shoot = this.getControllerAction('shoot');
             let control_shootRelease = this.getControllerAction('shootR');         
             let control_passPress = this.getControllerAction('pass');

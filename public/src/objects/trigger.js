@@ -611,7 +611,8 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         });
 
         this.sprite
-        .setExistingBody(compoundBody)
+        .setExistingBody(compoundBody)         
+        .setCollisionCategory(CATEGORY.SOLID)
         //.setCollidesWith([ ~CATEGORY.SOLANA_UP ])
         .setPosition(x, y)
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
@@ -653,15 +654,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
 
         //OneWay Tracking for enabling/disabling collisions
         if(this.onWayTracker != -1){
-            let targetObjTop = this.onWayTracker.getTopCenter();
-            let targetObjBottom = this.onWayTracker.getBottomCenter();
-            let platObjTop = this.getTopCenter();
-            let platObjBottom = this.getBottomCenter();
-            if(targetObjBottom.y < platObjTop.y){
-                this.oneWayEnd();
-            }else if(targetObjTop.y > platObjBottom.y && this.onWayTracker.body.velocity.y > 0){
-                this.oneWayEnd();
-            }
+            this.trackOneWay();
         }
     }
     setTarget(targetObject){
@@ -710,15 +703,33 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         //console.log("plate ready again");
         //this.ready = true;
     }
-    oneWayStart(player){
+    trackOneWay(){
+        let targetObjTop = this.onWayTracker.obj.getTopCenter();
+        let targetObjBottom = this.onWayTracker.obj.getBottomCenter();
+        let platObjTop = this.getTopCenter();
+        let platObjBottom = this.getBottomCenter();
+        if(this.onWayTracker.direction == 'up'){
+            if(targetObjBottom.y < platObjTop.y){
+                this.oneWayEnd();
+            }else if(targetObjTop.y > platObjBottom.y && this.onWayTracker.obj.body.velocity.y > 0){
+                this.oneWayEnd();
+            }
+        }else if(this.onWayTracker.direction == 'down'){
+            if(targetObjTop.y > platObjBottom.y && this.onWayTracker.obj.body.velocity.y > 0){
+                this.oneWayEnd();
+            }else if(targetObjBottom.y > platObjTop.y && this.onWayTracker.obj.body.velocity.y < 0){
+                this.oneWayEnd();
+            }
+        }
+    }
+    oneWayStart(player,d){
         this.setCollidesWith([~CATEGORY.SOLANA]);
-        this.onWayTracker = player;
-        //console.log("One Way Start");
+        this.onWayTracker = {obj: player,  direction: d};
+        
 
     }
-    oneWayEnd(){
-        //console.log("One Way end");
-        this.setCollidesWith(CATEGORY.SOLANA);
+    oneWayEnd(){        
+        this.setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK]);
         this.onWayTracker = -1;
     }
 };

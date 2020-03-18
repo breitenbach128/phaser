@@ -219,14 +219,26 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
     reset(){
         this.setActive(true);
         this.setPosition(this.spawnPos.x,this.spawnPos.y); 
-        this.ready = true;
+        //this.ready = true;
         this.dead = false;
         this.setStatic(true);
         console.log("platfall reset");
+        let tween = this.scene.tweens.add({
+            targets: this,
+            alpha: 1.0,              
+            ease: 'Linear',       
+            duration: 1000,  
+            onComplete: function(tween, targets, myPlat){myPlat.ready = true;},
+            onCompleteParams: [this],
+        });
     }
     setDead(){
-        this.dead = true;
-        this.resetTimer = this.scene.time.addEvent({ delay: 4000, callback: this.reset, callbackScope: this, loop: false });
+        if(!this.dead){
+            this.dead = true;
+            this.alpha = 0.0;
+            console.log("platfall dead");
+            this.resetTimer = this.scene.time.addEvent({ delay: 4000, callback: this.reset, callbackScope: this, loop: false });
+        }
     }
     update(time, delta)
     {       
@@ -236,9 +248,11 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
         }
     }
     touched(){
+        
         //Gradual Wobble and then fall
         //this.setStatic(false);
         if(this.ready){
+            console.log("platfall touched");
             this.ready = false;
             let tween = this.scene.tweens.add({
                 targets: this,
@@ -254,6 +268,7 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
         }
     }
     openComplete(tween, targets, myPlat){
+        console.log("platfall touch tween complete");
         myPlat.setStatic(false);
     }
 };
@@ -583,26 +598,36 @@ class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
         this.prev.y = this.y;
         //OneWay Tracking for enabling/disabling collisions
         if(this.onWayTracker != -1){
-            let targetObjTop = this.onWayTracker.getTopCenter();
-            let targetObjBottom = this.onWayTracker.getBottomCenter();
-            let platObjTop = this.getTopCenter();
-            let platObjBottom = this.getBottomCenter();
+            this.trackOneWay();
+        }
+    }
+    trackOneWay(){
+        let targetObjTop = this.onWayTracker.obj.getTopCenter();
+        let targetObjBottom = this.onWayTracker.obj.getBottomCenter();
+        let platObjTop = this.getTopCenter();
+        let platObjBottom = this.getBottomCenter();
+        if(this.onWayTracker.direction == 'up'){
             if(targetObjBottom.y < platObjTop.y){
                 this.oneWayEnd();
-            }else if(targetObjTop.y > platObjBottom.y && this.onWayTracker.body.velocity.y > 0){
+            }else if(targetObjTop.y > platObjBottom.y && this.onWayTracker.obj.body.velocity.y > 0){
+                this.oneWayEnd();
+            }
+        }else if(this.onWayTracker.direction == 'down'){
+            if(targetObjTop.y > platObjBottom.y && this.onWayTracker.obj.body.velocity.y > 0){
+                this.oneWayEnd();
+            }else if(targetObjBottom.y > platObjTop.y && this.onWayTracker.obj.body.velocity.y < 0){
                 this.oneWayEnd();
             }
         }
     }
-    oneWayStart(player){
+    oneWayStart(player,d){
         this.setCollidesWith([~CATEGORY.SOLANA]);
-        this.onWayTracker = player;
-        console.log("One Way Start");
+        this.onWayTracker = {obj: player,  direction: d};
+        
 
     }
-    oneWayEnd(){
-        console.log("One Way end");
-        this.setCollidesWith(CATEGORY.SOLANA);
+    oneWayEnd(){        
+        this.setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK]);
         this.onWayTracker = -1;
     }
 };
