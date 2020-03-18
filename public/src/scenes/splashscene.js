@@ -18,6 +18,9 @@ var SplashScene = new Phaser.Class({
 
     create: function ()
     {
+        //Sounds
+        this.soundTheme = game.sound.add('intro1');
+        this.soundTheme.play({loop: true, volume: 0.20});
         //ANimations
         this.anims.create({
             key: 'firefly-move',
@@ -130,6 +133,7 @@ var SplashScene = new Phaser.Class({
 	doStart: function ()
     {
        //this.scene.start('intro');
+       this.soundTheme.stop();
        this.scene.start('storyboard');
        
     }

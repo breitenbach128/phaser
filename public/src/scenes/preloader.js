@@ -180,7 +180,9 @@ var Preloader = new Phaser.Class({
 		this.load.audio('impact_hurt_groan',['snd/johnj_human_impact_hit_punch_head_slam_male_groan.mp3'])
 		this.load.audio('hitting_wall',  ['snd/Hitting_Wall.wav']);
 		this.load.audio('wavingtorch',  ['snd/WavingTorch.wav']);
-		
+		this.load.audio('theme1',  ['snd/theme1.wav']);
+		this.load.audio('intro1',  ['snd/intro1.wav']);
+		this.load.audio('forestTheme1',  ['snd/safe_room_theme.ogg']);
 		// !! TESTING !! load the same image 500 times just to slow down the load and test the loading bar
 		// for (var i = 0; i < 500; i++) {
 		// 	this.load.image('testloading'+i, 'img/spritearray.png');

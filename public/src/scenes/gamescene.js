@@ -26,9 +26,11 @@ var GameScene = new Phaser.Class({
         hud = this.scene.get('UIScene');;
         hud.handleEvents();
         
-
-
-       
+        //Play Theme Music
+        this.soundTheme = game.sound.add('forestTheme1');
+        // this.soundTheme.addMarker({name:'themepart1',start:0,duration:6.0});  
+        // this.soundTheme.play('themepart1',{loop: true, volume: 0.20});
+        this.soundTheme.play({loop: true, volume: 0.20});
    
         // //Map the map
         // map = this.make.tilemap({key: 'map1'});

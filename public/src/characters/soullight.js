@@ -257,7 +257,7 @@ class Solbit{
 
     }
 }
-
+//Singularity - Dark
 
 //Solarblast - Solana : Fire a blast of solar energy. Can defeat enemies and light up crystals
 
