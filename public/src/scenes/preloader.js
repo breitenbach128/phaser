@@ -181,7 +181,7 @@ var Preloader = new Phaser.Class({
 		this.load.audio('hitting_wall',  ['snd/Hitting_Wall.wav']);
 		this.load.audio('wavingtorch',  ['snd/WavingTorch.wav']);
 		this.load.audio('theme1',  ['snd/theme1.wav']);
-		this.load.audio('intro1',  ['snd/intro1.wav']);
+		this.load.audio('intro1',  ['snd/intro1.ogg']);
 		this.load.audio('forestTheme1',  ['snd/safe_room_theme.ogg']);
 		// !! TESTING !! load the same image 500 times just to slow down the load and test the loading bar
 		// for (var i = 0; i < 500; i++) {
