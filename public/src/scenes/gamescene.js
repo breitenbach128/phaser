@@ -133,6 +133,7 @@ var GameScene = new Phaser.Class({
                
             //}
         });
+        
         //Raycasting - setup. For troubleshooting ONLY - REmove once no longer needed.
         lightCanvas = this.add.graphics(0, 0);
         lightCanvas.setVisible(false);
@@ -160,6 +161,37 @@ var GameScene = new Phaser.Class({
 
         // console.log("RectHull",rectHull,rectCarve)
         
+        let hullsLayer = map.getObjectLayer('hulls');
+        hulls = [];
+        hullsLayer.objects.forEach(e=>{
+            console.log(e);
+            let newHull = null;
+
+            if(e.rectangle){
+                newHull=this.matter.add.rectangle(
+                    e.x + (e.width / 2), e.y + (e.height / 2),
+                    e.width, e.height,
+                    { isStatic: true }
+                );
+            }else if(e.ellipse && (e.width == e.height)){
+                newHull=this.matter.add.circle(
+                    e.x + (e.width / 2), e.y + (e.height / 2),
+                    e.width/2,
+                    { isStatic: true }
+                );
+            }else{
+                //let poly = this.add.polygon(e.x, e.y, e.polygon, 0x0000ff, 0.2).setOrigin(0);                //DEBUG
+                let center = Phaser.Physics.Matter.Matter.Vertices.centre(e.polygon);
+                newHull=this.matter.add.fromVertices(e.x+center.x,e.y+center.y,e.polygon,{isStatic: true}, true);
+                //var center = Vertices.centre(vertices);// Line in Phaser.js 169217
+            }
+            
+            newHull.label = 'GROUND';
+            newHull.collisionFilter.category = CATEGORY.GROUND;
+            console.log(newHull);
+            //Need to add light blocking polygon check here.
+            hulls.push(newHull);
+        });
 
 
 
@@ -196,6 +228,9 @@ var GameScene = new Phaser.Class({
         //Controls
         createControls(this);
 
+        //Test Soul Crystal
+        let sc = new SoulCrystal(this,224,160,'soulcrystal_blue',0)
+        sc.anims.play('scry_blue', false);
 
         //GROUPS
         //BrightBeams
@@ -1200,7 +1235,8 @@ var GameScene = new Phaser.Class({
 
         //Draw lighting        
         shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels);
-        //Save Canvas and then do cuts
+
+        //Save Canvas and then do cuts for SOulight Raycasting
         shadow_context.save();        
         shadow_context.globalCompositeOperation='destination-out';    
         //Cut out line of sight blockers
@@ -1208,15 +1244,27 @@ var GameScene = new Phaser.Class({
      
         var solana_in_light = false;
 
-        shadow_context = this.cutCanvasCircle(soullight.sprite.x,soullight.sprite.y,soullight.protection_radius.value,shadow_context);
-        shadow_context = this.cutCanvasCircle(bright.x,bright.y,bright.light_radius,shadow_context);
+        shadow_context = this.cutCanvasCircle(soullight.x,soullight.y,soullight.protection_radius.value,shadow_context);
+
+
         if(tutorialRunning){
             shadow_context = this.cutCanvasCircle(polaris.x,polaris.y,128,shadow_context);
         }
-        if(Phaser.Math.Distance.Between(soullight.sprite.x,soullight.y,solana.sprite.x,solana.sprite.y) <= soullight.protection_radius.value){solana_in_light = true;}
+        if(Phaser.Math.Distance.Between(soullight.x,soullight.y,solana.x,solana.y) <= soullight.protection_radius.value){solana_in_light = true;}
+        
 
         //Restore Canvas
         shadow_context.restore();
+
+        //Trim out Bright default radius if in Dark Mode
+        if(soullight.ownerid == 0){
+            shadow_context.save(); 
+            shadow_context.globalCompositeOperation='destination-out';
+            shadow_context = this.cutCanvasCircle(bright.x,bright.y,bright.light_radius,shadow_context);
+            shadow_context.restore();
+        }
+        if(Phaser.Math.Distance.Between(bright.x,bright.y,solana.x,solana.y) <= bright.light_radius){solana_in_light = true;}
+
         //Do Crystal Lamps and Light Checking
         let lamps = crystallamps.getChildren()
         for(var x = 0;x < lamps.length;x++){
@@ -1929,6 +1977,43 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'wind-1',
         frames: scene.anims.generateFrameNumbers('wind-1', { frames:[0,1,2,3,4,5,6] }),
+        frameRate: 12,
+        repeat: -1
+    });  
+    //Soul Crystals 
+    scene.anims.create({
+        key: 'scry_blue',
+        frames: scene.anims.generateFrameNumbers('soulcrystal_blue', { frames:[0,1,2,3,4,5,6,7] }),
+        frameRate: 12,
+        repeat: -1
+    }); 
+    scene.anims.create({
+        key: 'scry_green',
+        frames: scene.anims.generateFrameNumbers('soulcrystal_green', { frames:[0,1,2,3,4,5,6,7] }),
+        frameRate: 12,
+        repeat: -1
+    }); 
+    scene.anims.create({
+        key: 'scry_grey',
+        frames: scene.anims.generateFrameNumbers('soulcrystal_grey', { frames:[0,1,2,3,4,5,6,7] }),
+        frameRate: 12,
+        repeat: -1
+    }); 
+    scene.anims.create({
+        key: 'scry_pink',
+        frames: scene.anims.generateFrameNumbers('soulcrystal_pink', { frames:[0,1,2,3,4,5,6,7] }),
+        frameRate: 12,
+        repeat: -1
+    }); 
+    scene.anims.create({
+        key: 'scry_orange',
+        frames: scene.anims.generateFrameNumbers('soulcrystal_orange', { frames:[0,1,2,3,4,5,6,7] }),
+        frameRate: 12,
+        repeat: -1
+    }); 
+    scene.anims.create({
+        key: 'scry_yellow',
+        frames: scene.anims.generateFrameNumbers('soulcrystal_yellow', { frames:[0,1,2,3,4,5,6,7] }),
         frameRate: 12,
         repeat: -1
     }); 

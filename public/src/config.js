@@ -53,7 +53,7 @@
     //Game Objects
     var solana,bright,soullight,polaris,
     enemies,enemiesFly,bullets,
-    mirrors,exits,entrances,
+    mirrors,exits,entrances,hulls,
     levers,gates,plates,buttons,platfalls,platSwings,platSwingTweens,
     triggerzones,platforms,barriers,secretTiles,
     ab_solarblasts,crystallamps,ab_brightbeams,

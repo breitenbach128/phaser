@@ -130,6 +130,13 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('sol_pieces', 'assets/objects/Sol_pieces.png', {frameWidth: 64, frameHeight: 64});
 		this.load.spritesheet('breakablecracks', 'assets/objects/breakablecracks.png', {frameWidth: 32, frameHeight: 32});	
 		this.load.spritesheet('bright_pulse', 'assets/characters/pulse.png', {frameWidth: 48, frameHeight: 48});
+		//SoulCrystals
+		this.load.spritesheet('soulcrystal_blue', 'assets/objects/crystal-qubodup-ccby3-32-blue.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('soulcrystal_grey', 'assets/objects/crystal-qubodup-ccby3-32-grey.png', {frameWidth: 32, frameHeight: 32});		
+		this.load.spritesheet('soulcrystal_pink', 'assets/objects/crystal-qubodup-ccby3-32-pink.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('soulcrystal_yellow', 'assets/objects/crystal-qubodup-ccby3-32-yellow.png', {frameWidth: 32, frameHeight: 32});		
+		this.load.spritesheet('soulcrystal_orange', 'assets/objects/crystal-qubodup-ccby3-32-orange.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('soulcrystal_green', 'assets/objects/crystal-qubodup-ccby3-32-green.png', {frameWidth: 32, frameHeight: 32});
 
 		//Bosses		
 		this.load.spritesheet('spider', 'assets/characters/spider_x2.png', {frameWidth: 64, frameHeight: 64});

@@ -44,7 +44,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.projectile_speed = 14;//12
         this.sprite.setFriction(.3,.3);
         this.sprite.setIgnoreGravity(true);
-        this.protection_radius = {value:100, max: 100, original: 250};//How much does the light protect;
+        this.protection_radius = {value:200, max: 200, original: 250};//How much does the light protect;
         this.throw = {x:0,y:0};
         this.readyThrow = false;
 
@@ -257,19 +257,70 @@ class Solbit{
 
     }
 }
+
+class SoulCrystal extends Phaser.Physics.Matter.Sprite{
+    constructor(scene, x, y, texture, frame) {
+        super(scene.matter.world, x, y, texture, frame)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+
+        this.setActive(true);
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        const mainBody = Bodies.rectangle(0, 0, w * 0.8, h*0.80, { chamfer: { radius: 10}, isSensor:true});
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.00,
+            friction: 0.0,
+            restitution: 0.0,
+            label: "SOULCRYSTAL"
+          });
+          this
+            .setExistingBody(compoundBody)
+            .setPosition(x, y)
+            .setIgnoreGravity(true)
+            .setCollisionCategory(CATEGORY.SOLID)
+            .setCollidesWith([ CATEGORY.SOLANA]);            
+            //Add to game update
+            this.scene.events.on("update", this.update, this);
+    }
+    update(time,delta)
+    {
+
+    }
+}
+
+
+//6 Crystals: (Bits) : Yellow, Gray, Orange, Blue, Green, Pink
+//Bright has a small aura himself.
+//Start with no Soulight. Level 1 / Tutorial has lamps already lit.
+//Manipulate switches, buttons and jump/move.
+// Given Yellow: spawns the soulight. Allows the soulight to be transfered back and forth. Meet Bright nearby. He is in darkmode, but injured. - Crystal of Sol
+// He can be "healed" by passing him the soullight.
+// Learn that lamps can be lit by the soulight. Pressure plates to trigger gates.
+
+//Orange (Found in village) - Slime Monster Boss - Crystal of Mass
+// Double Jump / Wall Slide - Dark Crush Rocks / Break - Bright Flare (Sends off a small temporary lamp)
+
+//Blue (Found in Caves) - Corrupted Spider Boss - Crystal of Unity
+// Shield (Protection at cost of power) /Merge  - Bright burst / 
+
+//Green (Found in Forest) - Corrupted Tree Boss
+
+//Pink (Found in Mountain) - Corrupted Bear Boss
+
+//Gray (Found in Swamp) - Super Slime Monster Boss
+
+
+
 //Singularity - Dark
-
-//Solarblast - Solana : Fire a blast of solar energy. Can defeat enemies and light up crystals
-
-//Halo of Light - Solana : Persists for several seconds, and gives light. 
 
 //Search for the Light - Solana : Solana Teleports to Bright, instantly taking the light and turning him to dark.
 
-//Super Nova - Solana: Sends a blast of small suns out in all directions.
-
 //Wings of the Phoenix - Solana: Allows her to second jump, surging forward and slightly up.
-
-//Pillar of the Sun - Solana: Calls down a pillar of light that blocks all enemeies and damages them in a close area.
 
 //Bright Bump - Bright: Bumps Solana in a direction. Can toss her up.
 

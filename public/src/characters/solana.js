@@ -511,7 +511,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.setActive(false);
             //this.setVisible(false);
             this.debug.setVisible(false);
-            
+            this.scene.soundTheme.stop();
             console.log("Solanas DEAD!")
             //For debugging, reset to last entrance used
             //this.scene.gameOver();
