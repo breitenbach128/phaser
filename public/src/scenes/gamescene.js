@@ -138,8 +138,7 @@ var GameScene = new Phaser.Class({
         lightCanvas = this.add.graphics(0, 0);
         lightCanvas.setVisible(false);
         lightCanvas.setAlpha(0.5);
-        //Perimeter Block
-        lightPolygons.push([[-1, -1], [(map.widthInPixels + 1), -1], [(map.widthInPixels + 1), (map.heightInPixels + 1)], [-1, (map.heightInPixels + 1)]]);
+
         //console.log("Raycasting :",lightCanvas,lightPolygons);
 
 
@@ -164,36 +163,40 @@ var GameScene = new Phaser.Class({
         let hullsLayer = map.getObjectLayer('hulls');
         hulls = [];
         hullsLayer.objects.forEach(e=>{
-            console.log(e);
-            let newHull = null;
-
+            //console.log(e);
+            let newBody = null;
+            let shapeObject = null;
             if(e.rectangle){
-                newHull=this.matter.add.rectangle(
-                    e.x + (e.width / 2), e.y + (e.height / 2),
-                    e.width, e.height,
-                    { isStatic: true }
-                );
+                shapeObject = this.add.rectangle(e.x + (e.width / 2), e.y + (e.height / 2),e.width, e.height);
+                newBody = this.matter.add.gameObject(shapeObject, { shape: { type: 'rectangle', flagInternal: true } });
+                console.log("Light Shape: RECT :",createLightObstacleRect(e.x,e.y,e.width,e.height));
+                lightPolygons.push(createLightObstacleRect(e.x,e.y,e.width,e.height));
             }else if(e.ellipse && (e.width == e.height)){
-                newHull=this.matter.add.circle(
-                    e.x + (e.width / 2), e.y + (e.height / 2),
-                    e.width/2,
-                    { isStatic: true }
-                );
+                shapeObject = this.add.circle(e.x + (e.width / 2), e.y + (e.height / 2),e.width/2); 
+                newBody = this.matter.add.gameObject(shapeObject, { shape: { type: 'circle', flagInternal: true } });
             }else{
-                //let poly = this.add.polygon(e.x, e.y, e.polygon, 0x0000ff, 0.2).setOrigin(0);                //DEBUG
                 let center = Phaser.Physics.Matter.Matter.Vertices.centre(e.polygon);
-                newHull=this.matter.add.fromVertices(e.x+center.x,e.y+center.y,e.polygon,{isStatic: true}, true);
+                shapeObject = this.add.polygon(e.x+center.x, e.y+center.y, e.polygon, 0x0000ff, 0.2);
+                
+                // newHull=this.matter.add.fromVertices(e.x+center.x,e.y+center.y,e.polygon,{isStatic: true}, true);
                 //var center = Vertices.centre(vertices);// Line in Phaser.js 169217
+                //newHull = new HullPolygon(this,e.x,e.y,e.polygon,0x0000ff,0.2);
+
+                newBody = this.matter.add.gameObject(shapeObject, { shape: { type: 'fromVerts', verts: e.polygon, flagInternal: true } });  
+                console.log("Light Shape: POLYGON :",createLightObstaclePolygon(e.x,e.y,shapeObject.geom.points));  
+                lightPolygons.push(createLightObstaclePolygon(e.x,e.y,shapeObject.geom.points));            
             }
-            
-            newHull.label = 'GROUND';
-            newHull.collisionFilter.category = CATEGORY.GROUND;
-            console.log(newHull);
+            shapeObject.setVisible(false);
+            shapeObject.setStatic(true);
+            shapeObject.setCollisionCategory(CATEGORY.SOLID) 
+            shapeObject.body.label = 'GROUND'; 
+            console.log("Poly Object",shapeObject);
             //Need to add light blocking polygon check here.
-            hulls.push(newHull);
+            hulls.push(shapeObject);
         });
 
-
+        //Perimeter Block for Blocking Light
+        lightPolygons.push([[-1, -1], [(map.widthInPixels + 1), -1], [(map.widthInPixels + 1), (map.heightInPixels + 1)], [-1, (map.heightInPixels + 1)]]);
 
 
         //CREATE PLAYER ENTITIES
@@ -706,6 +709,27 @@ var GameScene = new Phaser.Class({
                     }
                 } 
               }
+            //For HULLS and MATTER SHAPES
+            if (gameObjectB !== undefined && 
+                (gameObjectB instanceof Phaser.GameObjects.Rectangle
+                || gameObjectB instanceof Phaser.GameObjects.Ellipse
+                || gameObjectB instanceof Phaser.GameObjects.Polygon)) {
+                // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
+                if (bodyB.label == 'GROUND'){
+                    if(bodyA.label == "BRIGHT_BOTTOM"){
+                        bright.touching.down++;
+                    }
+                    if(bodyA.label == "BRIGHT_RIGHT"){
+                        bright.touching.right++;
+                    }
+                    if(bodyA.label == "BRIGHT_LEFT"){
+                        bright.touching.left++;
+                    }
+                    if(bodyA.label == "BRIGHT_TOP"){
+                        bright.touching.up++;
+                    }
+                }                
+                }
               if (gameObjectB !== undefined &&
                 (gameObjectB instanceof TMXPlatform
                       || gameObjectB instanceof Barrier
@@ -742,6 +766,29 @@ var GameScene = new Phaser.Class({
               if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
                 // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
                 if (gameObjectB.properties.collides){
+                    if(bodyA.label == "SOLANA_TOP"){
+                        solana.touching.up++;
+                    }
+                    if(bodyA.label == "SOLANA_BOTTOM"){
+                        solana.touching.down++;
+                    }
+                    if(bodyA.label == "SOLANA_RIGHT"){
+                        solana.touching.right++;
+                        //solana.x--;
+                    }
+                    if(bodyA.label == "SOLANA_LEFT"){
+                        solana.touching.left++;
+                        //solana.x++;
+                    }
+                }                
+              }
+              //For HULLS and MATTER SHAPES
+              if (gameObjectB !== undefined && 
+                (gameObjectB instanceof Phaser.GameObjects.Rectangle
+                || gameObjectB instanceof Phaser.GameObjects.Ellipse
+                || gameObjectB instanceof Phaser.GameObjects.Polygon)) {
+                // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
+                if (bodyB.label == 'GROUND'){
                     if(bodyA.label == "SOLANA_TOP"){
                         solana.touching.up++;
                     }
@@ -1511,10 +1558,19 @@ function getObjectTilePosition(x,y,ts){
 function createLightObstacleRect(x,y,w,h){    
     return  [[x, y], [x + w, y], [x + w, y + h], [x, y + h]];
 }
+function createLightObstaclePolygon(x,y,points){
+    let shape = [];
+    points.forEach(e=>{
+        shape.push([x+e.x,y+e.y])
+    });
+    return shape;
+}
 function moveLightSource(x,y) {
     // when the mouse is moved, we determine the new visibility polygon 
     let shapes = [];
     lightPolygons.forEach(function(e){
+        //This does not take the center in account, just the upper left point, or starting vertex. I may
+        //need a custom object here with the center point.
         let d = Phaser.Math.Distance.Between(x,y,e[0][0],e[0][1]);
         if(d < 256){
             shapes.push(e);            
