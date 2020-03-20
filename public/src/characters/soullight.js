@@ -57,6 +57,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         
         this.isBeaming = false;//If it is beaming, it can will carry Bright with it.
         this.passChain = [];//Soulight pass to each of these entities in order.
+        this.passChainIndex = 0;
 
         // this.aimLine = this.scene.add.line(200,200,25,0,50,0,0xff66ff)
         // this.aimLine.setLineWidth(4,4);
@@ -68,21 +69,37 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
     }
 
     update(time,delta)
-    {
-        
-
-
+    {    
         //Handle position and light growth and shrinking
         if(!this.passing){
-            this.setPosition(this.owner.x,this.owner.y);            
+            if(this.isBeaming){
+                this.owner.setPosition(this.x,this.y);
+                if(this.passChainIndex  < this.passChain.length){
+                    let pcTarget = this.passChain[this.passChainIndex];
+                    this.homeLight(pcTarget);
+                    this.setVelocity(this.throw.x*this.move_speed,this.throw.y*this.move_speed);
+                    if(Phaser.Math.Distance.Between(this.x,this.y,pcTarget.x,pcTarget.y) < 32){
+                        //Just move onto it. Should speed up the transfer
+                        this.setPosition(pcTarget.x,pcTarget.y);
+                    }
+                    if(this.x == pcTarget.x && this.y == pcTarget.y){
+                        
+                        this.move_speed = this.max_speed;
+                        this.passChainIndex++;
+                        this.setVelocity(0,0);
+                    }
+                }else{
+                    this.clearChain();
+                }
+
+            }else{
+                this.setPosition(this.owner.x,this.owner.y);            
+            }
         }else{
             //Home in on target
-            this.homeLight();
+            let target = this.ownerid == 0 ? bright : solana;
+            this.homeLight(target);
             this.setVelocity(this.throw.x*this.move_speed,this.throw.y*this.move_speed);
-            if(this.body.velocity.x > this.max_speed){this.setVelocityX(this.max_speed)};
-            if(this.body.velocity.x < -this.max_speed){this.setVelocityX(-this.max_speed)};
-            if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed)};
-            if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
         }
         
         if(this.readyThrow){
@@ -99,6 +116,11 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
             //Update Aimer
             this.setAimer();
         }
+        //Max Velocities
+        if(this.body.velocity.x > this.max_speed){this.setVelocityX(this.max_speed)};
+        if(this.body.velocity.x < -this.max_speed){this.setVelocityX(-this.max_speed)};
+        if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed)};
+        if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
     }
     
     setAimer(){ 
@@ -143,8 +165,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
             transfer.fire(transfer.rotation,this.projectile_speed);
         }
     }
-    homeLight(){
-        let target = this.ownerid == 0 ? bright : solana;
+    homeLight(target){        
         let angle = Phaser.Math.Angle.Between(this.x,this.y,target.x,target.y);
         let targetDistance = Phaser.Math.Distance.Between(this.x,this.y,target.x,target.y);
         if(targetDistance <= this.move_speed){this.move_speed = targetDistance};
@@ -155,7 +176,8 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         if(!this.passing){
             this.passing = true;
             //Get owner to set X/Y target
-            this.homeLight();
+            let target = this.ownerid == 0 ? bright : solana;
+            this.homeLight(target);
             //Reset Basic Movement Speed
             this.move_speed = this.max_speed;
         }
@@ -179,6 +201,21 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
                 bright.toBright();
             }    
         }    
+    }
+    addChain(Obj){
+        this.passChain.push(Obj); 
+        //need saftey mechanisms. The shot should not be able to be sent back. Check first if an object is already in the chain. If so,
+        //dont allow the push.       
+    }
+    startChain(){
+        //console.log("Start Chain", this.passChain);
+        this.isBeaming = true;
+        this.passChainIndex = 0;
+    }
+    clearChain(){
+        //Do the beam move and teleport, then clear the chain
+        this.isBeaming = false;
+        this.passChain = [];
     }
 
 }
@@ -219,11 +256,16 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         this.soundfling.addMarker({name:'soul-fling',start:.25,duration:.5});        
         this.soundfling.addMarker({name:'soul-burn-impact',start:1,duration:.2});
     }
+    chain(angle,speed,obj){
+        this.fire(angle,speed);
+        this.parent.addChain(obj);
+    }
     fire(angle,speed){
         this.setVelocity(Math.cos(angle)*speed,Math.sin(angle)*speed);
         this.soundfling.play('soul-fling');
     }
     hit(id){
+        this.parent.startChain();
         //Hit other target, so trigger the launch of the soulight.
         if(this.parent.ownerid != id){
             this.parent.readyPass();
@@ -231,6 +273,7 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         }
     }
     burn(){
+        this.parent.startChain();
         this.soundfling.play('soul-burn-impact');
         this.timer = this.scene.time.addEvent({ delay: 100, callback: this.kill, callbackScope: this, loop: false });
         //DO effect

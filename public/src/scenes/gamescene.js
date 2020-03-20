@@ -109,7 +109,8 @@ var GameScene = new Phaser.Class({
         shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels); 
         shadow_layer.refresh();
 
-
+        //Clear Light Polygons
+        lightPolygons = [];
         //Draw Debug
         
         this.matter.world.createDebugGraphic();
@@ -1112,7 +1113,7 @@ var GameScene = new Phaser.Class({
                 if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'TELEBEAM') || (bodyA.label === 'TELEBEAM' && bodyB.label === 'SOULTRANSFER')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
                     if (gObjs[0].active){;
-                        gObjs[0].fire(gObjs[1].rotation-(Math.PI/2),soullight.projectile_speed);
+                        gObjs[0].chain(gObjs[1].rotation-(Math.PI/2),soullight.projectile_speed,gObjs[1]);
                     }  
                 }
                 //Between SoulTransfer and MIRROR
