@@ -133,12 +133,12 @@ var GameScene = new Phaser.Class({
                
             //}
         });
+        
         //Raycasting - setup. For troubleshooting ONLY - REmove once no longer needed.
         lightCanvas = this.add.graphics(0, 0);
         lightCanvas.setVisible(false);
         lightCanvas.setAlpha(0.5);
-        //Perimeter Block
-        lightPolygons.push([[-1, -1], [(map.widthInPixels + 1), -1], [(map.widthInPixels + 1), (map.heightInPixels + 1)], [-1, (map.heightInPixels + 1)]]);
+
         //console.log("Raycasting :",lightCanvas,lightPolygons);
 
 
@@ -160,8 +160,43 @@ var GameScene = new Phaser.Class({
 
         // console.log("RectHull",rectHull,rectCarve)
         
+        let hullsLayer = map.getObjectLayer('hulls');
+        hulls = [];
+        hullsLayer.objects.forEach(e=>{
+            //console.log(e);
+            let newBody = null;
+            let shapeObject = null;
+            if(e.rectangle){
+                shapeObject = this.add.rectangle(e.x + (e.width / 2), e.y + (e.height / 2),e.width, e.height);
+                newBody = this.matter.add.gameObject(shapeObject, { shape: { type: 'rectangle', flagInternal: true } });
+                console.log("Light Shape: RECT :",createLightObstacleRect(e.x,e.y,e.width,e.height));
+                lightPolygons.push(createLightObstacleRect(e.x,e.y,e.width,e.height));
+            }else if(e.ellipse && (e.width == e.height)){
+                shapeObject = this.add.circle(e.x + (e.width / 2), e.y + (e.height / 2),e.width/2); 
+                newBody = this.matter.add.gameObject(shapeObject, { shape: { type: 'circle', flagInternal: true } });
+            }else{
+                let center = Phaser.Physics.Matter.Matter.Vertices.centre(e.polygon);
+                shapeObject = this.add.polygon(e.x+center.x, e.y+center.y, e.polygon, 0x0000ff, 0.2);
+                
+                // newHull=this.matter.add.fromVertices(e.x+center.x,e.y+center.y,e.polygon,{isStatic: true}, true);
+                //var center = Vertices.centre(vertices);// Line in Phaser.js 169217
+                //newHull = new HullPolygon(this,e.x,e.y,e.polygon,0x0000ff,0.2);
 
+                newBody = this.matter.add.gameObject(shapeObject, { shape: { type: 'fromVerts', verts: e.polygon, flagInternal: true } });  
+                console.log("Light Shape: POLYGON :",createLightObstaclePolygon(e.x,e.y,shapeObject.geom.points));  
+                lightPolygons.push(createLightObstaclePolygon(e.x,e.y,shapeObject.geom.points));            
+            }
+            shapeObject.setVisible(false);
+            shapeObject.setStatic(true);
+            shapeObject.setCollisionCategory(CATEGORY.SOLID) 
+            shapeObject.body.label = 'GROUND'; 
+            console.log("Poly Object",shapeObject);
+            //Need to add light blocking polygon check here.
+            hulls.push(shapeObject);
+        });
 
+        //Perimeter Block for Blocking Light
+        lightPolygons.push([[-1, -1], [(map.widthInPixels + 1), -1], [(map.widthInPixels + 1), (map.heightInPixels + 1)], [-1, (map.heightInPixels + 1)]]);
 
 
         //CREATE PLAYER ENTITIES
@@ -196,6 +231,9 @@ var GameScene = new Phaser.Class({
         //Controls
         createControls(this);
 
+        //Test Soul Crystal
+        let sc = new SoulCrystal(this,224,160,'soulcrystal_blue',0)
+        sc.anims.play('scry_blue', false);
 
         //GROUPS
         //BrightBeams
@@ -466,7 +504,6 @@ var GameScene = new Phaser.Class({
                 y_offset = tmxObjRef.height/2;
                 let newbreakabletile = breakabletiles.get();
                 let breakabletileProps = getTileProperties(tmxObjRef.properties);
-                console.log("New Breakable",breakabletileProps);
                 newbreakabletile.setup(tmxObjRef.x+x_offset,tmxObjRef.y+y_offset,1,breakabletileProps.frames);
             }else if(tmxObjRef.type == "rock"){  
                 let newRock = rocks.get();
@@ -475,6 +512,11 @@ var GameScene = new Phaser.Class({
                 let newCrate = crates.get(tmxObjRef.x,tmxObjRef.y);
             }else if(tmxObjRef.type == "item"){
                 let newitem = new EquipItem(this,tmxObjRef.x,tmxObjRef.y,'gameitems',GAMEITEM[tmxObjRef.name.toUpperCase()]);
+
+            }else if(tmxObjRef.type == "telebeam"){
+                let newitem = new Telebeam(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                let telebeamProps = getTileProperties(tmxObjRef.properties);
+                newitem.setRotation(Phaser.Math.DegToRad(telebeamProps.initAngle));
 
             }else if(tmxObjRef.type == "swingTween"){  
                 let swingTw = platSwingTweens.get(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
@@ -671,6 +713,27 @@ var GameScene = new Phaser.Class({
                     }
                 } 
               }
+            //For HULLS and MATTER SHAPES
+            if (gameObjectB !== undefined && 
+                (gameObjectB instanceof Phaser.GameObjects.Rectangle
+                || gameObjectB instanceof Phaser.GameObjects.Ellipse
+                || gameObjectB instanceof Phaser.GameObjects.Polygon)) {
+                // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
+                if (bodyB.label == 'GROUND'){
+                    if(bodyA.label == "BRIGHT_BOTTOM"){
+                        bright.touching.down++;
+                    }
+                    if(bodyA.label == "BRIGHT_RIGHT"){
+                        bright.touching.right++;
+                    }
+                    if(bodyA.label == "BRIGHT_LEFT"){
+                        bright.touching.left++;
+                    }
+                    if(bodyA.label == "BRIGHT_TOP"){
+                        bright.touching.up++;
+                    }
+                }                
+                }
               if (gameObjectB !== undefined &&
                 (gameObjectB instanceof TMXPlatform
                       || gameObjectB instanceof Barrier
@@ -707,6 +770,29 @@ var GameScene = new Phaser.Class({
               if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
                 // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
                 if (gameObjectB.properties.collides){
+                    if(bodyA.label == "SOLANA_TOP"){
+                        solana.touching.up++;
+                    }
+                    if(bodyA.label == "SOLANA_BOTTOM"){
+                        solana.touching.down++;
+                    }
+                    if(bodyA.label == "SOLANA_RIGHT"){
+                        solana.touching.right++;
+                        //solana.x--;
+                    }
+                    if(bodyA.label == "SOLANA_LEFT"){
+                        solana.touching.left++;
+                        //solana.x++;
+                    }
+                }                
+              }
+              //For HULLS and MATTER SHAPES
+              if (gameObjectB !== undefined && 
+                (gameObjectB instanceof Phaser.GameObjects.Rectangle
+                || gameObjectB instanceof Phaser.GameObjects.Ellipse
+                || gameObjectB instanceof Phaser.GameObjects.Polygon)) {
+                // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
+                if (bodyB.label == 'GROUND'){
                     if(bodyA.label == "SOLANA_TOP"){
                         solana.touching.up++;
                     }
@@ -1022,7 +1108,14 @@ var GameScene = new Phaser.Class({
                         gObjs[0].hit(1);
                     }  
                 }
-                //Between SoulTransfer and Bright
+                //Between SoulTransfer and TELEBEAM
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'TELEBEAM') || (bodyA.label === 'TELEBEAM' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
+                    if (gObjs[0].active){;
+                        gObjs[0].fire(gObjs[1].rotation-(Math.PI/2),soullight.projectile_speed);
+                    }  
+                }
+                //Between SoulTransfer and MIRROR
                 if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'MIRROR') || (bodyA.label === 'MIRROR' && bodyB.label === 'SOULTRANSFER')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'MIRROR');
                     if (gObjs[0].active){
@@ -1200,7 +1293,8 @@ var GameScene = new Phaser.Class({
 
         //Draw lighting        
         shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels);
-        //Save Canvas and then do cuts
+
+        //Save Canvas and then do cuts for SOulight Raycasting
         shadow_context.save();        
         shadow_context.globalCompositeOperation='destination-out';    
         //Cut out line of sight blockers
@@ -1208,15 +1302,27 @@ var GameScene = new Phaser.Class({
      
         var solana_in_light = false;
 
-        shadow_context = this.cutCanvasCircle(soullight.sprite.x,soullight.sprite.y,soullight.protection_radius.value,shadow_context);
-        shadow_context = this.cutCanvasCircle(bright.x,bright.y,bright.light_radius,shadow_context);
+        shadow_context = this.cutCanvasCircle(soullight.x,soullight.y,soullight.protection_radius.value,shadow_context);
+
+
         if(tutorialRunning){
             shadow_context = this.cutCanvasCircle(polaris.x,polaris.y,128,shadow_context);
         }
-        if(Phaser.Math.Distance.Between(soullight.sprite.x,soullight.y,solana.sprite.x,solana.sprite.y) <= soullight.protection_radius.value){solana_in_light = true;}
+        if(Phaser.Math.Distance.Between(soullight.x,soullight.y,solana.x,solana.y) <= soullight.protection_radius.value){solana_in_light = true;}
+        
 
         //Restore Canvas
         shadow_context.restore();
+
+        //Trim out Bright default radius if in Dark Mode
+        if(soullight.ownerid == 0){
+            shadow_context.save(); 
+            shadow_context.globalCompositeOperation='destination-out';
+            shadow_context = this.cutCanvasCircle(bright.x,bright.y,bright.light_radius,shadow_context);
+            shadow_context.restore();
+        }
+        if(Phaser.Math.Distance.Between(bright.x,bright.y,solana.x,solana.y) <= bright.light_radius){solana_in_light = true;}
+
         //Do Crystal Lamps and Light Checking
         let lamps = crystallamps.getChildren()
         for(var x = 0;x < lamps.length;x++){
@@ -1233,6 +1339,7 @@ var GameScene = new Phaser.Class({
         }       
 
         shadow_layer.refresh();
+        //FIX: //Raycast with max range instead of circle radius for soulight. That way, she only gets protected if she is in the light
 
         //Instead of doing damage right away, do drain energy. IF totally drained, then take damage.
         solana.inLight = solana_in_light;
@@ -1463,10 +1570,19 @@ function getObjectTilePosition(x,y,ts){
 function createLightObstacleRect(x,y,w,h){    
     return  [[x, y], [x + w, y], [x + w, y + h], [x, y + h]];
 }
+function createLightObstaclePolygon(x,y,points){
+    let shape = [];
+    points.forEach(e=>{
+        shape.push([x+e.x,y+e.y])
+    });
+    return shape;
+}
 function moveLightSource(x,y) {
     // when the mouse is moved, we determine the new visibility polygon 
     let shapes = [];
     lightPolygons.forEach(function(e){
+        //This does not take the center in account, just the upper left point, or starting vertex. I may
+        //need a custom object here with the center point.
         let d = Phaser.Math.Distance.Between(x,y,e[0][0],e[0][1]);
         if(d < 256){
             shapes.push(e);            
@@ -1929,6 +2045,49 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'wind-1',
         frames: scene.anims.generateFrameNumbers('wind-1', { frames:[0,1,2,3,4,5,6] }),
+        frameRate: 12,
+        repeat: -1
+    });  
+    //Soul Crystals 
+    scene.anims.create({
+        key: 'scry_blue',
+        frames: scene.anims.generateFrameNumbers('soulcrystal_blue', { frames:[0,1,2,3,4,5,6,7] }),
+        frameRate: 12,
+        repeat: -1
+    }); 
+    scene.anims.create({
+        key: 'scry_green',
+        frames: scene.anims.generateFrameNumbers('soulcrystal_green', { frames:[0,1,2,3,4,5,6,7] }),
+        frameRate: 12,
+        repeat: -1
+    }); 
+    scene.anims.create({
+        key: 'scry_grey',
+        frames: scene.anims.generateFrameNumbers('soulcrystal_grey', { frames:[0,1,2,3,4,5,6,7] }),
+        frameRate: 12,
+        repeat: -1
+    }); 
+    scene.anims.create({
+        key: 'scry_pink',
+        frames: scene.anims.generateFrameNumbers('soulcrystal_pink', { frames:[0,1,2,3,4,5,6,7] }),
+        frameRate: 12,
+        repeat: -1
+    }); 
+    scene.anims.create({
+        key: 'scry_orange',
+        frames: scene.anims.generateFrameNumbers('soulcrystal_orange', { frames:[0,1,2,3,4,5,6,7] }),
+        frameRate: 12,
+        repeat: -1
+    }); 
+    scene.anims.create({
+        key: 'scry_yellow',
+        frames: scene.anims.generateFrameNumbers('soulcrystal_yellow', { frames:[0,1,2,3,4,5,6,7] }),
+        frameRate: 12,
+        repeat: -1
+    });  
+    scene.anims.create({
+        key: 'telebeam-idle',
+        frames: scene.anims.generateFrameNumbers('telebeam', { frames:[0,1,2] }),
         frameRate: 12,
         repeat: -1
     }); 
