@@ -504,7 +504,6 @@ var GameScene = new Phaser.Class({
                 y_offset = tmxObjRef.height/2;
                 let newbreakabletile = breakabletiles.get();
                 let breakabletileProps = getTileProperties(tmxObjRef.properties);
-                console.log("New Breakable",breakabletileProps);
                 newbreakabletile.setup(tmxObjRef.x+x_offset,tmxObjRef.y+y_offset,1,breakabletileProps.frames);
             }else if(tmxObjRef.type == "rock"){  
                 let newRock = rocks.get();
@@ -513,6 +512,11 @@ var GameScene = new Phaser.Class({
                 let newCrate = crates.get(tmxObjRef.x,tmxObjRef.y);
             }else if(tmxObjRef.type == "item"){
                 let newitem = new EquipItem(this,tmxObjRef.x,tmxObjRef.y,'gameitems',GAMEITEM[tmxObjRef.name.toUpperCase()]);
+
+            }else if(tmxObjRef.type == "telebeam"){
+                let newitem = new Telebeam(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                let telebeamProps = getTileProperties(tmxObjRef.properties);
+                newitem.setRotation(Phaser.Math.DegToRad(telebeamProps.initAngle));
 
             }else if(tmxObjRef.type == "swingTween"){  
                 let swingTw = platSwingTweens.get(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
@@ -1104,7 +1108,14 @@ var GameScene = new Phaser.Class({
                         gObjs[0].hit(1);
                     }  
                 }
-                //Between SoulTransfer and Bright
+                //Between SoulTransfer and TELEBEAM
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'TELEBEAM') || (bodyA.label === 'TELEBEAM' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
+                    if (gObjs[0].active){;
+                        gObjs[0].fire(gObjs[1].rotation-(Math.PI/2),soullight.projectile_speed);
+                    }  
+                }
+                //Between SoulTransfer and MIRROR
                 if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'MIRROR') || (bodyA.label === 'MIRROR' && bodyB.label === 'SOULTRANSFER')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'MIRROR');
                     if (gObjs[0].active){
@@ -1328,6 +1339,7 @@ var GameScene = new Phaser.Class({
         }       
 
         shadow_layer.refresh();
+        //FIX: //Raycast with max range instead of circle radius for soulight. That way, she only gets protected if she is in the light
 
         //Instead of doing damage right away, do drain energy. IF totally drained, then take damage.
         solana.inLight = solana_in_light;
@@ -2070,6 +2082,12 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'scry_yellow',
         frames: scene.anims.generateFrameNumbers('soulcrystal_yellow', { frames:[0,1,2,3,4,5,6,7] }),
+        frameRate: 12,
+        repeat: -1
+    });  
+    scene.anims.create({
+        key: 'telebeam-idle',
+        frames: scene.anims.generateFrameNumbers('telebeam', { frames:[0,1,2] }),
         frameRate: 12,
         repeat: -1
     }); 

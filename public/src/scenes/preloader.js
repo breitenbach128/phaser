@@ -130,6 +130,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('sol_pieces', 'assets/objects/Sol_pieces.png', {frameWidth: 64, frameHeight: 64});
 		this.load.spritesheet('breakablecracks', 'assets/objects/breakablecracks.png', {frameWidth: 32, frameHeight: 32});	
 		this.load.spritesheet('bright_pulse', 'assets/characters/pulse.png', {frameWidth: 48, frameHeight: 48});
+		this.load.spritesheet('telebeam', 'assets/objects/telebeam.png', {frameWidth: 64, frameHeight: 64});
 		//SoulCrystals
 		this.load.spritesheet('soulcrystal_blue', 'assets/objects/crystal-qubodup-ccby3-32-blue.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('soulcrystal_grey', 'assets/objects/crystal-qubodup-ccby3-32-grey.png', {frameWidth: 32, frameHeight: 32});		

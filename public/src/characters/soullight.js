@@ -54,6 +54,9 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.aimer.started = false;
         this.aimerRadius = 52;
         this.aimerCircle = new Phaser.Geom.Circle(this.x, this.y, this.aimerRadius);
+        
+        this.isBeaming = false;//If it is beaming, it can will carry Bright with it.
+        this.passChain = [];//Soulight pass to each of these entities in order.
 
         // this.aimLine = this.scene.add.line(200,200,25,0,50,0,0xff66ff)
         // this.aimLine.setLineWidth(4,4);
