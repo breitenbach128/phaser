@@ -331,7 +331,7 @@ class SoulCrystal extends Phaser.Physics.Matter.Sprite{
         this.setActive(true);
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this;
-        const mainBody = Bodies.rectangle(0, 0, w * 0.8, h*0.80, { chamfer: { radius: 10}, isSensor:true});
+        const mainBody = Bodies.rectangle(0, 0, w * 0.62, h*0.85, { chamfer: { radius: 10}, isSensor:true});
 
         const compoundBody = Body.create({
             parts: [mainBody],

@@ -149,12 +149,13 @@ class HudScene extends Phaser.Scene {
             frameRate: 4,
             repeat: -1
         });
-        let sol_pieces_ui = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
-        sol_pieces_ui.anims.play('sol_dead-1', true);
-        let sol_pieces_collected_1 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
-        sol_pieces_collected_1.anims.play('sol_shardglow-1', true);
-        let sol_pieces_collected_2 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
-        sol_pieces_collected_2.anims.play('sol_shardglow-2', true);
+        //Eats up too much space. Work on better solution.
+        // let sol_pieces_ui = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
+        // sol_pieces_ui.anims.play('sol_dead-1', true);
+        // let sol_pieces_collected_1 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
+        // sol_pieces_collected_1.anims.play('sol_shardglow-1', true);
+        // let sol_pieces_collected_2 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
+        // sol_pieces_collected_2.anims.play('sol_shardglow-2', true);
     }
     alterEnergy(energyChange){
         let n = this.energy.n + energyChange;
