@@ -184,14 +184,14 @@ var GameScene = new Phaser.Class({
                 //newHull = new HullPolygon(this,e.x,e.y,e.polygon,0x0000ff,0.2);
 
                 newBody = this.matter.add.gameObject(shapeObject, { shape: { type: 'fromVerts', verts: e.polygon, flagInternal: true } });  
-                console.log("Light Shape: POLYGON :",createLightObstaclePolygon(e.x,e.y,shapeObject.geom.points));  
+                //console.log("Light Shape: POLYGON :",createLightObstaclePolygon(e.x,e.y,shapeObject.geom.points));  
                 lightPolygons.push(createLightObstaclePolygon(e.x,e.y,shapeObject.geom.points));            
             }
             shapeObject.setVisible(false);
             shapeObject.setStatic(true);
             shapeObject.setCollisionCategory(CATEGORY.SOLID) 
             shapeObject.body.label = 'GROUND'; 
-            console.log("Poly Object",shapeObject);
+            //console.log("Poly Object",shapeObject);
             //Need to add light blocking polygon check here.
             hulls.push(shapeObject);
         });

@@ -162,6 +162,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('hud_interaction_control_arrows','assets/hud/hud_interaction_control_arrows.png',{frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('hud_energybar1','assets/hud/hud_energybar1.png',{frameWidth: 16, frameHeight: 96});		
 		this.load.spritesheet('hud_corruptionbar1','assets/hud/hud_corruptionbar1.png',{frameWidth: 16, frameHeight: 96});
+		this.load.spritesheet('hud_talking_head','assets/hud/hud_talking_head.png',{frameWidth: 32, frameHeight: 32});
 		
 		this.load.spritesheet('hud_boss_health_bar','assets/hud/boss_health_bar.png',{frameWidth: 64, frameHeight: 16});
 		//Effects / Particles
@@ -220,7 +221,7 @@ var Preloader = new Phaser.Class({
 				repeat: -1
 			});
 			
-		console.log('Preloader scene is ready, now start the actual game and never return to this scene');
+		//console.log('Preloader scene is ready, now start the actual game and never return to this scene');
 
 		// dispose loader bar images
 		this.loadingbar_bg.destroy();

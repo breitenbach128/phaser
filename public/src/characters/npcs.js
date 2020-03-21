@@ -121,6 +121,7 @@ class NPC extends Phaser.Physics.Matter.Sprite{
 
         //Create dialogue manager
         this.diaMgmr = new DialogueManager(scene,npcDialogues,true,0,'random',this,solana);
+        //this.diaMgmr = new DialogueManager(hud,npcDialogues,true,0,'random',hud.talkinghead_left,hud.talkinghead_right);
 
         //Wander Movement Stuff - This is very stiff movement. I need a tween really. Something that can have starts and stops, pauses, etc.
         this.wanderRange = Phaser.Math.Between(12,32);
