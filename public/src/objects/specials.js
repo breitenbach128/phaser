@@ -679,6 +679,8 @@ class Telebeam extends Phaser.Physics.Matter.Sprite{
                 }
             }
         });
+        //Up to date queue
+        this.scene.events.on("update", this.update, this);
     }
     setup(x,y, properties,name){
         this.setActive(true); 
@@ -695,7 +697,7 @@ class Telebeam extends Phaser.Physics.Matter.Sprite{
         this.rotateReady = false;
         this.scene.tweens.add({
             targets: this,
-            rotation: this.rotation+(Math.PI/2),
+            rotation: this.rotation+(Math.PI/4),
             duration: 1000,
             ease: "Sine.easeInOut",
             callbackScope: this,

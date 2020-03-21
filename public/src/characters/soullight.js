@@ -203,14 +203,19 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         }    
     }
     addChain(Obj){
-        this.passChain.push(Obj); 
-        //need saftey mechanisms. The shot should not be able to be sent back. Check first if an object is already in the chain. If so,
-        //dont allow the push.       
+        if(this.passChain.includes(Obj) == false){        
+            this.passChain.push(Obj);
+            //Check first if an object is already in the chain. If so,
+            //dont allow the push.      
+        }
     }
-    startChain(){
-        //console.log("Start Chain", this.passChain);
-        this.isBeaming = true;
-        this.passChainIndex = 0;
+    startChain(x,y){
+        if(this.isBeaming == false){
+            //console.log("Start Chain", this.passChain);
+            if(this.passChain.length > 0){this.passChain.push({x:x,y:y});} //Last position in chain. Only add if there is alreadya  starting point
+            this.isBeaming = true;
+            this.passChainIndex = 0;
+        }
     }
     clearChain(){
         //Do the beam move and teleport, then clear the chain
@@ -260,20 +265,32 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         this.fire(angle,speed);
         this.parent.addChain(obj);
     }
-    fire(angle,speed){
+    fire(angle,speed){        
         this.setVelocity(Math.cos(angle)*speed,Math.sin(angle)*speed);
+        this.setRotation(angle);
         this.soundfling.play('soul-fling');
+        //Dont allow it to HIT themselves.
+        if(this.parent.ownerid == 0){
+            this.setCollidesWith([ CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.ENEMY, CATEGORY.BRIGHT, CATEGORY.DARK, CATEGORY.MIRROR ]);
+        }else{
+            this.setCollidesWith([ CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.ENEMY, CATEGORY.SOLANA, CATEGORY.DARK, CATEGORY.MIRROR ]);
+        }
     }
     hit(id){
-        this.parent.startChain();
+        //Make sure this is space by moving one h/w radius away at the opposite angle
+        let safetyBoundsVec = {x:Math.cos(this.rotation+Math.PI)*(this.parent.width/2),y:Math.sin(this.rotation+Math.PI)*(this.parent.height/2)};
+        this.parent.startChain(this.x+safetyBoundsVec.x,this.y+safetyBoundsVec.y);
         //Hit other target, so trigger the launch of the soulight.
         if(this.parent.ownerid != id){
             this.parent.readyPass();
             this.timer = this.scene.time.addEvent({ delay: 100, callback: this.kill, callbackScope: this, loop: false });
         }
+
     }
     burn(){
-        this.parent.startChain();
+        //Make sure this is space by moving one 32 radius away at the opposite angle
+        let safetyBoundsVec = {x:Math.cos(this.rotation+Math.PI)*32,y:Math.sin(this.rotation+Math.PI)*32};
+        this.parent.startChain(this.x+safetyBoundsVec.x,this.y+safetyBoundsVec.y);
         this.soundfling.play('soul-burn-impact');
         this.timer = this.scene.time.addEvent({ delay: 100, callback: this.kill, callbackScope: this, loop: false });
         //DO effect
@@ -332,6 +349,7 @@ class SoulCrystal extends Phaser.Physics.Matter.Sprite{
             .setCollidesWith([ CATEGORY.SOLANA]);            
             //Add to game update
             this.scene.events.on("update", this.update, this);
+            this.anims.play('telebeam-idle', true);
     }
     update(time,delta)
     {
