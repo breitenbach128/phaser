@@ -110,156 +110,40 @@ class NPC extends Phaser.Physics.Matter.Sprite{
         .setCollisionCategory(CATEGORY.SOLID)
         .setCollidesWith([ CATEGORY.SOLID, CATEGORY.GROUND ])
         .setScale(1)
-        .setFixedRotation(true) // Sets inertia to infinity so the player can't rotate 
+        .setFixedRotation(true)
         .setPosition(x, y);
-        //custom
+
+        //Dialogues
         var npcDialogues = [{startAction:{type:"distance",value:128},data:
         [{speaker:"src",ttl:2000,text:"Good to see you up and about Princess."},
         {speaker:"src",ttl:2000,text:"Praise be to the sun!"}],requirement:'none'},
         ];
 
-        this.stage = 0; // Where is the NPC at in it's timeline.
-        this.dialogueEnabled = true;
-        this.dialogueIndex = 0;
-        this.dialogueFlow = 'random';
-        this.dialogueTriggered = false;
-        this.dialogueReady = false;
-        let diaDelay = 0;
-        this.dialogTarget = this;
-        this.dialogLoop = false;
-        this.dialogueDB = JSON.parse(JSON.stringify(npcDialogues));;
-        if(this.checkDialogueType('delay')){
-            diaDelay = this.dialogueDB[this.dialogueIndex].startAction.value;
-        };
-        this.readyTimer = this.scene.time.addEvent({ delay: diaDelay, callback: this.dialogueStartReady, callbackScope: this, loop: false });
-        //Wander Movement Stuff
+        //Create dialogue manager
+        this.diaMgmr = new DialogueManager(scene,npcDialogues,true,0,'random',this,solana);
+        //this.diaMgmr = new DialogueManager(hud,npcDialogues,true,0,'random',hud.talkinghead_left,hud.talkinghead_right);
+
+        //Wander Movement Stuff - This is very stiff movement. I need a tween really. Something that can have starts and stops, pauses, etc.
         this.wanderRange = Phaser.Math.Between(12,32);
         this.wander = {distanceX:{min:this.x-this.wanderRange,max:this.x+this.wanderRange},direction:1};
-        this.moveSpeed = Phaser.Math.Between(1,20) / 10;
-
+        this.moveSpeed = Phaser.Math.FloatBetween(0.2,1.0);
 
     }
     update(time, delta)
     {
-        if(this.dialogueEnabled){
-            if(this.checkDialogueType('auto') || this.checkDialogueType('delay')){
-                this.triggerDialogue();
-            }else if(this.checkDialogueType('distance')){
-                if(Phaser.Math.Distance.Between(solana.x,solana.y,this.x,this.y) < this.dialogueDB[this.dialogueIndex].startAction.value){
-                    this.dialogTarget = solana;
-                    this.triggerDialogue();
-                }
-            }
-            if(this.dialogue != undefined){
-                if(this.dialogue.isComplete){
-                    this.resetDialogue();
-                }else if(this.dialogue.isRunning){
-                    this.dialogue.update();
-                }
-            }
-        }
+        this.diaMgmr.update();
         this.sensor.setPosition(this.x,this.y);
         this.setVelocityX(this.moveSpeed*this.wander.direction);
         if(this.x <= this.wander.distanceX.min){this.wander.direction = 1;}        
         if(this.x >= this.wander.distanceX.max){this.wander.direction = -1}
 
     }
-    resetDialogue(){
-        console.log("resetDialogue",this.dialogueIndex, this.dialogueDB.length)
-        //Dialogue Completed, Move to next.
-        if(this.dialogueIndex < this.dialogueDB.length-1){  
-            this.checkReqAndIncrement();
-        }else{
-            if(this.dialogLoop){
-                this.dialogueIndex = 0;     
-            }else{
-                this.dialogueIndex = 0;
-                this.dialogueEnabled = false;
-            }
-        }
-        //Add additional delay for tween here.          
-        this.dialogue = undefined;
-        this.dialogueTriggered = false;        
-        let diaDelay = 0;
-        if(this.checkDialogueType('delay')){
-            diaDelay = this.dialogueDB[this.dialogueIndex].startAction.value;
-        };
-        this.dialogueReady = false;
-        this.readyTimer = this.scene.time.addEvent({ delay: diaDelay, callback: this.dialogueStartReady, callbackScope: this, loop: false });
-
-    }
-    incrementDialogue(){
-        this.dialogueIndex++;
-    }
-    dialogueStartReady(){
-        this.dialogueReady = true;
-    }
-    triggerDialogue(){
-        if(this.dialogueTriggered == false && this.dialogueReady == true){
-            this.dialogueTriggered = true;
-            //Start Dialogue
-            let dialogueChain = this.dialogueDB[this.dialogueIndex].data;
-
-            for(let i=0;i<dialogueChain.length;i++){
-                let e = dialogueChain[i];
-                if (e.speaker == 'src') {
-                    e.speaker = this;
-                } else if (e.speaker == 'trg') {
-                    e.speaker = this.dialogTarget;
-                };
-            }
-            this.dialogue = new Dialogue(this.scene,dialogueChain,54,-40);
-            this.dialogue.start();
-            //Start Tween.
-            let dialogueTween = this.dialogueDB[this.dialogueIndex].tween;
-            if(dialogueTween){
-                let npcTween = this.scene.tweens.add({
-                    targets: this,
-                    props: dialogueTween,
-                    onComplete: this.tweenComplete,
-                    onCompleteParams: [this],
-                });
-                // npcTween.on('complete', function(tween, targets){
-
-                // }, scope);
-            }
-        }
-    }
-    tweenComplete(tween, targets, npc){
-
-    }
     interact(obj){
-        if(this.checkDialogueType('interact')){
-            this.dialogTarget = obj;
-            this.triggerDialogue();
+        //If interaction by input is required
+        if(this.diaMgmr.checkType('interact')){
+            this.diaMgmr.setTarget(obj);
+            this.diaMgmr.trigger();
         }     
-    }
-    checkDialogueType(type){
-        if(this.dialogueDB[this.dialogueIndex].startAction.type == type){
-            return true;
-        }
-        return false;
-    }
-    checkDialogueRequirement(req){
-        let chk = true;
-        console.log("checkDialogueRequirement",req)
-        if(req != 'none'){
-            if(req.type == 'item'){
-                //Does solana have the requested item equipped?
-                chk = solana.equipment[req.value].equiped;
-            }
-        }
-
-        return chk;
-    }
-    checkReqAndIncrement(){
-        let req = this.dialogueDB[this.dialogueIndex].requirement;
-        let chk = this.checkDialogueRequirement(req);
-
-        if(chk){
-            this.incrementDialogue();
-        }
-        
     }
 };
 class NPCSensor extends Phaser.Physics.Matter.Image{
@@ -345,6 +229,7 @@ class Polaris extends NPC{
     }
     incrementDialogue(){
         this.dialogueIndex++;
+        //Set Global value for tracking
         guideDialogueIndex =  this.dialogueIndex;  
     }
 };

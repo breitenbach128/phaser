@@ -703,7 +703,6 @@ class Telebeam extends Phaser.Physics.Matter.Sprite{
             callbackScope: this,
             onComplete: function(tween, target,tb){
                 tb.rotateReady = true;
-                console.log("telebeam rotate done");
             },
             onCompleteParams: [this]
         });

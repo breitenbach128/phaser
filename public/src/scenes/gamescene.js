@@ -170,7 +170,7 @@ var GameScene = new Phaser.Class({
             if(e.rectangle){
                 shapeObject = this.add.rectangle(e.x + (e.width / 2), e.y + (e.height / 2),e.width, e.height);
                 newBody = this.matter.add.gameObject(shapeObject, { shape: { type: 'rectangle', flagInternal: true } });
-                console.log("Light Shape: RECT :",createLightObstacleRect(e.x,e.y,e.width,e.height));
+                //console.log("Light Shape: RECT :",createLightObstacleRect(e.x,e.y,e.width,e.height));
                 lightPolygons.push(createLightObstacleRect(e.x,e.y,e.width,e.height));
             }else if(e.ellipse && (e.width == e.height)){
                 shapeObject = this.add.circle(e.x + (e.width / 2), e.y + (e.height / 2),e.width/2); 
@@ -184,14 +184,14 @@ var GameScene = new Phaser.Class({
                 //newHull = new HullPolygon(this,e.x,e.y,e.polygon,0x0000ff,0.2);
 
                 newBody = this.matter.add.gameObject(shapeObject, { shape: { type: 'fromVerts', verts: e.polygon, flagInternal: true } });  
-                console.log("Light Shape: POLYGON :",createLightObstaclePolygon(e.x,e.y,shapeObject.geom.points));  
+                //console.log("Light Shape: POLYGON :",createLightObstaclePolygon(e.x,e.y,shapeObject.geom.points));  
                 lightPolygons.push(createLightObstaclePolygon(e.x,e.y,shapeObject.geom.points));            
             }
             shapeObject.setVisible(false);
             shapeObject.setStatic(true);
             shapeObject.setCollisionCategory(CATEGORY.SOLID) 
             shapeObject.body.label = 'GROUND'; 
-            console.log("Poly Object",shapeObject);
+            //console.log("Poly Object",shapeObject);
             //Need to add light blocking polygon check here.
             hulls.push(shapeObject);
         });
@@ -399,14 +399,14 @@ var GameScene = new Phaser.Class({
 
                 if(tmxObjRef.type == "guide"){
                     tutorialRunning = true;                    
-                    polaris = new Polaris(this,tmxObjRef.x,tmxObjRef.y);
+                    //polaris = new Polaris(this,tmxObjRef.x,tmxObjRef.y);
 
                     //Check for state saves
                     let findState = findWithAttr(guideStates,'map',current_map);
                     if(findState == -1){
-                        guideStates.push(new stateData('polaris',current_map,polaris.x,polaris.y))
+                        //guideStates.push(new stateData('polaris',current_map,polaris.x,polaris.y))
                     }else{
-                        polaris.setPosition(guideStates[findState].pos.x,guideStates[findState].pos.y);
+                        //polaris.setPosition(guideStates[findState].pos.x,guideStates[findState].pos.y);
                     };//Set this so it starts the running guide
                 }else{
                     npcs.get(tmxObjRef.x,tmxObjRef.y,'npc1');
@@ -1289,7 +1289,7 @@ var GameScene = new Phaser.Class({
         this.particle_soulight.emitters.list[0].setSpeedY(soullight.body.velocity.y);
         if(boss != -1){boss.update(time,delta);}
         if(tutorialRunning){
-            polaris.update(time,delta);
+            //polaris.update(time,delta);
         };
 
         //Draw lighting        
@@ -1299,7 +1299,7 @@ var GameScene = new Phaser.Class({
         shadow_context.save();        
         shadow_context.globalCompositeOperation='destination-out';    
         //Cut out line of sight blockers
-        this.cutCanvasRaycastPolygon(soullight.x,soullight.y,soullight.protection_radius.value*2,shadow_context);
+        this.cutCanvasRaycastPolygon(soullight.x,soullight.y,soullight.protection_radius.value*5,shadow_context);
      
         var solana_in_light = false;
 
@@ -1307,7 +1307,7 @@ var GameScene = new Phaser.Class({
 
 
         if(tutorialRunning){
-            shadow_context = this.cutCanvasCircle(polaris.x,polaris.y,128,shadow_context);
+            //shadow_context = this.cutCanvasCircle(polaris.x,polaris.y,128,shadow_context);
         }
         if(Phaser.Math.Distance.Between(soullight.x,soullight.y,solana.x,solana.y) <= soullight.protection_radius.value){solana_in_light = true;}
         
@@ -1524,8 +1524,8 @@ var GameScene = new Phaser.Class({
         if(tutorialRunning){
             let findState = findWithAttr(guideStates,'map',current_map);
             if(findState != -1){
-                guideStates[findState].pos.x = polaris.x;
-                guideStates[findState].pos.y = polaris.y;
+                //guideStates[findState].pos.x = polaris.x;
+                //guideStates[findState].pos.y = polaris.y;
             }else{
                 console.log("Error: No Polaris State data to update");
             }

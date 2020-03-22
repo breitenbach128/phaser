@@ -36,7 +36,7 @@
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-3-14-2020";
+    var buildVersion = "a-3-22-2020";
     var game;
     var hud;
     var playScene;
@@ -46,7 +46,7 @@
     //Tiles
     var map; 
 
-    var current_map = "map3";
+    var current_map = "map1";
 
     var current_exit = "west1";
     var world_background;
@@ -62,6 +62,8 @@
     var new_enemy;
     var spawner;
     var spawnlayer;
+    //Solbits
+    var solbits = [];
     //NPC Control
     var guideDialogueIndex = 0;
     var tutorialRunning = false;
@@ -270,7 +272,7 @@
 
     //Global Gamepad Phaser Functions
     function initGamePads(scene,callback){
-        console.log("Setup GamePad for ", scene.scene.key);
+        //console.log("Setup GamePad for ", scene.scene.key);
         gamePad[0] = new GamepadControl(0);
         gamePad[1] = new GamepadControl(0);
 
@@ -278,10 +280,10 @@
             let iagp = getInactiveGamePad();
             if(iagp != -1){
                 if(checkPadIsTaken(pad.index) == false){
-                    console.log("DEBUG: NEWGP:",pad)
+                    //console.log("DEBUG: NEWGP:",pad)
 
                     gamePad[iagp] = new GamepadControl(pad);
-                    console.log(scene.scene.key,'Playing with ' + pad.id, pad.index,"Slot",iagp,gamePad);    
+                    //console.log(scene.scene.key,'Playing with ' + pad.id, pad.index,"Slot",iagp,gamePad);    
                     callback(scene,pad.index,iagp);      
 
                 }
@@ -344,15 +346,15 @@
     }
     function addGamePads(pad){
         let availPad = getInactiveGamePad();
-        console.log("Adding Game Pad (FUNC): to index",availPad);
+        //console.log("Adding Game Pad (FUNC): to index",availPad);
         if(availPad == -1){
             //All pads filled up. 
-            console.log("No gamepads available!")
+            //console.log("No gamepads available!")
         }else{
             gamePad[availPad] = pad;
             gamePad[availPad].index = availPad;            
         }
-        console.log("gamepad data:",gamePad,"navGPs:",navigator.getGamepads());
+        //console.log("gamepad data:",gamePad,"navGPs:",navigator.getGamepads());
     }
     function createControls(scene){
         //Configure Controls by simple names

@@ -4,10 +4,10 @@ class GamepadControl {
         this.ready = false;
         if(device == 0){
             device = this.nulldevice();
-            console.log("game Controller class booted - no controller. Loaded with empty values");
+            //console.log("game Controller class booted - no controller. Loaded with empty values");
             this.loadDefaults();
         }else{
-            console.log("game Controller class booted - loading device.");
+            //console.log("game Controller class booted - loading device.");
             //this.ready = true;
             let loadConfigResult = this.loadGamePadConfiguration(device);            
             if(!loadConfigResult){
@@ -97,7 +97,7 @@ class GamepadControl {
 
             if(foundConfig){
                 //Found Config, so load it.
-                console.log("Found Matching Config: " + id);
+                //console.log("Found Matching Config: " + id);
 
                 ///THI IS THE BUGGGGG!!! THis is global, so it is causing the conflict since both reference the "same" buttons.
                 this.buttons = JSON.parse(JSON.stringify(gamepadConfigs[curr_config].setupButtons));

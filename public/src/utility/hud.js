@@ -149,12 +149,28 @@ class HudScene extends Phaser.Scene {
             frameRate: 4,
             repeat: -1
         });
-        let sol_pieces_ui = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
-        sol_pieces_ui.anims.play('sol_dead-1', true);
-        let sol_pieces_collected_1 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
-        sol_pieces_collected_1.anims.play('sol_shardglow-1', true);
-        let sol_pieces_collected_2 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
-        sol_pieces_collected_2.anims.play('sol_shardglow-2', true);
+
+        this.anims.create({
+            key: 'talkinghead',
+            frames: this.anims.generateFrameNumbers('hud_talking_head', { frames:[0,1,2,1] }),
+            frameRate: 12,
+            repeat: -1
+        });
+        
+        //Eats up too much space. Work on better solution.
+        // let sol_pieces_ui = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
+        // sol_pieces_ui.anims.play('sol_dead-1', true);
+        // let sol_pieces_collected_1 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
+        // sol_pieces_collected_1.anims.play('sol_shardglow-1', true);
+        // let sol_pieces_collected_2 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
+        // sol_pieces_collected_2.anims.play('sol_shardglow-2', true);
+
+        // this.talkinghead_left = this.add.sprite(32,this.cameras.main.height-64*3,'hud_talking_head',0).setOrigin(0,0);
+        // this.talkinghead_right = this.add.sprite(this.cameras.main.width-32,this.cameras.main.height-64*3,'hud_talking_head',0).setOrigin(1,0).setFlip(true,false);
+        // this.talkinghead_left.anims.play('talkinghead', true);
+        // this.talkinghead_left.setScale(4);
+        // this.talkinghead_right.anims.play('talkinghead', true);
+        // this.talkinghead_right.setScale(4);
     }
     alterEnergy(energyChange){
         let n = this.energy.n + energyChange;

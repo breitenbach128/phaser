@@ -141,3 +141,140 @@ class Dialogue {
 	}
 }
 
+class DialogueManager {
+	constructor(scene, db, enabled, index, flow, source, target){
+		this.scene = scene;	
+		this.db = JSON.parse(JSON.stringify(db)); //Parse the dialog data into a new object for a deep copy
+		this.enabled = enabled;
+		this.index = index; // Starting index of db
+        this.flow = flow;//'random', 'ordered', 'reverse' - How the index moves
+        this.triggered = false;
+        this.ready = false;
+        this.delay = this.getTriggerValue();
+		this.target = target; // Who is being talked to?
+		this.source = source;// Who is talking?
+		this.loop = false;
+		//Timer which delays the start of the dialog being ready.
+		this.readyTimer = this.scene.time.addEvent({ delay: this.delay, callback: this.start, callbackScope: this, loop: false });
+		//Attach to the scene update event. I will need to depose of this properly. This will allow it to be independent of the object
+		//that called the dialogue. I can pause the gamescene, and then just run the HUD for interaction.
+	}
+	update(){
+        if(this.enabled){
+			//When Do I create the dialogue object?
+            if(this.checkType('auto') || this.checkType('delay')){
+                this.trigger();
+            }else if(this.checkType('distance')){
+                if(Phaser.Math.Distance.Between(this.source.x,this.source.y,this.target.x,this.target.y) < this.getTriggerValue()){                    
+                    this.trigger();
+                }
+			}
+			
+			//If the dialogue object has been created, run it, and track it's status;
+            if(this.dialogue != undefined){
+                if(this.dialogue.isComplete){
+                    this.reset();
+                }else if(this.dialogue.isRunning){
+                    this.dialogue.update();
+                }
+            }
+        }
+	}
+	getTriggerValue(){	
+		//Grab the type value. used for delays, distance, etc	
+		let sVal = this.db[this.index].startAction.value ? this.db[this.index].startAction.value : 0;
+		return sVal;
+	}
+	setEnabled(status){
+		this.dialogueEnabled = status;
+	}
+	start(){
+		this.ready = true;
+	}
+	trigger(){
+		if(this.triggered == false && this.ready == true){
+            this.triggered = true;
+            //Start Dialogue
+            let dialogueChain = this.db[this.index].data;
+			let dialogueTween = this.db[this.index].tween;
+			
+            for(let i=0;i<dialogueChain.length;i++){
+                let e = dialogueChain[i];
+                if (e.speaker == 'src') {
+                    e.speaker = this.source;
+                } else if (e.speaker == 'trg') {
+                    e.speaker = this.target;
+                };
+			}
+			let dialogueSpeaker = this.db[this.index].speaker;//Get the speaker object
+
+            this.dialogue = new Dialogue(this.scene,dialogueChain,54,-40);
+            this.dialogue.start();
+            //Start Tween.
+            if(dialogueTween){
+                let npcTween = this.scene.tweens.add({
+                    targets: dialogueSpeaker,
+                    props: dialogueTween,
+                    onComplete: this.tweenComplete,
+                    onCompleteParams: [this],
+                });
+                // npcTween.on('complete', function(tween, targets){
+
+                // }, scope);
+            }
+        }
+	}
+	tweenComplete(tween, targets, obj){
+		//If this tween complete is needed. This can be handled thru other timing events though.
+    }	
+	increment(value){
+		//Allow for decrement OR increment
+		this.index+=value;
+	}
+	reset(){
+        //Dialogue Completed, Move to next.
+        if(this.index < this.db.length-1){  
+            if(this.checkRequirement()){
+				//Do a flow control check in the future, and make it adjust the direction
+				this.increment(1);
+			}
+        }else{
+            if(this.dialogLoop){
+                this.dialogueIndex = 0;     
+            }else{
+                this.dialogueIndex = 0;
+                this.dialogueEnabled = false;
+            }
+        }
+        //Reset Basic values and gather incremented ones
+        this.dialogue = undefined;
+        this.triggered = false;        
+		this.delay = this.getTriggerValue();
+		this.ready = false;
+		//Restart timer
+        this.readyTimer = this.scene.time.addEvent({ delay: this.delay, callback: this.start, callbackScope: this, loop: false });
+	}
+	checkRequirement(){
+		//This needs some work still. I want to add additional requirement types here, such as energy level
+		//Shards, items, etc.
+		let chk = true;
+		let req = this.db[this.index].requirement;
+        if(req != 'none'){
+            if(req.type == 'item'){
+                //Does solana have the requested item equipped? This is SPECIFIC to the Solana object / player
+                chk = solana.equipment[req.value].equiped;
+            }
+        }
+        return chk;
+	}
+	checkType(type){
+        if(this.db[this.index].startAction.type == type){
+            return true;
+        }
+        return false;
+	}
+	setTarget(obj){
+		this.target = obj;
+	}
+}
+
