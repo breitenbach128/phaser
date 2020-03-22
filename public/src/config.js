@@ -36,7 +36,7 @@
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-3-14-2020";
+    var buildVersion = "a-3-22-2020";
     var game;
     var hud;
     var playScene;
@@ -62,6 +62,8 @@
     var new_enemy;
     var spawner;
     var spawnlayer;
+    //Solbits
+    var solbits = [];
     //NPC Control
     var guideDialogueIndex = 0;
     var tutorialRunning = false;

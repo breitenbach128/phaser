@@ -61,10 +61,6 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 
         // this.aimLine = this.scene.add.line(200,200,25,0,50,0,0xff66ff)
         // this.aimLine.setLineWidth(4,4);
-        //Powerups : This replaces the equipment on Solana. Instead, different Sol bits offer new powers
-        // They will contain a quick image tutorial to show the player how to do it.
-        // They will also need an effect when they are collected
-        this.solbits = [];
 
     }
 
@@ -367,27 +363,20 @@ class SoulCrystal extends Phaser.Physics.Matter.Sprite{
 // Learn that lamps can be lit by the soulight. Pressure plates to trigger gates.
 
 //Orange (Found in village) - Slime Monster Boss - Crystal of Mass
-// Double Jump / Wall Slide - Dark Crush Rocks / Break - Bright Flare (Sends off a small temporary lamp)
+// Double Jump / Wall Slide - Dark Surge (Dash forward) / Break - Bright Flare (Sends off a small temporary lamp)
 
-//Blue (Found in Caves) - Corrupted Spider Boss - Crystal of Unity
-// Shield (Protection at cost of power) /Merge  - Bright burst / 
+//Blue (Found in Caves) - Corrupted Spider Boss - Crystal of Fusion
+// Shield (Protection at cost of power) /Merge  - Bright burst /  Dark Slam (Greatly accelerates downwards and can smash objects he could not before.).
 
-//Green (Found in Forest) - Corrupted Tree Boss
+//Green (Found in Forest) - Corrupted Tree Boss - Crystal of Time
+// Solana Light Dash  / Bright Beam - Blocks of Light to run on / Dark Warp (Time Slowing Bubble)
 
-//Pink (Found in Mountain) - Corrupted Bear Boss
+//Pink (Found in Mountain) - Corrupted Bear Boss - Crystal of Power
+// Soullight Gains radius. Kills return more shards. / Dark can convert dark shards to health for solana.
 
-//Gray (Found in Swamp) - Super Slime Monster Boss
+//Gray (Found in Swamp) - Super Slime Monster Boss - Crystal of Vacuum 
+// Fusion - Solana Teleports instantly to bright, taking soulight / Bright - Phase (Can pass thru certain barriers) / Dark - Singularity (Create a mini black hole. Attracts things, including solana.)
 
 
-
-//Singularity - Dark
-
-//Search for the Light - Solana : Solana Teleports to Bright, instantly taking the light and turning him to dark.
-
-//Wings of the Phoenix - Solana: Allows her to second jump, surging forward and slightly up.
-
-//Bright Bump - Bright: Bumps Solana in a direction. Can toss her up.
-
-//Bright Beam - Bright: Fires a beam that can be walked on by Solana and persists for a short time.
 
 

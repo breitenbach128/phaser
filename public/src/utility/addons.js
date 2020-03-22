@@ -156,6 +156,8 @@ class DialogueManager {
 		this.loop = false;
 		//Timer which delays the start of the dialog being ready.
 		this.readyTimer = this.scene.time.addEvent({ delay: this.delay, callback: this.start, callbackScope: this, loop: false });
+		//Attach to the scene update event. I will need to depose of this properly. This will allow it to be independent of the object
+		//that called the dialogue. I can pause the gamescene, and then just run the HUD for interaction.
 	}
 	update(){
         if(this.enabled){
