@@ -36,7 +36,7 @@
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-3-22-2020";
+    var buildVersion = "a-3-23-2020";
     var game;
     var hud;
     var playScene;
@@ -46,7 +46,7 @@
     //Tiles
     var map; 
 
-    var current_map = "map1";
+    var current_map = "map2";
 
     var current_exit = "west1";
     var world_background;
@@ -62,8 +62,7 @@
     var new_enemy;
     var spawner;
     var spawnlayer;
-    //Solbits
-    var solbits = [];
+
     //NPC Control
     var guideDialogueIndex = 0;
     var tutorialRunning = false;

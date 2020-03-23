@@ -215,6 +215,57 @@ class HudScene extends Phaser.Scene {
             this.shard_totals.dark = this.shard_totals.dark + value;
         }
     }
+    collectSoulCrystal(gs,x,y,zoom,texture,anim,frame,sbid){
+        //Flash / Effect
+        this.cameras.main.flash(300,255,255,0,false);
+        //pause gamescene
+        gs.scene.pause();
+
+        //Check for player distance to calc which camera to use.
+
+        //Generate HUD positioned crystal for pause and animation
+        let crypos = {x:(x-camera_main.worldView.x)*zoom,y:(y-camera_main.worldView.y)*zoom};
+        let solpos = {x:(solana.x-camera_main.worldView.x)*zoom,y:(solana.y-camera_main.worldView.y)*zoom};
+        
+        let sc  = this.add.sprite(crypos.x,crypos.y,texture,frame);
+        sc.anims.play(anim, false);
+        sc.setScale(2);
+        sc.swingdata = -90;
+
+        var timeline = this.tweens.createTimeline();
+        // 100s  should be changed to 1000 later. Right now, just speeds up testing
+        timeline.add({targets: sc,x: sc.x,y:sc.y-50,ease: 'Power1',duration: 1000,hold: 100});        
+        timeline.add({targets: sc,x: solpos.x,y:solpos.y-32,ease: 'Power1',duration: 1000,hold: 100});
+        timeline.add({
+            targets: sc,
+            swingdata: 270,
+            ease: 'linear',
+            duration: 1000,       
+            onUpdate: function(tween, target){
+                let rad = Phaser.Math.DegToRad(target.swingdata);
+                target.x = Math.cos(rad)*32 + solpos.x;
+                target.y = Math.sin(rad)*32 + solpos.y;
+             }
+        });
+        timeline.add({
+            targets: sc,
+            x: solpos.x,
+            y:solpos.y,
+            ease: 'Power1',
+            duration: 1000,
+            hold: 100,
+            onComplete: function(tween,targets,hud){
+                sc.destroy();
+                hud.cameras.main.flash(300,255,255,0,false);
+                solbits[sbid].collect();//Run Class Collection function to take whatever actions are needed.
+                gs.scene.resume();
+                //Slight bug. Controls get locked. Need to unlock / clear them.
+            },
+            onCompleteParams: [ this ]
+        });
+        timeline.play();
+    }
+
     setHealth(hp,max)
     {
         for(var h = 0;h < max;h++){

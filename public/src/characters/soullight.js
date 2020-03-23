@@ -31,7 +31,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 
         this.owner = owner.sprite;
 
-        this.ownerid = 1;
+        this.ownerid = 0;
         
 
         this.debug = this.scene.add.text(this.x, this.y-16, 'SoulLight', { fontSize: '10px', fill: '#00FF00' });              
@@ -61,6 +61,15 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 
         // this.aimLine = this.scene.add.line(200,200,25,0,50,0,0xff66ff)
         // this.aimLine.setLineWidth(4,4);
+
+        this.setVisible(false);//Until the init Soulcrystal is collected, it is not visible.
+        
+        //Create Soulight Effect
+        //This should be inactive until the player retrieves the soulight gem for the first time.
+        this.scene.particle_soulight = this.scene.add.particles('shapes',  this.scene.cache.json.get('effect-flame-fall'));   
+        //this.particle_soulight.emitters.list[0].setScale(0.5);
+        this.scene.particle_soulight.emitters.list[0].setLifespan(160);
+        this.scene.particle_soulight.setActive(false);
 
     }
 
@@ -218,6 +227,10 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.isBeaming = false;
         this.passChain = [];
     }
+    claim(){
+        this.scene.particle_soulight.setActive(true);
+        this.setVisible(true);
+    }
 
 }
 //Soul Transfer is the "Bullet" that will hit before the Soulight can transfer.
@@ -307,18 +320,9 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
     }
 
 }
-//Each Bit unlocks an ability for both Solana and Bright
-class Solbit{
-    constructor(id,n,desc){
-        this.id = id;
-        this.name = n;
-        this.description = desc;
-
-    }
-}
 
 class SoulCrystal extends Phaser.Physics.Matter.Sprite{
-    constructor(scene, x, y, texture, frame) {
+    constructor(scene, x, y, texture, animationTexture, frame, sbid) {
         super(scene.matter.world, x, y, texture, frame)
         this.scene = scene;
         scene.matter.world.add(this);
@@ -337,22 +341,69 @@ class SoulCrystal extends Phaser.Physics.Matter.Sprite{
             restitution: 0.0,
             label: "SOULCRYSTAL"
           });
-          this
-            .setExistingBody(compoundBody)
-            .setPosition(x, y)
-            .setIgnoreGravity(true)
-            .setCollisionCategory(CATEGORY.SOLID)
-            .setCollidesWith([ CATEGORY.SOLANA]);            
-            //Add to game update
-            this.scene.events.on("update", this.update, this);
-            this.anims.play('telebeam-idle', true);
+        this
+        .setExistingBody(compoundBody)
+        .setPosition(x, y)
+        .setIgnoreGravity(true)
+        .setCollisionCategory(CATEGORY.SOLID)
+        .setCollidesWith([ CATEGORY.SOLANA]);   
+
+        //Add to game update
+        this.scene.events.on("update", this.update, this);
+        console.log( x, y, texture, animationTexture, frame, sbid);
+        this.anims.play(animationTexture, false);
+        this.sbid = sbid;
+        this.animationTexture = animationTexture;
+        this.doCollect = false;
     }
     update(time,delta)
     {
-
+        if(this.doCollect){            
+            //Create Soulcrystal timeline for animation of collection
+            hud.collectSoulCrystal(this.scene,this.x,this.y,2,this.texture.key,this.animationTexture,0,this.sbid)
+            //Remove It.
+            this.scene.events.off("update", this.update, this);
+            this.destroy();
+        }
+    }
+    collect(){
+        this.doCollect = true;
     }
 }
-
+//Each Bit unlocks an ability for both Solana and Bright
+class Solbit{
+    constructor(id,n,desc){
+        this.id = id;
+        this.name = n;
+        this.description = desc;
+        this.aquired = false;   
+    }
+    collect(){
+        //What do they do when collected?
+        if(this.id == 0){
+            //Handle the soulight initialization.
+            soullight.claim();
+            console.log("Collected", this.name, this.description);
+        }
+    }
+}
+//Solbits - Global
+var solbits = [
+    new Solbit(0,'Crystal of Sol','Carries the basic essense of Sol'),
+    new Solbit(1,'Crystal of Mass','Carries the basic essense of Sol'),
+    new Solbit(2,'Crystal of Fusion','Carries the basic essense of Sol'),
+    new Solbit(3,'Crystal of Time','Carries the basic essense of Sol'),
+    new Solbit(4,'Crystal of Power','Carries the basic essense of Sol'),
+    new Solbit(5,'Crystal of Vacuum','Carries the basic essense of Sol')
+];
+//Solbit Utlity Functions
+function checkSolbitOwned(index){
+    if(index <= solbits.length && index > -1){
+        return solbits[index].aquired;
+    }else{
+        return false;
+    }
+}
 
 //6 Crystals: (Bits) : Yellow, Gray, Orange, Blue, Green, Pink
 //Bright has a small aura himself.

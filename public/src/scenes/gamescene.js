@@ -204,13 +204,8 @@ var GameScene = new Phaser.Class({
         // create the solana sprite    
         solana = new Solana(this,192,160);  
         bright = new Bright(this,192,128);
-        soullight =new SoulLight({scene: this, x:192,y:128,sprite:'bright',frame:0},bright);
+        soullight =new SoulLight({scene: this, x:192,y:128,sprite:'bright',frame:0},solana);
 
-        //Create Soulight Effect
-        //This should be inactive until the player retrieves the soulight gem for the first time.
-        this.particle_soulight = this.add.particles('shapes',  this.cache.json.get('effect-flame-fall'));   
-        //this.particle_soulight.emitters.list[0].setScale(0.5);
-        this.particle_soulight.emitters.list[0].setLifespan(160);
         //
         this.changePlayerReady = true;
         //Emit Events
@@ -222,6 +217,8 @@ var GameScene = new Phaser.Class({
         //Animations - Move to JSON later, if it makes sense       
         createAnimations(this);
 
+        bright.toDark(); //Bright Starts the game off as dark
+
         //Create Camera        
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels+128);  
         this.cameras.main.setBackgroundColor('#ccccff'); 
@@ -232,9 +229,7 @@ var GameScene = new Phaser.Class({
         //Controls
         createControls(this);
 
-        //Test Soul Crystal
-        let sc = new SoulCrystal(this,224,160,'soulcrystal_blue',0)
-        sc.anims.play('scry_blue', false);
+
 
         //GROUPS
         //BrightBeams
@@ -579,6 +574,10 @@ var GameScene = new Phaser.Class({
                     this.cameras.main.centerOn(exitObj.x,exitObj.y);
                     // make the camera follow the solana
                     //this.cameras.main.startFollow(solana.sprite,true,.1,.1,0,0);
+
+                    //Test Soul Crystal
+                    let sc = new SoulCrystal(this,solana.x+112,solana.y,'soulcrystal_yellow','scry_yellow',0,0);
+                    //scene, x, y, texture, anim, frame, sbid
                 }
             }else{
                 exitObj = exits.get();
@@ -1041,6 +1040,13 @@ var GameScene = new Phaser.Class({
                         hud.collectShard('light',1);
                     }  
                 }
+                //Between SoulCrystal and Solana
+                if ((bodyA.label === 'SOULCRYSTAL' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'SOULCRYSTAL')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULCRYSTAL');
+                    if (gObjs[0].active){
+                        gObjs[0].collect();
+                    }  
+                }
                 //Between Solar blast and Enemies
                 if ((bodyA.label === 'ABILITY-SOLAR-BLAST' && bodyB.label === 'ENEMY') || (bodyA.label === 'ENEMY' && bodyB.label === 'ABILITY-SOLAR-BLAST')) {
                     //Get Bullet Object and run hit function
@@ -1410,7 +1416,6 @@ var GameScene = new Phaser.Class({
     changePlayer: function(){
         //this.cameras.main.stopFollow();
         if(this.changePlayerReady){
-            console.log("Player Changed")
             this.changePlayerReady = false;
             this.time.addEvent({ delay: 100, callback: function(){this.changePlayerReady = true;}, callbackScope: this, loop: false });
             if(curr_player == players.SOLANA){
