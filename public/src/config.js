@@ -46,7 +46,7 @@
     //Tiles
     var map; 
 
-    var current_map = "map2";
+    var current_map = "map1";
 
     var current_exit = "west1";
     var world_background;
@@ -366,7 +366,7 @@
             jump: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J),
             suicide: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P),
             passLight: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),
-            restart_scene: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),
+            test: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X),
             switch: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
             pulse: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
     

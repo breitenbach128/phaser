@@ -15,6 +15,8 @@ class HudScene extends Phaser.Scene {
         this.shard_totals = {light:0,dark:0};
         this.showBossBar = false;
         this.bossCropRect = new Phaser.Geom.Rectangle(0,0, 1, 1);
+
+        
     }
 
     update()
@@ -23,6 +25,7 @@ class HudScene extends Phaser.Scene {
             let debugString =  "CamX:"+String(Math.round(camera_main.worldView.x))
             +"\nCamY:" + String(Math.round(camera_main.worldView.y))
             +"\nPlayerMode:" + String(playerMode)
+            +"\nKeyPress_X:" + String(this.skipSpeech.isDown)
             +"\nDisPlayers:"+String(Math.round(Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y)));
             this.debug.setText(debugString);
 
@@ -80,6 +83,7 @@ class HudScene extends Phaser.Scene {
     }
     setupHud(player)
     {
+        this.skipSpeech = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
         this.ready = true;
         for(var h = 0;h < player.hp;h++){
             this.hp_blips.push(this.add.image(32,16+(h*16), 'health_blip'));    
@@ -165,12 +169,114 @@ class HudScene extends Phaser.Scene {
         // let sol_pieces_collected_2 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
         // sol_pieces_collected_2.anims.play('sol_shardglow-2', true);
 
-        // this.talkinghead_left = this.add.sprite(32,this.cameras.main.height-64*3,'hud_talking_head',0).setOrigin(0,0);
-        // this.talkinghead_right = this.add.sprite(this.cameras.main.width-32,this.cameras.main.height-64*3,'hud_talking_head',0).setOrigin(1,0).setFlip(true,false);
-        // this.talkinghead_left.anims.play('talkinghead', true);
-        // this.talkinghead_left.setScale(4);
-        // this.talkinghead_right.anims.play('talkinghead', true);
-        // this.talkinghead_right.setScale(4);
+        this.speaker_areaBG = this.add.rectangle(this.cameras.main.width/2,this.cameras.main.height-124,this.cameras.main.width-64,224,0x4b2a1b,1.0);
+        this.speaker_area = this.add.rectangle(this.cameras.main.width/2,this.cameras.main.height-124,this.cameras.main.width-96,192,0xffc139,1.0);
+
+        this.left_speakerBG =this.add.rectangle(16,this.cameras.main.height-124,196,196,0x4b2a1b,1.0).setOrigin(0,1);
+        this.left_speakerFG = this.add.rectangle(16+8,this.cameras.main.height-132,180,180,0xffc139,1.0).setOrigin(0,1);
+
+        this.right_speakerBG = this.add.rectangle(this.cameras.main.width-16,this.cameras.main.height-124,196,196,0x4b2a1b,1.0).setOrigin(1,1);
+        this.right_speakerFG = this.add.rectangle(this.cameras.main.width-24,this.cameras.main.height-132,180,180,0xffc139,1.0).setOrigin(1,1);
+       
+
+        this.talker_left = this.add.image(this.left_speakerFG.x,this.left_speakerFG.y,'hud_solana_head').setOrigin(0,1);
+        this.talker_right = this.add.image(this.right_speakerFG.x,this.right_speakerFG.y,'hud_bright_head').setOrigin(1,1);
+        this.talker_left.spk = 0;
+        this.talker_right.spk = 0;
+
+        this.right_speakerBG.setVisible(false)
+        this.right_speakerFG.setVisible(false)
+        this.talker_right.setVisible(false)
+
+        this.speaktext = this.add.text(this.speaker_area.x, this.speaker_area.y, 'Well, Im glad we are going on this adventure together.', { 
+            fontFamily: 'visitorTT1',
+            fontSize: '32px', 
+            fill: '#000000', 
+            shadow: {
+                offsetX: 2,
+                offsetY: 2,
+                color: '#333',
+                blur: 2,
+                stroke: false,
+                fill: true
+            },
+            wordWrap: {
+                width: this.speaker_area.width*(0.75),
+            }
+        }).setOrigin(0.5); 
+
+        let speakTestTimeline = this.tweens.createTimeline({
+            // onComplete: function(tl,param){
+            //     console.log("Speaker timeline complete");
+            //     param.this.speaker_area.setVisible(false);
+            //     param.this.speaker_areaBG.setVisible(false);
+            // },
+            // onCompleteParams: [this]
+        });
+        speakTestTimeline.setCallback('onComplete',
+        function(param){
+            console.log("Speaker timeline complete");
+            param.speaker_area.setVisible(false);
+            param.speaker_areaBG.setVisible(false);
+        },
+        [this],
+        speakTestTimeline);
+
+        speakTestTimeline.add({
+            targets: this.talker_left,
+            spk: 1,
+            duration: 3000,
+            onStart: function(tween,targets,sc){
+                sc.speaktext.setText("'Well, Im glad we are going on this adventure together.");
+                console.log("spk1-start");
+                sc.left_speakerBG.setVisible(true)
+                sc.left_speakerFG.setVisible(true)
+                sc.talker_left.setVisible(true)
+            },
+            onStartParams: [this],
+            onUpdate: function(tween,target,sc){
+                if(sc.skipSpeech.isDown){
+                    console.log("skip attempted");
+                    tween.seek(0.90);
+                }
+            },
+            onUpdateParams: [this]
+,           onComplete: function(tween,targets,sc){
+                sc.left_speakerBG.setVisible(false)
+                sc.left_speakerFG.setVisible(false)
+                sc.talker_left.setVisible(false)
+            },
+            onCompleteParams: [this],
+        }); 
+        speakTestTimeline.add({
+            targets: this.talker_right,
+            spk: 1,
+            duration: 3000,
+            onStart: function(tween,targets,sc){
+                sc.right_speakerBG.setVisible(true)
+                sc.right_speakerFG.setVisible(true)
+                sc.talker_right.setVisible(true)
+                sc.speaktext.setText("As am I. Shall we begin?");
+                console.log("spk2-start");
+            },
+            onStartParams: [this],
+            onUpdate: function(tween,target,sc){
+                if(sc.skipSpeech.isDown){
+                    console.log("skip attempted");
+                    //This is buggy. I need to find have a tracker in the scene. It keeps the button from being pressed more than once.
+                    tween.seek(0.90);
+                }
+            },
+            onUpdateParams: [this],
+            onComplete: function(tween,targets,sc){
+                sc.right_speakerBG.setVisible(false)
+                sc.right_speakerFG.setVisible(false)
+                sc.talker_right.setVisible(false)
+            },
+            onCompleteParams: [this],
+        }); 
+        speakTestTimeline.play();
+
     }
     alterEnergy(energyChange){
         let n = this.energy.n + energyChange;

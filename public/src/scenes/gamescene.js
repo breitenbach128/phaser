@@ -1388,12 +1388,7 @@ var GameScene = new Phaser.Class({
             //this.matter.world.engine.world.bodies
             console.log(Phaser.Physics.Matter.Matter.Query.point(this.matter.world.localWorld.bodies, {x:pointer.worldX, y:pointer.worldY}));
         }
-        
-        if(keyPad.checkKeyState('X') == 1){  
-            if(current_map == "map2"){current_map = "map3"}else{current_map = "map2"}; 
-            hud.clearHud();       
-            this.scene.restart();
-        }   
+         
         
         //Scroll parallax based on movement of bright or solana
         if(solana.mv_Xdiff != 0){
