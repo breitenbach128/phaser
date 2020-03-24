@@ -546,6 +546,14 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                     let vectorParse = JSON.parse(this.zonedata.value);
                     obj.readyThrown(vectorParse.x,vectorParse.y,vectorParse.time);                
                 }
+                if(this.zonedata.type == "dialogue"){
+                    let textParse = JSON.parse(this.zonedata.value);
+                    hud.storySpeech.createSpeech(textParse.spkImageLeft,textParse.spkImageRight,textParse.doPause);
+                    textParse.speechdata.forEach(e=>{
+                        hud.storySpeech.addToSpeech(e.p,e.txt,e.dur);
+                    });   
+                    hud.storySpeech.startSpeech();
+               }
             }
 
             if(this.zonedata.type == "teleport"){

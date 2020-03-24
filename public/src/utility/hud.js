@@ -169,113 +169,24 @@ class HudScene extends Phaser.Scene {
         // let sol_pieces_collected_2 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
         // sol_pieces_collected_2.anims.play('sol_shardglow-2', true);
 
-        this.speaker_areaBG = this.add.rectangle(this.cameras.main.width/2,this.cameras.main.height-124,this.cameras.main.width-64,224,0x4b2a1b,1.0);
-        this.speaker_area = this.add.rectangle(this.cameras.main.width/2,this.cameras.main.height-124,this.cameras.main.width-96,192,0xffc139,1.0);
-
-        this.left_speakerBG =this.add.rectangle(16,this.cameras.main.height-124,196,196,0x4b2a1b,1.0).setOrigin(0,1);
-        this.left_speakerFG = this.add.rectangle(16+8,this.cameras.main.height-132,180,180,0xffc139,1.0).setOrigin(0,1);
-
-        this.right_speakerBG = this.add.rectangle(this.cameras.main.width-16,this.cameras.main.height-124,196,196,0x4b2a1b,1.0).setOrigin(1,1);
-        this.right_speakerFG = this.add.rectangle(this.cameras.main.width-24,this.cameras.main.height-132,180,180,0xffc139,1.0).setOrigin(1,1);
-       
-
-        this.talker_left = this.add.image(this.left_speakerFG.x,this.left_speakerFG.y,'hud_solana_head').setOrigin(0,1);
-        this.talker_right = this.add.image(this.right_speakerFG.x,this.right_speakerFG.y,'hud_bright_head').setOrigin(1,1);
-        this.talker_left.spk = 0;
-        this.talker_right.spk = 0;
-
-        this.right_speakerBG.setVisible(false)
-        this.right_speakerFG.setVisible(false)
-        this.talker_right.setVisible(false)
-
-        this.speaktext = this.add.text(this.speaker_area.x, this.speaker_area.y, 'Well, Im glad we are going on this adventure together.', { 
-            fontFamily: 'visitorTT1',
-            fontSize: '32px', 
-            fill: '#000000', 
-            shadow: {
-                offsetX: 2,
-                offsetY: 2,
-                color: '#333',
-                blur: 2,
-                stroke: false,
-                fill: true
-            },
-            wordWrap: {
-                width: this.speaker_area.width*(0.75),
-            }
-        }).setOrigin(0.5); 
-
-        let speakTestTimeline = this.tweens.createTimeline({
-            // onComplete: function(tl,param){
-            //     console.log("Speaker timeline complete");
-            //     param.this.speaker_area.setVisible(false);
-            //     param.this.speaker_areaBG.setVisible(false);
-            // },
-            // onCompleteParams: [this]
-        });
-        speakTestTimeline.setCallback('onComplete',
-        function(param){
-            console.log("Speaker timeline complete");
-            param.speaker_area.setVisible(false);
-            param.speaker_areaBG.setVisible(false);
-        },
-        [this],
-        speakTestTimeline);
-
-        speakTestTimeline.add({
-            targets: this.talker_left,
-            spk: 1,
-            duration: 3000,
-            onStart: function(tween,targets,sc){
-                sc.speaktext.setText("'Well, Im glad we are going on this adventure together.");
-                console.log("spk1-start");
-                sc.left_speakerBG.setVisible(true)
-                sc.left_speakerFG.setVisible(true)
-                sc.talker_left.setVisible(true)
-            },
-            onStartParams: [this],
-            onUpdate: function(tween,target,sc){
-                if(sc.skipSpeech.isDown){
-                    console.log("skip attempted");
-                    tween.seek(0.90);
-                }
-            },
-            onUpdateParams: [this]
-,           onComplete: function(tween,targets,sc){
-                sc.left_speakerBG.setVisible(false)
-                sc.left_speakerFG.setVisible(false)
-                sc.talker_left.setVisible(false)
-            },
-            onCompleteParams: [this],
-        }); 
-        speakTestTimeline.add({
-            targets: this.talker_right,
-            spk: 1,
-            duration: 3000,
-            onStart: function(tween,targets,sc){
-                sc.right_speakerBG.setVisible(true)
-                sc.right_speakerFG.setVisible(true)
-                sc.talker_right.setVisible(true)
-                sc.speaktext.setText("As am I. Shall we begin?");
-                console.log("spk2-start");
-            },
-            onStartParams: [this],
-            onUpdate: function(tween,target,sc){
-                if(sc.skipSpeech.isDown){
-                    console.log("skip attempted");
-                    //This is buggy. I need to find have a tracker in the scene. It keeps the button from being pressed more than once.
-                    tween.seek(0.90);
-                }
-            },
-            onUpdateParams: [this],
-            onComplete: function(tween,targets,sc){
-                sc.right_speakerBG.setVisible(false)
-                sc.right_speakerFG.setVisible(false)
-                sc.talker_right.setVisible(false)
-            },
-            onCompleteParams: [this],
-        }); 
-        speakTestTimeline.play();
+        //Test new Speaker Class
+        this.storySpeech = new HudSpeech(this);
+        // this.storySpeech.createSpeech('hud_solana_head','hud_bright_head',false);
+        // this.storySpeech.addToSpeech('left',"This is test of text 1 block",3000);
+        // this.storySpeech.addToSpeech('right',"This is another test of text 2 block",3000);
+        // this.storySpeech.startSpeech();
+        
+        // this.testTimeSP = this.time.addEvent({
+        //     delay: 10000,
+        //     callback: function(){
+        //         testSpeech.createSpeech('hud_solana_head','hud_bright_head');
+        //         testSpeech.addToSpeech('left',"Second test of speech",3000);
+        //         testSpeech.addToSpeech('right',"Yup, we are still talking...",3000);
+        //         testSpeech.startSpeech();
+        //     }, 
+        //     callbackScope: this, 
+        //     loop: false 
+        // });
 
     }
     alterEnergy(energyChange){
@@ -364,7 +275,8 @@ class HudScene extends Phaser.Scene {
                 sc.destroy();
                 hud.cameras.main.flash(300,255,255,0,false);
                 solbits[sbid].collect();//Run Class Collection function to take whatever actions are needed.
-                gs.scene.resume();
+                
+                gs.scene.resume(); 
                 //Slight bug. Controls get locked. Need to unlock / clear them.
             },
             onCompleteParams: [ this ]
@@ -411,5 +323,154 @@ class HudScene extends Phaser.Scene {
         //     console.log("HUD-PlayerHurt",this.hp_blips[player.hp-1],this.hp_blips.length);
 
         // }, this);
+    }
+}
+
+class HudSpeech{
+    constructor(scene){
+        this.scene = scene;
+        let centerPoint = {x:this.scene.cameras.main.width/2,y:this.scene.cameras.main.height-124};
+        let w = this.scene.cameras.main.width;
+        let h = this.scene.cameras.main.height;
+
+        //Text Holder
+        this.speaktext = this.scene.add.text(centerPoint.x, centerPoint.y, 'Well, Im glad we are going on this adventure together.', { 
+            fontFamily: 'visitorTT1',
+            fontSize: '32px', 
+            fill: '#000000', 
+            shadow: {
+                offsetX: 2,
+                offsetY: 2,
+                color: '#333',
+                blur: 2,
+                stroke: false,
+                fill: true
+            },
+            wordWrap: {
+                width: (w-96)*(0.75),
+            }
+        }).setOrigin(0.5).setDepth(150); 
+        //Lists to make disabling, enabling quick and easy.
+        this.spAreaObj = [
+            this.scene.add.rectangle(centerPoint.x,centerPoint.y,w-64,224,0x4b2a1b,1.0).setDepth(100),
+            this.scene.add.rectangle(centerPoint.x,centerPoint.y,w-96,192,0xffc139,1.0).setDepth(100),
+            this.speaktext
+        ];
+        this.pLeftObj = [
+            this.scene.add.rectangle(16,h-124,196,196,0x4b2a1b,1.0).setOrigin(0,1).setDepth(100),
+            this.scene.add.rectangle(16+8,h-132,180,180,0xffc139,1.0).setOrigin(0,1).setDepth(100),
+            this.scene.add.image(16+8,h-132,'hud_solana_head').setOrigin(0,1).setDepth(100)
+        ];
+        this.pRightObj = [
+            this.scene.add.rectangle(w-16,h-124,196,196,0x4b2a1b,1.0).setOrigin(1,1).setDepth(100),
+            this.scene.add.rectangle(w-24,h-132,180,180,0xffc139,1.0).setOrigin(1,1).setDepth(100),
+            this.scene.add.image(w-24,h-132,'hud_bright_head').setOrigin(1,1).setDepth(100)
+        ];
+
+        this.ready = true;
+        this.pauseGame = false;  
+
+        this.pLeftObj[2].spk = 0;
+        this.pRightObj[2].spk = 0;
+
+        //Hide Everything to start
+        this.showSpeechArea(false);
+        this.showPortraitLeft(false);
+        this.showPortraitRight(false);
+
+
+    }
+    createSpeech(leftImage,rightImage,doPause){
+        if(this.ready){
+            //Adds a new sequence to play to the HUD.
+            this.pauseGame = doPause; 
+            if(doPause){playScene.scene.pause()};
+            //Speaker Portait image keys are require to show who is talking.
+
+            //Create the timeline here and setup a callback;
+
+            //Add parameters for if the speech should pause the game.
+            this.ready = false;
+            this.timeline = this.scene.tweens.createTimeline();
+
+            this.timeline.setCallback('onComplete',this.endSpeech,[this],this.timeline);
+        }else{
+            console.log("HUDSPEECH Timeline running");
+        }
+
+    }
+    addToSpeech(Portait,Text,Duration){
+        //Push new String data and durations into speech process.
+        let talkTrg = Portait == 'left' ? this.pLeftObj[2] : this.pRightObj[2];
+        //console.log("Adding to Speech",Portait,Text,Duration);
+        this.timeline.add({
+            targets: talkTrg,
+            spk: 1, // 0 -> 1 (Can be used as a progress percent)
+            duration: Duration, //3000 Seems to work well
+            onStart: this.blurbStart,
+            onStartParams: [this,Portait,Text],
+            onUpdate: this.blurbUpdate,
+            onUpdateParams: [this]
+,           onComplete: this.blurbComplete,
+            onCompleteParams: [this,Portait],
+        });
+    }
+    startSpeech(){
+        //Play the current speech
+        this.timeline.play();
+        this.showSpeechArea(true);
+    }
+    endSpeech(param){
+        //Stop the current speech and run actions
+        param.showSpeechArea(false);
+        param.showPortraitLeft(false);
+        param.showPortraitRight(false);
+        param.ready = true;
+        param.timeline.destroy();
+ 
+        if(param.pauseGame){
+            playScene.scene.resume();
+            param.pauseGame = false;
+        };
+    }
+    blurbStart(tween,targets,hs,p,text){
+        //console.log("Starting Blurb",p,text);
+        if(p == 'left'){
+            hs.showPortraitLeft(true);
+        }else if(p == 'right'){
+            hs.showPortraitRight(true);
+        }
+        hs.speaktext.setText(text);
+    }
+    blurbUpdate(tween,targets,hs){
+        //Allow the speach item to be skipped if a button is pressed.
+        if(hs.scene.skipSpeech.isDown && tween.progress < 0.90){
+            //console.log("skip attempted");
+            tween.seek(0.90);
+            hs.speaktext.setText("");
+            hs.endSpeech(hs);
+        }
+    }
+    blurbComplete(tween,targets,hs,p){
+        if(p == 'left'){
+            hs.showPortraitLeft(false);
+        }else if(p == 'right'){
+            hs.showPortraitRight(false);
+        }
+    }
+    showSpeechArea(state){
+        this.spAreaObj.forEach(e=>{
+            e.setVisible(state);
+        });
+    }
+    showPortraitLeft(state){
+        this.pLeftObj.forEach(e=>{
+            e.setVisible(state);
+        });
+    }
+    showPortraitRight(state){
+        this.pRightObj.forEach(e=>{
+            e.setVisible(state);
+        });
     }
 }

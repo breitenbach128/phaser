@@ -150,7 +150,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 if ((this.onGround || this.onWall) && this.body.velocity.y >= 0) { this.jumpCount = 0 }; //Add velocity check to not reset jump count if going up.
 
                 //Check Jump ready
-                if (this.onGround || this.onWall || (soullight.ownerid == 0 && this.jumpCount < 2)) {
+                if (this.onGround || this.onWall || (soullight.ownerid == 0 && soullight.claimed && this.jumpCount < 2)) {
                     this.jumpReady = true;
                     
 
@@ -216,7 +216,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         this.mv_direction.x = 0;
                     }
                     //Passing Soulight
-                    if (soullight.ownerid == 0) {
+                    if (soullight.ownerid == 0 && soullight.claimed) {
                         if (control_passPress) { soullight.aimStart() };
                         if (control_passRelease) { soullight.aimStop(); };
                     }

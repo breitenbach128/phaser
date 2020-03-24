@@ -32,7 +32,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.owner = owner.sprite;
 
         this.ownerid = 0;
-        
+        this.claimed = false; // No one owns it at the begining of the game. This prevents passing it around.
 
         this.debug = this.scene.add.text(this.x, this.y-16, 'SoulLight', { fontSize: '10px', fill: '#00FF00' });              
         this.passing = false;  
@@ -228,6 +228,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.passChain = [];
     }
     claim(){
+        this.claimed = true;
         this.scene.particle_soulight.setActive(true);
         this.setVisible(true);
     }
@@ -383,7 +384,9 @@ class Solbit{
         if(this.id == 0){
             //Handle the soulight initialization.
             soullight.claim();
-            console.log("Collected", this.name, this.description);
+            hud.storySpeech.createSpeech('hud_solana_head','hud_bright_head',false);
+            hud.storySpeech.addToSpeech('center',this.description,3000);
+            hud.storySpeech.startSpeech();
         }
     }
 }

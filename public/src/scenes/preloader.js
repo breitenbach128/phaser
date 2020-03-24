@@ -97,7 +97,7 @@ var Preloader = new Phaser.Class({
 		//StoryBoard Maps 
 		this.load.tilemapTiledJSON('storymap_forest_1', 'assets/world/storyboard_forest1.json');  
 		this.load.spritesheet('tiles32', 'assets/world/oldTileset32.png', {frameWidth: 32, frameHeight: 32, spacing: 2}); 
-		this.load.spritesheet('castle32', 'assets/world/tile_castle_grey.png', {frameWidth: 32, frameHeight: 32}); 
+		this.load.spritesheet('castle32', 'assets/world/tile_castle_grey_extruded.png', {frameWidth: 32, frameHeight: 32}); 
 		this.load.spritesheet('corruption32', 'assets/world/corruption.png', {frameWidth: 32, frameHeight: 32}); 
 		this.load.spritesheet('collisions32', 'assets/world/map_collision.png', {frameWidth: 32, frameHeight: 32}); 
 		
@@ -185,7 +185,8 @@ var Preloader = new Phaser.Class({
 		this.load.audio('coin', ['snd/coin.mp3', 'snd/coin.ogg']);
 		this.load.audio('bomb', ['snd/expl.mp3', 'snd/expl.ogg']);
 		this.load.audio('btn',  ['snd/btn.mp3', 'snd/btn.ogg']);
-		this.load.audio('jumpSolana',  ['snd/jump1.mp3']);
+		//this.load.audio('jumpSolana',  ['snd/jump1.mp3']);
+		this.load.audio('jumpSolana',  ['snd/jumpland.wav']);
 		this.load.audio('switch1',  ['snd/switch1.mp3']);
 		this.load.audio('switch2',  ['snd/switch2.mp3']);
 		this.load.audio('impact_hurt_groan',['snd/johnj_human_impact_hit_punch_head_slam_male_groan.mp3'])

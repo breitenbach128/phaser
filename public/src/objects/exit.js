@@ -58,6 +58,7 @@ class Exit extends Phaser.Physics.Matter.Sprite{
         }
     }
     nextLevel(){
+        this.scene.soundTheme.stop();
         //First, Save State
         this.scene.saveData();
         //Then, Transition to new map
