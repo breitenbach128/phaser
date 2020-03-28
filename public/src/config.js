@@ -46,7 +46,7 @@
     //Tiles
     var map; 
 
-    var current_map = "map1";
+    var current_map = "map3";
 
     var current_exit = "west1";
     var world_background;
