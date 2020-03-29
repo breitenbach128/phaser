@@ -30,39 +30,46 @@ var GameScene = new Phaser.Class({
         this.soundTheme = game.sound.add('forestTheme1');
         // this.soundTheme.addMarker({name:'themepart1',start:0,duration:6.0});  
         // this.soundTheme.play('themepart1',{loop: true, volume: 0.20});
-        this.soundTheme.play({loop: true, volume: 0.20});
-   
-        // //Map the map
-        // map = this.make.tilemap({key: 'map1'});
-        // // tiles for the ground layer
-        // var Tiles = map.addTilesetImage('map1_tiles','tiles');//called it map1_tiles in tiled
-        // // create the ground layer
-        // groundLayer = map.createDynamicLayer('ground', Tiles, 0, 0);
+        this.soundTheme.play({loop: true, volume: 0.20});   
 
-        //Map the map
-        map = this.make.tilemap({key: current_map});
 
-        //Create Background
-        world_background = this.add.tileSprite(512, 256, map.widthInPixels*2, map.heightInPixels*2, 'forest_background');
+        //Make the map
+        map = this.make.tilemap({key: current_map});      
+        //Get the lvl config from config.js object
+        let lvlCfg = getLevelConfigByName(current_map);
+        console.log(lvlCfg);
+        //Create Background - This will need to be custom based on the map.
+
+        world_backgrounds.push(this.add.tileSprite(512, 256, map.widthInPixels*2, map.heightInPixels*2, lvlCfg.backgrounds[0]));
 
         // tiles for the ground layer
-        var TilesForest = map.addTilesetImage('32Tileset','tiles32');//called it 32Tileset in tiled
-        var TilesCastle = map.addTilesetImage('32Castle','castle32');//called it 32Castle in tiled
-        var TilesCorruption = map.addTilesetImage('32Corruption','corruption32');//called it 32Corruption in tiled
+        // var TilesForest = map.addTilesetImage('32Tileset','tiles32');//called it 32Tileset in tiled
+        // var TilesCastle = map.addTilesetImage('32Castle','castle32');//called it 32Castle in tiled
+        // var TilesCorruption = map.addTilesetImage('32Corruption','corruption32');//called it 32Corruption in tiled
+
+        //Load all the tilesets graphics into an array. This makes it more dynamic. The layers will be consistent. The graphics may not.
+        //var tilesetImages = [TilesForest,TilesCastle,TilesCorruption];
+
+        var tilesetImages = [];
+        lvlCfg.tsPairs.forEach(e=>{
+            tilesetImages.push(map.addTilesetImage(e.tsName,e.tsKey));
+        });
+
+    
+        //Load the collision tiles
         var CollisionTiles = map.addTilesetImage('collision','collisions32');//called it collision in tiled
-        // create the ground layer
-      
-        let bglayer3 = map.createStaticLayer('bg3', [TilesCastle,TilesForest,TilesCorruption], 0, 0);
-        let bglayer2 = map.createStaticLayer('bg2', [TilesCastle,TilesForest,TilesCorruption], 0, 0);
-        let bglayer = map.createStaticLayer('bg', [TilesCastle,TilesForest,TilesCorruption], 0, 0);
-        let fglayer = map.createStaticLayer('fg', [TilesCastle,TilesForest,TilesCorruption], 0, 0); 
-        let fghiddenlayer= map.createDynamicLayer('fg_hidden', [TilesCastle,TilesForest,TilesCorruption], 0, 0); 
-        let fgbreakablelayer= map.createDynamicLayer('fg_breakable', [TilesCastle,TilesForest,TilesCorruption], 0, 0); 
+        // create the Graphic layers      
+        let bglayer3 = map.createStaticLayer('bg3', tilesetImages, 0, 0);
+        let bglayer2 = map.createStaticLayer('bg2', tilesetImages, 0, 0);
+        let bglayer = map.createStaticLayer('bg', tilesetImages, 0, 0);
+        let fglayer = map.createStaticLayer('fg', tilesetImages, 0, 0); 
+        //Create the special layers
+        let fghiddenlayer= map.createDynamicLayer('fg_hidden', tilesetImages, 0, 0); 
+        let fgbreakablelayer= map.createDynamicLayer('fg_breakable', tilesetImages, 0, 0); 
        
         //CREATE SECRET AREAS WITH HIDDEN FOREGROUND
         //fghiddenlayer.setDepth(DEPTH_LAYERS.FG);
         secretTiles = this.add.group({classType:SecretTile, runChildUpdate:true});
-        console.log("S Tile Grp",secretTiles);
         fghiddenlayer.forEachTile(function (tile) {
             if(tile.index != -1){
                 //console.log(tile);
@@ -97,7 +104,6 @@ var GameScene = new Phaser.Class({
         // set the boundaries of our game world
         this.matter.world.convertTilemapLayer(this.collisionLayer);
         this.matter.world.setBounds(0,0,map.widthInPixels, map.heightInPixels);
-        console.log("Map size - Obj:",map.widthInPixels, map.heightInPixels,map);
         //Generate shadow canvas
         //Shadow Canvas
         if(this.textures.get("canvasShadow").key != "__MISSING"){  
@@ -1374,7 +1380,7 @@ var GameScene = new Phaser.Class({
                 this.debugPointer.y = -100;
                 this.matter.world.drawDebug = false;
                 this.matter.world.debugGraphic.clear();
-                console.log(this.matter.world);
+                //console.log(this.matter.world);
             }else{
                 this.matter.world.drawDebug = true;
                
@@ -1393,8 +1399,12 @@ var GameScene = new Phaser.Class({
         //Scroll parallax based on movement of bright or solana
         if(solana.mv_Xdiff != 0){
             //Parallax Background
-            let paraMove = solana.mv_Xdiff < 0 ? -.50 : .50;
-            world_background.tilePositionX += paraMove;
+            let paraMove = solana.mv_Xdiff < 0 ? -1 : 1;
+            for(let i=0;i < world_backgrounds.length;i++){
+                let mvVal = 0.50*i*paraMove;
+                world_backgrounds[i].tilePositionX += mvVal;
+            }
+           
         }   
       
     },

@@ -70,6 +70,74 @@ var Preloader = new Phaser.Class({
 		// now load images, audio etc.
 		//Background
 		this.load.image('forest_background', 'assets/world/forest_bg.png');
+		this.load.image('PF_2DCastle1_1_background', 'tmx/tilesets/PF_2DCastle1.1/background.png');
+		this.load.image('PF_Caslte_1_0_background_day1', 'tmx/tilesets/PF_Caslte_1.0/background_day1.png');
+		this.load.image('PF_Caslte_1_0_background_day2', 'tmx/tilesets/PF_Caslte_1.0/background_day2.png');
+		this.load.image('PF_Caslte_1_0_background_day3', 'tmx/tilesets/PF_Caslte_1.0/background_day3.png');
+		this.load.image('PF_Caslte_1_0_background_night1', 'tmx/tilesets/PF_Caslte_1.0/background_night1.png');
+		this.load.image('PF_Caslte_1_0_background_night2', 'tmx/tilesets/PF_Caslte_1.0/background_night2.png');
+		this.load.image('PF_Caslte_1_0_background_night3', 'tmx/tilesets/PF_Caslte_1.0/background_night3.png');
+		this.load.image('PF_CastlePrison1_0_background_obj', 'tmx/tilesets/PF_CastlePrison1.0/background_obj.png');
+		this.load.image('PF_Caves_1_0_background1', 'tmx/tilesets/PF_Caves_1.0/background1.png');
+		this.load.image('PF_Caves_1_0_background2', 'tmx/tilesets/PF_Caves_1.0/background2.png');
+		this.load.image('PF_Caves_1_0_background3', 'tmx/tilesets/PF_Caves_1.0/background3.png');
+		this.load.image('PF_Caves_1_0_background4a', 'tmx/tilesets/PF_Caves_1.0/background4a.png');
+		this.load.image('PF_Caves_1_0_background4b', 'tmx/tilesets/PF_Caves_1.0/background4b.png');
+		this.load.image('PF_Fantasy_SET1_v1_0_background_day1', 'tmx/tilesets/PF_Fantasy_SET1_v1.0/background_day1.png');
+		this.load.image('PF_Fantasy_SET1_v1_0_background_day2', 'tmx/tilesets/PF_Fantasy_SET1_v1.0/background_day2.png');
+		this.load.image('PF_Fantasy_SET1_v1_0_background_day3', 'tmx/tilesets/PF_Fantasy_SET1_v1.0/background_day3.png');
+		this.load.image('PF_Fantasy_SET1_v1_0_background_night1', 'tmx/tilesets/PF_Fantasy_SET1_v1.0/background_night1.png');
+		this.load.image('PF_Fantasy_SET1_v1_0_background_night2', 'tmx/tilesets/PF_Fantasy_SET1_v1.0/background_night2.png');
+		this.load.image('PF_Fantasy_SET1_v1_0_background_night3', 'tmx/tilesets/PF_Fantasy_SET1_v1.0/background_night3.png');
+		this.load.image('PF_Fantasy_SET1_v1_0_background_obj', 'tmx/tilesets/PF_Fantasy_SET1_v1.0/background_obj.png');
+		this.load.image('PF_MountainPass_v1_0_background1', 'tmx/tilesets/PF_MountainPass_v1.0/background1.png');
+		this.load.image('PF_MountainPass_v1_0_background2', 'tmx/tilesets/PF_MountainPass_v1.0/background2.png');
+		this.load.image('PF_MountainPass_v1_0_background3', 'tmx/tilesets/PF_MountainPass_v1.0/background3.png');
+		this.load.image('PF_MountainPass_v1_0_background_sky', 'tmx/tilesets/PF_MountainPass_v1.0/background_sky.png');
+		this.load.image('PF_SET2_v1_0_background_day1', 'tmx/tilesets/PF_SET2_v1.0/background_day1.png');
+		this.load.image('PF_SET2_v1_0_background_day2', 'tmx/tilesets/PF_SET2_v1.0/background_day2.png');
+		this.load.image('PF_SET2_v1_0_background_day3', 'tmx/tilesets/PF_SET2_v1.0/background_day3.png');
+		this.load.image('PF_SET2_v1_0_background_day4', 'tmx/tilesets/PF_SET2_v1.0/background_day4.png');
+		this.load.image('PF_SET2_v1_0_background_night1', 'tmx/tilesets/PF_SET2_v1.0/background_night1.png');
+		this.load.image('PF_SET2_v1_0_background_night2', 'tmx/tilesets/PF_SET2_v1.0/background_night2.png');
+		this.load.image('PF_SET2_v1_0_background_night3', 'tmx/tilesets/PF_SET2_v1.0/background_night3.png');
+		this.load.image('PF_SET2_v1_0_background_night4', 'tmx/tilesets/PF_SET2_v1.0/background_night4.png');
+		this.load.image('PF_SET3_v1_0_background1', 'tmx/tilesets/PF_SET3_v1.0/background1.png');
+		this.load.image('PF_SET3_v1_0_background2', 'tmx/tilesets/PF_SET3_v1.0/background2.png');
+		this.load.image('PF_SET3_v1_0_background3', 'tmx/tilesets/PF_SET3_v1.0/background3.png');
+		this.load.image('PF_SET3_v1_0_background4', 'tmx/tilesets/PF_SET3_v1.0/background4.png');
+		this.load.image('PF_Set4_v1_0_background1_day', 'tmx/tilesets/PF_Set4_v1.0/background1_day.png');
+		this.load.image('PF_Set4_v1_0_background1_night', 'tmx/tilesets/PF_Set4_v1.0/background1_night.png');
+		this.load.image('PF_Set4_v1_0_background2A_day', 'tmx/tilesets/PF_Set4_v1.0/background2A_day.png');
+		this.load.image('PF_Set4_v1_0_background2A_night', 'tmx/tilesets/PF_Set4_v1.0/background2A_night.png');
+		this.load.image('PF_Set4_v1_0_background2B_day', 'tmx/tilesets/PF_Set4_v1.0/background2B_day.png');
+		this.load.image('PF_Set4_v1_0_background2B_night', 'tmx/tilesets/PF_Set4_v1.0/background2B_night.png');
+		this.load.image('PF_Set4_v1_0_background3_day', 'tmx/tilesets/PF_Set4_v1.0/background3_day.png');
+		this.load.image('PF_Set4_v1_0_background3_night', 'tmx/tilesets/PF_Set4_v1.0/background3_night.png');
+		this.load.image('PF_Set4_v1_0_background4_day', 'tmx/tilesets/PF_Set4_v1.0/background4_day.png');
+		this.load.image('PF_Set4_v1_0_background4_night', 'tmx/tilesets/PF_Set4_v1.0/background4_night.png');
+		this.load.image('PF_Set5_v1_0_background1', 'tmx/tilesets/PF_Set5_v1.0/background1.png');
+		this.load.image('PF_Set5_v1_0_background2', 'tmx/tilesets/PF_Set5_v1.0/background2.png');
+		this.load.image('PF_Set5_v1_0_background3', 'tmx/tilesets/PF_Set5_v1.0/background3.png');
+		this.load.image('PF_Set5_v1_0_background4', 'tmx/tilesets/PF_Set5_v1.0/background4.png');
+		this.load.image('PF_SnowyMountains_1_0_background1', 'tmx/tilesets/PF_SnowyMountains_1.0/background1.png');
+		this.load.image('PF_SnowyMountains_1_0_background2a', 'tmx/tilesets/PF_SnowyMountains_1.0/background2a.png');
+		this.load.image('PF_SnowyMountains_1_0_background2b', 'tmx/tilesets/PF_SnowyMountains_1.0/background2b.png');
+		this.load.image('PF_SnowyMountains_1_0_background3', 'tmx/tilesets/PF_SnowyMountains_1.0/background3.png');
+		this.load.image('PF_SnowyMountains_1_0_background4', 'tmx/tilesets/PF_SnowyMountains_1.0/background4.png');
+		this.load.image('PF_SnowyMountains_1_0_background5', 'tmx/tilesets/PF_SnowyMountains_1.0/background5.png');
+		this.load.image('PF_StrangeMountains_v1_0_background1', 'tmx/tilesets/PF_StrangeMountains_v1.0/background1.png');
+		this.load.image('PF_StrangeMountains_v1_0_background2', 'tmx/tilesets/PF_StrangeMountains_v1.0/background2.png');
+		this.load.image('PF_StrangeMountains_v1_0_background3', 'tmx/tilesets/PF_StrangeMountains_v1.0/background3.png');
+		this.load.image('PF_StrangeMountains_v1_0_background4', 'tmx/tilesets/PF_StrangeMountains_v1.0/background4.png');
+		this.load.image('PF_StrangeMountains_v1_0_background5', 'tmx/tilesets/PF_StrangeMountains_v1.0/background5.png');
+		this.load.image('PF_StrangeMountains_v1_0_background6', 'tmx/tilesets/PF_StrangeMountains_v1.0/background6.png');
+		this.load.image('PF_StrangeMountains_v1_0_background_fog', 'tmx/tilesets/PF_StrangeMountains_v1.0/background_fog.png');
+		this.load.image('PF_StrangeWorld1_0_background1', 'tmx/tilesets/PF_StrangeWorld1.0/background 1.png');
+		this.load.image('PF_StrangeWorld1_0_background2', 'tmx/tilesets/PF_StrangeWorld1.0/background 2.png');
+		this.load.image('PF_StrangeWorld1_0_background3', 'tmx/tilesets/PF_StrangeWorld1.0/background 3.png');
+		this.load.image('PF_StrangeWorld1_0_background4', 'tmx/tilesets/PF_StrangeWorld1.0/background 4.png');
+
 		//Icons
 		this.load.image('icon_keyboard','img/keyboard_icon_w.png');
 		this.load.image('icon_gamepad','img/gamepad_icon_w.png')
@@ -94,13 +162,62 @@ var Preloader = new Phaser.Class({
 		this.load.tilemapTiledJSON('map6', 'assets/world/map6_32ts.json');
 		this.load.tilemapTiledJSON('map7', 'assets/world/map7_32ts.json');
 		this.load.tilemapTiledJSON('map8', 'assets/world/map8_32ts.json');
-		//StoryBoard Maps 
+		//Map Assets - Game		
+		this.load.tilemapTiledJSON('m1s1', 'assets/world/m1s1.json');
+		//Map Tilesets
 		this.load.tilemapTiledJSON('storymap_forest_1', 'assets/world/storyboard_forest1.json');  
 		this.load.spritesheet('tiles32', 'assets/world/oldTileset32.png', {frameWidth: 32, frameHeight: 32, spacing: 2}); 
 		this.load.spritesheet('castle32', 'assets/world/tile_castle_grey_extruded.png', {frameWidth: 32, frameHeight: 32}); 
 		this.load.spritesheet('corruption32', 'assets/world/corruption.png', {frameWidth: 32, frameHeight: 32}); 
 		this.load.spritesheet('collisions32', 'assets/world/map_collision.png', {frameWidth: 32, frameHeight: 32}); 
-		
+		//Map Tilests - Game
+		this.load.spritesheet('PF_2DCastle1_1_environment', 'tmx/tilesets/PF_2DCastle1.1/environment.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_2DCastle1_1_env_objects', 'tmx/tilesets/PF_2DCastle1.1/env_objects.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_2DCastle1_1_env_objects_far', 'tmx/tilesets/PF_2DCastle1.1/env_objects_far.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_2DCastle1_1_ground', 'tmx/tilesets/PF_2DCastle1.1/ground.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_2DCastle1_1_terrain', 'tmx/tilesets/PF_2DCastle1.1/terrain.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_2DCastle1_1_walls', 'tmx/tilesets/PF_2DCastle1.1/walls.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_2DCastle1_1_walls_far', 'tmx/tilesets/PF_2DCastle1.1/walls_far.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_2DCastle1_1_walls_side_top', 'tmx/tilesets/PF_2DCastle1.1/walls_side_top.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_2DCastle1_1_walls_side_top_far', 'tmx/tilesets/PF_2DCastle1.1/walls_side_top_far.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_2DCastle1_1_wood_env', 'tmx/tilesets/PF_2DCastle1.1/wood_env.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Caslte_1_0_decorative', 'tmx/tilesets/PF_Caslte_1.0/decorative.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Caslte_1_0_mainlevbuild_A', 'tmx/tilesets/PF_Caslte_1.0/mainlevbuild_A.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Caslte_1_0_mainlevbuild_B', 'tmx/tilesets/PF_Caslte_1.0/mainlevbuild_B.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_CastlePrison1_0_mainlevbuild', 'tmx/tilesets/PF_CastlePrison1.0/mainlevbuild.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_CastlePrison1_0_mainlevbuildB', 'tmx/tilesets/PF_CastlePrison1.0/mainlevbuildB.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Caves_1_0_mainlev_build', 'tmx/tilesets/PF_Caves_1.0/mainlev_build.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Caves_1_0_props1', 'tmx/tilesets/PF_Caves_1.0/props1.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Caves_1_0_props2', 'tmx/tilesets/PF_Caves_1.0/props2.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Fantasy_SET1_v1_0_decorative_obj', 'tmx/tilesets/PF_Fantasy_SET1_v1.0/decorative_obj.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Fantasy_SET1_v1_0_mainlevbuild', 'tmx/tilesets/PF_Fantasy_SET1_v1.0/mainlevbuild.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_MountainPass_v1_0_decorative', 'tmx/tilesets/PF_MountainPass_v1.0/decorative.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_MountainPass_v1_0_mainlevbuild1', 'tmx/tilesets/PF_MountainPass_v1.0/mainlevbuild1.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Platformer1v_1_1_main_lev_build', 'tmx/tilesets/PF_Platformer1v.1.1/main_lev_build.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Platformer1v_1_1_other_and_decorative', 'tmx/tilesets/PF_Platformer1v.1.1/other_and_decorative.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_SET2_v1_0_decorative_obj', 'tmx/tilesets/PF_SET2_v1.0/decorative_obj.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_SET2_v1_0_mainlevbuild1', 'tmx/tilesets/PF_SET2_v1.0/mainlevbuild1.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_SET2_v1_0_mainlevbuild2', 'tmx/tilesets/PF_SET2_v1.0/mainlevbuild2.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_SET3_v1_0_mainlevbuild1', 'tmx/tilesets/PF_SET3_v1.0/mainlevbuild1.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_SET3_v1_0_mainlevbuild2', 'tmx/tilesets/PF_SET3_v1.0/mainlevbuild2.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_SET3_v1_0_mainlevbuild3', 'tmx/tilesets/PF_SET3_v1.0/mainlevbuild3.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Set4_v1_0_anim_water', 'tmx/tilesets/PF_Set4_v1.0/anim_water.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Set4_v1_0_anim_water2', 'tmx/tilesets/PF_Set4_v1.0/anim_water2.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Set4_v1_0_decorative1', 'tmx/tilesets/PF_Set4_v1.0/decorative1.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Set4_v1_0_decorative2', 'tmx/tilesets/PF_Set4_v1.0/decorative2.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Set4_v1_0_mainlevbuild', 'tmx/tilesets/PF_Set4_v1.0/mainlevbuild.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Set5_v1_0_decorative1', 'tmx/tilesets/PF_Set5_v1.0/decorative1.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Set5_v1_0_decorative2', 'tmx/tilesets/PF_Set5_v1.0/decorative2.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Set5_v1_0_mainlevbuild', 'tmx/tilesets/PF_Set5_v1.0/mainlevbuild.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_SnowyMountains_1_0_mainlevbuild1', 'tmx/tilesets/PF_SnowyMountains_1.0/mainlevbuild1.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_SnowyMountains_1_0_mainlevbuild2', 'tmx/tilesets/PF_SnowyMountains_1.0/mainlevbuild2.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_StrangeMountains_v1_0_fog', 'tmx/tilesets/PF_StrangeMountains_v1.0/fog.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_StrangeMountains_v1_0_mainlevbuild1', 'tmx/tilesets/PF_StrangeMountains_v1.0/mainlevbuild1.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_StrangeMountains_v1_0_mainlevbuild2', 'tmx/tilesets/PF_StrangeMountains_v1.0/mainlevbuild2.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_StrangeWorld1_0_decorative', 'tmx/tilesets/PF_StrangeWorld1.0/decorative.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_StrangeWorld1_0_mainlevbuildA', 'tmx/tilesets/PF_StrangeWorld1.0/mainlevbuildA.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_StrangeWorld1_0_mainlevbuildB', 'tmx/tilesets/PF_StrangeWorld1.0/mainlevbuildB.png', {frameWidth: 32, frameHeight: 32});
+
 		//Entity Assets
         this.load.spritesheet('slime1', 'assets/characters/slimemonster2.png', {frameWidth: 64, frameHeight: 37});    
         this.load.spritesheet('bullet', 'assets/objects/projectiles.png', {frameWidth: 16, frameHeight: 16});

@@ -36,7 +36,7 @@
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-3-23-2020";
+    var buildVersion = "a-3-28-2020";
     var game;
     var hud;
     var playScene;
@@ -45,11 +45,21 @@
     var global_gravity = 380;
     //Tiles
     var map; 
-
-    var current_map = "map3";
-
+    var current_map = "m1s1";
     var current_exit = "west1";
-    var world_background;
+    var world_backgrounds = [];
+    //Map Configurations - Each level will have a name from the preloader. The tsKey will also come from the preloader. The tsName is from Tiled.
+    var level_configs = [
+        {name:'m1s1',
+        tsPairs:[
+            {tsName:'decorative',tsKey:'PF_Caslte_1_0_decorative'},
+            {tsName:'mainlevbuild_A',tsKey:'PF_Caslte_1_0_mainlevbuild_A'},
+            {tsName:'mainlevbuild_B',tsKey:'PF_Caslte_1_0_mainlevbuild_B'}
+        ],
+        backgrounds:['PF_Caslte_1_0_background_day1','PF_Caslte_1_0_background_day2','PF_Caslte_1_0_background_day3']
+        }
+    ]
+
     //Game Objects
     var solana,bright,soullight,polaris,
     enemies,enemiesFly,bullets,
@@ -372,6 +382,16 @@
     
         };
     }
+    //Get Level Config by name
+    function getLevelConfigByName(name){
+        for(let i=0;i<level_configs.length;i++){
+            if(level_configs[i].name == name){
+                return level_configs[i];
+            }
+        }
+        return -1;
+    }
+
     //Find by Property
     function findWithAttr(array, attr, value) {
         for(var i = 0; i < array.length; i += 1) {
