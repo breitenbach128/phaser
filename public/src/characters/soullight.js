@@ -71,6 +71,9 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.scene.particle_soulight.emitters.list[0].setLifespan(160);
         this.scene.particle_soulight.setActive(false);
 
+        //Was it already claimed?
+        if(soullightClaimed){this.claim();};
+
     }
 
     update(time,delta)
@@ -229,6 +232,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
     }
     claim(){
         this.claimed = true;
+        soullightClaimed = true; //Global Tracking
         this.scene.particle_soulight.setActive(true);
         this.setVisible(true);
     }
@@ -383,7 +387,7 @@ class Solbit{
         //What do they do when collected?
         if(this.id == 0){
             //Handle the soulight initialization.
-            soullight.claim();
+            soullight.claim();            
             hud.storySpeech.createSpeech('hud_solana_head','hud_bright_head',false);
             hud.storySpeech.addToSpeech('center',this.description,3000);
             hud.storySpeech.startSpeech();

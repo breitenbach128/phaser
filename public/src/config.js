@@ -58,6 +58,14 @@
             {tsName:'mainlevbuild_B',tsKey:'PF_Caslte_1_0_mainlevbuild_B'}
         ],
         backgrounds:['PF_Caslte_1_0_background_day1','PF_Caslte_1_0_background_day2','PF_Caslte_1_0_background_day3']
+        },
+        {name:'m1s1a',
+        tsPairs:[
+            {tsName:'decorative',tsKey:'PF_Caslte_1_0_decorative'},
+            {tsName:'mainlevbuild_A',tsKey:'PF_Caslte_1_0_mainlevbuild_A'},
+            {tsName:'mainlevbuild_B',tsKey:'PF_Caslte_1_0_mainlevbuild_B'}
+        ],
+        backgrounds:['PF_Caslte_1_0_background_day1','PF_Caslte_1_0_background_day2','PF_Caslte_1_0_background_day3']
         }
     ]
 
@@ -100,7 +108,8 @@
     var lastFired = 0;
     var gamePad = [new GamepadControl(0),new GamepadControl(0)];
     var keyPad;
-    //Equipment
+    //Crystals
+    var soullightClaimed = false;
     var solanaEquipment = [
         {id:0,name:"Wand",lvl:0,equiped:false},
         {id:1,name:"Crown",lvl:0,equiped:false},

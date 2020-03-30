@@ -42,8 +42,10 @@ var GameScene = new Phaser.Class({
         let lvlCfg = getLevelConfigByName(current_map);
         console.log(map);
         //Create Background - This will need to be custom based on the map.
-
-        world_backgrounds.push(this.add.tileSprite(512, 256, map.widthInPixels*2, map.heightInPixels*2, lvlCfg.backgrounds[0]));
+        lvlCfg.backgrounds.forEach(e=>{
+            world_backgrounds.push(this.add.tileSprite(512, 256, map.widthInPixels*2, map.heightInPixels*2, e));
+        });
+        
 
         // tiles for the ground layer
         // var TilesForest = map.addTilesetImage('32Tileset','tiles32');//called it 32Tileset in tiled
@@ -234,6 +236,8 @@ var GameScene = new Phaser.Class({
         this.cameras.main.roundPixels = true;
         this.cameras.main.setZoom(2);
         camera_main = this.cameras.main;
+        this.camMovement = {x:camera_main.worldView.x,y:camera_main.worldView.y};
+
         //camera_main.setRenderToTexture(glowPipeline);
         //Controls
         createControls(this);
@@ -585,7 +589,9 @@ var GameScene = new Phaser.Class({
                     //this.cameras.main.startFollow(solana.sprite,true,.1,.1,0,0);
 
                     //Test Soul Crystal
-                    let sc = new SoulCrystal(this,solana.x+112,solana.y,'soulcrystal_yellow','scry_yellow',0,0);
+                    if(!soullightClaimed){
+                        let sc = new SoulCrystal(this,solana.x+112,solana.y,'soulcrystal_yellow','scry_yellow',0,0);
+                    }
                     //scene, x, y, texture, anim, frame, sbid
                 }
             }else{
@@ -1400,15 +1406,20 @@ var GameScene = new Phaser.Class({
          
         
         //Scroll parallax based on movement of bright or solana
-        if(solana.mv_Xdiff != 0){
+        let camMvdiff = Math.round(this.camMovement.x - camera_main.worldView.x);
+        if(camMvdiff != 0){
             //Parallax Background
-            let paraMove = solana.mv_Xdiff < 0 ? -1 : 1;
+            let paraMove = camMvdiff < 0 ? -1 : 1;
             for(let i=0;i < world_backgrounds.length;i++){
-                let mvVal = 0.50*i*paraMove;
+                let mvVal = (0.10+(0.10*i))*paraMove;
                 world_backgrounds[i].tilePositionX += mvVal;
             }
            
         }   
+
+        //Update camera locations to track movement
+        this.camMovement.x=camera_main.worldView.x;
+        this.camMovement.y=camera_main.worldView.y;
       
     },
     brightFollowMode: function(){
