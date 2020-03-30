@@ -10,15 +10,34 @@ var Storyboard = new Phaser.Class({
     function GameScene ()
     {
         Phaser.Scene.call(this, { key: 'storyboard' });
+        
     },
 
     preload: function ()
     {
         //this.load.scenePlugin('Slopes', 'src/plugins/phaser-slopes.min.js');
+        this.anims.create({
+            key: 'windowShatter',
+            frames: this.anims.generateFrameNumbers('window_shatter', { frames:[0,1,2] }),
+            frameRate: 12,
+            repeat: 0
+        });
+        this.anims.create({
+            key: 'windowTwinkle',
+            frames: this.anims.generateFrameNumbers('window_shatter', { frames:[2,3,4] }),
+            frameRate: 6,
+            repeat: -1
+        });
+        initGamePads(this,function(){});
+        
     },
 
     create: function ()
     {
+        pointer = this.input.activePointer;
+
+        this.keyPad = new KeyboardMouseControl(this,pointer)
+
         let { width, height } = this.sys.game.canvas;
         let Z_LAYERS = {
             BG: 100,
@@ -35,6 +54,13 @@ var Storyboard = new Phaser.Class({
         this.effect[0].emitters.list[0].setPosition(width/2,height/2);
         this.effect[0].emitters.list[0].setScale(3);
         this.effect[0].setDepth(Z_LAYERS.MID);
+
+        //Testwindow
+        this.window1 = this.add.sprite(400,2200,'window_shatter').setDepth(Z_LAYERS.FG);
+        this.window1.anims.play('windowTwinkle',false);
+        
+        this.brightOrbits = [];
+
         //Add Sprites to Tween
         for(let i=0;i<5;i++){
             let brightOrbitEllipse = new Phaser.Geom.Ellipse(width/2, height/2+64-i*32, 190, 64);
@@ -62,11 +88,13 @@ var Storyboard = new Phaser.Class({
                     
                     //targets[0].depth = targets[0].depth == Z_LAYERS.BG ? Z_LAYERS.FG : Z_LAYERS.BG;
                 },
-                onComplete: function(tween, targets){
-                    
+                onComplete: function(tween, targets, scene){
+                    //On repeat, so never completes
                 },
+                onCompleteParams: [this],
                 onCompleteScope: this
             });
+            this.brightOrbits.push({spr: bright1, tw: tw});
         }
 
         // var timeline = this.tweens.createTimeline();
@@ -83,19 +111,86 @@ var Storyboard = new Phaser.Class({
         //pan(x, y [, duration] [, ease] [, force] [, callback] [, context])
         //this.cameras.main.pan(100,100,5000, Phaser.Math.Easing.Linear,false,this.nextScene,this);
         //zoomTo(zoom [, duration] [, ease] [, force] [, callback] [, context])
-        this.cameras.main.zoomTo(3,1000, Phaser.Math.Easing.Linear,false,this.nextScene,this); // 15000 felt correct.
+        this.cameras.main.zoomTo(3,3000, Phaser.Math.Easing.Linear,false,this.brightFall,this); // 15000 felt correct.
+        //https://photonstorm.github.io/phaser3-docs/Phaser.Types.Cameras.Scene2D.html#.CameraPanCallback
 
         //Setup Text - Make this part of a second camera below, so it wont zoom.
         sol_string = 'Sol. Oh giver of life. Your light watches over us.\nGuide us and protect us from the dark. May you reign eternal...';
-        this.storyText = this.add.text(width/2, height-224, sol_string, { fontSize: '12px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 , align: 'center'}).setOrigin(0.5);
+        this.storyText = this.add.text(width/2, height-224, sol_string, { fontSize: '10px', resolution: 3, fill: '#00FF00', stroke: '#000000', strokeThickness: 4 , align: 'center'}).setOrigin(0.5);
+        this.storyText.setVisible(false);
+
+
     },
     update: function (time, delta)
     { 
-      
-    },
-    nextScene(camera, progress, x, y){
-        if(progress == 1){
-            this.scene.start('intro');
+        //Allow Controls to input for skipping
+        updateGamePads();
+        this.keyPad.updateKeyState();
+
+        if(gamePad[0].checkButtonState('start') > 0 || gamePad[1].checkButtonState('start') > 0 || this.keyPad.checkKeyState('SPC')){
+            this.nextScene();
         }
+    },
+    brightFall(camera, progress, x, y){
+        if(progress == 1){
+            this.storyText.setVisible(true);
+            console.log("SB: Do bright fall");
+            let Z_LAYERS = {
+                BG: 100,
+                MID: 200,
+                FB: 300
+            }
+            let { width, height } = this.sys.game.canvas;
+            
+            let fallBright = this.add.sprite(width/2,height/2,'bright').setDepth(Z_LAYERS.FG);
+
+            camera.startFollow(fallBright);   
+
+            var timeline = this.tweens.createTimeline();
+
+            timeline.add({
+                targets: fallBright,
+                ease: 'Cubic.easeIn',
+                y: 1500,
+                repeat: 0,
+                duration: 12000,
+                onComplete: function(tween, targets, scene, camera){
+                    
+                    camera.stopFollow();
+                    camera.flash(500,0,0,0);
+                    camera.setZoom(0.25);
+                    scene.storyText.setVisible(false);
+                    this.effect[0].setVisible(false);
+                    this.brightOrbits.forEach(e=>{
+                        e.tw.remove();
+                        e.spr.destroy();
+                        //I'll need an animation for them
+                    });
+                },
+                onCompleteParams: [this,camera],
+                onCompleteScope: this
+            });
+            //Move the window into the falling bright. Create the illusion of the bright falling
+            timeline.add({
+                targets: this.window1,
+                ease: 'Cubic.easeIn',
+                y: 1500,
+                x: fallBright.x,
+                repeat: 0,
+                duration: 5000,
+                onComplete: function(tween, targets, scene, camera){
+                    scene.nextScene();
+                    
+                },
+                onCompleteParams: [this,camera],
+                onCompleteScope: this
+            });
+
+            timeline.play();
+        }
+
+    },
+    nextScene(){        
+        this.scene.start('intro');        
     }
 });
