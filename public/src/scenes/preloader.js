@@ -181,9 +181,9 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('PF_2DCastle1_1_walls_side_top', 'tmx/tilesets/PF_2DCastle1.1/walls_side_top.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('PF_2DCastle1_1_walls_side_top_far', 'tmx/tilesets/PF_2DCastle1.1/walls_side_top_far.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('PF_2DCastle1_1_wood_env', 'tmx/tilesets/PF_2DCastle1.1/wood_env.png', {frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('PF_Caslte_1_0_decorative', 'tmx/tilesets/PF_Caslte_1.0/decorative.png', {frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('PF_Caslte_1_0_mainlevbuild_A', 'tmx/tilesets/PF_Caslte_1.0/mainlevbuild_A.png', {frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('PF_Caslte_1_0_mainlevbuild_B', 'tmx/tilesets/PF_Caslte_1.0/mainlevbuild_B.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_Caslte_1_0_decorative', 'tmx/tilesets/PF_Caslte_1.0/decorative.png', {frameWidth: 16, frameHeight: 16});
+		this.load.spritesheet('PF_Caslte_1_0_mainlevbuild_A', 'tmx/tilesets/PF_Caslte_1.0/mainlevbuild_A.png', {frameWidth: 16, frameHeight: 16});
+		this.load.spritesheet('PF_Caslte_1_0_mainlevbuild_B', 'tmx/tilesets/PF_Caslte_1.0/mainlevbuild_B.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('PF_CastlePrison1_0_mainlevbuild', 'tmx/tilesets/PF_CastlePrison1.0/mainlevbuild.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('PF_CastlePrison1_0_mainlevbuildB', 'tmx/tilesets/PF_CastlePrison1.0/mainlevbuildB.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('PF_Caves_1_0_mainlev_build', 'tmx/tilesets/PF_Caves_1.0/mainlev_build.png', {frameWidth: 32, frameHeight: 32});

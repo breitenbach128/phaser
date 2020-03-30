@@ -546,8 +546,8 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
         ////////////////////////////////////////////////////////////
         //Debug target draw
         if(this.targetMoveTile != null){            
-            this.debugTargetTile.x = this.targetMoveTile.x*32;
-            this.debugTargetTile.y = this.targetMoveTile.y*32;
+            this.debugTargetTile.x = this.targetMoveTile.x*mapTileSize.tw;
+            this.debugTargetTile.y = this.targetMoveTile.y*mapTileSize.tw;
 
             debugString+="\n MTT:x"+String(this.targetMoveTile.x)+":"+String(this.targetMoveTile.y);      
         }else{
@@ -559,8 +559,8 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
         debugString+="\n TPT:x"+String(tpX)+":"+String(tpY);  
         
         
-        this.debugTargetTileSelf.x = tpX*32;
-        this.debugTargetTileSelf.y = tpY*32;
+        this.debugTargetTileSelf.x = tpX*mapTileSize.tw;
+        this.debugTargetTileSelf.y = tpY*mapTileSize.tw;
 
         this.debug.setText(debugString);
         ////////////////////////////////////////////////////////////
@@ -598,21 +598,21 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
                 onTargeTile = true;
                 //This is never being triggered because of the else statement and the fall/no sensor touch detection.
 
-                //console.log("L:"+(bodyMin.x),"R:"+(bodyMax.x),"U:"+(bodyMin.y),"D:"+(bodyMax.y),(this.targetMoveTile.x)*32,(this.targetMoveTile.y)*32,this.wanderDirection,bodyVelX,bodyVelY);
+                //console.log("L:"+(bodyMin.x),"R:"+(bodyMax.x),"U:"+(bodyMin.y),"D:"+(bodyMax.y),(this.targetMoveTile.x)*mapTileSize.tw,(this.targetMoveTile.y)*mapTileSize.tw,this.wanderDirection,bodyVelX,bodyVelY);
                 
                 if(this.wanderDirection > 0){
                     if(bodyVelY == 0){
                         if(bodyVelX > 0){
-                            if(bodyMin.x + bodyVelX >= (this.targetMoveTile.x)*32){
+                            if(bodyMin.x + bodyVelX >= (this.targetMoveTile.x)*mapTileSize.tw){
                                 //console.log("On Target Tile: Y:0",bodyVelX,bodyVelY);
-                                this.setPosition(bodyWidth/2+(this.targetMoveTile.x)*32-2,this.y);
+                                this.setPosition(bodyWidth/2+(this.targetMoveTile.x)*mapTileSize.tw-2,this.y);
                                 this.setVelocity(0,1*mv_speed);
                                 this.clearTargetMoveTile();
                             }
                         }else if(bodyVelX < 0){
-                            if(bodyMax.x + bodyVelX <= (this.targetMoveTile.x+1)*32){
+                            if(bodyMax.x + bodyVelX <= (this.targetMoveTile.x+1)*mapTileSize.tw){
                                 //console.log("On Target Tile: Y:0",bodyVelX,bodyVelY);
-                                this.setPosition((this.targetMoveTile.x+1)*32+2-bodyWidth/2,this.y);
+                                this.setPosition((this.targetMoveTile.x+1)*mapTileSize.tw+2-bodyWidth/2,this.y);
                                 this.setVelocity(0,-1*mv_speed);
                                 this.clearTargetMoveTile();
                             }
@@ -620,16 +620,16 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
 
                     }else if(bodyVelX == 0){
                         if(bodyVelY > 0){                                
-                            if(bodyMin.y + bodyVelY >= (this.targetMoveTile.y)*32){
+                            if(bodyMin.y + bodyVelY >= (this.targetMoveTile.y)*mapTileSize.tw){
                                 //console.log("On Target Tile: X:0",bodyVelX,bodyVelY);
-                                this.setPosition(this.x,bodyHeight/2+(this.targetMoveTile.y)*32-2);
+                                this.setPosition(this.x,bodyHeight/2+(this.targetMoveTile.y)*mapTileSize.tw-2);
                                 this.setVelocity(-1*mv_speed,0);
                                 this.clearTargetMoveTile();
                             }
                         }else if(bodyVelY < 0){
-                            if(bodyMax.y + bodyVelY <= (this.targetMoveTile.y+1)*32){
+                            if(bodyMax.y + bodyVelY <= (this.targetMoveTile.y+1)*mapTileSize.tw){
                                 //console.log("On Target Tile: X:0",bodyVelX,bodyVelY);
-                                this.setPosition(this.x,(this.targetMoveTile.y+1)*32+2-bodyHeight/2);
+                                this.setPosition(this.x,(this.targetMoveTile.y+1)*mapTileSize.tw+2-bodyHeight/2);
                                 this.setVelocity(1*mv_speed,0);
                                 this.clearTargetMoveTile();
                             }
@@ -637,7 +637,7 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
                     }
 
                 }else if(this.wanderDirection < 0){
-                    if(bodyMax.x + bodyVelX <= (this.targetMoveTile.x+1)*32 && bodyMax.y + bodyVelY <= (this.targetMoveTile.y+1)*32){
+                    if(bodyMax.x + bodyVelX <= (this.targetMoveTile.x+1)*mapTileSize.tw && bodyMax.y + bodyVelY <= (this.targetMoveTile.y+1)*mapTileSize.tw){
                         //console.log("On Target Tile",bodyVelX,bodyVelY);
 
                         if(bodyVelX > 0 && bodyVelY == 0){this.setVelocityY(0,-1*mv_speed);}
@@ -802,8 +802,8 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
                 }
                 //console.log("Found target:",this.targetMoveTile,this.prevTargetMoveTile);
             }
-            this.debugScanTile.x = checkTile.x*32;
-            this.debugScanTile.y = checkTile.y*32;            
+            this.debugScanTile.x = checkTile.x*mapTileSize.tw;
+            this.debugScanTile.y = checkTile.y*mapTileSize.tw;            
         }
 
 

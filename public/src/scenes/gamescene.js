@@ -34,10 +34,13 @@ var GameScene = new Phaser.Class({
 
 
         //Make the map
-        map = this.make.tilemap({key: current_map});      
+        map = this.make.tilemap({key: current_map});   
+        //Update Global Tilesizes
+        mapTileSize.tw = map.tileWidth;   
+        mapTileSize.th = map.tileHeight;
         //Get the lvl config from config.js object
         let lvlCfg = getLevelConfigByName(current_map);
-        console.log(lvlCfg);
+        console.log(map);
         //Create Background - This will need to be custom based on the map.
 
         world_backgrounds.push(this.add.tileSprite(512, 256, map.widthInPixels*2, map.heightInPixels*2, lvlCfg.backgrounds[0]));
@@ -135,7 +138,7 @@ var GameScene = new Phaser.Class({
                     //Phaser.Physics.Matter.Matter.Body.scale(tile.physics.matterBody.body, 1.1, 1.0)
 
                     //Make them as light blocking polygons
-                    lightPolygons.push(createLightObstacleRect(tile.x*32,tile.y*32,32,32));
+                    lightPolygons.push(createLightObstacleRect(tile.x*mapTileSize.tw,tile.y*mapTileSize.th,mapTileSize.tw,mapTileSize.th));
                 }
                
             //}

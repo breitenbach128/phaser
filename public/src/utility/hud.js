@@ -260,8 +260,8 @@ class HudScene extends Phaser.Scene {
             duration: 1000,       
             onUpdate: function(tween, target){
                 let rad = Phaser.Math.DegToRad(target.swingdata);
-                target.x = Math.cos(rad)*32 + solpos.x;
-                target.y = Math.sin(rad)*32 + solpos.y;
+                target.x = Math.cos(rad)*mapTileSize.tw + solpos.x;
+                target.y = Math.sin(rad)*mapTileSize.tw + solpos.y;
              }
         });
         timeline.add({

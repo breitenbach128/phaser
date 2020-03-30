@@ -99,8 +99,8 @@ class SpiderHive extends Phaser.Physics.Matter.Sprite{
             let tpX = (x/32 << 0);
             let tpY = (y/32 << 0);
 
-            let newSpider = spiders.get(tpX*32-16,tpY*32-16);
-            newSpider.setPosition(tpX*32-16,tpY*32-16);
+            let newSpider = spiders.get(tpX*mapTileSize.tw-8,tpY*mapTileSize.tw-8);
+            newSpider.setPosition(tpX*mapTileSize.tw-8,tpY*mapTileSize.tw-8);
             newSpider.hive = this;
             newSpider.id = Phaser.Math.Between(0,999);
         }

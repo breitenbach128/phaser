@@ -45,6 +45,7 @@
     var global_gravity = 380;
     //Tiles
     var map; 
+    var mapTileSize = {tw:32,th:32};
     var current_map = "m1s1";
     var current_exit = "west1";
     var world_backgrounds = [];

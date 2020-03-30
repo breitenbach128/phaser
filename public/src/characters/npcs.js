@@ -195,7 +195,7 @@ class Polaris extends NPC{
         {startAction:{type:"auto",value:64},data:
         [{speaker:"src",ttl:1000,text:"You can talk to me with your interact button"},
         {speaker:"src",ttl:2000,text:"Move to me and press interact!"},
-        {speaker:"trg",ttl:1000,text:"Of course master Polaris!"}],requirement:'none',tween:{x: { value: 28*32, duration: 3000, ease: 'Sine.easeOut' },y: { value: 19*32, duration: 1500, ease: 'Linear' }}},
+        {speaker:"trg",ttl:1000,text:"Of course master Polaris!"}],requirement:'none',tween:{x: { value: 28*mapTileSize.tw, duration: 3000, ease: 'Sine.easeOut' },y: { value: 19*mapTileSize.tw, duration: 1500, ease: 'Linear' }}},
         {startAction:{type:"interact",value:64},data:
         [{speaker:"src",ttl:2000,text:"Press UP to enter that room and grab your wand."},
         {speaker:"src",ttl:1000,text:"You'll need it..."},

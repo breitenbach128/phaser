@@ -299,7 +299,7 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
     }
     burn(){
         //Make sure this is space by moving one 32 radius away at the opposite angle
-        let safetyBoundsVec = {x:Math.cos(this.rotation+Math.PI)*32,y:Math.sin(this.rotation+Math.PI)*32};
+        let safetyBoundsVec = {x:Math.cos(this.rotation+Math.PI)*mapTileSize.tw,y:Math.sin(this.rotation+Math.PI)*mapTileSize.tw};
         this.parent.startChain(this.x+safetyBoundsVec.x,this.y+safetyBoundsVec.y);
         this.soundfling.play('soul-burn-impact');
         this.timer = this.scene.time.addEvent({ delay: 100, callback: this.kill, callbackScope: this, loop: false });
