@@ -2,8 +2,12 @@
     var config = {
         type: Phaser.WEBGL,
         width: 1280,
-        height: 896, 
+        height: 720, 
         pixelArt: true,
+        scale: {
+            mode: Phaser.Scale.FIT,
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+        },
         input: {
             gamepad: true
         },
@@ -416,3 +420,23 @@
     
     //Game
     var game = new Phaser.Game(config);
+    
+    //Global resize window function
+    // var gameResize = function (e) {
+    //     var aspectRatio = 1.5; 
+    //     if ((window.innerWidth / window.innerHeight) > aspectRatio) { 
+    //         game.scale.width = window.innerHeight * aspectRatio; game.scale.height = window.innerHeight; 
+    //     } else if ((window.innerWidth / window.innerHeight) < aspectRatio) { 
+    //         game.scale.width = window.innerWidth; game.scale.height = window.innerWidth / aspectRatio; 
+    //     } else { 
+    //         game.scale.width = window.innerWidth; game.scale.height = window.innerHeight; 
+    //     }
+    //     game.scale.refresh();
+    // } 
+    // window.onresize = gameResize; 
+    // function initGameSize(){
+    //     game.scale.pageAlignHorizontally = true; 
+    //     game.scale.pageAlignVertically = true; 
+    //     gameResize(); 
+    // }
+    // initGameSize();
