@@ -87,6 +87,8 @@ class Crate extends Phaser.Physics.Matter.Sprite{
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.SOLID)
         .setPosition(x, y) 
+
+        this.isGrabbed  = false;
     }
     setup(x,y){
         this.setActive(true);
@@ -94,7 +96,30 @@ class Crate extends Phaser.Physics.Matter.Sprite{
     }
     update(time, delta)
     {       
+        if(this.isGrabbed){
+            this.holdConstraint.pointA =  { x: bright.x, y: bright.y };
+            //this.holdConstraint.pointB = {x:this.scene.input.activePointer.worldX-this.x,y:this.scene.input.activePointer.worldY - this.y};
+            this.holdConstraint.angleB =  this.rotation;
+        }
+    }
+    grabbed(){
+        if(!this.isGrabbed){
+            this.holdConstraint = Phaser.Physics.Matter.Matter.Constraint.create({
+                pointA: { x: bright.x, y: bright.y },
+                bodyB: this.body,
+                //pointB: {x:this.scene.input.activePointer.worldX-this.x,y:this.scene.input.activePointer.worldY - this.y},
+                angleB: this.rotation,
+                length:32,
+                stiffness: 0.8
+            });
+            this.scene.matter.world.add(this.holdConstraint);   
 
+            this.isGrabbed  = true;
+        }
+    }
+    released(){
+        this.scene.matter.world.remove(this.holdConstraint);
+        this.isGrabbed  = false;
     }
 };
 

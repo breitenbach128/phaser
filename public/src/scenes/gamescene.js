@@ -1396,12 +1396,25 @@ var GameScene = new Phaser.Class({
             }
              
         }
+
         //Test Matter Point Query
+        
         if(keyPad.checkMouseState('MB2') == 1){
             console.log("MB2 Clicked");
             //Phaser.Physics.Matter.Matter.Query.point(this.matter.world.localWorld.bodies, pointer); 
             //this.matter.world.engine.world.bodies
-            console.log(Phaser.Physics.Matter.Matter.Query.point(this.matter.world.localWorld.bodies, {x:pointer.worldX, y:pointer.worldY}));
+            let bodiesClicked = Phaser.Physics.Matter.Matter.Query.point(this.matter.world.localWorld.bodies, {x:pointer.worldX, y:pointer.worldY});
+            console.log(bodiesClicked);
+            // bodiesClicked.forEach(e=>{
+            //     if(e.label == 'CRATE'){
+            //         e.gameObject.clicked();
+            //     }
+            // });
+        }else if(keyPad.checkMouseState('MB2') == -1){
+            // let c = crates.getChildren();
+            // c.forEach(e=>{                
+            //     e.released();                
+            // });
         }
          
         
@@ -2113,6 +2126,13 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'telebeam-idle',
         frames: scene.anims.generateFrameNumbers('telebeam', { frames:[0,1,2] }),
+        frameRate: 12,
+        repeat: -1
+    }); 
+     
+    scene.anims.create({
+        key: 'light-shield',
+        frames: scene.anims.generateFrameNumbers('solana_shield', { frames:[0,1,2] }),
         frameRate: 12,
         repeat: -1
     }); 

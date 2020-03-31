@@ -189,9 +189,23 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         if(Phaser.Math.Distance.Between(this.x,this.y,solana.x,solana.y) < 64){
                             bright.pulseCharge(solana);
                         }
+                        //Crates
+                        let c = crates.getChildren();
+                        c.forEach(e=>{    
+                            if(Phaser.Math.Distance.Between(this.x,this.y,e.x,e.y) < 32){            
+                                e.grabbed();                
+                            }
+                        });
                     }
-                    if(control_pulseRelease && this.abPulse.doCharge){
-                        bright.pulseThrow(solana);//Add stick vector to throw, to get direction
+                    if(control_pulseRelease){
+                        if(this.abPulse.doCharge){
+                            bright.pulseThrow(solana);//Add stick vector to throw, to get direction
+                        }
+                        //Crates
+                        let c = crates.getChildren();
+                        c.forEach(e=>{                
+                            e.released();                
+                        });
                     }
 
                 }else{

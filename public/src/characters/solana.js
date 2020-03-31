@@ -84,6 +84,12 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 this.equipItem(e);
             }
         }
+        //Create Light Shield
+        this.LightShieldRadius = 36;
+        this.LightShieldCircle = new Phaser.Geom.Circle(this.x, this.y, this.LightShieldRadius);
+        this.LightShield = new LightShield(this.scene,this.x+32,this.y,'solana_shield',0);
+        this.LightShield.setActive(false);
+        this.LightShield.setVisible(false);
 
         this.debug = this.scene.add.text(this.x, this.y-16, 'Solana', { resolution: 2,fontSize: '10px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 }).setOrigin(.5);
         //Sounds
@@ -230,39 +236,33 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
                     }
 
+                    //Replace this with light shield
                     //Check for shooting 
-                    if (control_shoot && this.equipment[0].equiped) {
-                        if (!this.isAnimLocked) { solana.sprite.anims.play('solana-shoot', true); };
-                        let costToFireWeapon = 10;//Was 10     
-                        let wpRof = 350;
-
-
-                        if ((time - lastFired) > wpRof && hud.energy.n > costToFireWeapon)//ROF(MS)
-                        {
-
-                            let blast = ab_solarblasts.get();
-                            let gameScale = camera_main.zoom;
-                            let targVector = { x: pointer.worldX, y: pointer.worldY };
-                            if (this.ctrlDeviceId >= 0) {
-                                //Overwrite target vector with gamePad coords
-                                let stickRight = gamePad[this.ctrlDeviceId].getStickRight(.1);
-                                let stickLeft = gamePad[this.ctrlDeviceId].getStickLeft(.1);
-                                let gpVec = stickRight.x == 0 && stickRight.y == 0 ? stickLeft : stickRight;
-                                targVector = { x: this.x + gpVec.x, y: this.y + gpVec.y };
-                                //console.log(gpVec,stickLeft,stickRight);
-                            }
-                            let angle = Phaser.Math.Angle.Between(this.x, this.y, targVector.x, targVector.y);
-                            let bulletSpeed = 6;
-                            let vecX = Math.cos(angle) * bulletSpeed;
-                            let vecY = Math.sin(angle) * bulletSpeed;
-
-                            blast.fire(this.x, this.y, vecX, vecY, 150);
-
-
-                            lastFired = time;
-                            //Remove Energy for the shooting
-                            hud.alterEnergy(-costToFireWeapon);
+                    if (control_shoot) {
+                        let gameScale = camera_main.zoom;
+                        let targVector = this.scene.getMouseVectorByCamera(players.SOLANAID);        
+                        
+                        if(this.ctrlDeviceId >= 0){
+                            let gpVectors = this.scene.getGamepadVectors(this.ctrlDeviceId,this.LightShieldRadius,this.x,this.y)
+                            let selectStick = gpVectors[1].x == this.x && gpVectors[1].y == this.y ? 0 : 1; // L / R , If right stick is not being used, us left stick.
+                            targVector = gpVectors[selectStick];
                         }
+                        this.LightShieldCircle.x = this.x;
+                        this.LightShieldCircle.y = this.y;  
+                
+                        let angle = Phaser.Math.Angle.Between(this.x,this.y, targVector.x,targVector.y);
+                        let normAngle = Phaser.Math.Angle.Normalize(angle);                
+                        let point = Phaser.Geom.Circle.CircumferencePoint(this.LightShieldCircle, normAngle);
+
+                        this.LightShield.setPosition(point.x,point.y);                
+                        this.LightShield.rotation = normAngle;
+                        this.LightShield.setActive(true);
+                        this.LightShield.setVisible(true);     
+                        this.LightShield.anims.play('light-shield',true);                   
+                        //Toggles the collides with function to block bullets
+                    }else if(control_shootRelease){
+                        this.LightShield.setActive(false);
+                        this.LightShield.setVisible(false); 
                     }
                 }
             }
@@ -578,3 +578,45 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.control_lock = false;
     }
 }
+
+
+//SOLANA LIGHT SHIELD ENTITY
+class LightShield extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y,texture) {
+        super(scene.matter.world, x, y, texture, 0)
+        this.scene = scene;
+        // Create the physics-based sprite that we will move around and animate
+        scene.matter.world.add(this);
+        // config.scene.sys.displayList.add(this);
+        // config.scene.sys.updateList.add(this);
+        scene.add.existing(this); // This adds to the two listings of update and display.
+
+        this.setActive(true);
+
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.rectangle(0, 0, w, h);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.00,
+            friction: 0.0
+        });
+
+        this
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.MIRROR)
+        .setCollidesWith([ 0 ]) // 0 Is nothing, 1 is everything, ~ is the inverse, so everything but the category
+        .setPosition(x, y) // Sets inertia to infinity so the player can't rotate
+        .setStatic(true)
+        .setIgnoreGravity(true);
+
+        
+    }
+    update(time, delta)
+    {       
+
+    }
+};
