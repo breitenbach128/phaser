@@ -74,6 +74,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.beamReady = true;
         this.beamCoolDown = this.scene.time.addEvent({ delay: 1000, callback: this.resetBeam, callbackScope: this, loop: true });
 
+        this.darkdashTimer = this.scene.time.addEvent({ delay: 200, callback: this.resetDarkDask, callbackScope: this, loop: false });
+        this.darkdashReady = true;
+
         //Controller
         this.controller;
         this.ctrlDevice;
@@ -138,7 +141,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 let control_pulsePress = this.getControllerAction('pulse');
                 let control_pulseRelease = this.getControllerAction('pulseR');
                 let control_change = this.getControllerAction('changeplayer');
-
+                let control_dash = this.getControllerAction('dash');
+                
                 //Change Player in Single Mode
                 if(playerMode == 0){
                     if(control_change){
@@ -153,7 +157,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         this.beamReady = false;
                         soullight.setAimer();
                         this.beamAbility.create(soullight.aimer.x,soullight.aimer.y,soullight.aimer.rotation);
-                    }
+                    }                    
                     if(control_left){
                         this.sprite.setVelocityX(-this.mv_speed);
                         this.flipX= true; // flip the sprite to the left
@@ -236,7 +240,18 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     if(!control_left && !control_right){
                         this.sprite.anims.play('dark-idle', true);//Idle
                     }
-                    
+
+                    if(control_dash && this.darkdashReady){
+                        //Is the ability unlocked?
+                        if(checkSolbitOwned(1)){
+                            this.darkdashTimer = this.scene.time.addEvent({ delay: 500, callback: this.resetDarkDask, callbackScope: this, loop: false });
+                            this.darkdashReady = false;
+                            if(control_right){this.sprite.applyForce({x:0.020,y:0})};
+                            if(control_left){this.sprite.applyForce({x:-0.020,y:0})};
+                        }
+
+                    }
+
                     if (control_down && this.airTime == 0) {
                         let angVel = this.body.angularVelocity;
                         if(angVel > 0){this.setAngularVelocity(angVel-.05)};
@@ -313,6 +328,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     return (gamePad[this.ctrlDeviceId].checkButtonState('B') == -1);
                 case 'changeplayer':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('leftTrigger') == 1);
+                case 'dash':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('rightTrigger') == 1);
                 default:
                     return false;
             }
@@ -340,6 +357,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     return (keyPad.checkKeyState('F') == -1);
                 case 'changeplayer':
                     return (keyPad.checkKeyState('Q') == 1);
+                case 'dash':
+                    return (keyPad.checkMouseState('MB1') > 0);
                 default:
                     return false;
     
@@ -354,7 +373,10 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.ctrlDeviceId = ctrlId;
     }
     resetBeam(){
-       this.beamReady = true; 
+        this.beamReady = true; 
+    }
+    resetDarkDask(){
+        this.darkdashReady = true;
     }
     applyCorruption(n){
         hud.alertCorruption(n);

@@ -260,10 +260,7 @@ class DialogueManager {
 		let chk = true;
 		let req = this.db[this.index].requirement;
         if(req != 'none'){
-            if(req.type == 'item'){
-                //Does solana have the requested item equipped? This is SPECIFIC to the Solana object / player
-                chk = solana.equipment[req.value].equiped;
-            }
+			//Setup requirements here.
         }
         return chk;
 	}

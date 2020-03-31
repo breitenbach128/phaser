@@ -355,7 +355,6 @@ class SoulCrystal extends Phaser.Physics.Matter.Sprite{
 
         //Add to game update
         this.scene.events.on("update", this.update, this);
-        console.log( x, y, texture, animationTexture, frame, sbid);
         this.anims.play(animationTexture, false);
         this.sbid = sbid;
         this.animationTexture = animationTexture;
@@ -387,17 +386,21 @@ class Solbit{
         //What do they do when collected?
         if(this.id == 0){
             //Handle the soulight initialization.
-            soullight.claim();            
-            hud.storySpeech.createSpeech('hud_solana_head','hud_bright_head',false);
-            hud.storySpeech.addToSpeech('center',this.description,3000);
-            hud.storySpeech.startSpeech();
+            soullight.claim(); 
+        }else if(this.id == 2){
+
         }
+        this.aquired = true;
+
+        hud.storySpeech.createSpeech('hud_solana_head','hud_bright_head',false);
+        hud.storySpeech.addToSpeech('center',this.description,3000);
+        hud.storySpeech.startSpeech();
     }
 }
 //Solbits - Global
 var solbits = [
-    new Solbit(0,'Crystal of Sol','Carries the basic essense of Sol'),
-    new Solbit(1,'Crystal of Mass','Carries the basic essense of Sol'),
+    new Solbit(0,'Crystal of Sol','Carries the basic essense of Sol. Press R / (Y) to to pass the Soullight'),
+    new Solbit(1,'Crystal of Mass','Carries the basic essense of Mass. Alters mass and momentum.'),
     new Solbit(2,'Crystal of Fusion','Carries the basic essense of Sol'),
     new Solbit(3,'Crystal of Time','Carries the basic essense of Sol'),
     new Solbit(4,'Crystal of Power','Carries the basic essense of Sol'),

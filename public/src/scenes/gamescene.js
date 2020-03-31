@@ -519,13 +519,10 @@ var GameScene = new Phaser.Class({
                 newRock.setup(tmxObjRef.x,tmxObjRef.y,1);
             }else if(tmxObjRef.type == "crate"){  
                 let newCrate = crates.get(tmxObjRef.x,tmxObjRef.y);
-            }else if(tmxObjRef.type == "item"){
-                let newitem = new EquipItem(this,tmxObjRef.x,tmxObjRef.y,'gameitems',GAMEITEM[tmxObjRef.name.toUpperCase()]);
-
             }else if(tmxObjRef.type == "telebeam"){
-                let newitem = new Telebeam(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                let tb = new Telebeam(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
                 let telebeamProps = getTileProperties(tmxObjRef.properties);
-                newitem.setRotation(Phaser.Math.DegToRad(telebeamProps.initAngle));
+                tb.setRotation(Phaser.Math.DegToRad(telebeamProps.initAngle));
 
             }else if(tmxObjRef.type == "swingTween"){  
                 let swingTw = platSwingTweens.get(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
@@ -534,6 +531,9 @@ var GameScene = new Phaser.Class({
                 swingTw.setDisplaySize(tmxObjRef.width,tmxObjRef.height);
                 swingTw.setup(swingTw.x,swingTw.y, getTileProperties(tmxObjRef.properties),tmxObjRef.name);
 
+            }else if(tmxObjRef.type == 'soulcrystal'){
+                let scprops = getTileProperties(tmxObjRef.properties);
+                let sc = new SoulCrystal(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,'soulcrystal_'+scprops.color,'scry_'+scprops.color,0,+scprops.scid)
             }
 
             if(mapObject){ 
@@ -578,21 +578,12 @@ var GameScene = new Phaser.Class({
                 exitObj = entrances.get();
                 exitObj.setup(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,tmxObjRef.name);
                 //Re-position player to match entrance to exit they left.
-                if(exitObj.name == current_exit){
-                    
+                if(exitObj.name == current_exit){                    
                     solana.sprite.setPosition(exitObj.x,exitObj.y+exitObj.height/2-solana.sprite.height/2);
                     bright.sprite.setPosition(exitObj.x,exitObj.y-32);
                     soullight.sprite.setPosition(exitObj.x,exitObj.y-32);
                     solana.setLastEntrance(exitObj);
                     this.cameras.main.centerOn(exitObj.x,exitObj.y);
-                    // make the camera follow the solana
-                    //this.cameras.main.startFollow(solana.sprite,true,.1,.1,0,0);
-
-                    //Test Soul Crystal
-                    if(!soullightClaimed){
-                        let sc = new SoulCrystal(this,solana.x+112,solana.y,'soulcrystal_yellow','scry_yellow',0,0);
-                    }
-                    //scene, x, y, texture, anim, frame, sbid
                 }
             }else{
                 exitObj = exits.get();
@@ -948,14 +939,6 @@ var GameScene = new Phaser.Class({
                     gameObjectB.enterZone(solana);
               }
 
-              if (gameObjectB !== undefined && gameObjectB instanceof EquipItem) {
-                //Solana Touching a lever?
-                if(curr_player==players.SOLANA){
-
-                    gameObjectB.equipTo(solana);
-
-                }
-              }
               if (gameObjectB !== undefined && gameObjectB instanceof NPCSensor) {
                 //Solana Touching a lever?
                 if(curr_player==players.SOLANA && control_up){
@@ -1019,6 +1002,9 @@ var GameScene = new Phaser.Class({
                         gObjs[0].setDead();
                     }  
                 }
+                //I need to clean this up and remove redundant code. I could use label lists and a check function to handle
+                //the results.
+
                 //Between Bullets and SOLID
                 if ((bodyA.label === 'BULLET' && bodyB.label === 'SOLID') || (bodyA.label === 'SOLID' && bodyB.label === 'BULLET')) {
                     //Get Bullet Object and run hit function
@@ -1030,6 +1016,15 @@ var GameScene = new Phaser.Class({
                 }
                 //Between Bullets and GROUND
                 if ((bodyA.label === 'BULLET' && bodyB.label === 'GROUND') || (bodyA.label === 'GROUND' && bodyB.label === 'BULLET')) {
+                    //Get Bullet Object and run hit function
+                    const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;
+                    const bulletObj = bulletBody.gameObject;
+                    emitter0.active = true;
+                    emitter0.explode(5,bulletObj.x,bulletObj.y);
+                    bulletObj.hit();
+                }
+                //Between Bullets and CRATE
+                if ((bodyA.label === 'BULLET' && bodyB.label === 'CRATE') || (bodyA.label === 'CRATE' && bodyB.label === 'BULLET')) {
                     //Get Bullet Object and run hit function
                     const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;
                     const bulletObj = bulletBody.gameObject;
@@ -1183,7 +1178,9 @@ var GameScene = new Phaser.Class({
 
                 }
                 //Catch any non-event projectiles and destory them if they hit anything else they would not interact with.
-                if (bodyA.label === 'BULLET' || bodyB.label === 'BULLET'){const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;const bulletObj = bulletBody.gameObject;bulletObj.hit();};
+                //Turned this off to allow for bullet bouncing
+                //if (bodyA.label === 'BULLET' || bodyB.label === 'BULLET'){const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;const bulletObj = bulletBody.gameObject;bulletObj.hit();};
+                
                 if (bodyA.label === 'ABILITY-SOLAR-BLAST' || bodyB.label === 'ABILITY-SOLAR-BLAST'){ 
                     const bulletBody = bodyA.label === 'ABILITY-SOLAR-BLAST' ? bodyA : bodyB;
                     const bulletObj = bulletBody.gameObject;

@@ -11,7 +11,6 @@ class HudScene extends Phaser.Scene {
         this.ready = false;
         this.energy = {n:300,max:300,h:100,w:16};
         this.corruption = {n:100,max:100,h:100,w:16};
-        this.inventory;
         this.shard_totals = {light:0,dark:0};
         this.showBossBar = false;
         this.bossCropRect = new Phaser.Geom.Rectangle(0,0, 1, 1);
@@ -118,14 +117,7 @@ class HudScene extends Phaser.Scene {
         this.debug = this.add.text(64, 16, 'DEBUG-HUD', { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
         //HUD Energy Bar Flash/Scale Effect: When energy is added, alter the look for a few MS to show energy has been gained.
         this.energy_bar_effect = this.time.addEvent({ delay: 200, callback: this.resetEnergyScale, callbackScope: this, loop: false });
-        this.inventory = new Inventory(this);
-        //Check Global equipment
-        for(let e=0;e<solanaEquipment.length;e++){
-            if(solanaEquipment[e].equiped){
-                this.inventory.equipItem(e);
-            }
-        }
-
+  
         //Setup SOL Pieces
         
         this.anims.create({

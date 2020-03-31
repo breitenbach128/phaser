@@ -173,7 +173,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         {
             this.anims.play(this.texture.key+'-shoot', true);            
             
-            bullet.setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.SOLANA ]);
+            bullet.setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.SOLANA, CATEGORY.MIRROR ]);
             if(this.behavior.weapon.aimmed){
                 let aimVec = this.aim(solana); //Just use X value for now. Probably want to have adjustable weapon speed later.
                 bullet.fire(this.x, this.y, aimVec.x*this.wpSpeedMod.x, aimVec.y*this.wpSpeedMod.x, this.behavior.weapon.prjLife);
@@ -574,7 +574,7 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
                 let bullet = bullets.get(-1000,-1000,'bullet');
                 if (bullet && this.gun.ready)//ROF(MS)
                 {                
-                    bullet.setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.SOLANA ]);
+                    bullet.setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.SOLANA, CATEGORY.MIRROR ]);
                     bullet.setIgnoreGravity(false);
                     bullet.setFrame(16);
                     let effs = [(new bulletEffect('Stunned',1.0,60,1,'Anim','solana-webbed'))];

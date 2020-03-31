@@ -110,12 +110,6 @@
     var keyPad;
     //Crystals
     var soullightClaimed = false;
-    var solanaEquipment = [
-        {id:0,name:"Wand",lvl:0,equiped:false},
-        {id:1,name:"Crown",lvl:0,equiped:false},
-        {id:2,name:"Wings",lvl:0,equiped:false},
-        {id:3,name:"Belt",lvl:0,equiped:false}
-    ];
     //Player Management
     var playerMode = 0;//0-Single,1-LocalCoop,2-OnlineCoop
     var playerModes = ['Single','Local-COOP','Online'];
@@ -148,12 +142,6 @@
         ENEMIES: 200,
         PLAYERS: 300,
         FRONT: 999
-    }
-    const GAMEITEM = {
-        WAND: 0,
-        CROWN: 1,
-        WING: 2,
-        BELT: 3
     }
     var playerConfig = 
     [{

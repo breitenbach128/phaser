@@ -68,22 +68,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.lastEntrance = null;
         this.invuln = false;
         this.inLight = true;
-        this.equipment = [
-            {id:0,name:"Wand",lvl:0,equiped:false},
-            {id:1,name:"Crown",lvl:0,equiped:false},
-            {id:2,name:"Wings",lvl:0,equiped:false},
-            {id:3,name:"Belt",lvl:0,equiped:false}
-        ];
         this.effects = [];
         this.isAnimLocked = false;//Locks out new animations from playing to allow one to finish.
         this.isStunned = false;
         this.isSlowed = false;
-        //Check Global equipment
-        for(let e=0;e<solanaEquipment.length;e++){
-            if(solanaEquipment[e].equiped){
-                this.equipItem(e);
-            }
-        }
         //Create Light Shield
         this.LightShieldRadius = 36;
         this.LightShieldCircle = new Phaser.Geom.Circle(this.x, this.y, this.LightShieldRadius);
@@ -258,11 +246,14 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         this.LightShield.rotation = normAngle;
                         this.LightShield.setActive(true);
                         this.LightShield.setVisible(true);     
-                        this.LightShield.anims.play('light-shield',true);                   
+                        this.LightShield.anims.play('light-shield',true);
+                        this.LightShield.setCollidesWith([ CATEGORY.BULLET ]);  
                         //Toggles the collides with function to block bullets
                     }else if(control_shootRelease){
+                        this.LightShield.setPosition(this.x,this.y);
                         this.LightShield.setActive(false);
-                        this.LightShield.setVisible(false); 
+                        this.LightShield.setVisible(false);
+                        this.LightShield.setCollidesWith([ 0 ]); 
                     }
                 }
             }
@@ -538,10 +529,6 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         // }
         this.scene.scene.restart();
     }
-    equipItem(id){
-        this.equipment[id].equiped = true;
-        solanaEquipment[id].equiped = true;
-    }
     receiveDamage(damage) {
                 
         if(this.alive && !this.invuln){
@@ -596,7 +583,7 @@ class LightShield extends Phaser.Physics.Matter.Sprite{
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this;
-        const mainBody =  Bodies.rectangle(0, 0, w, h);
+        const mainBody =  Bodies.rectangle(0, 0, w*0.50, h);
 
         const compoundBody = Body.create({
             parts: [mainBody],
@@ -609,8 +596,7 @@ class LightShield extends Phaser.Physics.Matter.Sprite{
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.MIRROR)
         .setCollidesWith([ 0 ]) // 0 Is nothing, 1 is everything, ~ is the inverse, so everything but the category
-        .setPosition(x, y) // Sets inertia to infinity so the player can't rotate
-        .setStatic(true)
+        .setPosition(x, y) // Sets inertia to infinity so the player can't rotate        
         .setIgnoreGravity(true);
 
         
