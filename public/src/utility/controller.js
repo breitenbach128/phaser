@@ -241,6 +241,16 @@ class KeyboardMouseControl {
         this.keys = Object.keys(this.buttons);
         this.mousekeys = Object.keys(this.msbuttons);
     }
+    clearKeyStates(){
+        this.keys.forEach(function(name) {  
+            this.buttons[name].s = 0;
+            this.buttons[name].b.isDown = false;
+        },this);
+        this.mousekeys.forEach(function(name) {  
+            this.msbuttons[name].s = 0;
+        },this);
+        this.pointer.isDown = false;
+    }
     updateKeyState(){
         //Get the statuses
         this.keys.forEach(function(name) {        

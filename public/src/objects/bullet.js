@@ -14,13 +14,13 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
-        const mainBody =  Bodies.rectangle(0, 0, w, h);
+        const mainBody =  Bodies.circle(0, 0, w*0.80);
 
         const compoundBody = Body.create({
             parts: [mainBody],
             frictionStatic: 0,
             frictionAir: 0.00,
-            friction: 0.1,
+            friction: 0.0,
             restitution : 0.7
         });
         compoundBody.label = "BULLET";

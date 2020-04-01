@@ -73,6 +73,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.isStunned = false;
         this.isSlowed = false;
         //Create Light Shield
+        this.isShielding = false;
         this.LightShieldRadius = 36;
         this.LightShieldCircle = new Phaser.Geom.Circle(this.x, this.y, this.LightShieldRadius);
         this.LightShield = new LightShield(this.scene,this.x+32,this.y,'solana_shield',0);
@@ -118,6 +119,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             let control_passPress = this.getControllerAction('pass');
             let control_passRelease = this.getControllerAction('passR');
             let control_brightFollow = this.getControllerAction('brightFollow');
+            //console.log("SOL_R:",control_right,this.getControllerAction('right'),keyPad.checkKeyState('D'));
 
             if (this.control_lock == false) {
                 //Toggle Bright follow in single player mode. In Multiplayer mode, send an alert/highlight position/ping
@@ -225,8 +227,23 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     }
 
                     //Replace this with light shield
-                    //Check for shooting 
-                    if (control_shoot) {
+                    //Check for Shielding 
+                    if (control_shoot && !this.isShielding) {
+                        this.isShielding = true;                        
+                        this.LightShield.setActive(true);
+                        this.LightShield.setVisible(true);     
+                        this.LightShield.anims.play('light-shield',true);
+                        this.LightShield.setCollidesWith([ CATEGORY.BULLET ]);  
+                        //Toggles the collides with function to block bullets
+                    }else if(control_shootRelease){
+                        this.isShielding = false; 
+                        this.LightShield.setPosition(this.x,this.y);
+                        this.LightShield.setActive(false);
+                        this.LightShield.setVisible(false);
+                        this.LightShield.setCollidesWith([ 0 ]); 
+                    }
+
+                    if(this.isShielding){
                         let gameScale = camera_main.zoom;
                         let targVector = this.scene.getMouseVectorByCamera(players.SOLANAID);        
                         
@@ -242,22 +259,14 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         let normAngle = Phaser.Math.Angle.Normalize(angle);                
                         let point = Phaser.Geom.Circle.CircumferencePoint(this.LightShieldCircle, normAngle);
 
-                        this.LightShield.setPosition(point.x,point.y);                
-                        this.LightShield.rotation = normAngle;
-                        this.LightShield.setActive(true);
-                        this.LightShield.setVisible(true);     
-                        this.LightShield.anims.play('light-shield',true);
-                        this.LightShield.setCollidesWith([ CATEGORY.BULLET ]);  
-                        //Toggles the collides with function to block bullets
-                    }else if(control_shootRelease){
-                        this.LightShield.setPosition(this.x,this.y);
-                        this.LightShield.setActive(false);
-                        this.LightShield.setVisible(false);
-                        this.LightShield.setCollidesWith([ 0 ]); 
+                        //this.LightShield.setPosition(point.x,point.y); 
+                        this.LightShield.setAim(point.x,point.y);                         
+                        this.LightShield.setRotation(normAngle);
                     }
                 }
             }
-        }
+            //this.drawDebugText([control_left,control_right]);
+        } // END IF ALIVE
         if(this.beingThrown.ready == true){
             this.getThrown();            
             if(this.body.velocity.x > this.beingThrown.max_speed ){this.setVelocityX(this.beingThrown.max_speed);};
@@ -276,13 +285,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         // if(this.body.velocity.y < -this.max_mv_speed ){this.body.velocity.y = -this.max_mv_speed };
            if(this.body.velocity.y > 4.9 ){this.setVelocityY(5);};
 
-        this.debug.setPosition(this.sprite.x, this.sprite.y-32);
-        this.debug.setText("jumpCount:"+String(this.jumpCount)
-        +" \nVelocity:"+this.sprite.body.velocity.x.toFixed(4)+":"+this.sprite.body.velocity.y.toFixed(4));
-        // +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right) + " oW:"+String(this.onWall)
-        // +" \njr:"+String(this.jumpReady)
-        // +" \njlck:"+String(this.jumpLock)
-        // +" \nFriction:"+String(this.body.friction));
+
 
         //DO THIS LAST
         this.mv_Xdiff = Math.round(this.x - this.prev_position.x);
@@ -300,6 +303,16 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //     this.setCollisionCategory(CATEGORY.SOLANA)
         // }
         
+    }
+    drawDebugText(vals){
+        this.debug.setPosition(this.sprite.x, this.sprite.y-32);
+        this.debug.setText("jumpCount:"+String(this.jumpCount)
+        +" \nCtrl-LEFT/RIGHT:"+String(vals[0])+":"+String(vals[1]));
+        //+" \nVelocity:"+this.sprite.body.velocity.x.toFixed(4)+":"+this.sprite.body.velocity.y.toFixed(4));
+        // +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right) + " oW:"+String(this.onWall)
+        // +" \njr:"+String(this.jumpReady)
+        // +" \njlck:"+String(this.jumpLock)
+        // +" \nFriction:"+String(this.body.friction));
     }
     getControllerAction(action){
         if(this.ctrlDeviceId >=0){
@@ -583,14 +596,25 @@ class LightShield extends Phaser.Physics.Matter.Sprite{
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this;
-        const mainBody =  Bodies.rectangle(0, 0, w*0.50, h);
+        //const mainBody =  Bodies.rectangle(0, 0, w*0.50, h);
+        const mainBody =  Bodies.fromVertices(0, 0, 
+            [
+                {x:w+w*0.20,y:h*0.45},
+                {x:w+w*0.65,y:h*0.30},
+                {x:w+w*0.75,y:h*0.15},
+                {x:w+w*0.75,y:-h*0.15},
+                {x:w+w*0.65,y:-h*0.30},
+                {x:w+w*0.20,y:-h*0.45}
+            ]);
 
         const compoundBody = Body.create({
             parts: [mainBody],
             frictionStatic: 0,
             frictionAir: 0.00,
-            friction: 0.0
+            friction: 0.0,
+            restitution: 1.0
         });
+        compoundBody.render.sprite.xOffset = 0.63;
 
         this
         .setExistingBody(compoundBody)
@@ -599,10 +623,19 @@ class LightShield extends Phaser.Physics.Matter.Sprite{
         .setPosition(x, y) // Sets inertia to infinity so the player can't rotate        
         .setIgnoreGravity(true);
 
-        
+        this.holdConstraint = Phaser.Physics.Matter.Matter.Constraint.create({
+            pointA: { x: x, y: y },
+            bodyB: this.body,
+            angleB: this.rotation,
+        });
+        this.scene.matter.world.add(this.holdConstraint);  
     }
     update(time, delta)
     {       
 
+    }
+    setAim(x,y){
+        this.holdConstraint.pointA =  { x: x, y: y };
+        this.holdConstraint.angleB =  this.rotation;
     }
 };

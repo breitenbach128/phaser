@@ -20,9 +20,9 @@
             },
             matter: {
                 gravity: { y: 0.65 },
-                positionIterations: 8, //6
-                velocityIterations: 6, //4
-                constraintIterations: 4 //2
+                positionIterations: 10, //8
+                velocityIterations: 8, //6
+                constraintIterations: 6 //2
             }
         },
         // Install the scene plugin

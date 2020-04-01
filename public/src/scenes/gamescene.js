@@ -25,6 +25,10 @@ var GameScene = new Phaser.Class({
         //Refresh/Setup HUD
         hud = this.scene.get('UIScene');;
         hud.handleEvents();
+        //Register important events
+        //Pause / UnPause
+        this.events.on('pause', playPause);
+        this.events.on('resume', playResume);
         
         //Play Theme Music
         this.soundTheme = game.sound.add('forestTheme1');
@@ -1191,9 +1195,10 @@ var GameScene = new Phaser.Class({
         }, this);
 
         //Mouse
-        pointer = this.input.activePointer;
+        // pointer = this.input.activePointer;
 
-        keyPad = new KeyboardMouseControl(this,pointer)
+        // keyPad = new KeyboardMouseControl(this,pointer)
+        this.doKPClear = false;
 
         if(playerMode == 0){
             solana.setController(playerConfig[0].ctrl);
@@ -1241,10 +1246,16 @@ var GameScene = new Phaser.Class({
     },
     update: function (time, delta)
     {
+        //Handle KP "Sticking" bug
+        // if(this.doKPClear){
+        //     if(keyPad != undefined){
+        //         keyPad.clearKeyStates();
+        //     }
+        //     this.doKPClear = false;
+        // }
+        //Update Inputs
 
-        //Controller Update
-        updateGamePads();
-        keyPad.updateKeyState();
+
         //center camera on the spot between the players. Zoom out to a max.
         let disPlayers = Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y);
 
@@ -1603,10 +1614,22 @@ var GameScene = new Phaser.Class({
         }
         
         return [{x:0,y:0},{x:0,y:0}];
+    },
+    clearKeypad(){
+        this.doKPClear = true;
     }
     
 });
 //External Functions
+function playPause(){
+    //console.log('Pause',keyPad, solana.getControllerAction('right'),keyPad.checkKeyState('D'));
+
+}
+function playResume(){
+    //console.log('Resume',keyPad, solana.getControllerAction('right'),keyPad.checkKeyState('D'));
+    //Setup keypad clear on next update
+    //playScene.clearKeypad();    
+}
 function getObjectTilePosition(x,y,ts){
     return {x: Math.floor(x/ts),y: Math.floor(y/ts)};
 }

@@ -30,6 +30,11 @@ class HudScene extends Phaser.Scene {
 
             this.shard_data_l.setText(this.shard_totals.light+" x");
             this.shard_data_d.setText(this.shard_totals.dark+" x");
+
+
+            //Controller Update
+            updateGamePads();
+            keyPad.updateKeyState();
         }
 
         //This did not fix the bug. GAMEPAD DID NOT HAVE THE BUG
@@ -92,7 +97,11 @@ class HudScene extends Phaser.Scene {
 
     }
     setupHud(player)
-    {
+    {        
+        //Handle inputs in HUD to avoid issue with pauses
+        pointer = this.input.activePointer;
+        keyPad = new KeyboardMouseControl(this,pointer)
+
         this.skipSpeech = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
         this.ready = true;
         for(var h = 0;h < player.hp;h++){
