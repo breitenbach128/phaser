@@ -120,55 +120,7 @@
          "draworder":"topdown",
          "id":14,
          "name":"enemies",
-         "objects":[
-                {
-                 "gid":8241,
-                 "height":32,
-                 "id":14,
-                 "name":"slime",
-                 "properties":[
-                        {
-                         "name":"aBehav",
-                         "type":"string",
-                         "value":"attack"
-                        }, 
-                        {
-                         "name":"enemyClass",
-                         "type":"string",
-                         "value":"ground"
-                        }, 
-                        {
-                         "name":"enemyType",
-                         "type":"string",
-                         "value":"slime1"
-                        }, 
-                        {
-                         "name":"pBehav",
-                         "type":"string",
-                         "value":"patrol"
-                        }, 
-                        {
-                         "name":"scale",
-                         "type":"float",
-                         "value":0.5
-                        }, 
-                        {
-                         "name":"tint",
-                         "type":"string",
-                         "value":"#333333"
-                        }, 
-                        {
-                         "name":"weapon",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"ground",
-                 "visible":true,
-                 "width":32,
-                 "x":544,
-                 "y":496
-                }],
+         "objects":[],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -1269,19 +1221,6 @@
                         }]
                 }],
          "tilewidth":16
-        }, 
-        {
-         "columns":37,
-         "firstgid":7745,
-         "image":"oldTileset32.png",
-         "imageheight":800,
-         "imagewidth":1280,
-         "margin":0,
-         "name":"32Tileset",
-         "spacing":2,
-         "tilecount":851,
-         "tileheight":32,
-         "tilewidth":32
         }],
  "tilewidth":16,
  "type":"map",

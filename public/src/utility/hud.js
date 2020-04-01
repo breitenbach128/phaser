@@ -31,6 +31,17 @@ class HudScene extends Phaser.Scene {
             this.shard_data_l.setText(this.shard_totals.light+" x");
             this.shard_data_d.setText(this.shard_totals.dark+" x");
         }
+
+        //This did not fix the bug. GAMEPAD DID NOT HAVE THE BUG
+        //ONLY KEYBOARD/MS (KEYPAD)
+
+        // if(this.scene.isPaused('gamescene')){
+        //     console.log("Running HUD controller update");
+        //     //Controller Update
+        //     updateGamePads();
+        //     keyPad.updateKeyState();
+        // }
+
     }
     clearHud()
     {
@@ -227,6 +238,7 @@ class HudScene extends Phaser.Scene {
     collectSoulCrystal(gs,x,y,zoom,texture,anim,frame,sbid){
         //Flash / Effect
         this.cameras.main.flash(300,255,255,0,false);
+
         //pause gamescene
         gs.scene.pause();
 

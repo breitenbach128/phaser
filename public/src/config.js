@@ -85,7 +85,8 @@
     var new_enemy;
     var spawner;
     var spawnlayer;
-
+    //Raycast
+    var losBlockers = [];
     //NPC Control
     var guideDialogueIndex = 0;
     var tutorialRunning = false;

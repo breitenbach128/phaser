@@ -205,6 +205,7 @@ var GameScene = new Phaser.Class({
             //console.log("Poly Object",shapeObject);
             //Need to add light blocking polygon check here.
             hulls.push(shapeObject);
+            losBlockers.push(shapeObject.body);
         });
 
         //Perimeter Block for Blocking Light
@@ -1319,6 +1320,7 @@ var GameScene = new Phaser.Class({
         //Cut out line of sight blockers
         this.cutCanvasRaycastPolygon(soullight.x,soullight.y,soullight.protection_radius.value*5,shadow_context);
      
+        //Check to see if Solana is in the light
         var solana_in_light = false;
 
         shadow_context = this.cutCanvasCircle(soullight.x,soullight.y,soullight.protection_radius.value,shadow_context);
@@ -1327,7 +1329,13 @@ var GameScene = new Phaser.Class({
         if(tutorialRunning){
             //shadow_context = this.cutCanvasCircle(polaris.x,polaris.y,128,shadow_context);
         }
-        if(Phaser.Math.Distance.Between(soullight.x,soullight.y,solana.x,solana.y) <= soullight.protection_radius.value){solana_in_light = true;}
+        if(Phaser.Math.Distance.Between(soullight.x,soullight.y,solana.x,solana.y) <= soullight.protection_radius.value){
+            
+            //Can the light reach her without being blocked?
+            let losRc = Phaser.Physics.Matter.Matter.Query.ray(losBlockers,{x:solana.x,y:solana.y},{x:soullight.x,y:soullight.y});
+            if(losRc.length == 0){solana_in_light = true;};
+
+        }
         
 
         //Restore Canvas

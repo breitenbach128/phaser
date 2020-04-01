@@ -26,6 +26,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
           });
           this.sprite
             .setExistingBody(compoundBody)
+            .setCollidesWith([ CATEGORY.SOLANA, CATEGORY.DARK ])
             .setPosition(config.x, config.y)
             .setIgnoreGravity(true);
 
@@ -85,11 +86,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
                 if(this.passChainIndex  < this.passChain.length){
                     let pcTarget = this.passChain[this.passChainIndex];
                     this.homeLight(pcTarget);
-                    this.setVelocity(this.throw.x*this.move_speed,this.throw.y*this.move_speed);
-                    if(Phaser.Math.Distance.Between(this.x,this.y,pcTarget.x,pcTarget.y) < 32){
-                        //Just move onto it. Should speed up the transfer
-                        this.setPosition(pcTarget.x,pcTarget.y);
-                    }
+
                     if(this.x == pcTarget.x && this.y == pcTarget.y){
                         
                         this.move_speed = this.max_speed;
@@ -107,7 +104,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
             //Home in on target
             let target = this.ownerid == 0 ? bright : solana;
             this.homeLight(target);
-            this.setVelocity(this.throw.x*this.move_speed,this.throw.y*this.move_speed);
+
         }
         
         if(this.readyThrow){
@@ -179,6 +176,12 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         if(targetDistance <= this.move_speed){this.move_speed = targetDistance};
         this.throw.x = Math.cos(angle);
         this.throw.y = Math.sin(angle);  
+
+        this.setVelocity(this.throw.x*this.move_speed,this.throw.y*this.move_speed);
+        if(Phaser.Math.Distance.Between(this.x,this.y,target.x,target.y) < 32){
+            //Just move onto it. Should speed up the transfer
+            this.setPosition(target.x,target.y);
+        }
     }
     passLight(){
         if(!this.passing){
