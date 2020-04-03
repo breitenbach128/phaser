@@ -96,11 +96,17 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.controller;
         this.ctrlDevice;
         this.ctrlDeviceId = -1;
+
+        //Create Particles
+        this.effect_dusty=this.scene.add.particles('shapes',  new Function('return ' + this.scene.cache.text.get('effect-dusty'))());
+        this.effect_dusty.emitters.list[0].startFollow(this,0,0,false);
+
       }
 
     update(time,delta)
     {
-        if(this.alive){
+        if(this.alive){            
+
             this.applyEffects();
             let mv_speed = this.mv_speed;//This will handle the modifications based on conditions/effects
             //Priority goes top to bottom, least speed to most speed
@@ -138,6 +144,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
                 //Ground Check
                 if (this.touching.down > 0) {
+                    if(this.onGround == false){this.kickDusk(5);};//Ground hit
                     this.onGround = true;
                 } else {
                     this.onGround = false;
@@ -194,7 +201,6 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         this.mv_direction.x = -1;
                         this.sprite.applyForce({ x: -mv / 700, y: 0 })
                         //this.sprite.setVelocityX(-mv);
-
                     }
                     else if (control_right && this.jumpLock == false) {
 
@@ -378,6 +384,12 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //Sets the controller Source
         this.ctrlDeviceId = ctrlId;
     }
+    kickDusk(n){
+        let bVec = this.getBottomCenter();
+        for(let i = 0;i < n;i++){
+            this.effect_dusty.emitters.list[0].emitParticle(1,bVec.x+Phaser.Math.Between(-16,16),bVec.y);
+        }
+    }
     jumpLockReset(){
         this.jumpLock = false;
     }
@@ -434,6 +446,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             let jumpBurst = new JumpBurst(this.scene,this.x,this.y);
         }
         this.jumpCount++;
+        this.kickDusk(2);
     }
     addEffects(effects){
         //Loop through effect array. If found of same type, set new duration.

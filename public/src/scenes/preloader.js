@@ -270,7 +270,6 @@ var Preloader = new Phaser.Class({
 		this.load.image('mask2', 'assets/objects/mask2.png');
 		this.load.image('light1', 'assets/objects/light1.png');
 		this.load.image('shadow', 'assets/world/shadow.png');
-		this.load.image('health_blip', 'assets/hud/health_blip.png');
 		this.load.image('exit', 'assets/objects/exit.png');
 		this.load.image('entrance', 'assets/objects/entrance.png');
 		this.load.image('gate', 'assets/objects/gate.png');
@@ -278,6 +277,7 @@ var Preloader = new Phaser.Class({
 		this.load.image('speechbubble', 'assets/hud/speechBubble.png');
 		this.load.image('tmxwindow', 'assets/objects/tmxwindow.png');
 		// - HUD
+		this.load.spritesheet('health_blip', 'assets/hud/health_blip.png',{frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('hud_interaction_control_arrows','assets/hud/hud_interaction_control_arrows.png',{frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('hud_energybar1','assets/hud/hud_energybar1.png',{frameWidth: 16, frameHeight: 96});		
 		this.load.spritesheet('hud_energybar3','assets/hud/hud_energybar3.png',{frameWidth: 192, frameHeight: 24});	
@@ -293,7 +293,8 @@ var Preloader = new Phaser.Class({
 		this.load.atlas('shapes', 'assets/effects/shapes.png', 'assets/effects/shapes.json');;
 		this.load.text('effect-bright-sparks', 'assets/effects/bright_sparks.json');
 		this.load.text('effect-bright-pulse1', 'assets/effects/bright_pulse1.json');	
-		this.load.text('effect-trigger-teleporter', 'assets/effects/teleporter.json');	  
+		this.load.text('effect-trigger-teleporter', 'assets/effects/teleporter.json'); 
+		this.load.text('effect-dusty', 'assets/effects/dusty.json');	  
   		this.load.json('effect-flame-fall', 'assets/effects/particles_flame_fall.json');
 		this.load.image('lightburst-1', 'assets/effects/lightburst-1.png');
 		this.load.spritesheet('doublejump-1', 'assets/effects/doublejmp.png',{frameWidth: 24, frameHeight: 24});

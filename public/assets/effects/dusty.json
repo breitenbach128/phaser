@@ -1,0 +1,62 @@
+[
+    {
+        "active": true,
+        "visible": true,
+        "collideBottom": true,
+        "collideLeft": true,
+        "collideRight": true,
+        "collideTop": true,
+        "on": true,
+        "particleBringToTop": true,
+        "radial": true,
+        "frame": {
+            "frames": [
+                "smoke_04"
+            ],
+            "cycle": false,
+            "quantity": 1
+        },
+        "frequency": 200,
+        "gravityX": 0,
+        "gravityY": -25,
+        "maxParticles": 200,
+        "timeScale": 1,
+        "blendMode": 0,
+        "accelerationX": 0,
+        "accelerationY": 0,
+        "alpha": {
+            "start": 0.5,
+            "end": 0,
+            "ease": "Linear"
+        },
+        "angle": {
+            "min": 0,
+            "max": 360,
+            "ease": "Linear"
+        },
+        "bounce": 0,
+        "delay": 0,
+        "lifespan": {
+            "ease": "Linear",
+            "min": 1000,
+            "max": 1500
+        },
+        "maxVelocityX": 10000,
+        "maxVelocityY": 10000,
+        "moveToX": 0,
+        "moveToY": 0,
+        "quantity": 1,
+        "rotate": 0,
+        "scale": {
+            "start": 0.25,
+            "end": 0.05,
+            "ease": "Linear"
+        },
+        "speed": 0,
+        "x": 380,
+        "y": 225,
+        "tint": [
+            16777215
+        ]
+    }
+]

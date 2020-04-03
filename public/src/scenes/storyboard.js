@@ -191,6 +191,6 @@ var Storyboard = new Phaser.Class({
 
     },
     nextScene(){        
-        this.scene.start('intro');        
+        this.scene.start('mainmenu');        
     }
 });

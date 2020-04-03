@@ -68,7 +68,6 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         ];
         //console.log(this.effect[0].emitters.list[0]);
         this.effect[0].setVisible(false);
-        console.log("Bright Effect", this.effect[0]);
         this.effect[0].emitters.list[0].setPosition(this.x,this.y);
         //this.effect[0].emitters.list[0].startFollow(this);
 
@@ -83,6 +82,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
         this.darkdashTimer = this.scene.time.addEvent({ delay: 200, callback: this.resetDarkDask, callbackScope: this, loop: false });
         this.darkdashReady = true;
+        this.slamReady = true;
 
         //Controller
         this.controller;
@@ -105,6 +105,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     this.airTime++;
                 }else{
                     this.airTime=0;
+                    this.slamReady = true;
                 };
                 if(this.abPulse.doCharge){
                     this.pulseUpdate();
@@ -136,6 +137,11 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             //Control Based on Light or Dark Modes
             let darkMode = 1;
             let brightMode = 0;
+            //Drain Energy since not bright
+            if(this.light_status == darkMode){hud.alterEnergyBright(-0.5);};
+            //This creates a wobble of contention for add and remove values on different update loops.
+            //I should calc all the values and then apply the final result one time.
+
             if(curr_player==players.BRIGHT || playerMode > 0){
                 //Only control if currently the active control object
                 let control_left = this.getControllerAction('left');
@@ -219,8 +225,6 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     }
 
                 }else{
-                    //Drain Energy since not bright
-                    hud.alterEnergyBright(-1);
                     //DARK CONTROLS
                     if (control_left) {          
                         this.sprite.setAngularVelocity(-this.roll_speed);   
@@ -257,7 +261,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         }
 
                     }
-
+                    //Dark Stop
                     if (control_down && this.airTime == 0) {
                         let angVel = this.body.angularVelocity;
                         if(angVel > 0){this.setAngularVelocity(angVel-.05)};
@@ -269,10 +273,26 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                             emitter_dirt_spray.active = true;
                             emitter_dirt_spray.explode(5,this.x,this.y);
                         }
+                    //Dark Slam
+                    }else if(control_down && this.airTime > 30 && control_dash && this.slamReady){
+                        this.slamReady = false;
+                        this.sprite.applyForce({x:0,y:0.020});
+
+                        //For crushing stuff. If his velocity his above X, and his sensor bars touch a breakable tile, then 
+                        // use that force calculation for breaking them BEFORE his matter body collides. Should allow
+                        // him to break thru multiple objects cleanly.
                     }
-                                    //Dark Jump
+                    //Dark Jump
                     if(control_jump && this.airTime <=  10){
                         this.sprite.setVelocityY(-this.jump_speed);
+                    }
+
+                    //Singularity
+                    if(control_pulsePress){
+                        let solAngle = Phaser.Math.Angle.Between(this.x,this.y,solana.x,solana.y);
+                        let solForce = 0.02;
+                        let solPullVec = {x:-Math.cos(solAngle)*solForce,y:-Math.sin(solAngle)*solForce};
+                        solana.applyForce(solPullVec);
                     }
                 }
 

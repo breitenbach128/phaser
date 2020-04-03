@@ -30,7 +30,7 @@ var LobbyScene = new Phaser.Class({
 
         //Create player Selection
         let selectSolana = this.add.sprite(game.canvas.width/2,300,'solana').setScale(3);
-        let selectBright = this.add.sprite(game.canvas.width/2,600,'bright').setScale(5);
+        let selectBright = this.add.sprite(game.canvas.width/2,600,'bright',1).setScale(5);
         this.selectSolana = selectSolana;
         this.selectBright = selectBright;
         

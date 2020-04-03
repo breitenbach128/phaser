@@ -16,6 +16,18 @@ var MainMenu = new Phaser.Class({
 
     create: function ()
     {
+        //Background Effects
+        this.particle_flame_fall = this.add.particles('shapes',  this.cache.json.get('effect-flame-fall'));          
+        this.particle_flame_fall.createEmitter((this.cache.json.get('effect-flame-fall'))[0]);
+        this.particle_flame_fall.createEmitter((this.cache.json.get('effect-flame-fall'))[0]); 
+        this.particle_flame_fall.createEmitter((this.cache.json.get('effect-flame-fall'))[0]);
+        //console.log(this.particle_flame_fall)
+        //Emmitter List      
+        this.particle_flame_fall.emitters.list[0].setPosition(50,Phaser.Math.Between(-450,150));
+        this.particle_flame_fall.emitters.list[1].setPosition(525,Phaser.Math.Between(-450,150));
+        this.particle_flame_fall.emitters.list[2].setPosition(700,Phaser.Math.Between(-450,150));
+        this.particle_flame_fall.emitters.list[3].setPosition(900,Phaser.Math.Between(-450,150));
+
         //Selection Box for Gamepad
         this.selectionRect = this.add.rectangle(game.canvas.width/2,300,195,55,0xFFD700,1);
         this.selectionRect.setStrokeStyle(5, 0xFFFFFF, .8);
@@ -25,10 +37,10 @@ var MainMenu = new Phaser.Class({
         this.btnstartSP.setPosition(game.canvas.width/2,300);
         this.btnstartMPlocal = this.addButton(0, 0, 'button_yellow', this.doStartLocalMP, this, 0, 1, 0, 1);
         this.btnstartMPlocal.setPosition(game.canvas.width/2,400);
-        this.btnstartMPOnline = this.addButton(0, 0, 'button_yellow', this.doStartOnlineMP, this, 0, 1, 0, 1);
-        this.btnstartMPOnline.setPosition(game.canvas.width/2,500);
+        this.btnOptions= this.addButton(0, 0, 'button_yellow', this.doStartOnlineMP, this, 0, 1, 0, 1);
+        this.btnOptions.setPosition(game.canvas.width/2,500);
 
-        this.menuArray = [this.btnstartSP,this.btnstartMPlocal,this.btnstartMPOnline];
+        this.menuArray = [this.btnstartSP,this.btnstartMPlocal,this.btnOptions];
         this.menuSelectionIndex = 0;
         
         this.sceneTransitionReady = false;
@@ -57,7 +69,7 @@ var MainMenu = new Phaser.Class({
         };
         this.btnTextSP = this.add.text(game.canvas.width/2,300, 'SINGLE PLAYER', style).setOrigin(0.5);
         this.btnTextMPLocal = this.add.text(game.canvas.width/2,400, 'LOCAL MULTIPLAYER', style).setOrigin(0.5);
-        this.btnTextMPOnline = this.add.text(game.canvas.width/2,500, 'ONLINE', style).setOrigin(0.5);
+        this.btnTextOptions = this.add.text(game.canvas.width/2,500, 'OPTIONS', style).setOrigin(0.5);
         
         this.stickChoke = {c:0,m:5};
 
@@ -111,6 +123,15 @@ var MainMenu = new Phaser.Class({
             }
           
         }
+        //Rain Particles
+        let pEmitList = this.particle_flame_fall.emitters.list;
+        pEmitList.forEach(function(e){
+
+            e.setPosition(e.x.propertyValue,e.y.propertyValue+3);
+            if(e.y.propertyValue > game.canvas.height){
+                e.setPosition(Phaser.Math.Between(e.x.propertyValue-50,e.x.propertyValue+50),0);
+            }
+        })
     },
     doStartOnlineMP:function ()
     {

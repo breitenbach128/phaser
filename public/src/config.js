@@ -35,7 +35,7 @@
             }
             ]
         }, 
-        scene: [ Preloader, SplashScene, MainMenu, IntroScene, Storyboard, LobbyScene, GameScene, HudScene, GameoverScene ]
+        scene: [ Preloader, SplashScene, MainMenu, Storyboard, LobbyScene, GameScene, HudScene, GameoverScene ]
     };
     
     //Globals

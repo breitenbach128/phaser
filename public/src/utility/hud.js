@@ -5,6 +5,7 @@ class HudScene extends Phaser.Scene {
         super({ key: 'UIScene', active: true });
 
         this.hp_blips = [];
+        this.bp_blips = [];
         this.boss_bar = [];
         this.ready = false;
         this.shard_totals = {light:0,dark:0};
@@ -113,7 +114,8 @@ class HudScene extends Phaser.Scene {
         this.brightStatBarHead = this.add.image(this.cameras.main.width*(3/4)+96, 36, 'hud_energybar3_bright_head',0).setScale(2).setOrigin(0.5);
 
         for(var h = 0;h < player.hp;h++){
-            this.hp_blips.push(this.add.image(this.cameras.main.width/4-52+(h*24),10, 'health_blip'));    
+            this.hp_blips.push(this.add.sprite(this.cameras.main.width/4-52+(h*24),10, 'health_blip',0));  
+            this.bp_blips.push(this.add.sprite(this.cameras.main.width*(3/4)+52-(h*24),10, 'health_blip',1));  
         }
 
         //Add Shard Counts
