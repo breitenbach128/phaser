@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="21">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="21">
  <editorsettings>
   <export target="../assets/world/m1s1.json" format="json"/>
  </editorsettings>
@@ -632,11 +632,11 @@
   </object>
  </objectgroup>
  <objectgroup color="#00ff00" id="8" name="hulls">
-  <object id="5" x="0" y="560" width="480" height="16"/>
-  <object id="6" x="480" y="560" width="176" height="16"/>
-  <object id="7" x="1072" y="560" width="528" height="16"/>
-  <object id="8" x="752" y="560" width="224" height="16"/>
-  <object id="9" x="656" y="464" width="96" height="112"/>
-  <object id="18" x="976" y="464" width="96" height="112"/>
+  <object id="5" type="hulls" x="0" y="560" width="480" height="16"/>
+  <object id="6" type="hulls" x="480" y="560" width="176" height="16"/>
+  <object id="7" type="hulls" x="1072" y="560" width="528" height="16"/>
+  <object id="8" type="hulls" x="752" y="560" width="224" height="16"/>
+  <object id="9" type="hulls" x="656" y="464" width="96" height="112"/>
+  <object id="18" type="hulls" x="976" y="464" width="96" height="112"/>
  </objectgroup>
 </map>

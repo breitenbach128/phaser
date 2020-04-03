@@ -1384,7 +1384,7 @@ var GameScene = new Phaser.Class({
         let rate_of_energy_drain_outside_light = 1;
         if(!solana_in_light){
             hud.alterEnergySolana(-rate_of_energy_drain_outside_light);
-            if(hud.energySolana.n <= 0){solana.receiveDamage(1);};
+            if(hud.solanaStatBar.getValue() <= 0){solana.receiveDamage(1);};
         };
 
         //Update Light Source

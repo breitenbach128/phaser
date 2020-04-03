@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="17">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="17">
  <editorsettings>
   <export target="../assets/world/m1s1a.json" format="json"/>
  </editorsettings>
@@ -592,9 +592,9 @@
  </objectgroup>
  <objectgroup id="10" name="triggers"/>
  <objectgroup color="#00ff00" id="8" name="hulls">
-  <object id="5" x="224" y="400" width="400" height="16"/>
-  <object id="13" x="224" y="592" width="400" height="16"/>
-  <object id="14" x="224" y="416" width="16" height="176"/>
-  <object id="15" x="608" y="416" width="16" height="176"/>
+  <object id="5" type="hull" x="224" y="400" width="400" height="16"/>
+  <object id="13" type="hulls" x="224" y="592" width="400" height="16"/>
+  <object id="14" type="hulls" x="224" y="416" width="16" height="176"/>
+  <object id="15" type="hulls" x="608" y="416" width="16" height="176"/>
  </objectgroup>
 </map>

@@ -7,8 +7,6 @@ class HudScene extends Phaser.Scene {
         this.hp_blips = [];
         this.boss_bar = [];
         this.ready = false;
-        this.energySolana = {n:300,max:300,h:24,w:192};
-        this.energyBright = {n:300,max:300,h:24,w:192};
         this.shard_totals = {light:0,dark:0};
         this.showBossBar = false;
         this.bossCropRect = new Phaser.Geom.Rectangle(0,0, 1, 1);
@@ -53,15 +51,8 @@ class HudScene extends Phaser.Scene {
         }  
         this.hp_blips = [];
 
-        for(var h = 0;h < this.energy_bar_solana.length;h++){
-            this.energy_bar_solana[h].destroy();
-        }  
-        this.energy_bar_solana = [];
-
-        for(var h = 0;h < this.energy_bar_bright.length;h++){
-            this.energy_bar_bright[h].destroy();
-        }  
-        this.energy_bar_bright = [];
+        this.brightStatBar.destroy();
+        this.solanaStatBar.destroy();
 
         this.shards_light.destroy();
         this.shard_data_l.destroy();
@@ -110,30 +101,21 @@ class HudScene extends Phaser.Scene {
         //Inital set to not visible
         this.setBossVisible(false);
 
-        //this.alertBossHealth(5,10);
+        //Statbar Solana
+        this.solanaStatBar = new Statbar(this,this.cameras.main.width/4, 36, 'hud_energybar3',0,1,2,300,300,false,
+        { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 },
+        {dir: 'LR',tintPercent: 0.20, tintColor: 0xFFB6B6})
+        this.solanaStatBarHead = this.add.image(this.cameras.main.width/4-96, 36, 'hud_energybar3_solana_head',0).setScale(2).setOrigin(0.5);
 
-        //Setup Energy bar test
-        this.energy_bar_solana = [];
-        this.energy_bar_solana.push(this.add.image(this.cameras.main.width/4, 36, 'hud_energybar3',1).setOrigin(0.5));//BG
-        this.energy_bar_solana.push(this.add.image(this.cameras.main.width/4, 36, 'hud_energybar3',2).setOrigin(0.5));//ENERGY
-        this.energy_bar_solana.push(this.add.image(this.cameras.main.width/4, 36, 'hud_energybar3',0).setOrigin(0.5));//FG
-        this.energy_bar_solana.push(this.add.image(this.cameras.main.width/4-96, 36, 'hud_energybar3_solana_head',0).setScale(2).setOrigin(0.5));//FG
-
-        this.energy_bar_bright = [];
-        this.energy_bar_bright.push(this.add.image(this.cameras.main.width*(3/4), 36, 'hud_energybar3',1).setOrigin(0.5));//BG
-        this.energy_bar_bright.push(this.add.image(this.cameras.main.width*(3/4), 36, 'hud_energybar3',2).setOrigin(0.5));//ENERGY
-        this.energy_bar_bright.push(this.add.image(this.cameras.main.width*(3/4), 36, 'hud_energybar3',0).setOrigin(0.5));//FG
-        this.energy_bar_bright.push(this.add.image(this.cameras.main.width*(3/4)+96, 36, 'hud_energybar3_bright_head',0).setScale(2).setOrigin(0.5));//FG
+        this.brightStatBar = new Statbar(this,this.cameras.main.width*(3/4), 36, 'hud_energybar3',0,1,2,300,300,false,
+        { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 },
+        {dir: 'RL',tintPercent: 0.20, tintColor: 0xFFB6B6})
+        this.brightStatBarHead = this.add.image(this.cameras.main.width*(3/4)+96, 36, 'hud_energybar3_bright_head',0).setScale(2).setOrigin(0.5);
 
         for(var h = 0;h < player.hp;h++){
             this.hp_blips.push(this.add.image(this.cameras.main.width/4-52+(h*24),10, 'health_blip'));    
         }
 
-        //Update energy bar values
-        this.energySolana.h = this.energy_bar_solana[1].height;
-        this.energySolana.w = this.energy_bar_solana[1].width;
-        this.energyBright.h = this.energy_bar_bright[1].height;
-        this.energyBright.w = this.energy_bar_bright[1].width;
         //Add Shard Counts
         this.shards_light = this.add.image(this.cameras.main.width-32, 12, 'shard_light',0);
         this.shards_dark = this.add.image(this.cameras.main.width-32, 32, 'shard_dark',0);        
@@ -183,42 +165,11 @@ class HudScene extends Phaser.Scene {
 
     }
     alterEnergySolana(energyChange){
-        let n = this.energySolana.n + energyChange;
-        if(n < 0){n=0;};
-        if(n > this.energySolana.max){
-            n=this.energySolana.max;
-        }else{
-            this.energySolana.n = n;
-            let newValue = Math.round((this.energySolana.n/this.energySolana.max)*this.energySolana.w);
-            //Alter the bar values
-            this.energy_bar_solana[1].setCrop(0,0,newValue,this.energySolana.h);
-            //Tint Energy to red if it is less than 10% of total
-            if(n <= (this.energySolana.max/5)){
-                this.energy_bar_solana[1].setTint(0xFFB6B6);
-            }else{
-                this.energy_bar_solana[1].clearTint();
-            };
-        }
+        this.solanaStatBar.alterValue(energyChange);
 
     }
     alterEnergyBright(energyChange){
-        let n = this.energyBright.n + energyChange;
-        if(n < 0){n=0;};
-        if(n > this.energyBright.max){
-            n=this.energyBright.max;
-        }else{
-            this.energyBright.n = n;
-            let newValue = Math.round((this.energyBright.n/this.energyBright.max)*this.energyBright.w);
-            //Alter the bar values
-            this.energy_bar_bright[1].setCrop(this.energyBright.w-newValue,0,newValue,this.energyBright.h);
-            //Tint Energy to red if it is less than 10% of total
-            if(n <= (this.energyBright.max/5)){
-                this.energy_bar_bright[1].setTint(0xFFB6B6);
-            }else{
-                this.energy_bar_bright[1].clearTint();
-            };
-        }
-
+        this.brightStatBar.alterValue(energyChange);
     }
 
     collectShard(type,value){
