@@ -1,5 +1,3 @@
-//Bright does not have health, but does have corruption. Being Dark for too long, or taking hits from enemies corrupts him. If he reaches full corruption, you have to battle him.
-
 class Bright extends Phaser.Physics.Matter.Sprite{
     constructor(scene,x,y) {
         super(scene.matter.world, x, y, 'bright', 0)
@@ -30,7 +28,17 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         //.setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setPosition(x, y)
         .setIgnoreGravity(true);
-          
+        
+        this.bg = this.scene.add.image(x,y,'bright',0);
+        this.scene.tweens.add({
+            targets: this.bg,
+            rotation: (Math.PI*2),              
+            ease: 'Linear',
+            repeat: -1,       
+            duration: 4000,
+            yoyo: true,  
+        });
+
         //Sensors
         this.sensor = new BrightSensors(scene,x,y);
 
@@ -49,7 +57,6 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.touching = {up:0,down:0,left:0,right:0};
         this.airTime = 0;//For Camera Shake
         this.light_radius = 75;
-        this.corruption = {c:0, m: 60};
         //Dialogue    
         this.dialogue = new Dialogue(this.scene,[{speaker:this,ttl:0,text:""}],54,-40);  
         //FollowMode Solana
@@ -85,6 +92,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
     update()
     {
+            this.bg.setPosition(this.x,this.y);
             if(this.alive){
                 this.effect[0].emitters.list[0].setPosition(this.x,this.y);
                 this.sensor.setPosition(this.x,this.y);
@@ -150,8 +158,6 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     } 
                 }
                 if(this.light_status == brightMode){
-                    this.corruption.c++;
-                    if(this.corruption.c >= this.corruption.m){this.corruption.c = 0;this.applyCorruption(1);}
                     //BRIGHT CONTROLS 
                     if(control_beam && this.beamReady ){
                         this.beamReady = false;
@@ -213,9 +219,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     }
 
                 }else{
+                    //Drain Energy since not bright
+                    hud.alterEnergyBright(-1);
                     //DARK CONTROLS
-                    this.corruption.c++;
-                    if(this.corruption.c >= this.corruption.m){this.corruption.c = 0;this.applyCorruption(-1);}
                     if (control_left) {          
                         this.sprite.setAngularVelocity(-this.roll_speed);   
                         //this.applyForce({x:-this.roll_speed/50,y:0});          
@@ -377,9 +383,6 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     }
     resetDarkDask(){
         this.darkdashReady = true;
-    }
-    applyCorruption(n){
-        hud.alertCorruption(n);
     }
     toDark(){
         this.light_status = 1;

@@ -68,10 +68,10 @@ var GameScene = new Phaser.Class({
         //Load the collision tiles
         var CollisionTiles = map.addTilesetImage('collision','collisions32');//called it collision in tiled
         // create the Graphic layers      
-        let bglayer3 = map.createStaticLayer('bg3', tilesetImages, 0, 0);
-        let bglayer2 = map.createStaticLayer('bg2', tilesetImages, 0, 0);
-        let bglayer = map.createStaticLayer('bg', tilesetImages, 0, 0);
-        let fglayer = map.createStaticLayer('fg', tilesetImages, 0, 0); 
+        this.bglayer3 = map.createStaticLayer('bg3', tilesetImages, 0, 0);
+        this.bglayer2 = map.createStaticLayer('bg2', tilesetImages, 0, 0);
+        this.bglayer = map.createStaticLayer('bg', tilesetImages, 0, 0);
+        this.fglayer = map.createStaticLayer('fg', tilesetImages, 0, 0); 
         //Create the special layers
         let fghiddenlayer= map.createDynamicLayer('fg_hidden', tilesetImages, 0, 0); 
         let fgbreakablelayer= map.createDynamicLayer('fg_breakable', tilesetImages, 0, 0); 
@@ -645,7 +645,7 @@ var GameScene = new Phaser.Class({
          //timeEventName.remove();spawnEnemies(spawnlayer.objects)
          
          //Pass Energy Regen
-         this.energyTimer = this.time.addEvent({ delay: 500, callback: this.generateEnergy, callbackScope: this, loop: true });
+         this.energyTimer = this.time.addEvent({ delay: 250, callback: this.generateEnergy, callbackScope: this, loop: true });
 
       
         
@@ -1148,7 +1148,7 @@ var GameScene = new Phaser.Class({
                 if ((bodyA.label === 'FIREFLY' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'FIREFLY')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'FIREFLY');
                     if (gObjs[0].active){
-                        hud.alterEnergy(10);
+                        hud.alterEnergySolana(10);
                         fireflies.killAndHide(gObjs[0]);
                         //gObjs[0].collect();
                     }  
@@ -1383,8 +1383,8 @@ var GameScene = new Phaser.Class({
         solana.inLight = solana_in_light;
         let rate_of_energy_drain_outside_light = 1;
         if(!solana_in_light){
-            hud.alterEnergy(-rate_of_energy_drain_outside_light);
-            if(hud.energy.n <= 0){solana.receiveDamage(1);};
+            hud.alterEnergySolana(-rate_of_energy_drain_outside_light);
+            if(hud.energySolana.n <= 0){solana.receiveDamage(1);};
         };
 
         //Update Light Source
@@ -1552,7 +1552,8 @@ var GameScene = new Phaser.Class({
 		this.scene.start('mainmenu');
     },
     generateEnergy(){
-        hud.alterEnergy(1);
+        hud.alterEnergySolana(2);
+        hud.alterEnergyBright(2);
     },
     spawnEnemies(){
         console.log("timer spawner!");
@@ -1904,7 +1905,7 @@ function createAnimations(scene){
     });
     scene.anims.create({
         key: 'bright-idle',
-        frames: scene.anims.generateFrameNumbers('bright', { start: 0, end: 1 }),
+        frames: scene.anims.generateFrameNumbers('bright', { start: 1, end: 1 }),
         frameRate: 2,
         repeat: -1
     });
@@ -1916,13 +1917,13 @@ function createAnimations(scene){
     });
     scene.anims.create({
         key: 'bright-sway',
-        frames: scene.anims.generateFrameNumbers('bright', { frames:[0,2,3,4,5,6,7,8,9,10,11,0,2,3,18,17,16,15,14,13,12,11] }),
+        frames: scene.anims.generateFrameNumbers('bright', { frames:[1] }),
         frameRate: 24,
         repeat: -1
     });
     scene.anims.create({
         key: 'bright-move',
-        frames: scene.anims.generateFrameNumbers('bright', { frames:[3,4,5,6,7,8,9,11,12,13,14,15,16,17,18] }),
+        frames: scene.anims.generateFrameNumbers('bright', { frames:[1] }),
         frameRate: 12,
         repeat: -1
     });        

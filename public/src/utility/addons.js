@@ -275,3 +275,8 @@ class DialogueManager {
 	}
 }
 
+class statbar{
+	constructor(){
+		
+	}
+}

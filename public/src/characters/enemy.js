@@ -61,7 +61,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         this.gun = new Gun(60,4,70);
         this.dead = false;
         this.debug = scene.add.text(this.x, this.y-16, 'debug', { resolution: 2, fontSize: '12px', fill: '#00FF00' });
-        this.groundTile = {x:0,y:0, updated: false};//Current Ground Tile
+        this.groundhull = {obj: null, updated: false};//Current Ground Hull
 
         //Setup Collision
         this.scene.matter.world.on('beforeupdate', function (event) {
@@ -89,18 +89,23 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
             callback: eventData => {
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 
-              if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
-                // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
-                
-                if (gameObjectB.properties.collides){
-                    if(bodyA.label == "ENEMY_BOTTOM"){
-                        if(this.groundTile.x != gameObjectB.x || this.groundTile.y != gameObjectB.y){
-                            this.groundTile.x = gameObjectB.x;
-                            this.groundTile.y = gameObjectB.y;
-                            this.groundTile.updated = true;
-                        }
+              if (gameObjectB !== undefined && bodyB.label == 'GROUND') {
+
+                if(bodyA.label == "ENEMY_BOTTOM"){
+                    if(this.groundhull == null){this.groundhull.obj = gameObjectB};
+
+                    if(this.groundhull.x != gameObjectB.x || this.groundhull.y != gameObjectB.y){
+                        this.groundhull.obj = gameObjectB;
+                        this.groundhull.updated = true;
                     }
-                } 
+                }
+                if(bodyA.label == "ENEMY_LEFT"){
+                    this.touching.left++;
+                }
+                if(bodyA.label == "ENEMY_RIGHT"){
+                    this.touching.right++;
+                }
+                
               }
             }
         });
@@ -230,29 +235,24 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         this.setVelocityX(this.mv_speed*this.patrolDirection);
     }
     patrol(){
-        if(this.groundTile.updated){
+        if(this.groundhull.updated){
             //Phaser.Physics.Matter.Matter.Query.point(this.scene.matter.world.localWorld.bodies, {x:this.x, y:this.y})
-            //Just look at monster position and round to tile position. I dont even need to know my collision object.
-
-            //METHOD 1 - Check One tile over from current tile. If null, reverse position
-            // let checkTile = map.getTileAt((this.groundTile.x+this.patrolDirection), this.groundTile.y, true, this.scene.collisionLayer)
-            // if(checkTile.index == -1){this.patrolDirection = this.patrolDirection*-1;}//Toggle
-
+            //groundhull
             //METHOD 2
-            let checkTile = map.getTileAt((this.groundTile.x+this.patrolDirection), this.groundTile.y, true, this.scene.collisionLayer)
-            if(checkTile != null){
-                if(checkTile.index == -1){//Toggle
+            let leftCenter = this.getLeftCenter();
+            let rightCenter = this.getRightCenter();
+            let leftCenterGrd = this.groundhull.obj.getLeftCenter();
+            let rightCenterGrd = this.groundhull.obj.getRightCenter(); 
 
-                    let ts= map.tileWidth;
+            if((this.patrolDirection == -1 && (leftCenter.x < leftCenterGrd.x))
+            || (this.patrolDirection == 1 && (rightCenter.x > rightCenterGrd.x))){
 
-                    if((this.patrolDirection == -1 && (this.x) < (this.groundTile.x*ts+ ts/2))
-                    || (this.patrolDirection == 1 && (this.x) > (this.groundTile.x*ts + ts/2))){
-                        this.patrolDirection = this.patrolDirection*-1;//Toggle
-                    }
-
-                }
+                this.patrolDirection = this.patrolDirection*-1;
             }
-            if(this.touching.left > 0 || this.touching.right > 0){this.patrolDirection = this.patrolDirection*-1;}
+                
+            if(this.touching.left > 0 || this.touching.right > 0){
+                this.patrolDirection = this.patrolDirection*-1;
+            }
             this.setVelocityX(this.mv_speed*this.patrolDirection);
         }
     }
@@ -410,30 +410,11 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
             callback: eventData => {
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 
-              if (gameObjectB !== undefined && gameObjectB instanceof Phaser.Tilemaps.Tile) {
-                // Now you know that gameObjectB is a Tile, so you can check the index, properties, etc.
+              if (gameObjectB !== undefined && (bodyB.label == 'GROUND' 
+              || gameObjectB instanceof TMXPlatform
+              || gameObjectB instanceof Barrier
+              || gameObjectB instanceof TMXGate)) {                
                 
-                if (gameObjectB.properties.collides){
-                    if(bodyA.label == "SPIDER_BOTTOM"){
-                        gameObjectA.touching.down++;
-                    }
-                    if(bodyA.label == "SPIDER_RIGHT"){
-                        gameObjectA.touching.right++;
-                    }
-                    if(bodyA.label == "SPIDER_LEFT"){
-                        gameObjectA.touching.left++;
-                    }
-                    if(bodyA.label == "SPIDER_TOP"){
-                        gameObjectA.touching.up++;
-                    }
-                } 
-              }
-              if (gameObjectB !== undefined &&
-                (gameObjectB instanceof TMXPlatform
-                || gameObjectB instanceof Barrier
-                || gameObjectB instanceof TMXGate)) {   
-                
-                //handle plaform jumping allowance             
                 if(bodyA.label == "SPIDER_BOTTOM"){
                     gameObjectA.touching.down++;
                 }
@@ -445,8 +426,8 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
                 }
                 if(bodyA.label == "SPIDER_TOP"){
                     gameObjectA.touching.up++;
-                }                         
-              } 
+                }                 
+              }
             }
         });
 
@@ -784,7 +765,7 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
     }
     findDestinationTile(oX,oY,velX,velY,dOsX,dOsY){
         //Velocity should be set here.
-        let checkTile = map.getTileAt(oX+velX+dOsX,oY+velY+dOsY, true, this.scene.collisionLayer)
+        let checkTile = map.getTileAt(oX+velX+dOsX,oY+velY+dOsY, true, this.scene.fglayer)
         if(checkTile != null){  
             if(checkTile.index == -1){
                 //Negate the offset, Adjusted Offset X and Y

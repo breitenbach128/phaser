@@ -5,12 +5,10 @@ class HudScene extends Phaser.Scene {
         super({ key: 'UIScene', active: true });
 
         this.hp_blips = [];
-        this.energy_bar = [];
-        this.corruption_bar = [];
         this.boss_bar = [];
         this.ready = false;
-        this.energy = {n:300,max:300,h:100,w:16};
-        this.corruption = {n:100,max:100,h:100,w:16};
+        this.energySolana = {n:300,max:300,h:24,w:192};
+        this.energyBright = {n:300,max:300,h:24,w:192};
         this.shard_totals = {light:0,dark:0};
         this.showBossBar = false;
         this.bossCropRect = new Phaser.Geom.Rectangle(0,0, 1, 1);
@@ -55,15 +53,15 @@ class HudScene extends Phaser.Scene {
         }  
         this.hp_blips = [];
 
-        for(var h = 0;h < this.energy_bar.length;h++){
-            this.energy_bar[h].destroy();
+        for(var h = 0;h < this.energy_bar_solana.length;h++){
+            this.energy_bar_solana[h].destroy();
         }  
-        this.energy_bar = [];
+        this.energy_bar_solana = [];
 
-        for(var h = 0;h < this.corruption_bar.length;h++){
-            this.corruption_bar[h].destroy();
-        }          
-        this.corruption_bar = [];
+        for(var h = 0;h < this.energy_bar_bright.length;h++){
+            this.energy_bar_bright[h].destroy();
+        }  
+        this.energy_bar_bright = [];
 
         this.shards_light.destroy();
         this.shard_data_l.destroy();
@@ -104,17 +102,7 @@ class HudScene extends Phaser.Scene {
 
         this.skipSpeech = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
         this.ready = true;
-        for(var h = 0;h < player.hp;h++){
-            this.hp_blips.push(this.add.image(32,16+(h*16), 'health_blip'));    
-        }
-        //Add energy bar
-        this.energy_bar.push(this.add.image(12, 48, 'hud_energybar1',1));//BG
-        this.energy_bar.push(this.add.image(12, 48, 'hud_energybar1',2));//ENERGY
-        this.energy_bar.push(this.add.image(12, 48, 'hud_energybar1',0));//FG
-        //Add corruption bar
-        this.corruption_bar.push(this.add.image(52, 48, 'hud_corruptionbar1',1));//BG
-        this.corruption_bar.push(this.add.image(52, 48, 'hud_corruptionbar1',2));//ENERGY
-        this.corruption_bar.push(this.add.image(52, 48, 'hud_corruptionbar1',0));//FG
+
         //Add Boss Health Bar
         this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',2).setScale(6,3));//BG
         this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',1).setScale(6,3));//Health
@@ -124,19 +112,36 @@ class HudScene extends Phaser.Scene {
 
         //this.alertBossHealth(5,10);
 
+        //Setup Energy bar test
+        this.energy_bar_solana = [];
+        this.energy_bar_solana.push(this.add.image(this.cameras.main.width/4, 36, 'hud_energybar3',1).setOrigin(0.5));//BG
+        this.energy_bar_solana.push(this.add.image(this.cameras.main.width/4, 36, 'hud_energybar3',2).setOrigin(0.5));//ENERGY
+        this.energy_bar_solana.push(this.add.image(this.cameras.main.width/4, 36, 'hud_energybar3',0).setOrigin(0.5));//FG
+        this.energy_bar_solana.push(this.add.image(this.cameras.main.width/4-96, 36, 'hud_energybar3_solana_head',0).setScale(2).setOrigin(0.5));//FG
+
+        this.energy_bar_bright = [];
+        this.energy_bar_bright.push(this.add.image(this.cameras.main.width*(3/4), 36, 'hud_energybar3',1).setOrigin(0.5));//BG
+        this.energy_bar_bright.push(this.add.image(this.cameras.main.width*(3/4), 36, 'hud_energybar3',2).setOrigin(0.5));//ENERGY
+        this.energy_bar_bright.push(this.add.image(this.cameras.main.width*(3/4), 36, 'hud_energybar3',0).setOrigin(0.5));//FG
+        this.energy_bar_bright.push(this.add.image(this.cameras.main.width*(3/4)+96, 36, 'hud_energybar3_bright_head',0).setScale(2).setOrigin(0.5));//FG
+
+        for(var h = 0;h < player.hp;h++){
+            this.hp_blips.push(this.add.image(this.cameras.main.width/4-52+(h*24),10, 'health_blip'));    
+        }
+
         //Update energy bar values
-        this.energy.h = this.energy_bar[1].height;
-        this.energy.w = this.energy_bar[1].width;
+        this.energySolana.h = this.energy_bar_solana[1].height;
+        this.energySolana.w = this.energy_bar_solana[1].width;
+        this.energyBright.h = this.energy_bar_bright[1].height;
+        this.energyBright.w = this.energy_bar_bright[1].width;
         //Add Shard Counts
-        this.shards_light = this.add.image(this.cameras.main.width-32, 48, 'shard_light',0);
-        this.shards_dark = this.add.image(this.cameras.main.width-32, 96, 'shard_dark',0);        
-        this.shard_data_l = this.add.text(this.cameras.main.width-64, 48, '0 x', { fontFamily: 'visitorTT1', fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 }).setOrigin(.5);
-        this.shard_data_d = this.add.text(this.cameras.main.width-64, 96, '0 x', { fontFamily: 'visitorTT1', fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 }).setOrigin(.5);
+        this.shards_light = this.add.image(this.cameras.main.width-32, 12, 'shard_light',0);
+        this.shards_dark = this.add.image(this.cameras.main.width-32, 32, 'shard_dark',0);        
+        this.shard_data_l = this.add.text(this.cameras.main.width-60, 12, '0 x', { fontFamily: 'visitorTT1', fontSize: '16px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 1 }).setOrigin(.5);
+        this.shard_data_d = this.add.text(this.cameras.main.width-60, 32, '0 x', { fontFamily: 'visitorTT1', fontSize: '16px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 1 }).setOrigin(.5);
 
         //DEBUG
-        this.debug = this.add.text(64, 16, 'DEBUG-HUD', { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
-        //HUD Energy Bar Flash/Scale Effect: When energy is added, alter the look for a few MS to show energy has been gained.
-        this.energy_bar_effect = this.time.addEvent({ delay: 200, callback: this.resetEnergyScale, callbackScope: this, loop: false });
+        this.debug = this.add.text(8, this.cameras.main.height-128, 'DEBUG-HUD', { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
   
         //Setup SOL Pieces
         
@@ -173,70 +178,49 @@ class HudScene extends Phaser.Scene {
             repeat: -1
         });
         
-        //Eats up too much space. Work on better solution.
-        // let sol_pieces_ui = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
-        // sol_pieces_ui.anims.play('sol_dead-1', true);
-        // let sol_pieces_collected_1 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
-        // sol_pieces_collected_1.anims.play('sol_shardglow-1', true);
-        // let sol_pieces_collected_2 = this.add.sprite(this.cameras.main.width/2, 64, 'sol_pieces').setScale(2);
-        // sol_pieces_collected_2.anims.play('sol_shardglow-2', true);
-
-        //Test new Speaker Class
+        // Setup Speaker Class
         this.storySpeech = new HudSpeech(this);
-        // this.storySpeech.createSpeech('hud_solana_head','hud_bright_head',false);
-        // this.storySpeech.addToSpeech('left',"This is test of text 1 block",3000);
-        // this.storySpeech.addToSpeech('right',"This is another test of text 2 block",3000);
-        // this.storySpeech.startSpeech();
-        
-        // this.testTimeSP = this.time.addEvent({
-        //     delay: 10000,
-        //     callback: function(){
-        //         testSpeech.createSpeech('hud_solana_head','hud_bright_head');
-        //         testSpeech.addToSpeech('left',"Second test of speech",3000);
-        //         testSpeech.addToSpeech('right',"Yup, we are still talking...",3000);
-        //         testSpeech.startSpeech();
-        //     }, 
-        //     callbackScope: this, 
-        //     loop: false 
-        // });
 
     }
-    alterEnergy(energyChange){
-        let n = this.energy.n + energyChange;
+    alterEnergySolana(energyChange){
+        let n = this.energySolana.n + energyChange;
         if(n < 0){n=0;};
-        if(n > this.energy.max){
-            n=this.energy.max;
+        if(n > this.energySolana.max){
+            n=this.energySolana.max;
         }else{
-            this.energy.n = n;
-            let newValue = Math.round((this.energy.n/this.energy.max)*this.energy.h);
+            this.energySolana.n = n;
+            let newValue = Math.round((this.energySolana.n/this.energySolana.max)*this.energySolana.w);
             //Alter the bar values
-            this.energy_bar[1].setCrop(0,this.energy.h-newValue,this.energy.w,newValue);
+            this.energy_bar_solana[1].setCrop(0,0,newValue,this.energySolana.h);
             //Tint Energy to red if it is less than 10% of total
-            if(n <= (this.energy.max/5)){
-                this.energy_bar[1].setTint(0xFFB6B6);
+            if(n <= (this.energySolana.max/5)){
+                this.energy_bar_solana[1].setTint(0xFFB6B6);
             }else{
-                this.energy_bar[1].clearTint();
+                this.energy_bar_solana[1].clearTint();
             };
-            //Alter bar scale on gain only
-            if(energyChange > 0){
-                this.energy_bar.forEach(function(e){e.setScale(1.10)});
-                this.energy_bar_effect = this.time.addEvent({ delay: 200, callback: this.resetEnergyScale, callbackScope: this, loop: false });
-            }
         }
 
+    }
+    alterEnergyBright(energyChange){
+        let n = this.energyBright.n + energyChange;
+        if(n < 0){n=0;};
+        if(n > this.energyBright.max){
+            n=this.energyBright.max;
+        }else{
+            this.energyBright.n = n;
+            let newValue = Math.round((this.energyBright.n/this.energyBright.max)*this.energyBright.w);
+            //Alter the bar values
+            this.energy_bar_bright[1].setCrop(this.energyBright.w-newValue,0,newValue,this.energyBright.h);
+            //Tint Energy to red if it is less than 10% of total
+            if(n <= (this.energyBright.max/5)){
+                this.energy_bar_bright[1].setTint(0xFFB6B6);
+            }else{
+                this.energy_bar_bright[1].clearTint();
+            };
+        }
 
     }
-    alertCorruption(corruptionChange){
-        let n = this.corruption.n + corruptionChange;
-        if(n < 0){n=0;};
-        if(n > this.corruption.max){n=this.corruption.max;};
-        this.corruption.n = n;
-        let newValue = Math.round((this.corruption.n/this.corruption.max)*this.corruption.h);
-        this.corruption_bar[1].setCrop(0,this.energy.h-newValue,this.energy.w,newValue);
-    }
-    resetEnergyScale(){
-        this.energy_bar.forEach(function(e){e.setScale(1)});
-    }
+
     collectShard(type,value){
         if(type == 'light'){
             this.shard_totals.light = this.shard_totals.light + value;
@@ -305,14 +289,6 @@ class HudScene extends Phaser.Scene {
         for(var h = 0;h < hp-1;h++){
             this.hp_blips[h].setVisible(true); 
         }
-    }
-    createDialog(){
-        //A JSON style format for dialog.
-        // Requires: Talker Object (for X,Y). TTL for Bubble, and Text.
-        //Object pooling would work well here. Just reuse bubble objects and set text
-        //All Push button to speed up.
-
-
     }
     handleEvents ()
     {

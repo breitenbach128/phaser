@@ -69,7 +69,7 @@ var Storyboard = new Phaser.Class({
             let point = Phaser.Geom.Ellipse.CircumferencePoint(brightOrbitEllipse, normAngle);
             //let pointEnd = Phaser.Geom.Circle.CircumferencePoint(brightOrbitCircle, normAngle+Math.PI);
             // Use GEOM ELIIPSE HERE and track along the path.
-            let bright1 = this.add.sprite(point.x,point.y,'bright').setDepth(Z_LAYERS.FG);
+            let bright1 = this.add.sprite(point.x,point.y,'bright',1).setDepth(Z_LAYERS.FG);
             bright1.orbit = 0;
             bright1.orbitOS = 0.5*i+Phaser.Math.FloatBetween(0,0.15);
 
@@ -142,7 +142,7 @@ var Storyboard = new Phaser.Class({
             }
             let { width, height } = this.sys.game.canvas;
             
-            let fallBright = this.add.sprite(width/2,height/2,'bright').setDepth(Z_LAYERS.FG);
+            let fallBright = this.add.sprite(width/2,height/2,'bright',1).setDepth(Z_LAYERS.FG);
 
             camera.startFollow(fallBright);   
 

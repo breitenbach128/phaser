@@ -227,10 +227,10 @@ var Preloader = new Phaser.Class({
         this.load.image('crate', 'assets/objects/crate2.png');
         this.load.image('rocks', 'assets/objects/rocks.png');
         this.load.spritesheet('solana', 'assets/characters/solana.png', {frameWidth: 96, frameHeight: 64});
-        this.load.spritesheet('bright', 'assets/characters/bright.png', {frameWidth: 48, frameHeight: 48});
+        this.load.spritesheet('bright', 'assets/characters/brightV2.png', {frameWidth: 48, frameHeight: 48});
         this.load.spritesheet('polaris', 'assets/characters/polaris.png', {frameWidth: 16, frameHeight: 16});
         this.load.spritesheet('npc1', 'assets/characters/npc1.png', {frameWidth: 16, frameHeight: 32});
-        this.load.spritesheet('dark', 'assets/characters/dark.png', {frameWidth: 48, frameHeight: 48});
+        this.load.spritesheet('dark', 'assets/characters/darkV2.png', {frameWidth: 48, frameHeight: 48});
         this.load.spritesheet('soul_light', 'assets/characters/soul_light.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('mirror', 'assets/objects/mirror2.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('lever', 'assets/objects/lever.png', {frameWidth: 32, frameHeight: 32});
@@ -246,7 +246,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('burstwave', 'assets/objects/burstwave1.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('sol_pieces', 'assets/objects/Sol_pieces.png', {frameWidth: 64, frameHeight: 64});
 		this.load.spritesheet('breakablecracks', 'assets/objects/breakablecracks.png', {frameWidth: 32, frameHeight: 32});	
-		this.load.spritesheet('bright_pulse', 'assets/characters/pulse.png', {frameWidth: 48, frameHeight: 48});
+		this.load.spritesheet('bright_pulse', 'assets/characters/pulseV2.png', {frameWidth: 48, frameHeight: 48});
 		this.load.spritesheet('telebeam', 'assets/objects/telebeam.png', {frameWidth: 64, frameHeight: 64});
 		this.load.spritesheet('window_shatter', 'assets/objects/window_shatter.png', {frameWidth: 64, frameHeight: 96});
         this.load.spritesheet('solana_shield', 'assets/objects/solana_shield.png', {frameWidth: 32, frameHeight: 32});
@@ -280,6 +280,9 @@ var Preloader = new Phaser.Class({
 		// - HUD
 		this.load.spritesheet('hud_interaction_control_arrows','assets/hud/hud_interaction_control_arrows.png',{frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('hud_energybar1','assets/hud/hud_energybar1.png',{frameWidth: 16, frameHeight: 96});		
+		this.load.spritesheet('hud_energybar3','assets/hud/hud_energybar3.png',{frameWidth: 192, frameHeight: 24});	
+		this.load.spritesheet('hud_energybar3_solana_head','assets/hud/hud_energybar3_solana_head.png',{frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('hud_energybar3_bright_head','assets/hud/hud_energybar3_bright_head.png',{frameWidth: 32, frameHeight: 32});		
 		this.load.spritesheet('hud_corruptionbar1','assets/hud/hud_corruptionbar1.png',{frameWidth: 16, frameHeight: 96});
 		//Make these talking animations later		
 		this.load.image('hud_solana_head', 'assets/hud/hud_Solana_head.png');

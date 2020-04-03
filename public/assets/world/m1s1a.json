@@ -1,4 +1,4 @@
-{ "compressionlevel":-1,
+{ "compressionlevel":0,
  "editorsettings":
     {
      "export":
@@ -120,7 +120,44 @@
          "draworder":"topdown",
          "id":14,
          "name":"enemies",
-         "objects":[],
+         "objects":[
+                {
+                 "height":32,
+                 "id":16,
+                 "name":"spider",
+                 "properties":[
+                        {
+                         "name":"aBehav",
+                         "type":"string",
+                         "value":"jump"
+                        }, 
+                        {
+                         "name":"enemyClass",
+                         "type":"string",
+                         "value":"spider"
+                        }, 
+                        {
+                         "name":"enemyType",
+                         "type":"string",
+                         "value":"spiderhive"
+                        }, 
+                        {
+                         "name":"pBehav",
+                         "type":"string",
+                         "value":"idle"
+                        }, 
+                        {
+                         "name":"weapon",
+                         "type":"int",
+                         "value":16
+                        }],
+                 "rotation":0,
+                 "type":"spider",
+                 "visible":true,
+                 "width":32,
+                 "x":496,
+                 "y":448
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -241,7 +278,40 @@
                  "visible":true,
                  "width":400,
                  "x":224,
+                 "y":400
+                }, 
+                {
+                 "height":16,
+                 "id":13,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":400,
+                 "x":224,
                  "y":592
+                }, 
+                {
+                 "height":176,
+                 "id":14,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":224,
+                 "y":416
+                }, 
+                {
+                 "height":176,
+                 "id":15,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":608,
+                 "y":416
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -250,7 +320,7 @@
          "y":0
         }],
  "nextlayerid":16,
- "nextobjectid":13,
+ "nextobjectid":17,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.1",
