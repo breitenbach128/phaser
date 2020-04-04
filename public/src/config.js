@@ -19,7 +19,7 @@
                 gravity: { y: 400 }
             },
             matter: {
-                gravity: { y: 0.65 },
+                gravity: { y: 1.5 },
                 positionIterations: 10, //8
                 velocityIterations: 8, //6
                 constraintIterations: 6 //2

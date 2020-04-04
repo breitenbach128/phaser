@@ -12,10 +12,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         const { width: w, height: h } = this.sprite;      
         const mainBody = Bodies.rectangle(0, 0, w * 0.2, h*.65, { chamfer: { radius: 5 } });
         this.sensors = {
-          top: Bodies.rectangle(0, -h*0.35, w * 0.15, 2, { isSensor: true }),
-          bottom: Bodies.rectangle(0, h*0.35, w * 0.15, 2, { isSensor: true }),
-          left: Bodies.rectangle(-w * 0.11, 0, 2, h * 0.45, { isSensor: true }),
-          right: Bodies.rectangle(w * 0.11, 0, 2, h * 0.45, { isSensor: true })
+          top: Bodies.rectangle(0, -h*0.35, w * 0.15, 2, { isSensor: true, friction: 0.0 }),
+          bottom: Bodies.rectangle(0, h*0.35, w * 0.15, 2, { isSensor: true, friction: 0.0 }),
+          left: Bodies.rectangle(-w * 0.11, 0, 2, h * 0.45, { isSensor: true, friction: 0.0 }),
+          right: Bodies.rectangle(w * 0.11, 0, 2, h * 0.45, { isSensor: true, friction: 0.0 })
         };
         this.sensors.top.label = "SOLANA_TOP";
         this.sensors.bottom.label = "SOLANA_BOTTOM";
@@ -26,10 +26,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         const compoundBody = Body.create({
           parts: [mainBody, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
           //parts: [mainBody],
+          //parts: [mainBody],
           frictionStatic: 0.0,
-          frictionAir: 0.005,
-          friction: 0.005, //0.01
-          restitution: 0.01,
+          frictionAir: 0.1,
+          friction: 0.35, //0.01
+          restitution: 0.0,
           density: 0.01 //0.01
         });
        //Fix the draw offsets for the compound sprite.
@@ -46,16 +47,16 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
         //this.sprite.setIgnoreGravity(true);
         //Custom Properties
-        this.max_mv_speed = 2;
         this.hp = 5;
         this.max_hp = 5;
-        this.mv_speed = 0.0010; //0.00214285
+        this.max_mv_speed = 1.0;
+        this.mv_speed = 0.007; //0.00214285
+        this.jump_speed = 0.045;//0.01846
         this.mv_direction = {x:0,y:0};
         this.prev_position = {x:0,y:0};
         this.control_lock = false;
         this.mv_Xdiff = 0;
         this.mv_Ydiff = 0;
-        this.jump_speed = 0.01846;
         this.onGround = false;
         this.onWall = false;
         this.jumpReady = false;
@@ -219,10 +220,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         if (control_passPress) { soullight.aimStart() };
                         if (control_passRelease) { soullight.aimStop(); };
                     }
-                    if (this.jumpLock) {
-                        //this.sprite.setVelocityX(this.kickOff);
-                        this.sprite.applyForce({ x: this.kickOff / 500, y: 0 })
-                    }
+                    // if (this.jumpLock) {
+                    //     //this.sprite.setVelocityX(this.kickOff);
+                    //     this.sprite.applyForce({ x: this.kickOff, y: 0 })
+                    // }
 
                     if (control_jump && this.jumpReady) {
                         this.jump(this.jump_speed, mv_speed);
@@ -268,7 +269,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     }
                 }
             }
-            this.drawDebugText();
+            
         } // END IF ALIVE
         if(this.beingThrown.ready == true){
             this.getThrown();            
@@ -305,7 +306,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         // }else if(this.body.velocity.y >= 0 && this.body.collisionFilter.category != CATEGORY.SOLANA){
         //     this.setCollisionCategory(CATEGORY.SOLANA)
         // }
-        
+        this.drawDebugText();
     }
     drawDebugText(){
         this.debug.setPosition(this.sprite.x, this.sprite.y-32);
