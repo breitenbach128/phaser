@@ -94,7 +94,6 @@ var GameScene = new Phaser.Class({
                 if(tile.index != -1){
                     //console.log(tile);
                     let newImgIndex = tile.index - tile.tileset.firstgid;
-                    console.log(newImgIndex,tile);
                     let breakTile = new BreakableTile(this,tile.pixelX+tile.width/2,tile.pixelY+tile.height/2,tile.tileset.image.key,newImgIndex).setOrigin(0.5).setDepth(DEPTH_LAYERS.FG);
                 }
             },this);
@@ -665,6 +664,7 @@ var GameScene = new Phaser.Class({
          soullight.sprite.anims.play('soulight-move', true);//Idle
 
         solana.setDepth(DEPTH_LAYERS.PLAYERS + 2);
+        bright.bg.setDepth(DEPTH_LAYERS.PLAYERS);
         bright.setDepth(DEPTH_LAYERS.PLAYERS);
 
         //*********************************//
@@ -1238,14 +1238,16 @@ var GameScene = new Phaser.Class({
         // solana.setPipeline('Light2D');
         // let light  = this.lights.addLight(0, 0, 200).setScrollFactor(0.0).setIntensity(2);
 
-        //TEST PLATSWING
-        //let swing = new PlatSwing(this,solana.x+32,solana.y-32);
-        //let swing = new PlatSwingTween(this,solana.x+32,solana.y-32);
+
+        //test Text Blip
+        //this.testTB = new TextBlips(this,solana.x+32,solana.y-64,"derping",{resolution: 2, fontSize: '22px'},0,1.1,0,6,0,-4);
 
         
     },
     update: function (time, delta)
     {
+        //this.testTB.update();
+
         //Handle KP "Sticking" bug
         // if(this.doKPClear){
         //     if(keyPad != undefined){
@@ -2161,7 +2163,7 @@ function createAnimations(scene){
      
     scene.anims.create({
         key: 'light-shield',
-        frames: scene.anims.generateFrameNumbers('solana_shield', { frames:[0,1,2] }),
+        frames: scene.anims.generateFrameNumbers('solana_shield', { frames:[0,1,2,1,0] }),
         frameRate: 12,
         repeat: -1
     }); 

@@ -329,3 +329,29 @@ class Statbar{
 		this.FILL.destroy();
 	}
 }
+
+class TextBlips extends Phaser.GameObjects.Text{
+	constructor(scene,x,y,string,style,gravityX,gravityY,maxX,maxY,initVelX,initVelY){
+		super(scene,x,y,string,style);
+		scene.add.existing(this); 
+		this.gravity = {x:gravityX,y:gravityY};
+		this.velocity = {x:initVelX,y:initVelY};
+		this.maxVelocity = {x:maxX,y:maxY};
+		//console.log(this.velocity,this.gravity);
+	}
+	update(time,delta){
+		//gravity
+		this.gravity.x = this.gravity.x*this.gravity.x;
+		this.gravity.y = this.gravity.y*this.gravity.y;
+		//Accel
+		this.velocity.x = this.velocity.x+this.gravity.x < this.maxVelocity.x ? this.velocity.x+this.gravity.x : this.maxVelocity.x;
+		this.velocity.y = this.velocity.y+this.gravity.y < this.maxVelocity.y ? this.velocity.y+this.gravity.y : this.maxVelocity.y;
+		
+		//New Position
+		if(this.velocity.x  != 0 || this.velocity.y != 0){
+			this.setPosition(this.x+this.velocity.x,this.y+this.velocity.y);
+		}
+		
+		//console.log(this.velocity,this.gravity);
+	}
+}

@@ -139,7 +139,9 @@
         GROUND: 128,
         SOLID: 256,
         ENEMY: 512,
-        SOLANA_UP: 1024
+        SOLANA_UP: 1024,
+        SHIELD: 2048
+
     }
     const DEPTH_LAYERS = {
         BG: 10,

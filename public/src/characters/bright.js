@@ -29,7 +29,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         .setPosition(x, y)
         .setIgnoreGravity(true);
         
-        this.bg = this.scene.add.image(x,y,'bright',0);
+        this.bg = this.scene.add.image(x,y,'bright',0).setVisible(false);
         this.scene.tweens.add({
             targets: this.bg,
             rotation: (Math.PI*2),              
@@ -412,6 +412,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite.setIgnoreGravity(false);
         this.sprite.setCollisionCategory(CATEGORY.DARK);
         this.sprite.setDensity(0.01);//0.01
+        this.bg.setVisible(false);
     }
     toBright(){
         this.light_status = 0;
@@ -421,6 +422,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite.setIgnoreGravity(true);
         this.sprite.setCollisionCategory(CATEGORY.BRIGHT);
         this.sprite.setDensity(0.01);
+        this.bg.setVisible(true);
         //Tween back to straight up
         this.reAlignBright();
     }

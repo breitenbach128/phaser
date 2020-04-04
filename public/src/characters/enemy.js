@@ -556,7 +556,7 @@ class EnemySpider extends Phaser.Physics.Matter.Sprite{
                 let bullet = bullets.get(-1000,-1000,'bullet');
                 if (bullet && this.gun.ready)//ROF(MS)
                 {                
-                    bullet.setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.SOLANA, CATEGORY.MIRROR ]);
+                    bullet.setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.SOLANA, CATEGORY.MIRROR, CATEGORY.SHIELD ]);
                     bullet.setIgnoreGravity(false);
                     bullet.setFrame(16);
                     let effs = [(new bulletEffect('Stunned',1.0,60,1,'Anim','solana-webbed'))];

@@ -341,14 +341,14 @@ class BreakableTile extends Phaser.Physics.Matter.Sprite{
             callback: eventData => {
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 
-                if (gameObjectB !== undefined && gameObjectB instanceof Bright) {
+                if (gameObjectB !== undefined && gameObjectB instanceof BrightSensors) {
                     this.impact(gameObjectB);
                 }
             }
         });
         //Breakable detail sprite
         this.detailSprite = this.scene.add.sprite(this.x,this.y,'breakablecracks').setDepth(DEPTH_LAYERS.FG);
-
+        this.crushThreshold = 2;
         this.max_speed = 8;
         this.breakFrame = 0;
         this.breakFrames = [0,1,2,3,4];
@@ -366,10 +366,7 @@ class BreakableTile extends Phaser.Physics.Matter.Sprite{
     }
     update(time, delta)
     {       
-        if(this.body.velocity.x > this.max_speed){this.setVelocityX(this.max_speed)};
-        if(this.body.velocity.x < -this.max_speed){this.setVelocityX(-this.max_speed)};
-        if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed)};
-        if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
+
     }
     setReadyCrush(){
         this.readyCrush = true;
@@ -377,22 +374,24 @@ class BreakableTile extends Phaser.Physics.Matter.Sprite{
     impact(obj){
         if(this.readyCrush){
             this.readyCrush = false;
+            //this.setCollidesWith([ 0 ]) ;
             this.crushTimer = this.scene.time.addEvent({ delay: 300, callback: this.setReadyCrush, callbackScope: this, loop: false });
-            let fromBody = obj.body;
+            let fromBody = bright.body;
             let speed = Math.sqrt(Math.pow(fromBody.velocity.x,2)+Math.pow(fromBody.velocity.y,2));
-            let force = speed*fromBody.density*100;
-            console.log("Crush Force", force,this.breakFrames.length);
-            if(force >= 2){                
-                this.breakFrame = this.breakFrame + Math.round(force);
-                if(this.breakFrame < this.breakFrames.length){
-                    this.detailSprite.setFrame(this.breakFrames[this.breakFrame]);
-                }else{
-                    this.detailSprite.destroy();
-                    this.destroy();
-                }
-                
-                
+            let force = speed*fromBody.mass;
+           
+            // //Using Matter magnitude.
+            // var bodyAMomentum = Phaser.Physics.Matter.Matter.Vector.mult(fromBody.velocity, fromBody.mass);
+            // var bodyBMomentum = Phaser.Physics.Matter.Matter.Vector.mult({x:0,y:0}, 0);
+            // var relativeMomentum = Phaser.Physics.Matter.Matter.Vector.sub(bodyAMomentum, bodyBMomentum);
+            if(force >= this.crushThreshold || this.breakFrame >= this.breakFrames.length ){
+                this.detailSprite.destroy();
+                this.destroy();
+            }else if(force >= 0){
+                this.breakFrame = this.breakFrame + Math.round(force) < this.breakFrames.length ? this.breakFrame + Math.round(force) : this.breakFrames.length;
+                this.detailSprite.setFrame(this.breakFrames[this.breakFrame]);
             }
+
         }
     }
 };
