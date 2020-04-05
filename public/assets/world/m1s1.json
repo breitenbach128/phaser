@@ -330,8 +330,8 @@
                  "type":"hive",
                  "visible":true,
                  "width":32,
-                 "x":256,
-                 "y":448
+                 "x":304,
+                 "y":464
                 }, 
                 {
                  "height":16,
@@ -341,8 +341,8 @@
                  "type":"crate",
                  "visible":true,
                  "width":16,
-                 "x":192,
-                 "y":512
+                 "x":560,
+                 "y":464
                 }, 
                 {
                  "height":16,
@@ -363,7 +363,7 @@
                  "type":"soulcrystal",
                  "visible":true,
                  "width":16,
-                 "x":128,
+                 "x":176,
                  "y":464
                 }, 
                 {
@@ -385,8 +385,66 @@
                  "type":"soulcrystal",
                  "visible":true,
                  "width":16,
-                 "x":180,
-                 "y":463
+                 "x":224,
+                 "y":464
+                }, 
+                {
+                 "ellipse":true,
+                 "height":16,
+                 "id":24,
+                 "name":"junk1",
+                 "rotation":0,
+                 "type":"junk",
+                 "visible":true,
+                 "width":16,
+                 "x":80,
+                 "y":496
+                }, 
+                {
+                 "height":3,
+                 "id":27,
+                 "name":"junk3",
+                 "rotation":0,
+                 "type":"junk",
+                 "visible":true,
+                 "width":127,
+                 "x":160,
+                 "y":528
+                }, 
+                {
+                 "height":0,
+                 "id":31,
+                 "name":"",
+                 "polygon":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":16,
+                         "y":-16
+                        }, 
+                        {
+                         "x":32,
+                         "y":0
+                        }],
+                 "rotation":0,
+                 "type":"junk",
+                 "visible":true,
+                 "width":0,
+                 "x":208,
+                 "y":560
+                }, 
+                {
+                 "height":16,
+                 "id":32,
+                 "name":"rock",
+                 "rotation":0,
+                 "type":"rock",
+                 "visible":true,
+                 "width":16,
+                 "x":208,
+                 "y":400
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -428,7 +486,7 @@
                  "type":"zone",
                  "visible":true,
                  "width":64,
-                 "x":304,
+                 "x":848,
                  "y":464
                 }, 
                 {
@@ -575,7 +633,7 @@
          "y":0
         }],
  "nextlayerid":16,
- "nextobjectid":24,
+ "nextobjectid":33,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.3",

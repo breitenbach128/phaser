@@ -401,7 +401,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.beingThrown.ready = false;
     }
     getThrown(){  
-        console.log(this.beingThrown.vec)           
+        //console.log(this.beingThrown.vec)           
         this.sprite.applyForce(this.beingThrown.vec);   
     }
     getVelocity(){

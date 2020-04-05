@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="24">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="33">
  <editorsettings>
   <export target="../assets/world/m1s1.json" format="json"/>
  </editorsettings>
@@ -606,27 +606,35 @@
   </object>
  </objectgroup>
  <objectgroup id="9" name="objects">
-  <object id="3" name="hive1" type="hive" x="256" y="448" width="32" height="32">
+  <object id="3" name="hive1" type="hive" x="304" y="464" width="32" height="32">
    <properties>
     <property name="bugsMax" type="int" value="5"/>
    </properties>
   </object>
-  <object id="13" name="crate" type="crate" x="192" y="512" width="16" height="16"/>
-  <object id="15" name="soulcrystal0" type="soulcrystal" x="128" y="464" width="16" height="16">
+  <object id="13" name="crate" type="crate" x="560" y="464" width="16" height="16"/>
+  <object id="15" name="soulcrystal0" type="soulcrystal" x="176" y="464" width="16" height="16">
    <properties>
     <property name="color" value="yellow"/>
     <property name="scid" type="int" value="0"/>
    </properties>
   </object>
-  <object id="16" name="soulcrystal1" type="soulcrystal" x="180" y="463" width="16" height="16">
+  <object id="16" name="soulcrystal1" type="soulcrystal" x="224" y="464" width="16" height="16">
    <properties>
     <property name="color" value="orange"/>
     <property name="scid" type="int" value="1"/>
    </properties>
   </object>
+  <object id="24" name="junk1" type="junk" x="80" y="496" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="27" name="junk3" type="junk" x="160" y="528" width="127" height="3"/>
+  <object id="31" type="junk" x="208" y="560">
+   <polygon points="0,0 16,-16 32,0"/>
+  </object>
+  <object id="32" name="rock" type="rock" x="208" y="400" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="10" name="triggers">
-  <object id="10" name="zone1" type="zone" x="304" y="464" width="64" height="96">
+  <object id="10" name="zone1" type="zone" x="848" y="464" width="64" height="96">
    <properties>
     <property name="allowReset" type="bool" value="false"/>
     <property name="resetDelay" type="int" value="300"/>

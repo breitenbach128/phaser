@@ -521,6 +521,7 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == "rock"){  
                 let newRock = rocks.get();
                 newRock.setup(tmxObjRef.x,tmxObjRef.y,1);
+                newRock.setScale(3);
             }else if(tmxObjRef.type == "crate"){  
                 let newCrate = crates.get(tmxObjRef.x,tmxObjRef.y);
             }else if(tmxObjRef.type == "telebeam"){
@@ -538,6 +539,31 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == 'soulcrystal'){
                 let scprops = getTileProperties(tmxObjRef.properties);
                 let sc = new SoulCrystal(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,'soulcrystal_'+scprops.color,'scry_'+scprops.color,0,+scprops.scid)
+            }else if(tmxObjRef.type == 'junk'){
+
+                    //console.log(e);
+                    let newBody = null;
+                    let shapeObject = null;
+                    if(tmxObjRef.rectangle){
+                        shapeObject = this.add.rectangle(tmxObjRef.x + (tmxObjRef.width / 2), tmxObjRef.y + (tmxObjRef.height / 2),tmxObjRef.width, tmxObjRef.height, 0x0000ff, 1);
+                        newBody = this.matter.add.gameObject(shapeObject, { shape: { type: 'rectangle', flagInternal: true } });
+                    }else if(tmxObjRef.ellipse && (tmxObjRef.width == tmxObjRef.height)){  
+                        let b = this.matter.add.circle(tmxObjRef.x, tmxObjRef.y,tmxObjRef.width/2,{density: 0.01,friction: 0.1});
+                        shapeObject = this.add.ellipse(b.x, b.y , tmxObjRef.width, tmxObjRef.height, 0x0000ff, 1);
+                        newBody = this.matter.add.gameObject(shapeObject,b);
+                        
+                    }else{
+                        let center = Phaser.Physics.Matter.Matter.Vertices.centre(tmxObjRef.polygon);                        
+                        let b = this.matter.add.fromVertices(tmxObjRef.x, tmxObjRef.y, tmxObjRef.polygon, {density: 0.01,friction: 0.1});
+                        shapeObject = this.add.polygon(tmxObjRef.x, tmxObjRef.y, tmxObjRef.polygon, 0x0000ff, 1);
+                        b.render.sprite.xOffset = center.x/(b.bounds.max.x - b.bounds.min.x);
+                        b.render.sprite.yOffset = center.y/(b.bounds.max.y - b.bounds.min.y);                        
+                        newBody = this.matter.add.gameObject(shapeObject,b);  
+                        newBody.setPosition(newBody.x+(center.x),newBody.y+(center.y));
+                        newBody.setStatic(true);
+                    }
+                    shapeObject.setCollisionCategory(CATEGORY.SOLID) 
+                    shapeObject.body.label = 'JUNK'; 
             }
 
             if(mapObject){ 

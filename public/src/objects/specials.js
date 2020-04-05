@@ -144,13 +144,15 @@ class Rock extends Phaser.Physics.Matter.Sprite{
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this;
-        const mainBody =  Bodies.circle(0,0,w*.50);
+        //const mainBody =  Bodies.circle(0,0,w*.50);
+        const mainBody =  Bodies.polygon(0,0,32,w*.50);
 
         const compoundBody = Body.create({
             parts: [mainBody],
-            frictionStatic: 0.1,
+            frictionStatic: 0.01,
             frictionAir: 0.05,
-            friction: 0.3,
+            friction: 1.0,
+            density: 0.5,
             label: "ROCK"
         });
 
@@ -743,3 +745,5 @@ class Telebeam extends Phaser.Physics.Matter.Sprite{
         });
     }
 };
+
+//Junk

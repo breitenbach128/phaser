@@ -509,7 +509,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
         this.abPulse.doCharge = false;
         this.effect[0].setVisible(false);
-        object.readyThrown(this.abPulse.vec.x,this.abPulse.vec.y,60); 
+        object.readyThrown(this.abPulse.vec.x,this.abPulse.vec.y,30); 
         
         this.abPulse.c = 0;
     }
