@@ -521,7 +521,7 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == "rock"){  
                 let newRock = rocks.get();
                 newRock.setup(tmxObjRef.x,tmxObjRef.y,1);
-                newRock.setScale(3);
+                
             }else if(tmxObjRef.type == "crate"){  
                 let newCrate = crates.get(tmxObjRef.x,tmxObjRef.y);
             }else if(tmxObjRef.type == "telebeam"){
