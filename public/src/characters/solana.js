@@ -28,7 +28,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
           //parts: [mainBody],
           //parts: [mainBody],
           frictionStatic: 0.0,
-          frictionAir: 0.1,
+          frictionAir: 0.08,
           friction: 0.35, //0.01
           restitution: 0.0,
           density: 0.01 //0.01
@@ -49,7 +49,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //Custom Properties
         this.hp = 5;
         this.max_hp = 5;
-        this.max_mv_speed = 1.0;
+        this.max_mv_speed = 0.65;
         this.mv_speed = 0.007; //0.00214285
         this.jump_speed = 0.045;//0.01846
         this.mv_direction = {x:0,y:0};
@@ -61,7 +61,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.onWall = false;
         this.jumpReady = false;
         this.jumpCount = 0;
-        this.beingThrown = {ready: false, vec: {x:0,y:0}, max_speed: 4};
+        this.beingThrown = {ready: false, start:false, forgive: false, vec: {x:0,y:0}, max_speed: 4};
         this.alive = true;
         this.lastEntrance = null;
         this.invuln = false;
@@ -89,7 +89,6 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.jumpLock = false;
         this.jumpLockTimer;
         this.kickOff = this.mv_speed;
-        this.hjs = 0;//Highest Jump Speed (-)
         //Controller
         this.controller;
         this.ctrlDevice;
@@ -171,7 +170,17 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     if (!this.isAnimLocked) { this.sprite.anims.play('solana-walk', true); };
                 }
                 
-
+                //Reset Being Throw status if touching any wall or groupd
+                if(this.beingThrown.forgive == false){
+                    if(this.touching.left > 0 
+                        || this.touching.right > 0 
+                        || this.touching.up > 0 
+                        || this.touching.down > 0
+                        || control_left
+                        || control_right){
+                        this.disableThrown();
+                    }
+                }
 
 
                 //Slow Descent if on Wall
@@ -272,24 +281,19 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             
         } // END IF ALIVE
         if(this.beingThrown.ready == true){
-            this.getThrown();            
-            if(this.body.velocity.x > this.beingThrown.max_speed ){this.setVelocityX(this.beingThrown.max_speed);};
-            if(this.body.velocity.x < -this.beingThrown.max_speed ){this.setVelocityX(-this.beingThrown.max_speed );};
+
+            if(this.beingThrown.start){this.getThrown();this.beingThrown.start = false;}            
+            if(this.body.velocity.x > 10 ){this.setVelocityX(10);};
+            if(this.body.velocity.x < -10 ){this.setVelocityX(-10);};
+            if(this.body.velocity.y < -10 ){this.setVelocityY(-10);};
+            if(this.body.velocity.y > 10 ){this.setVelocityY(10);};
         }else{
             //Set Max Velocities
             if(this.body.velocity.x > this.max_mv_speed ){this.setVelocityX(this.max_mv_speed );};
             if(this.body.velocity.x < -this.max_mv_speed ){this.setVelocityX(-this.max_mv_speed );};
-        }
-
-        let grnd_max_mv_sp = 2;
-        
-           
-        //Gravity caps Y
-        // if(this.body.velocity.y > this.max_mv_speed ){this.body.velocity.y = this.max_mv_speed};
-        // if(this.body.velocity.y < -this.max_mv_speed ){this.body.velocity.y = -this.max_mv_speed };
-           if(this.body.velocity.y > 4.9 ){this.setVelocityY(5);};
-
-
+            //if(this.body.velocity.y < -4.9 ){this.setVelocityY(-5);};
+            if(this.body.velocity.y > 4.9 ){this.setVelocityY(5);};
+        }  
 
         //DO THIS LAST
         this.mv_Xdiff = Math.round(this.x - this.prev_position.x);
@@ -297,20 +301,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.prev_position.x = this.x;
         this.prev_position.y = this.y;
 
-        if(this.body.velocity.y < this.hjs){this.hjs = this.body.velocity.y};
-
-        //This had a lot of bugginess. Not sure why it was suggested. Was too easy to be true.
-        //CHange dynamic Body Property based on Y vel "UP"
-        // if(this.body.velocity.y < 0 && this.body.collisionFilter.category != CATEGORY.SOLANA_UP){
-        //     this.setCollisionCategory(CATEGORY.SOLANA_UP)
-        // }else if(this.body.velocity.y >= 0 && this.body.collisionFilter.category != CATEGORY.SOLANA){
-        //     this.setCollisionCategory(CATEGORY.SOLANA)
-        // }
         this.drawDebugText();
     }
     drawDebugText(){
         this.debug.setPosition(this.sprite.x, this.sprite.y-32);
-        this.debug.setText("jumpCount:"+String(this.jumpCount)
+        this.debug.setText("beingThrown:"+String(this.beingThrown.ready)
         +" \nVelocity:"+this.sprite.body.velocity.x.toFixed(4)+":"+this.sprite.body.velocity.y.toFixed(4));
         // +" \nWall L:"+String(this.touching.left)+" R:"+String(this.touching.right) + " oW:"+String(this.onWall)
         // +" \njr:"+String(this.jumpReady)
@@ -398,9 +393,15 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.beingThrown.vec.x = xVel;
         this.beingThrown.vec.y = yVel;
         this.beingThrown.ready = true;
+        this.beingThrown.start = true;
+        this.beingThrown.forgive = true;
+        this.throwForgivenessTimer = this.scene.time.addEvent({ delay: time, callback: function(){this.beingThrown.forgive = false;}, callbackScope: this, loop: false });
     }
-    getThrown(){        
+    disableThrown(){
         this.beingThrown.ready = false;
+    }
+    getThrown(){  
+        console.log(this.beingThrown.vec)           
         this.sprite.applyForce(this.beingThrown.vec);   
     }
     getVelocity(){

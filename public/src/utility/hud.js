@@ -201,13 +201,13 @@ class HudScene extends Phaser.Scene {
 
         var timeline = this.tweens.createTimeline();
         // 100s  should be changed to 1000 later. Right now, just speeds up testing
-        timeline.add({targets: sc,x: sc.x,y:sc.y-50,ease: 'Power1',duration: 1000,hold: 100});        
+        timeline.add({targets: sc,x: sc.x,y:sc.y-50,ease: 'Power1',duration: 300,hold: 100});        
         timeline.add({targets: sc,x: solpos.x,y:solpos.y-32,ease: 'Power1',duration: 1000,hold: 100});
         timeline.add({
             targets: sc,
             swingdata: 270,
             ease: 'linear',
-            duration: 1000,       
+            duration: 300,       
             onUpdate: function(tween, target){
                 let rad = Phaser.Math.DegToRad(target.swingdata);
                 target.x = Math.cos(rad)*mapTileSize.tw + solpos.x;
@@ -219,7 +219,7 @@ class HudScene extends Phaser.Scene {
             x: solpos.x,
             y:solpos.y,
             ease: 'Power1',
-            duration: 1000,
+            duration: 300,
             hold: 100,
             onComplete: function(tween,targets,hud){
                 sc.destroy();
