@@ -629,22 +629,51 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
 
         this.debug = scene.add.text(this.x, this.y-16, 'platform', { fontSize: '10px', fill: '#00FF00' });             
         this.onWayTracker = -1;
+        //Setup to allow to carry riders
+        this.scene.matterCollision.addOnCollideActive({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    let bVelX = gameObjectA.body.velocity.x;
+                    let bVelY = gameObjectA.body.velocity.y;
+                    let minX = bVelX < 0 ? bVelX : 0;
+                    let maxX = bVelX > 0 ? bVelX : 0;
+                    let minY = bVelY < 0 ? bVelY : 0;
+                    let maxY = bVelY < 0 ? bVelY : 0;
+                    gameObjectB.setMaxMoveSpeed(minX,maxX,minY,maxY);
+                }
+            }
+        });
+        this.scene.matterCollision.addOnCollideEnd({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    gameObjectB.setMaxMoveSpeed(0,0,0,0);
+                }
+            }
+        });
 
     }
-    setup(x,y, properties,name){
+    setup(x,y,properties,name,w,h){
         this.setActive(true); 
         this.setPosition(x,y);
+        this.setSize(w,h);
+        this.setDisplaySize(w,h);
         this.name = name;
         this.platformPosition = 0;
         this.target = {name: -1,type: -1, object: -1};
         this.ready = true;
+        this.setHighSpeed = 0;
         if(properties){
             this.target.name = properties.targetName;
             this.target.type = properties.targetType;
             this.path = JSON.parse(properties.path);
         }
     
-
        this.setPath(this.path) // test tween
        this.prev = {x:x,y:y};
  
@@ -653,7 +682,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
     {       
 
         this.debug.setPosition(this.x, this.y-16);
-        this.debug.setText(this.name);
+        this.debug.setText(this.name+" "+String(this.body.velocity.x.toFixed(4))+":"+String(this.body.velocity.y.toFixed(4)));
         // body is static so must manually update velocity for friction to work
         this.setVelocityX((this.x - this.prev.x));
         this.setVelocityY((this.y - this.prev.y));
@@ -685,7 +714,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
                 targets: this,
                 x: this.x+e.x,
                 y: this.y+e.y,
-                ease: 'Power1',
+                ease: 'Cubic.easeInOut',
                 duration: e.t,
                 hold: e.h
             });

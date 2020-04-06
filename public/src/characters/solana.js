@@ -25,8 +25,6 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
         const compoundBody = Body.create({
           parts: [mainBody, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
-          //parts: [mainBody],
-          //parts: [mainBody],
           frictionStatic: 0.0,
           frictionAir: 0.08,
           friction: 0.35, //0.01
@@ -49,7 +47,9 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //Custom Properties
         this.hp = 5;
         this.max_hp = 5;
-        this.max_mv_speed = 0.65;
+        this.max_mv_speed = {minX: -0.65,maxX: 0.65,minY: -4.9,maxY: 4.9, thrown: 10};
+        this.max_mv_speed_baseX = 0.65;
+        this.max_mv_speed_baseY = 4.9;
         this.mv_speed = 0.007; //0.00214285
         this.jump_speed = 0.045;//0.01846
         this.mv_direction = {x:0,y:0};
@@ -95,8 +95,9 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.ctrlDeviceId = -1;
 
         //Create Particles
-        this.effect_dusty=this.scene.add.particles('shapes',  new Function('return ' + this.scene.cache.text.get('effect-dusty'))());
-        this.effect_dusty.emitters.list[0].startFollow(this,0,0,false);
+        this.effect_dusty=this.scene.add.particles('shapes',  new Function('return ' + this.scene.cache.text.get('effect-dusty'))());        
+        //this.effect_dusty.emitters.list[0].startFollow(this,0,0,false);
+        //This is not very efficent. I need to disable and only activate it when I need particles.
 
       }
 
@@ -283,16 +284,16 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         if(this.beingThrown.ready == true){
 
             if(this.beingThrown.start){this.getThrown();this.beingThrown.start = false;}            
-            if(this.body.velocity.x > 10 ){this.setVelocityX(10);};
-            if(this.body.velocity.x < -10 ){this.setVelocityX(-10);};
-            if(this.body.velocity.y < -10 ){this.setVelocityY(-10);};
-            if(this.body.velocity.y > 10 ){this.setVelocityY(10);};
+            if(this.body.velocity.x > this.max_mv_speed.thrown ){this.setVelocityX(this.max_mv_speed.thrown);};
+            if(this.body.velocity.x < -this.max_mv_speed.thrown ){this.setVelocityX(-this.max_mv_speed.thrown);};
+            if(this.body.velocity.y < -this.max_mv_speed.thrown ){this.setVelocityY(-this.max_mv_speed.thrown);};
+            if(this.body.velocity.y > this.max_mv_speed.thrown ){this.setVelocityY(this.max_mv_speed.thrown);};
         }else{
             //Set Max Velocities
-            if(this.body.velocity.x > this.max_mv_speed ){this.setVelocityX(this.max_mv_speed );};
-            if(this.body.velocity.x < -this.max_mv_speed ){this.setVelocityX(-this.max_mv_speed );};
+            if(this.body.velocity.x > this.max_mv_speed.maxX ){this.setVelocityX(this.max_mv_speed.maxX);};
+            if(this.body.velocity.x < this.max_mv_speed.minX ){this.setVelocityX(this.max_mv_speed.minX);};
             //if(this.body.velocity.y < -4.9 ){this.setVelocityY(-5);};
-            if(this.body.velocity.y > 4.9 ){this.setVelocityY(5);};
+            if(this.body.velocity.y > this.max_mv_speed.maxY ){this.setVelocityY(this.max_mv_speed.maxY+0.1);};//0.1 from Jenkins testing
         }  
 
         //DO THIS LAST
@@ -381,6 +382,12 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         for(let i = 0;i < n;i++){
             this.effect_dusty.emitters.list[0].emitParticle(1,bVec.x+Phaser.Math.Between(-16,16),bVec.y);
         }
+    }
+    setMaxMoveSpeed(xMin,xMax,yMin,yMax){
+        this.max_mv_speed.minX =  -this.max_mv_speed_baseX+xMin;
+        this.max_mv_speed.maxX = this.max_mv_speed_baseX+xMax;
+        this.max_mv_speed.minY = -this.max_mv_speed_baseY+yMin;
+        this.max_mv_speed.maxY = this.max_mv_speed_baseY+yMax;
     }
     jumpLockReset(){
         this.jumpLock = false;

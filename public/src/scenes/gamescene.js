@@ -236,7 +236,7 @@ var GameScene = new Phaser.Class({
 
         //Create Camera        
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels+128);  
-        this.cameras.main.setBackgroundColor('#ccccff'); 
+        this.cameras.main.setBackgroundColor('#000000'); 
         this.cameras.main.roundPixels = true;
         this.cameras.main.setZoom(2);
         camera_main = this.cameras.main;
@@ -522,6 +522,8 @@ var GameScene = new Phaser.Class({
                 let newRock = rocks.get();
                 newRock.setup(tmxObjRef.x,tmxObjRef.y,1);
                 
+            }else if(tmxObjRef.type == "rockchute"){  
+                let rockchute = new RockChute(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);                
             }else if(tmxObjRef.type == "crate"){  
                 let newCrate = crates.get(tmxObjRef.x,tmxObjRef.y);
             }else if(tmxObjRef.type == "telebeam"){
@@ -1286,22 +1288,24 @@ var GameScene = new Phaser.Class({
 
         //center camera on the spot between the players. Zoom out to a max.
         let disPlayers = Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y);
+        let disPlayersX = Math.abs(solana.x - bright.x);
+        let disPlayersY = Math.abs(solana.y - bright.y);
 
         let midPoint = {x:(solana.x+bright.x)/2,y:(solana.y+bright.y)/2}
         this.cameras.main.centerOn(midPoint.x,midPoint.y);
         //Lvl 1, Normal Mode
-        if(disPlayers < 500 && this.cameraLevel != 1){
+        if(disPlayersX < 500 && disPlayersY < 250 && this.cameraLevel != 1){
             this.cameraLevel = 1;
             this.cameras.main.zoomTo(2,1000,'Linear');
         }
         //Lvl 2, Zoom out
-        if(disPlayers >= 500 && disPlayers < 750 && this.cameraLevel != 2){
+        if((disPlayersX >= 500 && disPlayersX < 750) || (disPlayersY >= 250 && disPlayersY < 450) && this.cameraLevel != 2){
             if( this.cameraLevel == 3){this.splitScreen(false);}//If it was split screen, cancel that.
             this.cameraLevel = 2;
             this.cameras.main.zoomTo(1.75,1000,'Linear');            
         }
         //Lvl 3, Split the Camera
-        if(disPlayers >= 750 && this.cameraLevel != 3){  
+        if((disPlayersX >= 750 || disPlayersY >= 450) && this.cameraLevel != 3){  
             this.cameraLevel = 3;          
             this.splitScreen(true);
         }

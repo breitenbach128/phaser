@@ -165,6 +165,7 @@ var Preloader = new Phaser.Class({
 		//Map Assets - Game		
 		this.load.tilemapTiledJSON('m1s1', 'assets/world/m1s1.json');
 		this.load.tilemapTiledJSON('m1s1a', 'assets/world/m1s1a.json');
+		this.load.tilemapTiledJSON('m6s1', 'assets/world/m6s1.json');
 		//Map Tilesets
 		this.load.tilemapTiledJSON('storymap_forest_1', 'assets/world/storyboard_forest1.json');  
 		this.load.spritesheet('tiles32', 'assets/world/oldTileset32.png', {frameWidth: 32, frameHeight: 32, spacing: 2}); 
@@ -226,6 +227,7 @@ var Preloader = new Phaser.Class({
         this.load.spritesheet('light_burst_2', 'assets/effects/lightburst-2.png', {frameWidth: 64, frameHeight: 64});
         this.load.image('crate', 'assets/objects/crate2.png');
         this.load.image('rocks', 'assets/objects/rocks.png');
+        this.load.image('rockchute', 'assets/characters/boss/rockChute1.png');
         this.load.spritesheet('solana', 'assets/characters/solana.png', {frameWidth: 96, frameHeight: 64});
         this.load.spritesheet('bright', 'assets/characters/brightV2.png', {frameWidth: 48, frameHeight: 48});
         this.load.spritesheet('polaris', 'assets/characters/polaris.png', {frameWidth: 16, frameHeight: 16});

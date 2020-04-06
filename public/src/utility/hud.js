@@ -18,11 +18,15 @@ class HudScene extends Phaser.Scene {
     update()
     {
         if(this.ready){  
+            let disPlayers = Math.round(Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y));
+            let disPlayersX = Math.abs(solana.x - bright.x);
+            let disPlayersY = Math.abs(solana.y - bright.y);
+
             let debugString =  "CamX:"+String(Math.round(camera_main.worldView.x))
             +"\nCamY:" + String(Math.round(camera_main.worldView.y))
             +"\nPlayerMode:" + String(playerMode)
             +"\nKeyPress_X:" + String(this.skipSpeech.isDown)
-            +"\nDisPlayers:"+String(Math.round(Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y)));
+            +"\nDisPlayers:"+String(disPlayers)+":"+String(disPlayersX.toFixed(0))+":"+String(disPlayersY.toFixed(0));
             this.debug.setText(debugString);
 
             this.shard_data_l.setText(this.shard_totals.light+" x");

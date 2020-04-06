@@ -154,3 +154,5 @@ class SpiderHiveEgg extends Phaser.Physics.Matter.Sprite{
         this.anims.play('boss-hive-egg-grow', true);
     }
 }
+
+
