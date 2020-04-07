@@ -419,29 +419,24 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         if(this.body.velocity.y != 0){ // Was >
             this.setVelocityY(0);
         }
-        //Make vertical jump weaker if on wall, only 70% as strong
-        mvVel = mvVel*.70;
-
+               
         if(this.touching.left > 0 && !this.onGround){
-            this.sprite.applyForce({x:mvVel,y:-0.003});
+            this.sprite.applyForce({x:mvVel*2,y:-0.003});
             this.jumpLock = true;
             this.kickOff = mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
-            
         }
         if(this.touching.right > 0 && !this.onGround){
-            this.sprite.applyForce({x:-mvVel,y:-0.003});
+            this.sprite.applyForce({x:-mvVel*2,y:-0.003});
             this.jumpLock = true;
             this.kickOff = -mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
             
-        }   
-        //this.applyForce({x:0,y:-.025});
+        }
+        //Note that onWall requires pushing in the direction of the wall. Touching should just the sensor.   
         if(this.onWall && this.onGround){
-            //this.sprite.setVelocityY(-jumpVel*1.40);
-            this.sprite.applyForce({x:0,y:-jumpVel});
+            this.sprite.applyForce({x:0,y:-jumpVel*1.40});
         }else{
-            //this.sprite.setVelocityY(-jumpVel);
             this.sprite.applyForce({x:0,y:-jumpVel});
         }
         
@@ -658,3 +653,6 @@ class LightShield extends Phaser.Physics.Matter.Sprite{
         this.holdConstraint.angleB =  this.rotation;
     }
 };
+
+//Solbomb - Solana's main weapon besides the Soullight. She can generate these from shards she picks up. They allow her to generate temporary light
+//as well as give her a weapon against certain enemies.
