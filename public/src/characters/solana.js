@@ -77,6 +77,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.LightShield = new LightShield(this.scene,this.x+32,this.y,'solana_shield',0);
         this.LightShield.setActive(false);
         this.LightShield.setVisible(false);
+        //Create Sol Bombs
+        this.solbombbag = [];
 
         this.debug = this.scene.add.text(this.x, this.y-16, 'Solana', { resolution: 2,fontSize: '10px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 }).setOrigin(.5);
         //Sounds
@@ -123,6 +125,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             let control_passPress = this.getControllerAction('pass');
             let control_passRelease = this.getControllerAction('passR');
             let control_brightFollow = this.getControllerAction('brightFollow');
+            let control_bomb = this.getControllerAction('bomb');
             //console.log("SOL_R:",control_right,this.getControllerAction('right'),keyPad.checkKeyState('D'));
 
             if (this.control_lock == false) {
@@ -277,6 +280,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         this.LightShield.setAim(point.x,point.y);                         
                         this.LightShield.setRotation(normAngle);
                     }
+
+                    if(control_bomb){
+                        this.activateBomb();
+                    }
                 }
             }
             
@@ -326,6 +333,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     return (gamePad[this.ctrlDeviceId].getStickLeft(.5).x > 0);
                 case 'jump':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('A') == 1);
+                case 'bomb':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('B') == 1);
                 case 'shoot':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('rightTrigger') > 0);
                 case 'shootR':
@@ -353,6 +362,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     return (keyPad.checkKeyState('D') > 0);
                 case 'jump':
                     return (keyPad.checkKeyState('SPC') == 1);
+                case 'bomb':
+                    return (keyPad.checkKeyState('G') == 1);
                 case 'shoot':
                     return (keyPad.checkMouseState('MB0') > 0);
                 case 'shootR':
@@ -546,32 +557,28 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.setVisible(true);
         this.debug.setVisible(true);
         this.alive = true; 
-        hud.setHealth(this.hp,this.max_hp);
-        hud.alterEnergySolana(300);
-        // if(this.lastEntrance != null){
-        //     this.sprite.setPosition(this.lastEntrance.x,this.lastEntrance.y+this.lastEntrance.height/2-solana.sprite.height/2);
-        //     bright.sprite.setPosition(this.lastEntrance.x,this.lastEntrance.y-32);
-        // }
         this.scene.scene.restart();
+        hud.setHealth(this.hp);
     }
     receiveDamage(damage) {
                 
-        if(this.alive && !this.invuln){
+        if(this.alive && !this.invuln){            
             this.invuln = true;
             this.setTint(0xFF0000);
             //invuln timer
-            this.energyTimer = this.scene.time.addEvent({ delay: 300, callback: this.disableInvuln, callbackScope: this, loop: true });
+            this.invulnTimer = this.scene.time.addEvent({ delay: 300, callback: this.disableInvuln, callbackScope: this, loop: true });
             //Kill Blips
             this.scene.events.emit('playerHurt');
-            hud.setHealth(this.hp,this.max_hp);
             //Remove health
             this.hp -= damage; 
+            hud.setHealth(this.hp);
             emitter_blood.active = true;
             emitter_blood.explode(24,this.x,this.y);
             // Play Sound
             this.soundHurt.play();
             // if hp drops below 0, die
             if(this.hp <= 0) {
+                
                 this.alive = false;                         
                 this.sprite.setVelocityX(0);
                 this.sprite.on('animationcomplete',this.death,this);            
@@ -588,6 +595,19 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     }
     removeControlLock(){
         this.control_lock = false;
+    }
+    checkBombs(){
+        return this.solbombbag.length;
+    }
+    createBomb(){
+        this.solbombbag.push(solbombs.get(this.x,this.y));
+    }
+    activateBomb(){
+        //Uses created bombs to generate a physics object
+        if(this.solbombbag.length > 0 ){
+            this.solbombbag[0].ready(15000);
+            this.solbombbag.splice(0,1);
+        }
     }
 }
 
@@ -656,3 +676,128 @@ class LightShield extends Phaser.Physics.Matter.Sprite{
 
 //Solbomb - Solana's main weapon besides the Soullight. She can generate these from shards she picks up. They allow her to generate temporary light
 //as well as give her a weapon against certain enemies.
+class SolBomb extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'solbomb', 0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+
+        this.setActive(true);
+
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; 
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.circle(0, 0, w*0.50);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.02,
+            friction: 0.2,
+            restitution: 0.1
+        });
+
+        //this.orbitEllipse = new Phaser.Geom.Ellipse(solana.x, solana.y, solana.width*(0.86), solana.height*(0.25));
+        this.orbitEllipse = new Phaser.Curves.Ellipse(solana.x, solana.y, solana.width*(0.45), solana.height*(0.25));
+        //let rot = (solbombs.getTotalUsed()) * ((Math.PI*2)/20);
+        let rot = 0;
+        this.orbitEllipse.setRotation(rot);
+        //let point = Phaser.Geom.Ellipse.CircumferencePoint(this.orbitEllipse, 0);
+        let point = this.orbitEllipse.getPoint(0);
+
+        this
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.BULLET)
+        .setCollidesWith([ 0 ]) // 0 Is nothing, 1 is everything, ~ is the inverse, so everything but the category
+        .setPosition(point.x, point.y)
+        .setIgnoreGravity(true)
+        .setFixedRotation();
+
+        this.setScale(0.75);
+
+        this.orbitpos = 0;
+        //this.orbitOS = Phaser.Math.FloatBetween(0,0.15); //Offset
+        this.orbitOS = solbombs.getTotalUsed()*0.20; //Offset
+        this.setDepth(solana.depth+1);
+        //rotate to angle based on existence of others. Use the contructor to do this, or look for group number of active
+        this.orbitTween = this.scene.add.tween({
+            targets: this,
+            ease: 'Linear',
+            orbitpos: 1,
+            repeat: -1,
+            duration: 2500,
+            onUpdate: function(tween,targets,bomb){
+                bomb.orbitEllipse.x = solana.x;
+                bomb.orbitEllipse.y = solana.y;
+                let finalPos = wrapAtMax(bomb.orbitpos + bomb.orbitOS,1.0);                
+                let orbitPoint = bomb.orbitEllipse.getPoint(finalPos);
+                bomb.setPosition(orbitPoint.x,orbitPoint.y);
+                if(finalPos < 0.5 && finalPos > 0 && bomb.depth < solana.depth){bomb.setDepth(solana.depth+1)};
+                if(finalPos > 0.5 && finalPos < 1 && bomb.depth > solana.depth){bomb.setDepth(solana.depth-1)};
+            },
+            onUpdateParams:[this]
+        });
+        this.lightRadius = 150;
+        this.lightRadiusMax = 150;
+        this.isLit = false;
+        this.lifespan = 20000;
+        this.isGrabbed  = false;
+    }
+    update(time, delta)
+    {       
+        if(this.isLit){
+            this.lightRadius = this.lightRadiusMax*(1-this.lifeTimer.getProgress());
+
+            if(this.isGrabbed){
+                this.holdConstraint.pointA =  { x: bright.x, y: bright.y };
+                //this.holdConstraint.pointB = {x:this.scene.input.activePointer.worldX-this.x,y:this.scene.input.activePointer.worldY - this.y};
+                this.holdConstraint.angleB =  this.rotation;
+            }
+            //Highlight if it can be grabbed by bright
+            if(Phaser.Math.Distance.Between(this.x,this.y,bright.x,bright.y) < 32 && soullight.ownerid == 1){
+                this.setTint(0xe0dd7b);
+            }else{
+                if(this.tintTopLeft > 0){
+                    this.clearTint();
+                }
+            }
+        }
+    }
+    ready(lifespan){
+        this.isGrabbed  = false;
+        this.lifespan = lifespan;
+        this.isLit = true;
+        this.orbitTween.remove();
+        this.setIgnoreGravity(false);
+        this.setCollidesWith([CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.DARK]);
+        this.lifeTimer = this.scene.time.addEvent({ delay: this.lifespan, callback: this.unready, callbackScope: this, loop: false });
+        
+    }
+    unready(){
+        let jumpBurst = new JumpBurst(this.scene,this.x,this.y);
+        if(this.holdConstraint){this.scene.matter.world.remove(this.holdConstraint);}
+        this.destroy();
+    }
+    grabbed(){
+        if(!this.isGrabbed && this.isLit){
+            this.holdConstraint = Phaser.Physics.Matter.Matter.Constraint.create({
+                pointA: { x: bright.x, y: bright.y },
+                bodyB: this.body,
+                //pointB: {x:this.scene.input.activePointer.worldX-this.x,y:this.scene.input.activePointer.worldY - this.y},
+                angleB: this.rotation,
+                length:48,
+                stiffness: 0.4
+            });
+            this.scene.matter.world.add(this.holdConstraint);   
+
+            this.isGrabbed  = true;
+        }
+    }
+    released(){
+        if(this.isGrabbed){
+            this.scene.matter.world.remove(this.holdConstraint);
+            this.isGrabbed  = false;
+        }
+    }
+}

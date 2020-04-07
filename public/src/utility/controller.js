@@ -228,7 +228,8 @@ class KeyboardMouseControl {
             SPC: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),s:0},              
             O: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O),s:0},
             F: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F),s:0},
-            Z: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z),s:0}
+            Z: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z),s:0},
+            G: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.G),s:0}
 
         }
         this.msbuttons= {

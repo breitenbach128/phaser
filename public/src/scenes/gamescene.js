@@ -224,10 +224,10 @@ var GameScene = new Phaser.Class({
         //
         this.changePlayerReady = true;
         //Emit Events
-        //this.events.emit('solanaSetup'); 
-
-        //Setup HUD
-        hud.setupHud(solana);
+        //this.events.emit('solanaSetup');
+        
+        //Once Game is ready, start updating HUD
+        hud.setReady();
 
         //Animations - Move to JSON later, if it makes sense       
         createAnimations(this);
@@ -380,6 +380,11 @@ var GameScene = new Phaser.Class({
         //Light Bursts
         light_bursts = this.add.group({ 
             classType: LightBurst,
+            runChildUpdate: true 
+        });
+        //Solbombs
+        solbombs = this.add.group({ 
+            classType: SolBomb,
             runChildUpdate: true 
         });
         
@@ -615,7 +620,8 @@ var GameScene = new Phaser.Class({
                     bright.sprite.setPosition(exitObj.x,exitObj.y-32);
                     soullight.sprite.setPosition(exitObj.x,exitObj.y-32);
                     solana.setLastEntrance(exitObj);
-                    this.cameras.main.centerOn(exitObj.x,exitObj.y);
+                    this.cameras.main.centerOn(exitObj.x,exitObj.y); 
+                    
                 }
             }else{
                 exitObj = exits.get();
@@ -1404,8 +1410,18 @@ var GameScene = new Phaser.Class({
             shadow_context.restore();
 
             //Check if solana is inside at least one light, if not, flag them and damage them every x seconds.
-            if(Phaser.Math.Distance.Between(lamp.x,lamp.y,solana.sprite.x,solana.sprite.y) <= lamp.brightness){solana_in_light = true;}
+            if(Phaser.Math.Distance.Between(lamp.x,lamp.y,solana.x,solana.y) <= lamp.brightness){solana_in_light = true;}
 
+        }
+        //Cut out SolBombs for light 
+        let sbs = solbombs.getChildren();
+        for(let s=0;s<sbs.length;s++){
+            let sb = sbs[s];
+            shadow_context.save(); 
+            shadow_context.globalCompositeOperation='destination-out';
+            shadow_context = this.cutCanvasCircle(sb.x,sb.y,sb.lightRadius,shadow_context);
+            shadow_context.restore();
+            if(Phaser.Math.Distance.Between(sb.x,sb.y,solana.x,solana.y) <= sb.lightRadius){solana_in_light = true;}
         }       
 
         shadow_layer.refresh();
@@ -1895,7 +1911,7 @@ function createAnimations(scene){
     });
     scene.anims.create({
         key: 'solana-death',
-        frames: scene.anims.generateFrameNumbers('solana', { frames:[8,9,10,11,12,13,14,15,16] }),
+        frames: scene.anims.generateFrameNumbers('solana', { frames:[8,9,10,11,12,13] }),
         frameRate: 4,
         repeat: 0
     });

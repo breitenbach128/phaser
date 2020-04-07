@@ -3,18 +3,14 @@ class HudScene extends Phaser.Scene {
     constructor ()
     {
         super({ key: 'UIScene', active: true });
-
-        this.hp_blips = [];
-        this.bp_blips = [];
-        this.boss_bar = [];
-        this.ready = false;
-        this.shard_totals = {light:0,dark:0};
-        this.showBossBar = false;
-        this.bossCropRect = new Phaser.Geom.Rectangle(0,0, 1, 1);
-
         
     }
-
+    preload(){
+        
+    }
+    create(){        
+        this.ready = false;
+    }
     update()
     {
         if(this.ready){  
@@ -37,34 +33,89 @@ class HudScene extends Phaser.Scene {
             updateGamePads();
             keyPad.updateKeyState();
         }
-
-        //This did not fix the bug. GAMEPAD DID NOT HAVE THE BUG
-        //ONLY KEYBOARD/MS (KEYPAD)
-
-        // if(this.scene.isPaused('gamescene')){
-        //     console.log("Running HUD controller update");
-        //     //Controller Update
-        //     updateGamePads();
-        //     keyPad.updateKeyState();
-        // }
-
     }
-    clearHud()
-    {
-        for(var h = 0;h < this.hp_blips.length;h++){
-            this.hp_blips[h].destroy();
-        }  
-        this.hp_blips = [];
+    setReady(){
+        if(!this.ready){            
+            this.ready = true;
+            //Handle inputs in HUD to avoid issue with pauses
+            pointer = this.input.activePointer;
+            keyPad = new KeyboardMouseControl(this,pointer);
+            this.skipSpeech = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
+            //VARS
+            this.hp_blips = [];
+            this.bp_blips = [];
+            this.boss_bar = [];
+            this.shard_totals = {light:0,dark:0};
+            this.showBossBar = false;
+            this.bossCropRect = new Phaser.Geom.Rectangle(0,0, 1, 1);
+            //ANIMS
+            this.anims.create({
+                key: 'sol_burning-1',
+                frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[0,1,2,3] }),
+                frameRate: 4,
+                repeat: -1
+            });
+            this.anims.create({
+                key: 'sol_dead-1',
+                frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[4,5,6,7] }),
+                frameRate: 4,
+                repeat: -1
+            });
+            this.anims.create({
+                key: 'sol_shardglow-1',
+                frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[8,9] }),
+                frameRate: 4,
+                repeat: -1
+            });
 
-        this.brightStatBar.destroy();
-        this.solanaStatBar.destroy();
+            this.anims.create({
+                key: 'sol_shardglow-2',
+                frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[10,11] }),
+                frameRate: 4,
+                repeat: -1
+            });
 
-        this.shards_light.destroy();
-        this.shard_data_l.destroy();
-        this.shards_dark.destroy();
-        this.shard_data_d.destroy();
-        
-        this.debug.destroy();
+            this.anims.create({
+                key: 'talkinghead',
+                frames: this.anims.generateFrameNumbers('hud_talking_head', { frames:[0,1,2,1] }),
+                frameRate: 12,
+                repeat: -1
+            });
+            //Add Boss Health Bar
+            this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',2).setScale(6,3));//BG
+            this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',1).setScale(6,3));//Health
+            this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',0).setScale(6,3));//FG
+            //Inital set to not visible
+            this.setBossVisible(false);
+
+            //Statbar Solana
+            this.solanaStatBar = new Statbar(this,this.cameras.main.width/4, 36, 'hud_energybar3',0,1,2,300,300,false,
+            { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 },
+            {dir: 'LR',tintPercent: 0.20, tintColor: 0xFFB6B6})
+            this.solanaStatBarHead = this.add.image(this.cameras.main.width/4-96, 36, 'hud_energybar3_solana_head',0).setScale(2).setOrigin(0.5);
+
+            this.brightStatBar = new Statbar(this,this.cameras.main.width*(3/4), 36, 'hud_energybar3',0,1,2,300,300,false,
+            { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 },
+            {dir: 'RL',tintPercent: 0.20, tintColor: 0xFFB6B6})
+            this.brightStatBarHead = this.add.image(this.cameras.main.width*(3/4)+96, 36, 'hud_energybar3_bright_head',0).setScale(2).setOrigin(0.5);
+
+            for(var h = 0;h < 5;h++){
+                this.hp_blips.push(this.add.sprite(this.cameras.main.width/4-52+(h*24),10, 'health_blip',0));  
+                this.bp_blips.push(this.add.sprite(this.cameras.main.width*(3/4)+52-(h*24),10, 'health_blip',1));  
+            }
+
+            //Add Shard Counts
+            this.shards_light = this.add.image(this.cameras.main.width-32, 12, 'shard_light',0);
+            this.shards_dark = this.add.image(this.cameras.main.width-32, 32, 'shard_dark',0);        
+            this.shard_data_l = this.add.text(this.cameras.main.width-60, 12, '0 x', { fontFamily: 'visitorTT1', fontSize: '16px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 1 }).setOrigin(.5);
+            this.shard_data_d = this.add.text(this.cameras.main.width-60, 32, '0 x', { fontFamily: 'visitorTT1', fontSize: '16px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 1 }).setOrigin(.5);
+
+            //DEBUG
+            this.debug = this.add.text(8, this.cameras.main.height-128, 'DEBUG-HUD', { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
+
+            // Setup Speaker Class
+            this.storySpeech = new HudSpeech(this);
+        }
     }
     setBossVisible(value){
         for(let i=0;i < this.boss_bar.length;i++){this.boss_bar[i].setVisible(value)};
@@ -90,86 +141,6 @@ class HudScene extends Phaser.Scene {
         });
 
     }
-    setupHud(player)
-    {        
-        //Handle inputs in HUD to avoid issue with pauses
-        pointer = this.input.activePointer;
-        keyPad = new KeyboardMouseControl(this,pointer)
-
-        this.skipSpeech = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
-        this.ready = true;
-
-        //Add Boss Health Bar
-        this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',2).setScale(6,3));//BG
-        this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',1).setScale(6,3));//Health
-        this.boss_bar.push(this.add.image(this.cameras.main.width/2, 48, 'hud_boss_health_bar',0).setScale(6,3));//FG
-        //Inital set to not visible
-        this.setBossVisible(false);
-
-        //Statbar Solana
-        this.solanaStatBar = new Statbar(this,this.cameras.main.width/4, 36, 'hud_energybar3',0,1,2,300,300,false,
-        { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 },
-        {dir: 'LR',tintPercent: 0.20, tintColor: 0xFFB6B6})
-        this.solanaStatBarHead = this.add.image(this.cameras.main.width/4-96, 36, 'hud_energybar3_solana_head',0).setScale(2).setOrigin(0.5);
-
-        this.brightStatBar = new Statbar(this,this.cameras.main.width*(3/4), 36, 'hud_energybar3',0,1,2,300,300,false,
-        { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 },
-        {dir: 'RL',tintPercent: 0.20, tintColor: 0xFFB6B6})
-        this.brightStatBarHead = this.add.image(this.cameras.main.width*(3/4)+96, 36, 'hud_energybar3_bright_head',0).setScale(2).setOrigin(0.5);
-
-        for(var h = 0;h < player.hp;h++){
-            this.hp_blips.push(this.add.sprite(this.cameras.main.width/4-52+(h*24),10, 'health_blip',0));  
-            this.bp_blips.push(this.add.sprite(this.cameras.main.width*(3/4)+52-(h*24),10, 'health_blip',1));  
-        }
-
-        //Add Shard Counts
-        this.shards_light = this.add.image(this.cameras.main.width-32, 12, 'shard_light',0);
-        this.shards_dark = this.add.image(this.cameras.main.width-32, 32, 'shard_dark',0);        
-        this.shard_data_l = this.add.text(this.cameras.main.width-60, 12, '0 x', { fontFamily: 'visitorTT1', fontSize: '16px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 1 }).setOrigin(.5);
-        this.shard_data_d = this.add.text(this.cameras.main.width-60, 32, '0 x', { fontFamily: 'visitorTT1', fontSize: '16px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 1 }).setOrigin(.5);
-
-        //DEBUG
-        this.debug = this.add.text(8, this.cameras.main.height-128, 'DEBUG-HUD', { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
-  
-        //Setup SOL Pieces
-        
-        this.anims.create({
-            key: 'sol_burning-1',
-            frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[0,1,2,3] }),
-            frameRate: 4,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'sol_dead-1',
-            frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[4,5,6,7] }),
-            frameRate: 4,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'sol_shardglow-1',
-            frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[8,9] }),
-            frameRate: 4,
-            repeat: -1
-        });
-        
-        this.anims.create({
-            key: 'sol_shardglow-2',
-            frames: this.anims.generateFrameNumbers('sol_pieces', { frames:[10,11] }),
-            frameRate: 4,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'talkinghead',
-            frames: this.anims.generateFrameNumbers('hud_talking_head', { frames:[0,1,2,1] }),
-            frameRate: 12,
-            repeat: -1
-        });
-        
-        // Setup Speaker Class
-        this.storySpeech = new HudSpeech(this);
-
-    }
     alterEnergySolana(energyChange){
         this.solanaStatBar.alterValue(energyChange);
 
@@ -181,6 +152,15 @@ class HudScene extends Phaser.Scene {
     collectShard(type,value){
         if(type == 'light'){
             this.shard_totals.light = this.shard_totals.light + value;
+            //Make Sol Bomb for Solana - Every 10 shards
+            if(this.shard_totals.light >= 10){
+                if(solana.checkBombs() < 5){
+                    this.shard_totals.light = 0; 
+                    solana.createBomb();
+                }else{
+                    this.shard_totals.light = 10;
+                }               
+            };
         }else{
             this.shard_totals.dark = this.shard_totals.dark + value;
         }
@@ -238,14 +218,16 @@ class HudScene extends Phaser.Scene {
         timeline.play();
     }
 
-    setHealth(hp,max)
+    setHealth(hp)
     {
-        for(var h = 0;h < max;h++){
-            this.hp_blips[h].setVisible(false); 
-        }
-        for(var h = 0;h < hp-1;h++){
-            this.hp_blips[h].setVisible(true); 
-        }
+        if(hp <= this.hp_blips.length){
+            for(let h=0;h < this.hp_blips.length;h++){
+                let st = h+1 <= hp ? true : false;
+                this.hp_blips[h].setVisible(st); 
+            }
+        }else{
+            console.log("ERROR: High MAX HP Given then length of blips",hp,this.hp_blips.lengt);
+        }        
     }
     handleEvents ()
     {

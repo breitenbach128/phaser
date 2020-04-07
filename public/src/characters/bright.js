@@ -47,7 +47,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.light_status = 0;//0 - Bright, 1 - Dark;
         this.hp = 1;
         this.max_hp = 1;
-        this.mv_speed = 2;
+        this.mv_speed = 3;
         this.roll_speed = 0.400;
         this.jump_speed = 0.020;
         this.max_speed = {air:2,ground:5};
@@ -212,6 +212,13 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                                 e.grabbed();                
                             }
                         });
+                        //Solbombs
+                        let s = solbombs.getChildren();
+                        s.forEach(e=>{    
+                            if(Phaser.Math.Distance.Between(this.x,this.y,e.x,e.y) < 32){            
+                                e.grabbed();                
+                            }
+                        });
                     }
                     if(control_pulseRelease){
                         if(this.abPulse.doCharge){
@@ -220,6 +227,11 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         //Crates
                         let c = crates.getChildren();
                         c.forEach(e=>{                
+                            e.released();                
+                        });
+                        //Solbombs
+                        let s = solbombs.getChildren();
+                        s.forEach(e=>{                
                             e.released();                
                         });
                     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="44">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="45">
  <editorsettings>
   <export target="../assets/world/m6s1.json" format="json"/>
  </editorsettings>
@@ -574,6 +574,12 @@
   <object id="37" name="rock" type="rock" x="512" y="240" width="16" height="16"/>
   <object id="38" name="rock" type="rock" x="560" y="240" width="16" height="16"/>
   <object id="39" type="rockchute" x="32" y="400" width="64" height="64"/>
+  <object id="44" name="soulcrystal0" type="soulcrystal" x="464" y="240" width="16" height="16">
+   <properties>
+    <property name="color" value="yellow"/>
+    <property name="scid" type="int" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="10" name="triggers">
   <object id="32" name="platform1" type="platform" x="288" y="576" width="80" height="16">
@@ -612,7 +618,7 @@
  <objectgroup color="#00ff00" id="8" name="hulls">
   <object id="17" type="hull" x="480" y="0" width="16" height="192"/>
   <object id="18" type="hull" x="608" y="0" width="16" height="320"/>
-  <object id="19" type="hull" x="416" y="304" width="192" height="16"/>
+  <object id="19" type="hull" x="416" y="288" width="192" height="32"/>
   <object id="21" type="hull" x="288" y="176" width="192" height="16"/>
   <object id="22" type="hull" x="288" y="192" width="16" height="112"/>
   <object id="23" type="hull" x="0" y="304" width="304" height="16"/>

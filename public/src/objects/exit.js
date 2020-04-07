@@ -64,8 +64,7 @@ class Exit extends Phaser.Physics.Matter.Sprite{
         //Then, Transition to new map
         current_map = this.targetMap;
         current_exit = this.targetExit;
-        this.triggered = true;
-        hud.clearHud();       
+        this.triggered = true;   
         this.scene.scene.restart();
     }
 
