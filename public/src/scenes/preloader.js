@@ -265,6 +265,10 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('spider', 'assets/characters/spider_x2.png', {frameWidth: 64, frameHeight: 64});
 		this.load.spritesheet('boss_spiderhive', 'assets/characters/boss_spiderhive.png', {frameWidth: 128, frameHeight: 128});
 		this.load.spritesheet('boss_spideregg', 'assets/characters/boss_spiderhive_egg.png', {frameWidth: 32, frameHeight: 32});
+		//Slime		
+		this.load.spritesheet('boss_slime_main', 'assets/characters/boss/boss_slime.png', {frameWidth: 256, frameHeight: 256});
+		this.load.spritesheet('boss_slime_column', 'assets/characters/boss/boss_slime_column.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('boss_slime_acidpool', 'assets/characters/boss/boss_slime_acidpool.png', {frameWidth: 32, frameHeight: 32});
 		
 		//Images
 		this.load.spritesheet('ability_solarblast', 'assets/objects/ability_solarblast.png', {frameWidth: 16, frameHeight: 16});		

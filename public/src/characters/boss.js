@@ -209,3 +209,64 @@ class RockChute extends Phaser.Physics.Matter.Sprite{
         }
     }
 };
+class BossSlime extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'boss_slime_main', 0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+
+        this.setActive(true);
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        //const mainBody =  Bodies.circle(0,0,w*.50);
+        const mainBody =  Bodies.rectangle(0,0,w,h);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0.01,
+            frictionAir: 0.05,
+            friction: 1.0,
+            density: 0.5,
+            label: "BOSS"
+        });
+
+        this
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.SOLID)
+        .setCollidesWith([0])//Nothing
+        .setPosition(x, y)
+        .setStatic(true) 
+
+        this.scene.anims.create({
+            key: 'boss_slime_bite',
+            frames: scene.anims.generateFrameNumbers('boss_slime_main', { frames:[0,1,2,3,4,5] }),
+            frameRate: 12,
+            repeat: -1
+        });
+        this.anims.play('boss_slime_bite',true);
+        this.scene.events.on("update", this.update, this);
+
+        //Columns - these need to be their own matter objects that can slam into the player and/or bright
+        this.tentacle1Comp = this.scene.matter.add.stack(this.x,this.y,1,4,4,4,function(x,y){
+            return Bodies.rectangle(x,y,32,32)
+        });
+        this.tentacle1Chain = this.scene.matter.add.chain(this.tentacle1Comp,0.5, 0, -0.5, 0, { stiffness: 1});
+        console.log(this.tentacle1Chain);
+
+        //Acid
+        this.acidFrame = 0;
+        this.acidpool = this.scene.add.tileSprite(this.x,this.y+this.height/2,784,32,'boss_slime_acidpool',this.acidFrame);
+        this.acidTimer = this.scene.time.addEvent({ delay: 250, callback: function(){
+            this.acidFrame++;
+            if(this.acidFrame >= this.acidpool.displayTexture.frameTotal-1){this.acidFrame=0;};
+            this.acidpool.setFrame(this.acidFrame);
+        }, callbackScope: this, loop: true }); 
+    
+    }
+    update(time, delta)
+    {   
+        
+    }
+};

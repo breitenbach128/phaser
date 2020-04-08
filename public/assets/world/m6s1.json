@@ -109,7 +109,24 @@
          "draworder":"topdown",
          "id":14,
          "name":"enemies",
-         "objects":[],
+         "objects":[
+                {
+                 "height":256,
+                 "id":45,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"bossid",
+                         "type":"int",
+                         "value":0
+                        }],
+                 "rotation":0,
+                 "type":"boss",
+                 "visible":true,
+                 "width":256,
+                 "x":320,
+                 "y":528
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -361,6 +378,48 @@
                  "width":80,
                  "x":144,
                  "y":656
+                }, 
+                {
+                 "height":16,
+                 "id":46,
+                 "name":"zone2",
+                 "properties":[
+                        {
+                         "name":"allowReset",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"resetDelay",
+                         "type":"int",
+                         "value":300
+                        }, 
+                        {
+                         "name":"targetName",
+                         "type":"string",
+                         "value":"gate1"
+                        }, 
+                        {
+                         "name":"targetType",
+                         "type":"string",
+                         "value":"gate"
+                        }, 
+                        {
+                         "name":"zoneType",
+                         "type":"string",
+                         "value":"hurt"
+                        }, 
+                        {
+                         "name":"zoneValue",
+                         "type":"string",
+                         "value":"{\"damage\":1}"
+                        }],
+                 "rotation":0,
+                 "type":"zone",
+                 "visible":true,
+                 "width":768,
+                 "x":32,
+                 "y":768
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -491,7 +550,7 @@
          "y":0
         }],
  "nextlayerid":17,
- "nextobjectid":45,
+ "nextobjectid":47,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.3",

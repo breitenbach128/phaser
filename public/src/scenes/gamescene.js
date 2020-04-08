@@ -447,11 +447,15 @@ var GameScene = new Phaser.Class({
             //Boss?
             if(tmxObjRef.type == "boss"){
                 console.log('boss',props);
-                boss = new SpiderHive(this,tmxObjRef.x,tmxObjRef.y);
-                boss.setPosition(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2+18);
-                //Setup boss HUD info
-                hud.setBossVisible(true);
-                hud.initBossHealth();
+                // boss = new SpiderHive(this,tmxObjRef.x,tmxObjRef.y);
+                // boss.setPosition(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2+18);
+                // //Setup boss HUD info
+                // hud.setBossVisible(true);
+                // hud.initBossHealth();
+                if(props.bossid == 0){
+                    boss = new BossSlime(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                }
+
             //SPIDER
             }else if(tmxObjRef.type == "spider"){
                 spider = spiders.get(tmxObjRef.x,tmxObjRef.y);
@@ -1355,7 +1359,7 @@ var GameScene = new Phaser.Class({
         this.particle_soulight.emitters.list[0].setPosition(soullight.x,soullight.y);
         this.particle_soulight.emitters.list[0].setSpeedX(soullight.body.velocity.x);
         this.particle_soulight.emitters.list[0].setSpeedY(soullight.body.velocity.y);
-        if(boss != -1){boss.update(time,delta);}
+        
         if(tutorialRunning){
             //polaris.update(time,delta);
         };
