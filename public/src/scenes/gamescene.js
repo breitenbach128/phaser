@@ -203,7 +203,7 @@ var GameScene = new Phaser.Class({
             }
             shapeObject.setVisible(false);
             shapeObject.setStatic(true);
-            shapeObject.setCollisionCategory(CATEGORY.SOLID) 
+            shapeObject.setCollisionCategory(CATEGORY.GROUND) 
             shapeObject.body.label = 'GROUND'; 
             //console.log("Poly Object",shapeObject);
             //Need to add light blocking polygon check here.

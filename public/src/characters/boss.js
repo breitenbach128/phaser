@@ -249,11 +249,25 @@ class BossSlime extends Phaser.Physics.Matter.Sprite{
         this.scene.events.on("update", this.update, this);
 
         //Columns - these need to be their own matter objects that can slam into the player and/or bright
-        this.tentacle1Comp = this.scene.matter.add.stack(this.x,this.y,1,4,4,4,function(x,y){
-            return Bodies.rectangle(x,y,32,32)
-        });
-        this.tentacle1Chain = this.scene.matter.add.chain(this.tentacle1Comp,0.5, 0, -0.5, 0, { stiffness: 1});
-        console.log(this.tentacle1Chain);
+        // this.tentacle1Comp = this.scene.matter.add.stack(this.x,this.y,1,4,4,4,function(x,y){
+        //     return Bodies.rectangle(x,y,32,32)
+        // });
+        // this.tentacle1Chain = this.scene.matter.add.chain(this.tentacle1Comp,0.5, 0, -0.5, 0, { stiffness: 1});
+        // console.log(this.tentacle1Chain);
+
+        this.bst1 = new BossSlimeTentacle(this,this.x-this.width/2,this.y+this.height/2-16,6);
+        this.bst2 = new BossSlimeTentacle(this,this.x+this.width/2,this.y+this.height/2-16,6);
+        this.bst1a = new BossSlimeTentacle(this,this.x-this.width/4,this.y+this.height/2-16,3);
+        this.bst2a = new BossSlimeTentacle(this,this.x+this.width/4,this.y+this.height/2-16,3);
+
+        this.attacking = true;
+        this.tentacleTimer = this.scene.time.addEvent({ delay: 10000, callback: function(){
+            
+            this.attacking = false;
+
+        }, callbackScope: this, loop: false});
+
+
 
         //Acid
         this.acidFrame = 0;
@@ -267,6 +281,54 @@ class BossSlime extends Phaser.Physics.Matter.Sprite{
     }
     update(time, delta)
     {   
-        
+        if(this.attacking){
+            this.bst1.setGraspVelocity(0,-5);
+            this.bst2.setGraspVelocity(0,-5); 
+            this.bst1a.setGraspVelocity(0,-5);
+            this.bst2a.setGraspVelocity(0,-5);  
+        }
     }
 };
+
+class BossSlimeTentacle{
+    constructor(parent,pX,pY,links){
+        //Make tentacle by using joints
+        this.base = parent.scene.matter.add.image(pX, pY-16, 'boss_slime_column', null, { shape: 'rectangle', chamfer: { radius: 5 }, mass: 200, restitution: 0.0, friction: 0.5, frictionAir: 0.5 });
+        this.base.setFixedRotation();        
+        this.base.setIgnoreGravity(true);
+        this.base.setCollisionCategory(CATEGORY.BOSS)
+        this.base.setStatic(true);
+        //base.setCollidesWith([0]);//Nothing
+        // this.scene.matter.add.joint(this,base, 4, 1,{
+        //     pointA: { x: -this.width/2, y: this.height/2 },
+        //     pointB: { x: 0, y: base.height/2 }
+        // });
+        //Add 6 Joints, and then a cap
+        this.stack = [];
+        this.blendStack = [];
+        for(let j=0;j < links;j++){
+            let tBody = parent.scene.matter.add.image(pX, this.base.y-(38*(j+1)), 'boss_slime_column', null, { shape: 'rectangle', chamfer: { radius: 5 }, mass: 0.1, restitution: 0.0, friction: 0.5, frictionAir: 0.01 });
+            tBody.setCollisionCategory(CATEGORY.BOSS)
+            tBody.setCollidesWith([CATEGORY.GROUND,CATEGORY.BOSS]);//Nothing
+            //tBody.setIgnoreGravity(true);
+            let sBody = (j==0)?this.base:this.stack[j-1];
+            parent.scene.matter.add.joint(sBody,tBody, 6, 1,{
+                pointA: { x: 0, y: -tBody.width/2 },
+                pointB: { x: 0, y: tBody.width/2 },
+            });
+            this.stack.push(tBody);
+            this.blendStack.push(parent.scene.add.image(pX, this.base.y-(38*(j+1)))-tBody.height/2,'boss_slime_column',1);
+        }
+        this.cap = parent.scene.matter.add.image(pX, this.stack[this.stack.length-1].y-38, 'boss_slime_column', 3, { shape: 'rectangle', mass: 0.1, chamfer: { radius: 15 }, restitution: 0.0, friction: 0.5, frictionAir: 0.01 });
+        let cap = this.cap;
+        parent.scene.matter.add.joint(this.stack[this.stack.length-1],cap, 6, 1,{                
+            pointA: { x: 0, y: -cap.width/2 },
+            pointB: { x: 0, y: cap.width/2 },
+        });
+        this.cap.setCollisionCategory(CATEGORY.BOSS)
+        this.cap.setCollidesWith([CATEGORY.SOLANA, CATEGORY.DARK, CATEGORY.GROUND]);
+    }
+    setGraspVelocity(x,y){
+        this.cap.setVelocity(x,y);
+    }
+}
