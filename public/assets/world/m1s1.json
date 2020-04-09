@@ -502,7 +502,7 @@
                  "rotation":0,
                  "type":"platform",
                  "visible":true,
-                 "width":160,
+                 "width":64,
                  "x":1136,
                  "y":400
                 }, 
@@ -547,6 +547,72 @@
                  "width":64,
                  "x":432,
                  "y":464
+                }, 
+                {
+                 "height":16,
+                 "id":33,
+                 "name":"platform2",
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":64,
+                 "x":768,
+                 "y":384
+                }, 
+                {
+                 "height":16,
+                 "id":34,
+                 "name":"platform3",
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":64,
+                 "x":864,
+                 "y":336
+                }, 
+                {
+                 "height":16,
+                 "id":35,
+                 "name":"platform4",
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":64,
+                 "x":768,
+                 "y":256
+                }, 
+                {
+                 "height":16,
+                 "id":36,
+                 "name":"platform5",
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":64,
+                 "x":672,
+                 "y":176
+                }, 
+                {
+                 "height":16,
+                 "id":37,
+                 "name":"platform6",
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":224,
+                 "x":784,
+                 "y":96
+                }, 
+                {
+                 "height":16,
+                 "id":38,
+                 "name":"platform7",
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":64,
+                 "x":1072,
+                 "y":160
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -633,7 +699,7 @@
          "y":0
         }],
  "nextlayerid":16,
- "nextobjectid":33,
+ "nextobjectid":39,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.3",

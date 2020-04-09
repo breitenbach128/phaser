@@ -635,13 +635,13 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
             callback: eventData => {
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 
-                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana && !gameObjectA.immobile) {
                     let bVelX = gameObjectA.body.velocity.x;
                     let bVelY = gameObjectA.body.velocity.y;
                     let minX = bVelX < 0 ? bVelX : 0;
                     let maxX = bVelX > 0 ? bVelX : 0;
                     let minY = bVelY < 0 ? bVelY : 0;
-                    let maxY = bVelY < 0 ? bVelY : 0;
+                    let maxY = bVelY > 0 ? bVelY : 0;
                     gameObjectB.setMaxMoveSpeed(minX,maxX,minY,maxY);
                 }
             }
@@ -651,7 +651,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
             callback: eventData => {
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 
-                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana && !gameObjectA.immobile) {
                     gameObjectB.setMaxMoveSpeed(0,0,0,0);
                 }
             }
@@ -668,13 +668,18 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         this.target = {name: -1,type: -1, object: -1};
         this.ready = true;
         this.setHighSpeed = 0;
+        this.immobile = true;
         if(properties){
             this.target.name = properties.targetName;
             this.target.type = properties.targetType;
             this.path = JSON.parse(properties.path);
         }
-    
-       this.setPath(this.path) // test tween
+       if(this.path){ 
+            this.setPath(this.path) // test tween
+            this.immobile = false;
+       }else{
+           this.immobile = true;
+       }
        this.prev = {x:x,y:y};
  
     }

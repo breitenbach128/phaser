@@ -47,8 +47,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //Custom Properties
         this.hp = 5;
         this.max_hp = 5;
-        this.max_mv_speed = {minX: -0.65,maxX: 0.65,minY: -4.9,maxY: 4.9, thrown: 10};
-        this.max_mv_speed_baseX = 0.65;
+        this.max_mv_speed = {minX: -0.55,maxX: 0.55,minY: -4.9,maxY: 4.9, thrown: 10};
+        this.max_mv_speed_baseX = 0.55;
         this.max_mv_speed_baseY = 4.9;
         this.mv_speed = 0.007; //0.00214285
         this.jump_speed = 0.045;//0.01846
@@ -446,7 +446,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         }
         //Note that onWall requires pushing in the direction of the wall. Touching should just the sensor.   
         if(this.onWall && this.onGround){
-            this.sprite.applyForce({x:0,y:-jumpVel*1.40});
+            //this.sprite.applyForce({x:0,y:-jumpVel*1.40}); //BUG - THIS IS APPLYING TO PLATFORM SENSOR BARS AS WELL.
+            //I could fix by maybe lowing the sensor bar height on the platforms, or by making some custom checks.
+
+            //This was intended to fix being stuck in a corner when you jump, but it may not be needed.
+            this.sprite.applyForce({x:0,y:-jumpVel});
         }else{
             this.sprite.applyForce({x:0,y:-jumpVel});
         }
@@ -566,7 +570,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.invuln = true;
             this.setTint(0xFF0000);
             //invuln timer
-            this.invulnTimer = this.scene.time.addEvent({ delay: 300, callback: this.disableInvuln, callbackScope: this, loop: true });
+            this.invulnTimer = this.scene.time.addEvent({ delay: 1000, callback: this.disableInvuln, callbackScope: this, loop: true });
             //Kill Blips
             this.scene.events.emit('playerHurt');
             //Remove health

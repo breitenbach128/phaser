@@ -1,11 +1,11 @@
 //When enemies are hit, they lose globs of oily shadow, of varying size, that fly off of them.
 var ENEMY_WEAPONS = [
-    {name: 'slime_lob',aimmed:false,prjTexture:'bullet',prjLife:600,prjVec:{x:1,y:-1},range:256,onDeath:[]},//0
-    {name: 'slime_melee',aimmed:false,prjTexture:'bullet',prjLife:32,prjVec:{x:1,y:0},range:0,onDeath:[]},
-    {name: 'slime_shoot',aimmed:false,prjTexture:'bullet',prjLife:600,prjVec:{x:1,y:0},range:256,onDeath:[]},
-    {name: 'slime_bomb',aimmed:false,prjTexture:'bullet',prjLife:600,prjVec:{x:1,y:-1},range:128,onDeath:[{effect:'explode',count:5,damage:1}]},
+    {name: 'slime_lob',aimmed:false,prjTexture:'bullet',prjLife:600,prjVec:{x:0.4,y:-1},range:256,onDeath:[]},//0
+    {name: 'slime_melee',aimmed:false,prjTexture:'bullet',prjLife:32,prjVec:{x:0.4,y:0},range:0,onDeath:[]},
+    {name: 'slime_shoot',aimmed:false,prjTexture:'bullet',prjLife:600,prjVec:{x:0.4,y:0},range:256,onDeath:[]},
+    {name: 'slime_bomb',aimmed:false,prjTexture:'bullet',prjLife:600,prjVec:{x:0.4,y:-1},range:128,onDeath:[{effect:'explode',count:5,damage:1}]},
     {name: 'claw',aimmed:false,prjTexture:'bullet',prjLife:1,prjVec:{x:32,y:0},range:0,onDeath:[]},
-    {name: 'darkblip_shoot',aimmed:true,prjTexture:'bullet',prjLife:900,prjVec:{x:1,y:0},range:400,onDeath:[]}//5
+    {name: 'darkblip_shoot',aimmed:true,prjTexture:'bullet',prjLife:900,prjVec:{x:0.4,y:0},range:400,onDeath:[]}//5
 ]
 
 class Enemy extends Phaser.Physics.Matter.Sprite{
