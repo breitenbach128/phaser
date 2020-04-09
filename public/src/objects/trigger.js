@@ -155,6 +155,7 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
         this.isClosed = true;
         this.closedPos = {x:x,y:y};
         this.openPos = {x:x+this.mvdir.x,y:y+this.mvdir.y}
+        this.autoClose = properties.autoclose == undefined ? false : properties.autoclose;
         if(properties.customScale){
             //Run Custom Scaling
             let newScale = JSON.parse(properties.customScale);
@@ -189,7 +190,7 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
                     ease: 'Power1',
                     duration: 3000,
                     onComplete: this.openComplete,
-                    onCompleteParams: [ this, false ]
+                    onCompleteParams: [ this, true ]
                 });
             }else{
                 this.scene.tweens.add({
@@ -199,7 +200,7 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
                     ease: 'Power1',
                     duration: 3000,
                     onComplete: this.openComplete,
-                    onCompleteParams: [ this, true ]
+                    onCompleteParams: [ this, false ]
                 });
             }            
         }
@@ -208,7 +209,8 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
     openComplete(tween, targets, myGate, state){
         //console.log("Gate Tween Finished");
         myGate.ready = true;
-        this.isClosed = state;
+        myGate.isClosed = !state;
+        if(myGate.autoClose && state){myGate.activateTrigger();}
     }
 };
 

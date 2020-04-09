@@ -50,7 +50,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.mv_speed = 3;
         this.roll_speed = 0.400;
         this.jump_speed = 0.020;
-        this.max_speed = {air:2,ground:5};
+        this.max_speed = {air:10,ground:10};
         this.alive = true;
         this.falling = false;
         this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { resolution: 2, fontSize: '10px', fill: '#00FF00' });
@@ -308,16 +308,20 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     }
                 }
 
-                //This does not look right.
+               
                 //Max Velocities
-                // if(this.airTime >  0){        
-                //     if(this.body.velocity.x > this.max_speed.air ){this.setVelocityX(this.max_speed.air);};
-                //     if(this.body.velocity.x < -this.max_speed.air ){this.setVelocityX(-this.max_speed.air );};
-                // }else{
-                //     //Set Max Velocities
-                //     if(this.body.velocity.x > this.max_speed.ground ){this.setVelocityX(this.max_speed.ground );};
-                //     if(this.body.velocity.x < -this.max_speed.ground ){this.setVelocityX(-this.max_speed.ground);};
-                // }
+                if(this.airTime >  0){        
+                    if(this.body.velocity.x > this.max_speed.air ){this.setVelocityX(this.max_speed.air);};
+                    if(this.body.velocity.x < -this.max_speed.air ){this.setVelocityX(-this.max_speed.air );};
+                    if(this.body.velocity.y > this.max_speed.air ){this.setVelocityY(this.max_speed.air);};
+                    if(this.body.velocity.y < -this.max_speed.air ){this.setVelocityY(-this.max_speed.air );};
+                }else{
+                    //Set Max Velocities
+                    if(this.body.velocity.x > this.max_speed.ground ){this.setVelocityX(this.max_speed.ground );};
+                    if(this.body.velocity.x < -this.max_speed.ground ){this.setVelocityX(-this.max_speed.ground);};
+                    if(this.body.velocity.y > this.max_speed.ground ){this.setVelocityY(this.max_speed.ground);};
+                    if(this.body.velocity.y < -this.max_speed.ground ){this.setVelocityY(-this.max_speed.ground );};
+                }
 
                 this.debug.setPosition(this.sprite.x, this.sprite.y-64);
                 this.debug.setText("Pulse Power:"+String(this.abPulse.c));
