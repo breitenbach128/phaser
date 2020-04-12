@@ -28,7 +28,7 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.BULLET)
         .setPosition(x, y)
-        .setScale(.5)
+        .setScale(0.75)
         .setIgnoreGravity(true);
                     
         this.damage = 1;    

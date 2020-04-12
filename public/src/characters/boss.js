@@ -261,7 +261,7 @@ class BossSlime extends Phaser.Physics.Matter.Sprite{
         this.bst2a = new BossSlimeTentacle(this,this.x+this.width/4,this.y+this.height/2-16,3);
 
         this.attacking = true;
-        this.tentacleTimer = this.scene.time.addEvent({ delay: 10000, callback: function(){
+        this.tentacleTimer = this.scene.time.addEvent({ delay: 30000, callback: function(){
             
             this.attacking = false;
 
@@ -291,9 +291,11 @@ class BossSlime extends Phaser.Physics.Matter.Sprite{
 };
 
 class BossSlimeTentacle{
-    constructor(parent,pX,pY,links){
+    constructor(parent,pX,pY,links,dir){
         //Make tentacle by using joints
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules   
         this.base = parent.scene.matter.add.image(pX, pY-16, 'boss_slime_column', null, { shape: 'rectangle', chamfer: { radius: 5 }, mass: 200, restitution: 0.0, friction: 0.5, frictionAir: 0.5 });
+        Body.scale(this.base.body,0.75,0.75);
         this.base.setFixedRotation();        
         this.base.setIgnoreGravity(true);
         this.base.setCollisionCategory(CATEGORY.BOSS)
@@ -307,23 +309,25 @@ class BossSlimeTentacle{
         this.stack = [];
         this.blendStack = [];
         for(let j=0;j < links;j++){
-            let tBody = parent.scene.matter.add.image(pX, this.base.y-(38*(j+1)), 'boss_slime_column', null, { shape: 'rectangle', chamfer: { radius: 5 }, mass: 0.1, restitution: 0.0, friction: 0.5, frictionAir: 0.01 });
+            let tBody = parent.scene.matter.add.image(pX, this.base.y-(24*(j+1)), 'boss_slime_column', null, { shape: 'rectangle', chamfer: { radius: 5 }, mass: 0.3, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
+            Body.scale(tBody.body,0.75,0.75);
             tBody.setCollisionCategory(CATEGORY.BOSS)
             tBody.setCollidesWith([CATEGORY.GROUND,CATEGORY.BOSS]);//Nothing
             //tBody.setIgnoreGravity(true);
             let sBody = (j==0)?this.base:this.stack[j-1];
-            parent.scene.matter.add.joint(sBody,tBody, 6, 1,{
-                pointA: { x: 0, y: -tBody.width/2 },
-                pointB: { x: 0, y: tBody.width/2 },
+            parent.scene.matter.add.joint(sBody,tBody, 1, 1,{
+                pointA: { x: 0, y: -tBody.height/2+4 },
+                pointB: { x: 0, y: tBody.height/2-4 },
             });
             this.stack.push(tBody);
-            this.blendStack.push(parent.scene.add.image(pX, this.base.y-(38*(j+1)))-tBody.height/2,'boss_slime_column',1);
+            //this.blendStack.push(parent.scene.add.image(pX, this.base.y-(38*(j+1))-tBody.height/2,'boss_slime_column',1));
         }
-        this.cap = parent.scene.matter.add.image(pX, this.stack[this.stack.length-1].y-38, 'boss_slime_column', 3, { shape: 'rectangle', mass: 0.1, chamfer: { radius: 15 }, restitution: 0.0, friction: 0.5, frictionAir: 0.01 });
+        this.cap = parent.scene.matter.add.image(pX, this.stack[this.stack.length-1].y-24, 'boss_slime_column', 3, { shape: 'rectangle', mass: 1, chamfer: { radius: 15 }, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
+        Body.scale(this.cap.body,0.75,0.75);
         let cap = this.cap;
-        parent.scene.matter.add.joint(this.stack[this.stack.length-1],cap, 6, 1,{                
-            pointA: { x: 0, y: -cap.width/2 },
-            pointB: { x: 0, y: cap.width/2 },
+        parent.scene.matter.add.joint(this.stack[this.stack.length-1],cap, 1, 1,{                
+            pointA: { x: 0, y: -cap.height/2+4 },
+            pointB: { x: 0, y: cap.height/2-4 },
         });
         this.cap.setCollisionCategory(CATEGORY.BOSS)
         this.cap.setCollidesWith([CATEGORY.SOLANA, CATEGORY.DARK, CATEGORY.GROUND]);

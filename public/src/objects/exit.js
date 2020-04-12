@@ -27,7 +27,8 @@ class Exit extends Phaser.Physics.Matter.Sprite{
         .setStatic(true)
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setIgnoreGravity(true)
-        .setVisible(false);    
+        .setVisible(false);   
+        
 
 
     }
@@ -40,9 +41,30 @@ class Exit extends Phaser.Physics.Matter.Sprite{
         this.targetMap = properties.targetMap;
         this.targetExit = properties.targetExit;
         this.manualTrigger = properties.manualTrigger ? true : false;
+        
+        //Make Exit marker
+        let markerIndex = 0;//Assume East
+        if(this.name.includes('west')){markerIndex = 1;}
+        if(this.name.includes('door')){markerIndex = 2;}
+        this.exitMarker = this.scene.add.sprite(this.x,this.y,'exit_marker',markerIndex);
+        this.scene.tweens.add({
+            targets: this.exitMarker,
+            scale: 1.25,              
+            ease: 'Linear',
+            repeat: -1,
+            yoyo: true,       
+            duration: 700  
+        });
+        this.exitMarker.setVisible(false);
     }
     update(time, delta)
     {
+
+        if(Phaser.Math.Distance.Between(this.x,this.y,solana.x,solana.y) < 256){
+            this.exitMarker.setVisible(true);
+        }else{
+            this.exitMarker.setVisible(false);
+        }
 
 
     }

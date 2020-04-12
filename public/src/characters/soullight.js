@@ -426,7 +426,7 @@ function checkSolbitOwned(index){
 // He can be "healed" by passing him the soullight.
 // Learn that lamps can be lit by the soulight. Pressure plates to trigger gates.
 
-//Orange (Found in village) - Slime Monster Boss - Crystal of Mass
+//Orange (Found in Mines) - Slime Monster Boss - Crystal of Mass
 // Double Jump / Wall Slide - Dark Surge (Dash forward) / Break - Bright Flare (Sends off a small temporary lamp)
 
 //Blue (Found in Caves) - Corrupted Spider Boss - Crystal of Fusion
@@ -438,7 +438,7 @@ function checkSolbitOwned(index){
 //Pink (Found in Mountain) - Corrupted Bear Boss - Crystal of Power
 // Soullight Gains radius. Kills return more shards. / Dark can convert dark shards to health for solana.
 
-//Gray (Found in Swamp) - Super Slime Monster Boss - Crystal of Vacuum 
+//Gray (Found in Swamp) - Frog Boss - Crystal of Vacuum 
 // Fusion - Solana Teleports instantly to bright, taking soulight / Bright - Phase (Can pass thru certain barriers) / Dark - Singularity (Create a mini black hole. Attracts things, including solana.)
 
 

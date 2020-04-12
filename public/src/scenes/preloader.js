@@ -279,6 +279,7 @@ var Preloader = new Phaser.Class({
 		this.load.image('light1', 'assets/objects/light1.png');
 		this.load.image('shadow', 'assets/world/shadow.png');
 		this.load.image('exit', 'assets/objects/exit.png');
+		this.load.spritesheet('exit_marker', 'assets/objects/exit_marker.png', {frameWidth: 64, frameHeight: 64});
 		this.load.image('entrance', 'assets/objects/entrance.png');
 		this.load.image('gate', 'assets/objects/gate.png');
 		this.load.image('triggerzone', 'assets/objects/triggerzone.png');

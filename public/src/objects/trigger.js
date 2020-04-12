@@ -518,6 +518,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
     }
     triggerReset(){
         this.ready  = true;
+        console.log("reset done");
     }
     triggerTarget(){
         if(this.target.object != -1){
@@ -533,6 +534,9 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
     }
     enterZone(obj){
         //Do something base on zome type
+        //An array of object-timer pairs might work to fix the bug. I push the object in, with it's own reset timer.
+        //Then remove the object pair from the array once the timer has run. As long as the object is not in the array
+        //It can be affected by the zone.
         if(this.ready == true){
             this.ready = false;
             //Solana Specific Functions
@@ -542,6 +546,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                 }
                 if(this.zonedata.type == "hurt"){
                     let hurtParse = JSON.parse(this.zonedata.value);
+                    console.log("Hurt Zone");
                     obj.receiveDamage(hurtParse.damage);
                 }
                 if(this.zonedata.type == "force"){
@@ -581,6 +586,9 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             }
 
             if(this.allowReset){
+                console.log("Perform Reset");
+                //BUG--BRIGHT AND SOLANA BEING IN A TRIGGER STATE FOR ZONE CAUSE CONTENTION. THEY BOTH RUN THE FUNCTION
+                //CAUSING IT TO ALWAYS STAY AS READY FASLSE
                 this.resetTimer = this.scene.time.addEvent({ delay: this.resetDelay, callback: this.triggerReset, callbackScope: this, loop: false });
             }
          

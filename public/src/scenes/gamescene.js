@@ -1048,27 +1048,9 @@ var GameScene = new Phaser.Class({
                 //I need to clean this up and remove redundant code. I could use label lists and a check function to handle
                 //the results.
 
-                //Between Bullets and SOLID
-                if ((bodyA.label === 'BULLET' && bodyB.label === 'SOLID') || (bodyA.label === 'SOLID' && bodyB.label === 'BULLET')) {
-                    //Get Bullet Object and run hit function
-                    const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;
-                    const bulletObj = bulletBody.gameObject;
-                    emitter0.active = true;
-                    emitter0.explode(5,bulletObj.x,bulletObj.y);
-                    bulletObj.hit();
-                }
-                //Between Bullets and GROUND
-                if ((bodyA.label === 'BULLET' && bodyB.label === 'GROUND') || (bodyA.label === 'GROUND' && bodyB.label === 'BULLET')) {
-                    //Get Bullet Object and run hit function
-                    const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;
-                    const bulletObj = bulletBody.gameObject;
-                    emitter0.active = true;
-                    emitter0.explode(5,bulletObj.x,bulletObj.y);
-                    bulletObj.hit();
-                }
-                //Between Bullets and CRATE
-                if ((bodyA.label === 'BULLET' && bodyB.label === 'CRATE') || (bodyA.label === 'CRATE' && bodyB.label === 'BULLET')) {
-                    //Get Bullet Object and run hit function
+                //Better function for checking bullets with impact but not additional things
+                let bulletHitList1 = ['SOLID','GROUND','CRATE','PLATFORM'];
+                if((bodyA.label == 'BULLET' && bulletHitList1.includes(bodyB.label)) || (bodyB.label == 'BULLET' && bulletHitList1.includes(bodyA.label)) ){
                     const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;
                     const bulletObj = bulletBody.gameObject;
                     emitter0.active = true;
@@ -1138,16 +1120,10 @@ var GameScene = new Phaser.Class({
                     if (gObjs[0].active){
                         gObjs[0].hit(0);
                     }  
-                }
-                //Between SoulTransfer and Solid
-                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'SOLID') || (bodyA.label === 'SOLID' && bodyB.label === 'SOULTRANSFER')) {
-                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
-                    if (gObjs[0].active){
-                        gObjs[0].burn();
-                    }  
-                }
-                //Between SoulTransfer and Ground
-                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'GROUND') || (bodyA.label === 'GROUND' && bodyB.label === 'SOULTRANSFER')) {
+                }                
+                //Between SoulTransfer and Solid/Ground
+                let SoulTransferBurnList1 = ['SOLID','GROUND'];
+                if((bodyA.label == 'SOULTRANSFER' && bulletHitList1.includes(bodyB.label)) || (bodyB.label == 'SOULTRANSFER' && bulletHitList1.includes(bodyA.label)) ){
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
                     if (gObjs[0].active){
                         gObjs[0].burn();
