@@ -554,7 +554,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     setLastEntrance(entrance){
         this.lastEntrance = entrance;
     }
-    resurrect(){
+    resurrect(){        
         this.sprite.anims.play('solana-idle', true);
         this.hp = this.max_hp;
         this.setActive(true);

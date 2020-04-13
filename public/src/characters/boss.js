@@ -247,6 +247,11 @@ class BossSlime extends Phaser.Physics.Matter.Sprite{
         });
         this.anims.play('boss_slime_bite',true);
         this.scene.events.on("update", this.update, this);
+        
+        this.scene.events.on("shutdown", this.remove, this);
+        this.scene.events.on("destroy", function(){console.log("BOSS Instance: Scene Destroy Event");}, this);
+
+        //BUG- Boss needs to be cleaned up on Scene Shutdown/Destroy. Because I'm using events, timers and globals, it is causing issues on restart.
 
         //Columns - these need to be their own matter objects that can slam into the player and/or bright
         // this.tentacle1Comp = this.scene.matter.add.stack(this.x,this.y,1,4,4,4,function(x,y){
@@ -277,16 +282,28 @@ class BossSlime extends Phaser.Physics.Matter.Sprite{
             if(this.acidFrame >= this.acidpool.displayTexture.frameTotal-1){this.acidFrame=0;};
             this.acidpool.setFrame(this.acidFrame);
         }, callbackScope: this, loop: true }); 
+
+        //Stats
+        this.alive = true;
     
     }
     update(time, delta)
     {   
-        if(this.attacking){
+        if(this.attacking && this.alive){
             this.bst1.setGraspVelocity(0,-5);
             this.bst2.setGraspVelocity(0,-5); 
             this.bst1a.setGraspVelocity(0,-5);
             this.bst2a.setGraspVelocity(0,-5);  
         }
+    }
+    remove(){
+        this.alive = false;
+        this.acidTimer.destroy();
+        this.bst1.remove();
+        this.bst1a.remove();
+        this.bst2.remove();
+        this.bst2a.remove();
+        this.destroy();
     }
 };
 
@@ -334,5 +351,11 @@ class BossSlimeTentacle{
     }
     setGraspVelocity(x,y){
         this.cap.setVelocity(x,y);
+    }
+    remove(){
+        this.base.destroy();
+        this.stack.forEach(e=>{e.destroy();});
+        this.cap.destroy(); 
+
     }
 }

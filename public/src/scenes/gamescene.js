@@ -44,7 +44,7 @@ var GameScene = new Phaser.Class({
         mapTileSize.th = map.tileHeight;
         //Get the lvl config from config.js object
         let lvlCfg = getLevelConfigByName(current_map);
-        console.log(map);
+        //console.log(map);
         //Create Background - This will need to be custom based on the map.
         lvlCfg.backgrounds.forEach(e=>{
             world_backgrounds.push(this.add.tileSprite(512, 256, map.widthInPixels*2, map.heightInPixels*2, e));
@@ -917,7 +917,7 @@ var GameScene = new Phaser.Class({
                 }
 
                 if (gameObjectB !== undefined && gameObjectB instanceof TMXZone) {
-                    gameObjectB.enterZone(bright);
+                    gameObjectB.enterZone(bright,1);
                 } 
             }
         });
@@ -979,7 +979,7 @@ var GameScene = new Phaser.Class({
               }
               //Solana Enters a zone trigger
               if (gameObjectB !== undefined && gameObjectB instanceof TMXZone) {
-                    gameObjectB.enterZone(solana);
+                    gameObjectB.enterZone(solana,0);
               }
 
               if (gameObjectB !== undefined && gameObjectB instanceof NPCSensor) {
@@ -1223,14 +1223,14 @@ var GameScene = new Phaser.Class({
 
         }
 
-        console.log("player Configs:",gamePad,playerModes[playerMode],playerConfig);
+        //console.log("player Configs:",gamePad,playerModes[playerMode],playerConfig);
 
         //TIME SCALE
         let timeScale = 1;
         this.tweens.timeScale = timeScale; // tweens
         this.matter.world.engine.timing.timeScale = timeScale; // physics
         this.time.timeScale = timeScale; // time events
-        console.log(this.time);
+        //console.log(this.time);
 
         //Draw Point area debug
         this.debugPointer = this.add.graphics();

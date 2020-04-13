@@ -437,11 +437,11 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         this.alpha = 0.0;
         this.name = name;
         this.target = {name: -1,type: -1, object: -1};
-        this.ready = true;
+        this.ready = [true,true];
         this.zonedata = {type:'trigger',value:0};
         this.allowReset = false;
         this.resetDelay = 100;
-        this.resetTimer = -1;
+        this.resetTimer = [-1,-1];
         this.effect = -1;
         this.zoneWidth = w;
         this.zoneHeight = h;
@@ -454,7 +454,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             this.zonedata.value = properties.zoneValue;
             this.allowReset = properties.allowReset;
             this.resetDelay =properties.resetDelay;
-            this.ready = properties.ready != undefined ? properties.ready : true;
+            this.ready = properties.ready != undefined ? [properties.ready,properties.ready] : [true,true];
         }
         //Types:
         //Target: Triggers a target
@@ -514,39 +514,37 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
     }
     setTarget(targetObject){
         this.target.object = targetObject;
-        console.log("Set target for ", this.name);
     }
-    triggerReset(){
-        this.ready  = true;
-        console.log("reset done");
+    triggerReset(playerid){
+        this.ready[playerid]  = true;
     }
-    triggerTarget(){
+    triggerTarget(playerid){
         if(this.target.object != -1){
-            this.target.object.activateTrigger();
+            this.target.object.activateTrigger(playerid);
         }
     }
-    activateTrigger(){
-        this.ready  = true;
+    activateTrigger(playerid){
+        this.ready[playerid]  = true;
         if(this.zonedata.type == "teleport"){
             this.effect[0].setActive(true);
             this.teleporterGradeient.setVisible(true);
         }
     }
-    enterZone(obj){
+    useZone(playerid){
+
+    }
+    enterZone(obj,id){
         //Do something base on zome type
-        //An array of object-timer pairs might work to fix the bug. I push the object in, with it's own reset timer.
-        //Then remove the object pair from the array once the timer has run. As long as the object is not in the array
-        //It can be affected by the zone.
-        if(this.ready == true){
-            this.ready = false;
+
+        if(this.ready[id] == true){
+            this.ready[id] = false;
             //Solana Specific Functions
-            if(obj instanceof Solana){
+            if(id == 0){
                 if(this.zonedata.type == "target"){
-                    this.triggerTarget();
+                    this.triggerTarget(id);
                 }
                 if(this.zonedata.type == "hurt"){
                     let hurtParse = JSON.parse(this.zonedata.value);
-                    console.log("Hurt Zone");
                     obj.receiveDamage(hurtParse.damage);
                 }
                 if(this.zonedata.type == "force"){
@@ -586,10 +584,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             }
 
             if(this.allowReset){
-                console.log("Perform Reset");
-                //BUG--BRIGHT AND SOLANA BEING IN A TRIGGER STATE FOR ZONE CAUSE CONTENTION. THEY BOTH RUN THE FUNCTION
-                //CAUSING IT TO ALWAYS STAY AS READY FASLSE
-                this.resetTimer = this.scene.time.addEvent({ delay: this.resetDelay, callback: this.triggerReset, callbackScope: this, loop: false });
+                this.resetTimer[id] = this.scene.time.addEvent({ delay: this.resetDelay, callback: this.triggerReset, args:[id], callbackScope: this, loop: false });
             }
          
         }
