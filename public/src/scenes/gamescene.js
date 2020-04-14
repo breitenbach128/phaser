@@ -619,13 +619,16 @@ var GameScene = new Phaser.Class({
                 exitObj = entrances.get();
                 exitObj.setup(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,tmxObjRef.name);
                 //Re-position player to match entrance to exit they left.
-                if(exitObj.name == current_exit){                    
-                    solana.sprite.setPosition(exitObj.x,exitObj.y+exitObj.height/2-solana.sprite.height/2);
-                    bright.sprite.setPosition(exitObj.x,exitObj.y-32);
-                    soullight.sprite.setPosition(exitObj.x,exitObj.y-32);
+                if(exitObj.name == current_exit.solana){                    
+                    solana.setPosition(exitObj.x,exitObj.y+exitObj.height/2-solana.height/2);
+                    soullight.setPosition(exitObj.x,exitObj.y-32);
                     solana.setLastEntrance(exitObj);
                     this.cameras.main.centerOn(exitObj.x,exitObj.y); 
                     
+                }
+                if(exitObj.name == current_exit.bright){                    
+                    bright.setPosition(exitObj.x,exitObj.y-32);
+                    bright.setLastEntrance(exitObj);                    
                 }
             }else{
                 exitObj = exits.get();
@@ -967,14 +970,6 @@ var GameScene = new Phaser.Class({
                     }else if(control_down) {
                         gameObjectB.parent.rotateMirror(-2);
                     }
-                }
-              }
-              if (gameObjectB !== undefined && gameObjectB instanceof Exit) {
-                //Solana Touching a lever?
-                if(curr_player==players.SOLANA){
-
-                    gameObjectB.exitLevel(solana);
-
                 }
               }
               //Solana Enters a zone trigger
@@ -1737,12 +1732,6 @@ function setupTriggerTargets(triggerGroup,triggerGroupName,scene){
         }
     }, this);
 }
-function exitLevel(s, exit) {  
-    // only if both enemy and bullet are alive
-    if (exit.active === true && s.active === true) {
-        exit.exitLevel();
-    }
-} 
 function damageEnemy(enemy, bullet) {  
     // only if both enemy and bullet are alive
     if (enemy.active === true && bullet.active === true) {

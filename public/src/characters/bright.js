@@ -458,6 +458,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     getVelocity(){
         return this.body.velocity;
     }
+    setLastEntrance(entrance){
+        this.lastEntrance = entrance;
+    }
     death(animation, frame){
         
         if(animation.key == 'bright-walk'){

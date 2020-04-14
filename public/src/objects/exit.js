@@ -28,8 +28,37 @@ class Exit extends Phaser.Physics.Matter.Sprite{
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setIgnoreGravity(true)
         .setVisible(false);   
-        
-
+        //Variables
+        this.touchedBy = []; // [Solana,Bright] AKA [P1,P2];
+        //Collision
+        this.scene.matterCollision.addOnCollideStart({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    this.startTouch(0);
+                    current_exit.solana = this.targetExit;
+                }
+                if (gameObjectB !== undefined && gameObjectB instanceof Bright) {
+                    this.startTouch(1);
+                    current_exit.bright = this.targetExit;
+                }
+            }
+        });
+        this.scene.matterCollision.addOnCollideEnd({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    this.endTouch(0);                    
+                }
+                if (gameObjectB !== undefined && gameObjectB instanceof Bright) {
+                    this.endTouch(1);
+                }
+            }
+        });
 
     }
     setup(x,y,properties,name){
@@ -41,7 +70,8 @@ class Exit extends Phaser.Physics.Matter.Sprite{
         this.targetMap = properties.targetMap;
         this.targetExit = properties.targetExit;
         this.manualTrigger = properties.manualTrigger ? true : false;
-        
+        this.partnerExitName = properties.partner ? properties.partner : 'none';
+        this.partnerExit = null;
         //Make Exit marker
         let markerIndex = 0;//Assume East
         if(this.name.includes('west')){markerIndex = 1;}
@@ -66,18 +96,49 @@ class Exit extends Phaser.Physics.Matter.Sprite{
             this.exitMarker.setVisible(false);
         }
 
+        if(this.manualTrigger){
+            //Only Solana can operate doors
+            if(this.touchedBy[0]){
+                if(curr_player == players.SOLANA || playerMode > 0){
+                    if(solana.getControllerAction('up') > 0){
+                        this.checkTrans();
+                    }
+                }
+            }
+        }else{
+            this.checkTrans();
+        }
+
 
     }
-    exitLevel(obj){
-        if(!this.triggered && this.targetMap != "none" && this.targetExit != "none"){
-            if(this.manualTrigger){
-                if(obj.getControllerAction('up') > 0){
+    checkTrans(){
+        let tCount = this.getTouchCount();
+        if(tCount == 2){
+            //Transition Level
+            this.nextLevel();
+        }else if(tCount == 1){
+            if(this.partnerExitName != 'none'){
+                let ptCount = this.partnerExit.getTouchCount();
+                if(ptCount == 1){
+                    //Transition Level
                     this.nextLevel();
                 }
-            }else{
-                this.nextLevel();
-            }
+            };
         }
+    }
+    startTouch(id){
+        this.touchedBy[id] = true;
+        if(this.partnerExitName != 'none'){
+            //Do partner lookup.
+            let pName = this.partnerExitName;
+            this.partnerExit = exits.getChildren().filter(function(e){return e.name==pName})[0];
+        } 
+    }
+    getTouchCount(){
+        return this.touchedBy.filter(function(v){return v===true}).length;
+    }
+    endTouch(id){
+        this.touchedBy[id] = false;
     }
     nextLevel(){
         this.scene.soundTheme.stop();
@@ -85,7 +146,6 @@ class Exit extends Phaser.Physics.Matter.Sprite{
         this.scene.saveData();
         //Then, Transition to new map
         current_map = this.targetMap;
-        current_exit = this.targetExit;
         this.triggered = true;   
         this.scene.scene.restart();
     }
