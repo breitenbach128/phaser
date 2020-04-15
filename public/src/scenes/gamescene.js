@@ -151,9 +151,9 @@ var GameScene = new Phaser.Class({
         });
         
         //Raycasting - setup. For troubleshooting ONLY - REmove once no longer needed.
-        lightCanvas = this.add.graphics(0, 0);
-        lightCanvas.setVisible(false);
-        lightCanvas.setAlpha(0.5);
+        // lightCanvas = this.add.graphics(0, 0);
+        // lightCanvas.setVisible(false);
+        // lightCanvas.setAlpha(0.5);
 
         //console.log("Raycasting :",lightCanvas,lightPolygons);
 
@@ -462,14 +462,13 @@ var GameScene = new Phaser.Class({
                 spider = spiders.get(tmxObjRef.x,tmxObjRef.y);
                 spider.setPosition(tmxObjRef.x,tmxObjRef.y);
             }else{
-
                 //Standard Types            
                 if(EnemyClass == 'ground'){
-                    new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
+                    new_enemy = enemies.get(tmxObjRef.x,tmxObjRef.y,EnemyType);
                 }else if(EnemyClass == 'air'){
-                    new_enemy = enemiesFly.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);                
+                    new_enemy = enemiesFly.get(tmxObjRef.x,tmxObjRef.y,EnemyType);                
                 }else{
-                    new_enemy = enemies.get(enemylayer.objects[e].x,enemylayer.objects[e].y,EnemyType);
+                    new_enemy = enemies.get(tmxObjRef.x,tmxObjRef.y,EnemyType);
                 }
 
                 if(props.path){
@@ -1339,8 +1338,8 @@ var GameScene = new Phaser.Class({
         if(tutorialRunning){
             //polaris.update(time,delta);
         };
-
-        //Draw lighting        
+        //Draw lighting
+        shadow_context.clearRect(0,0,map.widthInPixels, map.heightInPixels);        
         shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels);
 
         //Save Canvas and then do cuts for SOulight Raycasting
@@ -1416,7 +1415,7 @@ var GameScene = new Phaser.Class({
         };
 
         //Update Light Source
-        moveLightSource(soullight.sprite.x,soullight.sprite.y);
+        //moveLightSource(soullight.sprite.x,soullight.sprite.y);
 
         //KEYPRESS DETECTION - USING CUSTOM CONTROLLER CLASS
         //Suicide to test animation

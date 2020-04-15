@@ -11,6 +11,11 @@
         input: {
             gamepad: true
         },
+        // fps: {
+        //     // target: 2,
+        //     // min: 2,
+        //     forceSetTimeOut: true
+        // },
         physics: {
             default: 'matter',
             arcade: {

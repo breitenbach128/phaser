@@ -1,7 +1,7 @@
 //When enemies are hit, they lose globs of oily shadow, of varying size, that fly off of them.
 var ENEMY_WEAPONS = [
     {name: 'slime_lob',aimmed:false,prjTexture:'bullet',prjLife:600,prjVec:{x:1,y:-1},range:256,onDeath:[]},//0
-    {name: 'slime_melee',aimmed:false,prjTexture:'bullet',prjLife:32,prjVec:{x:1,y:0},range:0,onDeath:[]},
+    {name: 'slime_melee',aimmed:false,prjTexture:'bullet',prjLife:32,prjVec:{x:1,y:0},range:32,onDeath:[]},
     {name: 'slime_shoot',aimmed:false,prjTexture:'bullet',prjLife:600,prjVec:{x:1,y:0},range:256,onDeath:[]},
     {name: 'slime_bomb',aimmed:false,prjTexture:'bullet',prjLife:600,prjVec:{x:1,y:-1},range:128,onDeath:[{effect:'explode',count:5,damage:1}]},
     {name: 'claw',aimmed:false,prjTexture:'bullet',prjLife:1,prjVec:{x:32,y:0},range:0,onDeath:[]},
@@ -151,10 +151,10 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         this.waypoints.forEach(e=>{
             waypointString+="{"+e.x+":"+e.y+"},";
         });
-        this.debug.setPosition(this.x, this.y-64);
-        this.debug.setText("BehavPass:"+this.behavior.passive
-        +"\nX:"+String(this.x>>0)+", Y:"+String(this.y>>0)
-        +"\nPatrolPath:"+waypointString);
+        // this.debug.setPosition(this.x, this.y-64);
+        // this.debug.setText("BehavPass:"+this.behavior.passive
+        // +"\nX:"+String(this.x>>0)+", Y:"+String(this.y>>0)
+        // +"\nPatrolPath:"+waypointString);
     }
     setPath(path){
         this.waypoints = JSON.parse(path);
