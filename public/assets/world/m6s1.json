@@ -179,8 +179,8 @@
                  "type":"entrance",
                  "visible":true,
                  "width":32,
-                 "x":528,
-                 "y":48
+                 "x":544,
+                 "y":96
                 }],
          "opacity":1,
          "type":"objectgroup",

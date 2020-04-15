@@ -165,6 +165,7 @@ var Preloader = new Phaser.Class({
 		//Map Assets - Game		
 		this.load.tilemapTiledJSON('m1s1', 'assets/world/m1s1.json');
 		this.load.tilemapTiledJSON('m1s1a', 'assets/world/m1s1a.json');
+		this.load.tilemapTiledJSON('m2s1', 'assets/world/m2s1.json');
 		this.load.tilemapTiledJSON('m6s1', 'assets/world/m6s1.json');
 		this.load.tilemapTiledJSON('m6s1a', 'assets/world/m6s1a.json');
 		//Map Tilesets
@@ -270,6 +271,8 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('boss_slime_main', 'assets/characters/boss/boss_slime.png', {frameWidth: 256, frameHeight: 256});
 		this.load.spritesheet('boss_slime_column', 'assets/characters/boss/boss_slime_column.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('boss_slime_acidpool', 'assets/characters/boss/boss_slime_acidpool.png', {frameWidth: 32, frameHeight: 32});
+		//Controller
+		this.load.image('icon_kb_spcbar', 'assets/UI/Keyboard_Mouse/Dark/Keyboard_Black_Space.png');
 		
 		//Images
 		this.load.spritesheet('ability_solarblast', 'assets/objects/ability_solarblast.png', {frameWidth: 16, frameHeight: 16});		

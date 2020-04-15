@@ -253,36 +253,36 @@
                  "height":32,
                  "id":54,
                  "name":"window2",
-                 "rotation":0,
+                 "rotation":90,
                  "type":"window",
                  "visible":true,
                  "width":32,
                  "x":816,
-                 "y":256
+                 "y":224
                 }, 
                 {
                  "gid":9372,
                  "height":32,
                  "id":55,
                  "name":"window3",
-                 "rotation":0,
+                 "rotation":90,
                  "type":"window",
                  "visible":true,
                  "width":32,
                  "x":1344,
-                 "y":256
+                 "y":224
                 }, 
                 {
                  "gid":9372,
                  "height":32,
                  "id":56,
                  "name":"window4",
-                 "rotation":0,
+                 "rotation":90,
                  "type":"window",
                  "visible":true,
                  "width":32,
                  "x":2352,
-                 "y":256
+                 "y":224
                 }],
          "opacity":1,
          "type":"objectgroup",

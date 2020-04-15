@@ -260,10 +260,10 @@ class BossSlime extends Phaser.Physics.Matter.Sprite{
         // this.tentacle1Chain = this.scene.matter.add.chain(this.tentacle1Comp,0.5, 0, -0.5, 0, { stiffness: 1});
         // console.log(this.tentacle1Chain);
 
-        this.bst1 = new BossSlimeTentacle(this,this.x-this.width/2,this.y+this.height/2-16,6);
-        this.bst2 = new BossSlimeTentacle(this,this.x+this.width/2,this.y+this.height/2-16,6);
-        this.bst1a = new BossSlimeTentacle(this,this.x-this.width/4,this.y+this.height/2-16,3);
-        this.bst2a = new BossSlimeTentacle(this,this.x+this.width/4,this.y+this.height/2-16,3);
+        this.bst1 = new BossSlimeTentacle(this,this.x-this.width/2,this.y+this.height/2-16,6,1);
+        this.bst2 = new BossSlimeTentacle(this,this.x+this.width/2,this.y+this.height/2-16,6,1);
+        this.bst1a = new BossSlimeTentacle(this,240,320,3,-1);
+        this.bst2a = new BossSlimeTentacle(this,448,320,3,-1);
 
         this.attacking = true;
         this.tentacleTimer = this.scene.time.addEvent({ delay: 30000, callback: function(){
@@ -292,8 +292,8 @@ class BossSlime extends Phaser.Physics.Matter.Sprite{
         if(this.attacking && this.alive){
             this.bst1.setGraspVelocity(0,-5);
             this.bst2.setGraspVelocity(0,-5); 
-            this.bst1a.setGraspVelocity(0,-5);
-            this.bst2a.setGraspVelocity(0,-5);  
+            this.bst1a.setGraspVelocity(0,5);
+            this.bst2a.setGraspVelocity(0,5);  
         }
     }
     remove(){
@@ -326,25 +326,26 @@ class BossSlimeTentacle{
         this.stack = [];
         this.blendStack = [];
         for(let j=0;j < links;j++){
-            let tBody = parent.scene.matter.add.image(pX, this.base.y-(24*(j+1)), 'boss_slime_column', null, { shape: 'rectangle', chamfer: { radius: 5 }, mass: 0.3, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
+            let tBody = parent.scene.matter.add.image(pX, this.base.y-(24*(j+1)*dir), 'boss_slime_column', null, { shape: 'rectangle', chamfer: { radius: 5 }, mass: 0.3, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
             Body.scale(tBody.body,0.75,0.75);
             tBody.setCollisionCategory(CATEGORY.BOSS)
             tBody.setCollidesWith([CATEGORY.GROUND,CATEGORY.BOSS]);//Nothing
             //tBody.setIgnoreGravity(true);
             let sBody = (j==0)?this.base:this.stack[j-1];
             parent.scene.matter.add.joint(sBody,tBody, 1, 1,{
-                pointA: { x: 0, y: -tBody.height/2+4 },
-                pointB: { x: 0, y: tBody.height/2-4 },
+                pointA: { x: 0, y: (-tBody.height/2+4)*dir },
+                pointB: { x: 0, y: (tBody.height/2-4)*dir },
             });
             this.stack.push(tBody);
             //this.blendStack.push(parent.scene.add.image(pX, this.base.y-(38*(j+1))-tBody.height/2,'boss_slime_column',1));
         }
-        this.cap = parent.scene.matter.add.image(pX, this.stack[this.stack.length-1].y-24, 'boss_slime_column', 3, { shape: 'rectangle', mass: 1, chamfer: { radius: 15 }, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
+        this.cap = parent.scene.matter.add.image(pX, this.stack[this.stack.length-1].y-(24*dir), 'boss_slime_column', 3, { shape: 'rectangle', mass: 1, chamfer: { radius: 15 }, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
+        if(dir == -1){this.cap.setFlipY(true);}
         Body.scale(this.cap.body,0.75,0.75);
         let cap = this.cap;
         parent.scene.matter.add.joint(this.stack[this.stack.length-1],cap, 1, 1,{                
-            pointA: { x: 0, y: -cap.height/2+4 },
-            pointB: { x: 0, y: cap.height/2-4 },
+            pointA: { x: 0, y: (-cap.height/2+4)*dir },
+            pointB: { x: 0, y: (cap.height/2-4)*dir },
         });
         this.cap.setCollisionCategory(CATEGORY.BOSS)
         this.cap.setCollidesWith([CATEGORY.SOLANA, CATEGORY.DARK, CATEGORY.GROUND]);

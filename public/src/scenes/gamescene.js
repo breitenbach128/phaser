@@ -44,6 +44,7 @@ var GameScene = new Phaser.Class({
         mapTileSize.th = map.tileHeight;
         //Get the lvl config from config.js object
         let lvlCfg = getLevelConfigByName(current_map);
+        console.log(current_map,lvlCfg)
         //console.log(map);
         //Create Background - This will need to be custom based on the map.
         lvlCfg.backgrounds.forEach(e=>{
@@ -496,17 +497,25 @@ var GameScene = new Phaser.Class({
         //Spawn Objects
         for(e=0;e<objectlayer.objects.length;e++){
             let mapObject;
+            //NOTE: TMX has a really weird setup for object origins: Rectangles are top-left. But other objects, like image objects (windows) are bottom-left
+            //This makes things tricky. I need to manually correct for those.
             let x_offset = 0;
             let y_offset = 0;
             let tmxObjRef = objectlayer.objects[e];
             if(tmxObjRef.type == "mirror"){  
-                mapObject = mirrors.get();
+                let mir = mirrors.get();
                 x_offset = mapObject.width/2;
                 y_offset = mapObject.height/2;
+                mir.setup(tmxObjRef.x-x_offset,tmxObjRef.y-y_offset,tmxObjRef.rotation);
             }else if(tmxObjRef.type == "window"){  
-                mapObject = barriers.get(-1000,-1000,"tmxwindow",0,true);
-                x_offset = -mapObject.width/2;
-                y_offset = mapObject.height/2;
+                let bar = barriers.get(-1000,-1000,"tmxwindow",0,true);
+                let tmxOrigin = {x:tmxObjRef.x,y:tmxObjRef.y};
+                let centerPoint = new Phaser.Geom.Point(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y-tmxObjRef.height/2);
+                let rotRad = Phaser.Math.DegToRad(tmxObjRef.rotation);
+                if(tmxObjRef.rotation != 0){      
+                    Phaser.Math.RotateAround(centerPoint,tmxOrigin.x,tmxOrigin.y,rotRad);
+                }                
+                bar.setup(centerPoint.x,centerPoint.y,rotRad);
             }else if(tmxObjRef.type == "hive"){
                 let hiveProps = getTileProperties(tmxObjRef.properties);
                 for(let b=0;b<hiveProps.bugsMax;b++){
@@ -575,10 +584,6 @@ var GameScene = new Phaser.Class({
                     }
                     shapeObject.setCollisionCategory(CATEGORY.SOLID) 
                     shapeObject.body.label = 'JUNK'; 
-            }
-
-            if(mapObject){ 
-                mapObject.setup(tmxObjRef.x-x_offset,tmxObjRef.y-y_offset,tmxObjRef.rotation);
             }
         }
         //Spawn Triggers

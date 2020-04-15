@@ -180,9 +180,6 @@
    </objectgroup>
   </tile>
  </tileset>
- <tileset firstgid="7745" name="32Tileset" tilewidth="32" tileheight="32" spacing="2" tilecount="851" columns="37">
-  <image source="../assets/world/oldTileset32.png" width="1280" height="800"/>
- </tileset>
  <layer id="4" name="bg3" width="100" height="50">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -564,38 +561,16 @@
  <objectgroup id="15" name="npcs">
   <object id="4" name="adult" type="idle" x="592" y="384" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="14" name="enemies">
-  <object id="21" name="slime" type="ground" gid="8241" x="1008" y="432" width="32" height="32">
-   <properties>
-    <property name="aBehav" value="attack"/>
-    <property name="enemyClass" value="ground"/>
-    <property name="enemyType" value="slime1"/>
-    <property name="pBehav" value="patrol"/>
-    <property name="scale" type="float" value="0.5"/>
-    <property name="tint" value="#333333"/>
-    <property name="weapon" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="22" name="bat" type="air" gid="8241" x="1216" y="288" width="32" height="32">
-   <properties>
-    <property name="aBehav" value="attack"/>
-    <property name="enemyClass" value="air"/>
-    <property name="enemyType" value="bat"/>
-    <property name="pBehav" value="patrolWaypoints"/>
-    <property name="path" value="[{&quot;x&quot;:1104,&quot;y&quot;:240},{&quot;x&quot;:1200,&quot;y&quot;:240},{&quot;x&quot;:1200,&quot;y&quot;:120}]"/>
-    <property name="weapon" type="int" value="5"/>
-   </properties>
-  </object>
- </objectgroup>
+ <objectgroup id="14" name="enemies"/>
  <objectgroup id="13" name="spawns"/>
  <objectgroup id="12" name="exit">
-  <object id="1" name="west1" type="exit" x="0" y="480" width="16" height="96">
+  <object id="1" name="west1" type="exit" x="0" y="464" width="64" height="96">
    <properties>
     <property name="targetExit" value="none"/>
     <property name="targetMap" value="none"/>
    </properties>
   </object>
-  <object id="2" name="west1" type="entrance" x="32" y="512" width="32" height="32"/>
+  <object id="2" name="west1" type="entrance" x="80" y="512" width="32" height="32"/>
   <object id="11" name="door1" type="entrance" x="688" y="432" width="32" height="32"/>
   <object id="12" name="door1" type="exit" x="672" y="368" width="64" height="96">
    <properties>
@@ -604,13 +579,13 @@
     <property name="targetMap" value="m1s1a"/>
    </properties>
   </object>
-  <object id="43" name="west1a" type="exit" x="0" y="352" width="16" height="96">
+  <object id="43" name="west1a" type="exit" x="0" y="352" width="64" height="96">
    <properties>
     <property name="targetExit" value="none"/>
     <property name="targetMap" value="none"/>
    </properties>
   </object>
-  <object id="44" name="west1a" type="entrance" x="32" y="384" width="32" height="32"/>
+  <object id="44" name="west1a" type="entrance" x="80" y="384" width="32" height="32"/>
   <object id="45" name="door2" type="entrance" x="368" y="528" width="32" height="32"/>
   <object id="46" name="door2" type="exit" x="352" y="464" width="64" height="96">
    <properties>
@@ -639,7 +614,7 @@
     <property name="scid" type="int" value="1"/>
    </properties>
   </object>
-  <object id="24" name="junk1" type="junk" x="80" y="496" width="16" height="16">
+  <object id="24" name="junk1" type="junk" x="208" y="336" width="16" height="16">
    <ellipse/>
   </object>
   <object id="27" name="junk3" type="junk" x="160" y="528" width="127" height="3"/>

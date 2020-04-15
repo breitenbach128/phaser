@@ -50,7 +50,7 @@
     //Tiles
     var map; 
     var mapTileSize = {tw:32,th:32};
-    var current_map = "m1s1";
+    var current_map = "m2s1";
     var current_exit = {solana: "west1", bright: "west1"};
     var world_backgrounds = [];
     //Map Configurations - Each level will have a name from the preloader. The tsKey will also come from the preloader. The tsName is from Tiled.
@@ -70,6 +70,14 @@
             {tsName:'mainlevbuild_B',tsKey:'PF_Caslte_1_0_mainlevbuild_B'}
         ],
         backgrounds:['PF_Caslte_1_0_background_day1','PF_Caslte_1_0_background_day2','PF_Caslte_1_0_background_day3']
+        },
+        {name:'m2s1',
+        tsPairs:[
+            {tsName:'mainlevbuild1',tsKey:'PF_SET3_v1_0_mainlevbuild1'},
+            {tsName:'mainlevbuild2',tsKey:'PF_SET3_v1_0_mainlevbuild2'},
+            {tsName:'mainlevbuild3',tsKey:'PF_SET3_v1_0_mainlevbuild3'}
+        ],
+        backgrounds:['PF_SET3_v1_0_background4']
         },
         {name:'m6s1',
         tsPairs:[

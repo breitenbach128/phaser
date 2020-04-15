@@ -50,6 +50,9 @@ var SplashScene = new Phaser.Class({
         this.btnstart = this.addButton(-1000, -1000, 'button_sun', this.doStart, this, 0, 0, 0, 0);
         this.btnstart.setPipeline('GlowShader');
 
+        this.btn_spc = this.add.image(game.canvas.width/2,game.canvas.height-250,'icon_kb_spcbar');
+        this.btn_spc.setPipeline('GlowShader');
+
         var timeline = this.tweens.createTimeline();
         // 100s  should be changed to 1000 later. Right now, just speeds up testing
         timeline.add({targets: logo,x: game.canvas.width/2,y: game.canvas.height/2,ease: 'Power1',duration: 0,hold: 100});

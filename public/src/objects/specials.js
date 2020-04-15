@@ -49,7 +49,7 @@ class Barrier extends Phaser.Physics.Matter.Sprite{
     setup(x,y,angle){
         this.setActive(true);
         this.setPosition(x,y); 
-        this.angle = angle;
+        this.setRotation(angle);
     }
     update(time, delta)
     {       
