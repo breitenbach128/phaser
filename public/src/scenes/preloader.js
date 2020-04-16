@@ -311,6 +311,9 @@ var Preloader = new Phaser.Class({
 		this.load.image('lightburst-1', 'assets/effects/lightburst-1.png');
 		this.load.spritesheet('doublejump-1', 'assets/effects/doublejmp.png',{frameWidth: 24, frameHeight: 24});
 		this.load.spritesheet('wind-1', 'assets/effects/wind1.png',{frameWidth: 32, frameHeight: 32});
+		//Water // https://github.com/jorbascrumps/phaser-plugin-water-body
+		this.load.image('droplet', 'assets/effects/water/droplet.png');
+		this.load.image('water', 'assets/effects/water/water.jpg');
 
 		// font
 		this.load.bitmapFont('fontwhite', 'img/fontwhite.png', 'img/fontwhite.xml');

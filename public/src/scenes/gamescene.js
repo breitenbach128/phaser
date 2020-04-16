@@ -113,21 +113,30 @@ var GameScene = new Phaser.Class({
         // set the boundaries of our game world
         this.matter.world.convertTilemapLayer(this.collisionLayer);
         this.matter.world.setBounds(0,0,map.widthInPixels, map.heightInPixels);
+
+
         //Generate shadow canvas
         //Shadow Canvas
         if(this.textures.get("canvasShadow").key != "__MISSING"){  
             let oldShadow = this.textures.get("canvasShadow");
             oldShadow.destroy();
         }
-        shadow_layer = this.textures.createCanvas("canvasShadow", map.widthInPixels, map.heightInPixels);        
-        shadow_context = shadow_layer.getContext();
-        shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels); 
-        shadow_layer.refresh();
+        // shadow_layer = this.textures.createCanvas("canvasShadow", map.widthInPixels, map.heightInPixels);        
+        // shadow_context = shadow_layer.getContext();
+        // shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels); 
+        // shadow_layer.refresh();
 
         //Clear Light Polygons
         lightPolygons = [];
+
+        this.shadow_background =  this.add.rectangle(0,0,map.widthInPixels*2, map.heightInPixels*2,0x000000,0.9);
+        this.shadow_graphic = this.make.graphics();    
+        this.shadow_graphic.setPosition(0,0);        
+        this.shadow_mask = this.shadow_graphic.createGeometryMask();
+        this.shadow_mask.setInvertAlpha();
+        this.shadow_background.setMask(this.shadow_mask);
+
         //Draw Debug
-        
         this.matter.world.createDebugGraphic();
         this.matter.world.drawDebug = false;
         //Add Labels for tile bodies for easier collision management
@@ -583,6 +592,10 @@ var GameScene = new Phaser.Class({
                     }
                     shapeObject.setCollisionCategory(CATEGORY.SOLID) 
                     shapeObject.body.label = 'JUNK'; 
+            }else if(tmxObjRef.type == 'water'){
+                let wtprops = getTileProperties(tmxObjRef.properties);
+                let wtOps = {dampening: .0001,tension: 0.01,texture: 'water'};
+                let wt = new TMXWater(this,tmxObjRef.x,tmxObjRef.y,tmxObjRef.width,tmxObjRef.height,tmxObjRef.height,wtOps);
             }
         }
         //Spawn Triggers
@@ -628,7 +641,7 @@ var GameScene = new Phaser.Class({
                     soullight.setPosition(exitObj.x,exitObj.y-32);
                     solana.setLastEntrance(exitObj);
                     this.cameras.main.centerOn(exitObj.x,exitObj.y); 
-                    
+
                 }
                 if(exitObj.name == current_exit.bright){                    
                     bright.setPosition(exitObj.x,exitObj.y-32);
@@ -1251,25 +1264,10 @@ var GameScene = new Phaser.Class({
         // solana.setPipeline('Light2D');
         // let light  = this.lights.addLight(0, 0, 200).setScrollFactor(0.0).setIntensity(2);
 
-
-        //test Text Blip
-        //this.testTB = new TextBlips(this,solana.x+32,solana.y-64,"derping",{resolution: 2, fontSize: '22px'},0,1.1,0,6,0,-4);
-
-        
     },
     update: function (time, delta)
     {
-        //this.testTB.update();
-
-        //Handle KP "Sticking" bug
-        // if(this.doKPClear){
-        //     if(keyPad != undefined){
-        //         keyPad.clearKeyStates();
-        //     }
-        //     this.doKPClear = false;
-        // }
-        //Update Inputs
-
+       
 
         //center camera on the spot between the players. Zoom out to a max.
         let disPlayers = Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y);
@@ -1339,71 +1337,88 @@ var GameScene = new Phaser.Class({
             //polaris.update(time,delta);
         };
         //Draw lighting
-        shadow_context.clearRect(0,0,map.widthInPixels, map.heightInPixels);        
-        shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels);
-
-        //Save Canvas and then do cuts for SOulight Raycasting
-        shadow_context.save();        
-        shadow_context.globalCompositeOperation='destination-out';    
-        //Cut out line of sight blockers
-        this.cutCanvasRaycastPolygon(soullight.x,soullight.y,soullight.protection_radius.value*5,shadow_context);
-     
-        //Check to see if Solana is in the light
-        var solana_in_light = false;
-
-        shadow_context = this.cutCanvasCircle(soullight.x,soullight.y,soullight.protection_radius.value,shadow_context);
-
-
-        if(tutorialRunning){
-            //shadow_context = this.cutCanvasCircle(polaris.x,polaris.y,128,shadow_context);
-        }
-        if(Phaser.Math.Distance.Between(soullight.x,soullight.y,solana.x,solana.y) <= soullight.protection_radius.value){
-            
-            //Can the light reach her without being blocked?
-            let losRc = Phaser.Physics.Matter.Matter.Query.ray(losBlockers,{x:solana.x,y:solana.y},{x:soullight.x,y:soullight.y});
-            if(losRc.length == 0){solana_in_light = true;};
-
-        }
-        
-
-        //Restore Canvas
-        shadow_context.restore();
-
-        //Trim out Bright default radius if in Dark Mode
-        if(soullight.ownerid == 0){
-            shadow_context.save(); 
-            shadow_context.globalCompositeOperation='destination-out';
-            shadow_context = this.cutCanvasCircle(bright.x,bright.y,bright.light_radius,shadow_context);
-            shadow_context.restore();
-        }
-        if(Phaser.Math.Distance.Between(bright.x,bright.y,solana.x,solana.y) <= bright.light_radius){solana_in_light = true;}
-
-        //Do Crystal Lamps and Light Checking
+        this.shadow_graphic.clear();
+        this.cutGraphicRaycastPolgon(soullight.x,soullight.y,soullight.protection_radius.value);
+        //CENTER ON CAMERA AND CALC FOR ANY APPLICABLE OFFSETS        
+        this.shadow_graphic.fillCircle(bright.x, bright.y, bright.light_radius);
         let lamps = crystallamps.getChildren()
         for(var x = 0;x < lamps.length;x++){
             var lamp = lamps[x];
-            //LAMPS PERMANANTLY LIGHT AREA
-            shadow_context.save(); 
-            shadow_context.globalCompositeOperation='destination-out';
-            shadow_context = this.cutCanvasCircle(lamp.x,lamp.y,lamp.brightness,shadow_context);
-            shadow_context.restore();
-
-            //Check if solana is inside at least one light, if not, flag them and damage them every x seconds.
-            if(Phaser.Math.Distance.Between(lamp.x,lamp.y,solana.x,solana.y) <= lamp.brightness){solana_in_light = true;}
-
+            this.shadow_graphic.fillCircle(lamp.x, lamp.y, lamp.brightness);
         }
-        //Cut out SolBombs for light 
         let sbs = solbombs.getChildren();
         for(let s=0;s<sbs.length;s++){
             let sb = sbs[s];
-            shadow_context.save(); 
-            shadow_context.globalCompositeOperation='destination-out';
-            shadow_context = this.cutCanvasCircle(sb.x,sb.y,sb.lightRadius,shadow_context);
-            shadow_context.restore();
-            if(Phaser.Math.Distance.Between(sb.x,sb.y,solana.x,solana.y) <= sb.lightRadius){solana_in_light = true;}
-        }       
+            this.shadow_graphic.fillCircle(sb.x, sb.y, sb.light_radius);
+        }
 
-        shadow_layer.refresh();
+
+        //OLD STUFF BELOW
+        // shadow_context.clearRect(0,0,map.widthInPixels, map.heightInPixels);        
+        // shadow_context.fillRect(0,0,map.widthInPixels, map.heightInPixels);
+
+        // //Save Canvas and then do cuts for SOulight Raycasting
+        // shadow_context.save();        
+        // shadow_context.globalCompositeOperation='destination-out';    
+        // //Cut out line of sight blockers
+        // this.cutCanvasRaycastPolygon(soullight.x,soullight.y,soullight.protection_radius.value*5,shadow_context);
+     
+        // //Check to see if Solana is in the light
+        // var solana_in_light = false;
+        var solana_in_light = true;
+        // shadow_context = this.cutCanvasCircle(soullight.x,soullight.y,soullight.protection_radius.value,shadow_context);
+
+
+        // if(tutorialRunning){
+        //     //shadow_context = this.cutCanvasCircle(polaris.x,polaris.y,128,shadow_context);
+        // }
+        // if(Phaser.Math.Distance.Between(soullight.x,soullight.y,solana.x,solana.y) <= soullight.protection_radius.value){
+            
+        //     //Can the light reach her without being blocked?
+        //     let losRc = Phaser.Physics.Matter.Matter.Query.ray(losBlockers,{x:solana.x,y:solana.y},{x:soullight.x,y:soullight.y});
+        //     if(losRc.length == 0){solana_in_light = true;};
+
+        // }
+        
+
+        // //Restore Canvas
+        // shadow_context.restore();
+
+        // //Trim out Bright default radius if in Dark Mode
+        // if(soullight.ownerid == 0){
+        //     shadow_context.save(); 
+        //     shadow_context.globalCompositeOperation='destination-out';
+        //     shadow_context = this.cutCanvasCircle(bright.x,bright.y,bright.light_radius,shadow_context);
+        //     shadow_context.restore();
+        // }
+        // if(Phaser.Math.Distance.Between(bright.x,bright.y,solana.x,solana.y) <= bright.light_radius){solana_in_light = true;}
+
+        // //Do Crystal Lamps and Light Checking
+        // let lamps = crystallamps.getChildren()
+        // for(var x = 0;x < lamps.length;x++){
+        //     var lamp = lamps[x];
+        //     //LAMPS PERMANANTLY LIGHT AREA
+        //     shadow_context.save(); 
+        //     shadow_context.globalCompositeOperation='destination-out';
+        //     shadow_context = this.cutCanvasCircle(lamp.x,lamp.y,lamp.brightness,shadow_context);
+        //     shadow_context.restore();
+
+        //     //Check if solana is inside at least one light, if not, flag them and damage them every x seconds.
+        //     if(Phaser.Math.Distance.Between(lamp.x,lamp.y,solana.x,solana.y) <= lamp.brightness){solana_in_light = true;}
+
+        // }
+        // //Cut out SolBombs for light 
+        // let sbs = solbombs.getChildren();
+        // for(let s=0;s<sbs.length;s++){
+        //     let sb = sbs[s];
+        //     shadow_context.save(); 
+        //     shadow_context.globalCompositeOperation='destination-out';
+        //     shadow_context = this.cutCanvasCircle(sb.x,sb.y,sb.light_radius,shadow_context);
+        //     shadow_context.restore();
+        //     if(Phaser.Math.Distance.Between(sb.x,sb.y,solana.x,solana.y) <= sb.light_radius){solana_in_light = true;}
+        // }       
+
+        // shadow_layer.refresh();
         //FIX: //Raycast with max range instead of circle radius for soulight. That way, she only gets protected if she is in the light
 
         //Instead of doing damage right away, do drain energy. IF totally drained, then take damage.
@@ -1520,6 +1535,27 @@ var GameScene = new Phaser.Class({
             let cam_p2 = this.cameras.getCamera('cam_p2');
             this.cameras.remove(cam_p1);
             this.cameras.remove(cam_p2);
+        }
+    },
+    cutGraphicRaycastPolgon(x,y,range){
+        let shapes = [];
+        lightPolygons.forEach(function(e){
+            let d = Phaser.Math.Distance.Between(x,y,e[0][0],e[0][1]);
+            if(d < range){
+                shapes.push(e);            
+            }
+        });	
+        shapes.push(createLightObstacleRect(x-range/2,y-range/2,range,range));
+    
+        var visibility = createLightPolygon(x, y, shapes);
+        if(visibility){
+            this.shadow_graphic.beginPath();
+            this.shadow_graphic.moveTo(visibility[0][0], visibility[0][1]);
+            for (var i = 1; i <= visibility.length; i++) {
+                this.shadow_graphic.lineTo(visibility[i % visibility.length][0], visibility[i % visibility.length][1]);
+            }
+            this.shadow_graphic.fillPath();
+            this.shadow_graphic.closePath();
         }
     },
     cutCanvasRaycastPolygon(x,y,range,ctx){

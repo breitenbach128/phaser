@@ -12,8 +12,8 @@
             gamepad: true
         },
         // fps: {
-        //     // target: 2,
-        //     // min: 2,
+        //     target: 120,
+        //     min: 2,
         //     forceSetTimeOut: true
         // },
         physics: {
@@ -32,6 +32,14 @@
         },
         // Install the scene plugin
         plugins: {
+            global: [
+                {
+                    key: 'WaterBodyPlugin',
+                    mapping: 'waterplugin',
+                    plugin: WaterBodyPlugin,
+                    start: true,
+                },
+            ],
             scene: [
             {
                 plugin: PhaserMatterCollisionPlugin, // The plugin class

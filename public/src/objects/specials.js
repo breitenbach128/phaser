@@ -759,5 +759,24 @@ class Telebeam extends Phaser.Physics.Matter.Sprite{
     }
 };
 
-//Junk
+//Water
+class TMXWater{
+    constructor(scene,x,y,w,h,d,opt){
+        this.scene = scene;
+
+        this.waterbody = this.scene.add.water(x, y, w, h, d, opt);
+        this.scene.matterCollision.addOnCollideStart({
+            objectA: this.waterbody.sensor,
+            callback: ({ gameObjectA: wb, gameObjectB, }) => {
+                const i = wb.columns.findIndex((col, i) => col.x >= gameObjectB.x && i);
+                const speed = gameObjectB.body.speed * 3;
+                const numDroplets = Math.ceil(gameObjectB.body.speed) * 5;
+    
+                gameObjectB.setFrictionAir(0.25);
+                wb.splash(Phaser.Math.Clamp(i, 0, wb.columns.length - 1), speed, numDroplets);
+            },
+        });
+        //Need to return object backt to normal air friction once contact is over.
+    }
+}
 

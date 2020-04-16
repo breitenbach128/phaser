@@ -742,8 +742,8 @@ class SolBomb extends Phaser.Physics.Matter.Sprite{
             },
             onUpdateParams:[this]
         });
-        this.lightRadius = 150;
-        this.lightRadiusMax = 150;
+        this.light_radius = 150;
+        this.light_radius_max = 150;
         this.isLit = false;
         this.lifespan = 20000;
         this.isGrabbed  = false;
@@ -751,7 +751,7 @@ class SolBomb extends Phaser.Physics.Matter.Sprite{
     update(time, delta)
     {       
         if(this.isLit){
-            this.lightRadius = this.lightRadiusMax*(1-this.lifeTimer.getProgress());
+            this.light_radius = this.light_radius_max*(1-this.lifeTimer.getProgress());
 
             if(this.isGrabbed){
                 this.holdConstraint.pointA =  { x: bright.x, y: bright.y };
