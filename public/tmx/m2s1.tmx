@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="50" height="150" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="34">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="50" height="150" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="39">
  <editorsettings>
   <export target="../assets/world/m2s1.json" format="json"/>
  </editorsettings>
@@ -358,11 +358,11 @@
 648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,703,704,129,705,706,0,0,0,0,0,0,0,703,704,129,705,706,0,0,0,0,0,569,952,987,937,938,0,0,0,0,0,0,809,
 696,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,857,858,129,839,840,0,0,0,0,0,0,0,857,858,129,839,840,777,778,0,0,0,617,1000,1001,985,986,0,0,0,0,0,0,713,
 744,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,223,454,454,454,226,0,0,0,0,0,0,0,223,454,454,454,226,825,826,0,0,0,703,704,129,705,706,0,0,0,0,0,0,761,
-648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,502,502,502,0,0,0,0,0,0,655,656,129,657,658,0,0,0,0,0,0,809,
-696,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,703,704,129,705,706,0,0,0,0,0,0,713,
-744,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,817,818,857,858,129,839,840,0,0,0,0,0,0,761,
-792,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,223,454,454,454,226,0,0,0,0,0,0,809,
-648,573,569,570,571,572,569,570,571,572,569,570,571,569,573,569,570,571,572,569,570,571,572,569,570,571,569,569,570,571,572,573,569,570,571,572,569,570,571,572,569,570,571,569,570,571,572,573,951,952,
+648,0,0,0,0,0,0,0,0,0,569,951,552,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,502,502,502,0,0,0,0,0,0,655,656,129,657,658,0,0,0,0,0,0,809,
+696,0,0,0,0,0,0,0,0,0,617,622,600,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,703,704,129,705,706,0,0,0,0,0,0,713,
+744,0,0,0,0,0,0,0,0,0,665,670,648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,817,818,857,858,129,839,840,0,0,0,0,0,0,761,
+792,0,0,0,0,0,0,0,0,0,665,670,648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,223,454,454,454,226,0,0,0,0,0,0,809,
+648,573,569,570,571,572,569,570,571,572,665,670,648,0,0,569,570,571,572,569,570,571,572,569,570,571,569,569,570,571,572,573,569,570,571,572,569,570,571,572,569,570,571,569,570,571,572,573,951,952,
 621,622,621,622,618,619,620,621,622,618,619,620,621,622,622,621,622,618,619,620,621,622,618,619,620,621,622,618,619,620,621,622,621,622,618,619,620,621,622,618,619,620,621,622,618,619,620,621,999,1000,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -1124,8 +1124,14 @@
   <object id="14" name="rock" type="rock" x="224" y="352" width="16" height="16"/>
   <object id="15" name="rock" type="rock" x="192" y="352" width="16" height="16"/>
   <object id="16" name="rock" type="rock" x="160" y="352" width="16" height="16"/>
-  <object id="32" name="water1" type="water" x="512" y="192" width="144" height="32"/>
+  <object id="32" name="water1" type="water" x="16" y="528" width="144" height="32"/>
   <object id="33" x="960" y="51"/>
+  <object id="38" name="soulcrystal0" type="soulcrystal" x="576" y="64" width="16" height="16">
+   <properties>
+    <property name="color" value="yellow"/>
+    <property name="scid" type="int" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="16" name="triggers">
   <object id="12" name="gate1" type="gate" x="368" y="224" width="48" height="64">
@@ -1174,6 +1180,19 @@
     <property name="targetType" value="none"/>
    </properties>
   </object>
+  <object id="36" name="gate2" type="gate" x="336" y="560" width="112" height="16">
+   <properties>
+    <property name="customScale" value="{&quot;x&quot;:112,&quot;y&quot;:16}"/>
+    <property name="mvdir" value="{&quot;x&quot;:-112,&quot;y&quot;:0}"/>
+    <property name="source" value="plate1"/>
+   </properties>
+  </object>
+  <object id="37" name="plate1" type="plate" x="736" y="314" width="32" height="6">
+   <properties>
+    <property name="targetName" value="gate2"/>
+    <property name="targetType" value="gate"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup color="#00ff00" id="17" name="hulls">
   <object id="3" type="hull" x="0" y="0" width="800" height="16"/>
@@ -1187,7 +1206,7 @@
   <object id="19" type="hull" x="688" y="320" width="96" height="64"/>
   <object id="20" type="hull" x="449" y="288" width="79" height="192"/>
   <object id="21" type="hull" x="256" y="288" width="79" height="192"/>
-  <object id="22" type="hull" x="0" y="560" width="800" height="16"/>
+  <object id="22" type="hull" x="0" y="560" width="336" height="16"/>
   <object id="23" type="hull" x="528" y="384" width="80" height="16"/>
   <object id="24" type="hull" x="608" y="320" width="80" height="16"/>
   <object id="25" type="hull" x="528" y="360" width="48" height="8"/>
@@ -1195,5 +1214,7 @@
   <object id="27" type="hull" x="528" y="464" width="32" height="8"/>
   <object id="28" type="hull" x="576" y="512" width="32" height="8"/>
   <object id="29" type="hull" x="624" y="432" width="48" height="16"/>
+  <object id="34" type="hull" x="160" y="496" width="48" height="64"/>
+  <object id="35" type="hull" x="448" y="560" width="352" height="16"/>
  </objectgroup>
 </map>

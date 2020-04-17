@@ -765,18 +765,44 @@ class TMXWater{
         this.scene = scene;
 
         this.waterbody = this.scene.add.water(x, y, w, h, d, opt);
+        this.waterbody.trackingList = []; 
+
         this.scene.matterCollision.addOnCollideStart({
             objectA: this.waterbody.sensor,
             callback: ({ gameObjectA: wb, gameObjectB, }) => {
-                const i = wb.columns.findIndex((col, i) => col.x >= gameObjectB.x && i);
-                const speed = gameObjectB.body.speed * 3;
-                const numDroplets = Math.ceil(gameObjectB.body.speed) * 5;
-    
-                gameObjectB.setFrictionAir(0.25);
-                wb.splash(Phaser.Math.Clamp(i, 0, wb.columns.length - 1), speed, numDroplets);
+                if(gameObjectB instanceof Solana
+                    || gameObjectB instanceof Bright
+                    || gameObjectB instanceof Crate
+                    || gameObjectB instanceof Rock
+                    || gameObjectB instanceof SolBomb
+                    || gameObjectB instanceof Enemy
+                    || gameObjectB instanceof Bullet){
+                    const i = wb.columns.findIndex((col, i) => col.x >= (gameObjectB.x-wb.x) && i);
+                    const speed = gameObjectB.body.speed * 3;
+                    const numDroplets = Math.ceil(gameObjectB.body.speed) * 5;
+                    wb.trackingList.push({obj:gameObjectB,faValue:gameObjectB.body.frictionAir});
+                    //console.log("prev WB List",wb.trackingList);
+                    gameObjectB.setFrictionAir(0.25);
+                    wb.splash(Phaser.Math.Clamp(i, 0, wb.columns.length - 1), speed, numDroplets);
+                    //console.log("post WB List",wb.trackingList);
+                    //console.log("Column",i,wb.columns[i],wb);
+                }
             },
         });
-        //Need to return object backt to normal air friction once contact is over.
+        this.scene.matterCollision.addOnCollideEnd({
+            objectA: this.waterbody.sensor,
+            callback: ({ gameObjectA: wb, gameObjectB, }) => {
+                let removeAt = -1;
+                wb.trackingList.forEach(function(e,i){
+                    if(e.obj == gameObjectB){
+                        gameObjectB.setFrictionAir(e.faValue);
+                        //console.log("Water end: Remove friction",e);
+                        removeAt = i;                        
+                    }
+                });
+                if(removeAt != -1){wb.trackingList.splice(removeAt,1);};
+            },
+        });
     }
 }
 
