@@ -168,7 +168,9 @@ class Rock extends Phaser.Physics.Matter.Sprite{
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 
                 if (gameObjectB !== undefined && gameObjectB instanceof Bright) {
-                    this.impact(gameObjectB);
+                    if(gameObjectB.light_status == 1){//ONLY DARK CAN CRUSH ROCKS
+                        this.impact(gameObjectB);
+                    }
                 }
             }
         });

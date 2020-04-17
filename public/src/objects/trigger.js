@@ -257,7 +257,9 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
         this.platePosition = 0;
         this.target = {name: -1,type: -1, object: -1};
         this.ready = true;
+        this.allowReset = false;
         if(properties){
+            this.allowReset = properties.allowReset;
             this.target.name = properties.targetName;
             this.target.type = properties.targetType;
         }
@@ -282,7 +284,9 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
     usePlate(){
         if(this.ready == true){
             this.ready = false;
-            this.plateTimer = this.scene.time.addEvent({ delay: 1000, callback: this.plateComplete, callbackScope: this, loop: false });
+            if(this.allowReset){
+                this.plateTimer = this.scene.time.addEvent({ delay: 1000, callback: this.plateComplete, callbackScope: this, loop: false });
+            }
             //Timer is done.
             if(this.target.object != -1 && this.target.object.ready){
                 //Target is ready to operate?

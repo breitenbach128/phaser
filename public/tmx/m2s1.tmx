@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="50" height="150" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="39">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="50" height="150" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="74">
  <editorsettings>
   <export target="../assets/world/m2s1.json" format="json"/>
  </editorsettings>
@@ -196,16 +196,16 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,731,731,731,732,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,780,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,732,733,734,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,780,781,782,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,734,735,736,736,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,782,783,784,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,3573,3574,3575,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,734,735,736,736,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,3637,3638,3639,3501,3638,3639,3501,3638,3639,3637,3638,3639,3637,3638,3639,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,782,783,784,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,3701,3702,3703,3565,3702,3703,3565,3702,3703,3701,3702,3703,3701,3702,3703,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,3765,3766,3767,3629,3766,3767,3629,3766,3767,3765,3766,3767,3765,3766,3767,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,3829,3830,3831,3693,3830,3831,3693,3830,3831,3829,3830,3831,3829,3830,3831,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,769,770,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -348,22 +348,22 @@
 264,265,476,477,478,477,478,474,475,476,477,478,474,475,476,280,175,714,129,695,178,265,456,457,0,0,473,280,175,714,129,695,178,265,474,475,476,477,478,474,475,476,477,478,474,475,476,477,478,1001,
 312,313,524,525,526,525,526,522,523,524,525,526,522,523,524,328,329,762,129,743,312,313,504,505,0,0,521,328,329,762,129,743,312,313,522,523,524,525,526,522,523,524,525,526,522,523,524,525,526,857,
 648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,665,762,129,743,648,0,0,0,0,0,0,0,665,762,129,743,648,0,0,0,0,0,769,770,771,772,773,569,569,948,949,950,951,952,
-696,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,425,762,129,743,696,0,0,0,0,0,0,0,425,762,129,743,696,0,0,0,0,0,817,818,819,820,821,617,618,996,997,998,999,1000,
-744,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,607,608,129,609,610,0,0,0,0,0,0,0,607,608,129,609,610,0,0,0,0,0,0,0,0,0,0,665,666,666,667,668,669,670,
-792,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,655,656,129,657,658,0,0,0,0,0,0,0,655,656,129,657,658,0,0,0,0,0,0,0,0,0,0,425,426,427,428,429,430,426,
-648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,703,704,129,705,706,0,0,0,0,0,0,0,703,704,129,705,706,774,775,776,777,778,0,0,0,0,0,473,280,475,476,477,478,1001,
-696,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,655,656,129,657,658,0,0,0,0,0,0,0,655,656,129,657,658,822,823,824,825,826,0,0,0,0,0,0,0,523,524,525,526,857,
-744,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,703,704,129,705,706,0,0,0,0,0,0,0,703,704,129,705,706,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,713,
-792,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,655,656,129,657,658,0,0,0,0,0,0,0,655,656,129,657,658,0,0,0,0,0,0,904,939,889,890,0,0,0,0,0,0,761,
-648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,703,704,129,705,706,0,0,0,0,0,0,0,703,704,129,705,706,0,0,0,0,0,569,952,987,937,938,0,0,0,0,0,0,809,
-696,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,857,858,129,839,840,0,0,0,0,0,0,0,857,858,129,839,840,777,778,0,0,0,617,1000,1001,985,986,0,0,0,0,0,0,713,
-744,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,223,454,454,454,226,0,0,0,0,0,0,0,223,454,454,454,226,825,826,0,0,0,703,704,129,705,706,0,0,0,0,0,0,761,
-648,0,0,0,0,0,0,0,0,0,569,951,552,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,502,502,502,0,0,0,0,0,0,655,656,129,657,658,0,0,0,0,0,0,809,
-696,0,0,0,0,0,0,0,0,0,617,622,600,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,703,704,129,705,706,0,0,0,0,0,0,713,
-744,0,0,0,0,0,0,0,0,0,665,670,648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,817,818,857,858,129,839,840,0,0,0,0,0,0,761,
-792,0,0,0,0,0,0,0,0,0,665,670,648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,223,454,454,454,226,0,0,0,0,0,0,809,
-648,573,569,570,571,572,569,570,571,572,665,670,648,0,0,569,570,571,572,569,570,571,572,569,570,571,569,569,570,571,572,573,569,570,571,572,569,570,571,572,569,570,571,569,570,571,572,573,951,952,
-621,622,621,622,618,619,620,621,622,618,619,620,621,622,622,621,622,618,619,620,621,622,618,619,620,621,622,618,619,620,621,622,621,622,618,619,620,621,622,618,619,620,621,622,618,619,620,621,999,1000,
+696,0,0,0,0,0,0,569,569,948,949,950,552,0,0,0,425,762,129,743,696,0,0,0,0,0,0,0,425,762,129,743,696,0,0,0,0,0,817,818,819,820,821,617,618,996,997,998,999,1000,
+744,0,0,0,0,0,0,617,618,996,997,998,600,0,0,0,607,608,129,609,610,0,0,0,0,0,0,0,607,608,129,609,610,0,0,0,0,0,0,0,0,0,0,665,666,666,667,668,669,670,
+792,0,0,0,0,0,0,665,666,666,667,668,648,0,0,0,655,656,129,657,658,0,0,0,0,0,0,0,655,656,129,657,658,0,0,0,0,0,0,0,0,0,0,425,426,427,428,429,430,426,
+648,0,0,0,0,0,0,425,426,427,428,429,696,0,0,0,703,704,129,705,706,0,0,0,0,0,0,0,703,704,129,705,706,774,775,776,777,778,0,0,0,0,0,473,280,475,476,477,478,1001,
+696,0,0,0,0,0,0,473,280,475,476,477,456,771,772,773,655,656,129,657,658,0,0,0,0,0,0,0,655,656,129,657,658,822,823,824,825,826,0,0,0,0,0,0,0,523,524,525,526,857,
+744,0,0,0,0,0,0,819,820,821,819,820,821,819,820,821,703,704,129,705,706,0,0,0,0,0,0,0,703,704,129,705,706,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,713,
+792,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,655,656,129,657,658,0,0,0,0,0,0,0,655,656,129,657,658,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,761,
+648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,703,704,129,705,706,0,0,0,0,0,0,0,703,704,129,705,1224,1225,0,0,0,569,570,569,570,571,938,570,571,938,0,0,0,809,
+696,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,857,858,129,839,840,0,0,0,0,0,0,0,857,858,129,839,1272,937,0,0,0,952,622,621,622,622,622,622,618,986,0,0,0,713,
+744,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,223,454,454,454,226,0,0,0,0,0,0,0,223,454,475,476,477,456,0,0,0,473,281,178,265,478,477,478,1001,706,0,0,0,761,
+648,825,826,0,0,0,0,0,0,0,569,951,552,0,0,0,0,522,522,522,0,0,0,0,0,0,0,0,0,522,523,524,525,522,0,0,0,328,272,273,313,526,525,526,857,658,0,0,0,809,
+696,0,0,0,0,0,0,0,0,0,617,622,600,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,904,947,948,949,889,0,857,706,0,0,0,713,
+744,0,0,0,0,0,0,0,0,0,665,670,648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,952,995,996,618,937,0,857,840,0,0,0,761,
+792,0,0,0,0,0,0,0,0,0,665,670,648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,703,704,129,705,706,0,272,273,0,0,0,809,
+648,573,569,570,571,572,569,570,571,572,665,670,648,0,0,569,570,571,572,569,570,0,0,0,0,0,0,0,570,571,572,573,569,570,571,572,569,570,751,858,129,839,658,569,570,571,572,573,951,952,
+621,622,621,622,618,619,620,621,622,618,619,620,621,622,622,621,622,618,619,620,991,0,0,0,0,0,0,0,994,620,621,622,621,622,618,619,620,621,622,618,619,620,621,622,618,619,620,621,999,1000,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -1097,19 +1097,7 @@
 </data>
  </layer>
  <objectgroup id="11" name="npcs"/>
- <objectgroup id="12" name="enemies">
-  <object id="31" name="slime" type="ground" gid="9298" x="144" y="224" width="32" height="32">
-   <properties>
-    <property name="aBehav" value="attack"/>
-    <property name="enemyClass" value="ground"/>
-    <property name="enemyType" value="slime1"/>
-    <property name="pBehav" value="patrol"/>
-    <property name="scale" type="float" value="1"/>
-    <property name="tint" value="#333333"/>
-    <property name="weapon" type="int" value="2"/>
-   </properties>
-  </object>
- </objectgroup>
+ <objectgroup id="12" name="enemies"/>
  <objectgroup id="13" name="spawns"/>
  <objectgroup id="14" name="exit">
   <object id="1" name="west1" type="exit" x="720" y="16" width="64" height="112">
@@ -1118,20 +1106,32 @@
     <property name="targetMap" value="none"/>
    </properties>
   </object>
-  <object id="2" name="west1" type="entrance" x="656" y="48" width="32" height="32"/>
+  <object id="2" name="west1" type="entrance" x="368" y="448" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="15" name="objects">
-  <object id="14" name="rock" type="rock" x="224" y="352" width="16" height="16"/>
-  <object id="15" name="rock" type="rock" x="192" y="352" width="16" height="16"/>
-  <object id="16" name="rock" type="rock" x="160" y="352" width="16" height="16"/>
+  <object id="14" name="rock" type="rock" x="640" y="480" width="16" height="16"/>
+  <object id="15" name="rock" type="rock" x="640" y="496" width="16" height="16"/>
+  <object id="16" name="rock" type="rock" x="672" y="496" width="16" height="16"/>
   <object id="32" name="water1" type="water" x="16" y="528" width="144" height="32"/>
   <object id="33" x="960" y="51"/>
-  <object id="38" name="soulcrystal0" type="soulcrystal" x="576" y="64" width="16" height="16">
+  <object id="38" name="soulcrystal0" type="soulcrystal" x="416" y="464" width="16" height="16">
    <properties>
     <property name="color" value="yellow"/>
     <property name="scid" type="int" value="0"/>
    </properties>
   </object>
+  <object id="44" name="mirror1" type="mirror" gid="9335" x="560" y="384" width="32" height="32" rotation="135"/>
+  <object id="45" name="mirror2" type="mirror" gid="9335" x="800" y="400" width="32" height="32" rotation="-125"/>
+  <object id="51" name="rock" type="rock" x="688" y="496" width="16" height="16"/>
+  <object id="52" name="rock" type="rock" x="688" y="512" width="16" height="16"/>
+  <object id="53" name="rock" type="rock" x="688" y="528" width="16" height="16"/>
+  <object id="64" name="rock" type="rock" x="208" y="336" width="16" height="16"/>
+  <object id="65" name="rock" type="rock" x="192" y="320" width="16" height="16"/>
+  <object id="66" name="rock" type="rock" x="208" y="320" width="16" height="16"/>
+  <object id="67" name="rock" type="rock" x="240" y="320" width="16" height="16"/>
+  <object id="68" name="rock" type="rock" x="224" y="336" width="16" height="16"/>
+  <object id="69" name="rock" type="rock" x="240" y="336" width="16" height="16"/>
+  <object id="70" name="rock" type="rock" x="224" y="320" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="16" name="triggers">
   <object id="12" name="gate1" type="gate" x="368" y="224" width="48" height="64">
@@ -1174,7 +1174,7 @@
   <object id="30" name="lamp1" type="crystallamp" x="432" y="352" width="16" height="16">
    <properties>
     <property name="alwaysOn" type="bool" value="true"/>
-    <property name="brightness_max" type="int" value="125"/>
+    <property name="brightness_max" type="int" value="75"/>
     <property name="decayRate" type="int" value="0"/>
     <property name="targetName" value="none"/>
     <property name="targetType" value="none"/>
@@ -1187,9 +1187,107 @@
     <property name="source" value="plate1"/>
    </properties>
   </object>
-  <object id="37" name="plate1" type="plate" x="736" y="314" width="32" height="6">
+  <object id="37" name="plate1" type="plate" x="736" y="304" width="32" height="16">
    <properties>
+    <property name="allowReset" type="bool" value="false"/>
     <property name="targetName" value="gate2"/>
+    <property name="targetType" value="gate"/>
+   </properties>
+  </object>
+  <object id="39" name="lamp2" type="crystallamp" x="336" y="416" width="16" height="16">
+   <properties>
+    <property name="alwaysOn" type="bool" value="true"/>
+    <property name="brightness_max" type="int" value="75"/>
+    <property name="decayRate" type="int" value="0"/>
+    <property name="targetName" value="none"/>
+    <property name="targetType" value="none"/>
+   </properties>
+  </object>
+  <object id="40" name="lamp3" type="crystallamp" x="240" y="288" width="16" height="16">
+   <properties>
+    <property name="alwaysOn" type="bool" value="false"/>
+    <property name="brightness_max" type="int" value="125"/>
+    <property name="decayRate" type="int" value="1"/>
+    <property name="targetName" value="gate7"/>
+    <property name="targetType" value="gate"/>
+   </properties>
+  </object>
+  <object id="47" name="gate4" type="gate" x="544" y="448" width="48" height="32">
+   <properties>
+    <property name="customScale" value="{&quot;x&quot;:48,&quot;y&quot;:32}"/>
+    <property name="mvdir" value="{&quot;x&quot;:-32,&quot;y&quot;:0}"/>
+    <property name="source" value="plate1"/>
+   </properties>
+  </object>
+  <object id="54" name="gate3" type="gate" x="704" y="512" width="32" height="32">
+   <properties>
+    <property name="customScale" value="{&quot;x&quot;:32,&quot;y&quot;:32}"/>
+    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:32}"/>
+    <property name="source" value="plate2"/>
+   </properties>
+  </object>
+  <object id="55" name="plate2" type="plate" x="752" y="544" width="32" height="16">
+   <properties>
+    <property name="allowReset" type="bool" value="false"/>
+    <property name="targetName" value="gate3"/>
+    <property name="targetType" value="gate"/>
+   </properties>
+  </object>
+  <object id="56" name="plate3" type="plate" x="736" y="304" width="32" height="16">
+   <properties>
+    <property name="allowReset" type="bool" value="false"/>
+    <property name="targetName" value="gate4"/>
+    <property name="targetType" value="gate"/>
+   </properties>
+  </object>
+  <object id="57" name="gate5" type="gate" x="464" y="480" width="48" height="80">
+   <properties>
+    <property name="customScale" value="{&quot;x&quot;:48,&quot;y&quot;:80}"/>
+    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:-80}"/>
+    <property name="source" value="plate1"/>
+   </properties>
+  </object>
+  <object id="58" name="lever2" type="lever" x="16" y="528" width="32" height="32">
+   <properties>
+    <property name="targetName" value="gate6"/>
+    <property name="targetType" value="gate"/>
+   </properties>
+  </object>
+  <object id="59" name="gate6" type="gate" x="16" y="560" width="144" height="16">
+   <properties>
+    <property name="customScale" value="{&quot;x&quot;:144,&quot;y&quot;:16}"/>
+    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:-48}"/>
+    <property name="source" value="lever2"/>
+   </properties>
+  </object>
+  <object id="60" name="lever3" type="lever" x="224" y="368" width="32" height="32">
+   <properties>
+    <property name="targetName" value="gate5"/>
+    <property name="targetType" value="gate"/>
+   </properties>
+  </object>
+  <object id="61" name="gate7" type="gate" x="80" y="416" width="32" height="16">
+   <properties>
+    <property name="customScale" value="{&quot;x&quot;:32,&quot;y&quot;:16}"/>
+    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:-60}"/>
+    <property name="source" value="lamp3"/>
+   </properties>
+  </object>
+  <object id="62" name="lamp5" type="crystallamp" x="16" y="352" width="16" height="16">
+   <properties>
+    <property name="alwaysOn" type="bool" value="false"/>
+    <property name="brightness_max" type="int" value="125"/>
+    <property name="decayRate" type="int" value="1"/>
+    <property name="targetName" value="gate7"/>
+    <property name="targetType" value="gate"/>
+   </properties>
+  </object>
+  <object id="63" name="lamp4" type="crystallamp" x="176" y="400" width="16" height="16">
+   <properties>
+    <property name="alwaysOn" type="bool" value="false"/>
+    <property name="brightness_max" type="int" value="125"/>
+    <property name="decayRate" type="int" value="1"/>
+    <property name="targetName" value="gate7"/>
     <property name="targetType" value="gate"/>
    </properties>
   </object>
@@ -1209,12 +1307,16 @@
   <object id="22" type="hull" x="0" y="560" width="336" height="16"/>
   <object id="23" type="hull" x="528" y="384" width="80" height="16"/>
   <object id="24" type="hull" x="608" y="320" width="80" height="16"/>
-  <object id="25" type="hull" x="528" y="360" width="48" height="8"/>
-  <object id="26" type="hull" x="608" y="448" width="80" height="96"/>
-  <object id="27" type="hull" x="528" y="464" width="32" height="8"/>
-  <object id="28" type="hull" x="576" y="512" width="32" height="8"/>
-  <object id="29" type="hull" x="624" y="432" width="48" height="16"/>
+  <object id="26" type="hull" x="608" y="448" width="128" height="32"/>
   <object id="34" type="hull" x="160" y="496" width="48" height="64"/>
   <object id="35" type="hull" x="448" y="560" width="352" height="16"/>
+  <object id="42" type="hull" x="528" y="448" width="16" height="32"/>
+  <object id="43" type="hull" x="592" y="448" width="16" height="32"/>
+  <object id="48" type="hull" x="608" y="512" width="80" height="48"/>
+  <object id="49" type="hull" x="608" y="480" width="32" height="16"/>
+  <object id="50" type="hull" x="704" y="480" width="32" height="64"/>
+  <object id="71" type="hull" x="112" y="336" width="96" height="64"/>
+  <object id="72" type="hull" x="16" y="480" width="32" height="8"/>
+  <object id="73" type="hull" x="112" y="400" width="144" height="9"/>
  </objectgroup>
 </map>
