@@ -46,6 +46,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.sprite.setFriction(.3,.3);
         this.sprite.setIgnoreGravity(true);
         this.protection_radius = {value:200, max: 200, original: 250};//How much does the light protect;
+        this.protection_circle = new Phaser.Geom.Circle(config.x, config.y, 250);
         this.throw = {x:0,y:0};
         this.readyThrow = false;
 
@@ -75,10 +76,27 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         //Was it already claimed?
         if(soullightClaimed){this.claim();};
 
+        //Circle Radius Debug
+        this.radDebug = [];
+        for(let c=0;c < 24;c++){
+            this.radDebug.push(this.scene.add.circle(this.x,this.y,2, 0x00FF00, 1.0));
+        }
+
     }
 
     update(time,delta)
     {    
+        //For Light raycast border
+        this.protection_circle.x = this.x;
+        this.protection_circle.y = this.y;
+
+        //DEBUG
+        this.debug.setPosition(this.x+32,this.y-64);
+        this.debug.setText(String(this.x.toFixed(2))+":"+String(this.y.toFixed(2)));
+        let soullight_border_verts = soullight.protection_circle.getPoints(24);
+        soullight_border_verts.forEach(function(e,i) {
+            soullight.radDebug[i].setPosition(e.x,e.y);
+        });
         //Handle position and light growth and shrinking
         if(!this.passing){
             if(this.isBeaming){
