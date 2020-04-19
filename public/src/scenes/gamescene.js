@@ -1341,7 +1341,7 @@ var GameScene = new Phaser.Class({
         //KEYPRESS DETECTION - USING CUSTOM CONTROLLER CLASS
         //Suicide to test animation
         if(keyPad.checkKeyState('P') == 1){            
-            solana.receiveDamage(1);
+            bright.receiveDamage(1);
         }
         
         //GLOBAL DEBUG TURN ON/OFF
@@ -1590,22 +1590,25 @@ function setupTriggerTargets(triggerGroup,triggerGroupName,scene){
     triggerGroup.children.each(function(trigger) {
         //console.log(triggerGroupName,trigger.target);
         if(trigger.target.name){
-            if(trigger.target.type == "gate"){
-                //Search all gets
-                gates.children.each(function(gate) {
-                    //console.log("Trigger had gate target, searching names");
-                    if(gate.name == trigger.target.name){
-                        trigger.setTarget(gate);
-                    }
-                },trigger);
-            }else if(trigger.target.type == "zone"){
-                triggerzones.children.each(function(zone) {
-                    //console.log("Trigger had gate target, searching names");
-                    if(zone.name == trigger.target.name){
-                        trigger.setTarget(zone);
-                    }
-                },trigger);
-            }
+            let nameList = trigger.target.name.split(",");//Comma delimited listing of target names
+            nameList.forEach(name=>{
+                if(trigger.target.type == "gate"){
+                    //Search all gets
+                    gates.children.each(function(gate) {
+                        //console.log("Trigger had gate target, searching names");
+                        if(gate.name == name){
+                            trigger.setTarget(gate);
+                        }
+                    },trigger);
+                }else if(trigger.target.type == "zone"){
+                    triggerzones.children.each(function(zone) {
+                        //console.log("Trigger had gate target, searching names");
+                        if(zone.name == name){
+                            trigger.setTarget(zone);
+                        }
+                    },trigger);
+                }
+            })
 
         }
     }, this);
@@ -1803,6 +1806,12 @@ function createAnimations(scene){
         frames: scene.anims.generateFrameNumbers('bright', { start: 1, end: 1 }),
         frameRate: 2,
         repeat: -1
+    });
+    scene.anims.create({
+        key: 'bright-death',
+        frames: scene.anims.generateFrameNumbers('bright', { frames:[5,6,7,8,9,10,11] }),
+        frameRate: 4,
+        repeat: 0
     });
     scene.anims.create({
         key: 'bright-pulse',

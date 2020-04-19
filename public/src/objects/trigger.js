@@ -51,7 +51,7 @@ class TMXLever extends Phaser.Physics.Matter.Sprite{
         this.setPosition(x,y);
         this.name = name;
         this.leverPosition = 0;
-        this.target = {name: -1,type: -1, object: -1};
+        this.target = {name: -1,type: -1, object: []};
         
         if(properties){
             this.target.name = properties.targetName;
@@ -71,18 +71,26 @@ class TMXLever extends Phaser.Physics.Matter.Sprite{
         this.debug.setText("Lever Position:"+String(this.leverPosition));
     }
     setTarget(targetObject){
-        this.target.object = targetObject;
-        //console.log("Set target for ", this.name);
+        this.target.object.push(targetObject);
     }
     triggerTarget(){
-        if(this.target.object != -1){
-            this.target.object.activateTrigger();
+        if(this.target.object.length > 0){
+            this.target.object.forEach(e=>{
+                e.activateTrigger();
+            });
         }
+    }
+    checkIfTargetsReady(){
+        let r = true;
+        this.target.object.forEach(e=>{
+            if(e.ready == false){r=false;};
+        });
+        return r;
     }
     useLever(){
         if(this.anims.isPlaying == false){
             //Animation is done.
-            if(this.target.object != -1 && this.target.object.ready){
+            if(this.target.object.length > 0 && this.checkIfTargetsReady()){
                 this.leverSoundTrigger.play();
                 //Target is ready to operate?
                 if(this.leverPosition == 0){
@@ -255,7 +263,7 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
         this.setPosition(x,y);
         this.name = name;
         this.platePosition = 0;
-        this.target = {name: -1,type: -1, object: -1};
+        this.target = {name: -1,type: -1, object: []};
         this.ready = true;
         this.allowReset = false;
         if(properties){
@@ -273,13 +281,22 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
         this.debug.setText("Plate Position:"+String(this.platePosition));
     }
     setTarget(targetObject){
-        this.target.object = targetObject;
+        this.target.object.push(targetObject);
         //console.log("Set target for ", this.name);
     }
     triggerTarget(){
-        if(this.target.object != -1){
-            this.target.object.activateTrigger();
+        if(this.target.object.length > 0){
+            this.target.object.forEach(e=>{
+                e.activateTrigger();
+            });
         }
+    }
+    checkIfTargetsReady(){
+        let r = true;
+        this.target.object.forEach(e=>{
+            if(e.ready == false){r=false;};
+        });
+        return r;
     }
     usePlate(){
         if(this.ready == true){
@@ -288,7 +305,7 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
                 this.plateTimer = this.scene.time.addEvent({ delay: 1000, callback: this.plateComplete, callbackScope: this, loop: false });
             }
             //Timer is done.
-            if(this.target.object != -1 && this.target.object.ready){
+            if(this.target.object.length > 0 && this.checkIfTargetsReady()){
                 //Target is ready to operate?
                 if(this.platePosition == 0){
                     this.platePosition = 1;
@@ -352,7 +369,7 @@ class TMXButton extends Phaser.Physics.Matter.Sprite{
         this.setPosition(x,y);
         this.name = name;
         this.buttonPosition = 0;
-        this.target = {name: -1,type: -1, object: -1};
+        this.target = {name: -1,type: -1, object: []};
         this.ready = true;
         if(properties){
             this.target.name = properties.targetName;
@@ -368,18 +385,27 @@ class TMXButton extends Phaser.Physics.Matter.Sprite{
         this.debug.setText("Button Position:"+String(this.platePosition));
     }
     setTarget(targetObject){
-        this.target.object = targetObject;
+        this.target.object.push(targetObject);
         //console.log("Set target for ", this.name);
     }
     triggerTarget(){
-        if(this.target.object != -1){
-            this.target.object.activateTrigger();
+        if(this.target.object.length > 0){
+            this.target.object.forEach(e=>{
+                e.activateTrigger();
+            });
         }
+    }
+    checkIfTargetsReady(){
+        let r = true;
+        this.target.object.forEach(e=>{
+            if(e.ready == false){r=false;};
+        });
+        return r;
     }
     useButton(){
         if(this.anims.isPlaying == false){
             //Animation is done.
-            if(this.target.object != -1 && this.target.object.ready){
+            if(this.target.object.length > 0 && this.checkIfTargetsReady()){
                 //Target is ready to operate?
                 if(this.buttonPosition == 0){
                     this.buttonPosition = 1;
@@ -440,7 +466,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         this.setPosition(x,y);
         this.alpha = 0.0;
         this.name = name;
-        this.target = {name: -1,type: -1, object: -1};
+        this.target = {name: -1,type: -1, object: []};
         this.ready = [true,true];
         this.zonedata = {type:'trigger',value:0};
         this.allowReset = false;
@@ -517,15 +543,24 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         this.debug.setText("Zone Status:"+String(this.name)+":"+String(this.ready));
     }
     setTarget(targetObject){
-        this.target.object = targetObject;
+        this.target.object.push(targetObject);
+    }
+    triggerTarget(playerid){
+        if(this.target.object.length > 0){
+            this.target.object.forEach(e=>{
+                e.activateTrigger(playerid);
+            });
+        }
+    }
+    checkIfTargetsReady(){
+        let r = true;
+        this.target.object.forEach(e=>{
+            if(e.ready == false){r=false;};
+        });
+        return r;
     }
     triggerReset(playerid){
         this.ready[playerid]  = true;
-    }
-    triggerTarget(playerid){
-        if(this.target.object != -1){
-            this.target.object.activateTrigger(playerid);
-        }
     }
     activateTrigger(playerid){
         this.ready[playerid]  = true;
@@ -674,7 +709,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         this.setDisplaySize(w,h);
         this.name = name;
         this.platformPosition = 0;
-        this.target = {name: -1,type: -1, object: -1};
+        this.target = {name: -1,type: -1, object: []};
         this.ready = true;
         this.setHighSpeed = 0;
         this.immobile = true;
@@ -707,15 +742,23 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         if(this.onWayTracker != -1){
             this.trackOneWay();
         }
-    }
+    }    
     setTarget(targetObject){
-        this.target.object = targetObject;
-        //console.log("Set target for ", this.name);
+        this.target.object.push(targetObject);
     }
     triggerTarget(){
-        if(this.target.object != -1){
-            this.target.object.activateTrigger();
+        if(this.target.object.length > 0){
+            this.target.object.forEach(e=>{
+                e.activateTrigger();
+            });
         }
+    }
+    checkIfTargetsReady(){
+        let r = true;
+        this.target.object.forEach(e=>{
+            if(e.ready == false){r=false;};
+        });
+        return r;
     }
     setPath(path){
         //For each coord in the array, start tweening to at a specific time. The coord array contains
@@ -742,7 +785,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
             this.ready = false;            
             this.plateTimer = this.scene.time.addEvent({ delay: 1000, callback: this.plateComplete, callbackScope: this, loop: false });
             //Timer is done.
-            if(this.target.object != -1 && this.target.object.ready){
+            if(this.target.object.length > 0 && this.checkIfTargetsReady()){
                 this.triggerTarget();
             }else{
                 //Target not ready
@@ -821,7 +864,7 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
         this.setActive(true);
         this.setPosition(x,y);
         this.name = name;   
-        this.target = {name: -1,type: -1, object: -1};
+        this.target = {name: -1,type: -1, object: []};
         this.ready = true;
         if(properties){
             this.target.name = properties.targetName;
@@ -836,13 +879,21 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
         if(this.alwaysOn){this.turnOn();};
     }
     setTarget(targetObject){
-        this.target.object = targetObject;
-        //console.log("Set target for ", this.name,targetObject);
+        this.target.object.push(targetObject);
     }
     triggerTarget(){
-        if(this.target.object != -1){
-            this.target.object.activateTrigger();
+        if(this.target.object.length > 0){
+            this.target.object.forEach(e=>{
+                e.activateTrigger();
+            });
         }
+    }
+    checkIfTargetsReady(){
+        let r = true;
+        this.target.object.forEach(e=>{
+            if(e.ready == false){r=false;};
+        });
+        return r;
     }
     turnOn(){
         this.anims.play('lamp-turn-on', true); 

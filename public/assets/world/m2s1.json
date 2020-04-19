@@ -163,7 +163,7 @@
                  "visible":true,
                  "width":32,
                  "x":368,
-                 "y":448
+                 "y":432
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -556,7 +556,7 @@
                         {
                          "name":"targetName",
                          "type":"string",
-                         "value":"gate2"
+                         "value":"gate2,gate4"
                         }, 
                         {
                          "name":"targetType",
@@ -724,33 +724,6 @@
                  "width":32,
                  "x":752,
                  "y":544
-                }, 
-                {
-                 "height":16,
-                 "id":56,
-                 "name":"plate3",
-                 "properties":[
-                        {
-                         "name":"allowReset",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"targetName",
-                         "type":"string",
-                         "value":"gate4"
-                        }, 
-                        {
-                         "name":"targetType",
-                         "type":"string",
-                         "value":"gate"
-                        }],
-                 "rotation":0,
-                 "type":"plate",
-                 "visible":true,
-                 "width":32,
-                 "x":736,
-                 "y":304
                 }, 
                 {
                  "height":80,

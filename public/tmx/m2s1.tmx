@@ -1106,7 +1106,7 @@
     <property name="targetMap" value="none"/>
    </properties>
   </object>
-  <object id="2" name="west1" type="entrance" x="368" y="448" width="32" height="32"/>
+  <object id="2" name="west1" type="entrance" x="368" y="432" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="15" name="objects">
   <object id="14" name="rock" type="rock" x="640" y="480" width="16" height="16"/>
@@ -1190,7 +1190,7 @@
   <object id="37" name="plate1" type="plate" x="736" y="304" width="32" height="16">
    <properties>
     <property name="allowReset" type="bool" value="false"/>
-    <property name="targetName" value="gate2"/>
+    <property name="targetName" value="gate2,gate4"/>
     <property name="targetType" value="gate"/>
    </properties>
   </object>
@@ -1230,13 +1230,6 @@
    <properties>
     <property name="allowReset" type="bool" value="false"/>
     <property name="targetName" value="gate3"/>
-    <property name="targetType" value="gate"/>
-   </properties>
-  </object>
-  <object id="56" name="plate3" type="plate" x="736" y="304" width="32" height="16">
-   <properties>
-    <property name="allowReset" type="bool" value="false"/>
-    <property name="targetName" value="gate4"/>
     <property name="targetType" value="gate"/>
    </properties>
   </object>

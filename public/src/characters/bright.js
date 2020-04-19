@@ -45,13 +45,14 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
         //Custom properties
         this.light_status = 0;//0 - Bright, 1 - Dark;
-        this.hp = 1;
-        this.max_hp = 1;
+        this.hp = 5;
+        this.max_hp = 5;
         this.mv_speed = 3;
         this.roll_speed = 0.400;
         this.jump_speed = 0.020;
         this.max_speed = {air:10,ground:10};
         this.alive = true;
+        this.invuln = false;
         this.falling = false;
         this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { resolution: 2, fontSize: '10px', fill: '#00FF00' });
         this.touching = {up:0,down:0,left:0,right:0};
@@ -463,24 +464,38 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     }
     death(animation, frame){
         
-        if(animation.key == 'bright-walk'){
-            this.setActive(false);
-            this.setVisible(false);
-            this.debug.setVisible(false);
-            this.hp = 1;
+        if(animation.key == 'bright-death'){
+            entrances.getChildren().forEach(e=>{
+                if(e.name == current_exit.bright){
+                    bright.setPosition(e.x,e.y);
+                }
+            });
+            this.hp = 5;
+            hud.setHealth(this.hp,1);
             this.alive = true; 
+            if(soullight.ownerid == 1){
+                soullight.passLight();
+            }
+
+            //If Bright has soullight, it gets tossed to Solana, he goes dark and reappears at entrance.
         }
     }
     receiveDamage(damage) {
-        this.hp -= damage;           
-        
-        // if hp drops below 0 we deactivate this enemy
-        if(this.hp <= 0 && !this.dead ) {
-            this.alive = false; 
-                     
-            this.sprite.on('animationcomplete',this.death,this);            
-            this.sprite.anims.play('bright-walk', false);
-            
+        if(this.alive && !this.invuln){            
+            this.invuln = true;
+            this.setTint(0xFF0000);
+            //invuln timer
+            this.invulnTimer = this.scene.time.addEvent({ delay: 1000, callback: function(){bright.invuln=false;bright.clearTint()}, callbackScope: this, loop: false });
+            this.hp -= damage;           
+            hud.setHealth(this.hp,1);
+            // if hp drops below 0 we deactivate this enemy
+            if(this.hp <= 0 && !this.dead ) {
+                this.alive = false; 
+                        
+                this.sprite.on('animationcomplete',this.death,this);            
+                this.sprite.anims.play('bright-death', false);
+                
+            }
         }
     }
     pulseCharge(object){

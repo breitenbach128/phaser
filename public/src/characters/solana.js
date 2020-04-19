@@ -570,12 +570,12 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.invuln = true;
             this.setTint(0xFF0000);
             //invuln timer
-            this.invulnTimer = this.scene.time.addEvent({ delay: 1000, callback: this.disableInvuln, callbackScope: this, loop: true });
+            this.invulnTimer = this.scene.time.addEvent({ delay: 1000, callback: this.disableInvuln, callbackScope: this, loop: false });
             //Kill Blips
             this.scene.events.emit('playerHurt');
             //Remove health
             this.hp -= damage; 
-            hud.setHealth(this.hp);
+            hud.setHealth(this.hp,0);
             emitter_blood.active = true;
             emitter_blood.explode(24,this.x,this.y);
             // Play Sound

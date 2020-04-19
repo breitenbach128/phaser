@@ -218,16 +218,32 @@ class HudScene extends Phaser.Scene {
         timeline.play();
     }
 
-    setHealth(hp)
+    setHealth(hp,playerid)
     {
-        if(hp <= this.hp_blips.length){
-            for(let h=0;h < this.hp_blips.length;h++){
-                let st = h+1 <= hp ? true : false;
-                this.hp_blips[h].setVisible(st); 
-            }
+        let errorCode = 0;
+        if(playerid == 0){
+            if(hp <= this.hp_blips.length){
+                for(let h=0;h < this.hp_blips.length;h++){
+                    let st = h+1 <= hp ? true : false;
+                    this.hp_blips[h].setVisible(st); 
+                }
+            }else{
+                errorCode="ERROR: High MAX HP Given then length of blips"  ;
+            }        
+        }else if(playerid == 1){
+            if(hp <= this.bp_blips.length){
+                for(let h=0;h < this.bp_blips.length;h++){
+                    let st = h+1 <= hp ? true : false;
+                    this.bp_blips[h].setVisible(st); 
+                }
+            }else{
+                errorCode="ERROR: High MAX BP Given then length of blips"  ;
+            } 
         }else{
-            console.log("ERROR: High MAX HP Given then length of blips",hp,this.hp_blips.lengt);
-        }        
+            errorCode="ERROR: No Player ID for Health blips"  ;
+        }
+
+        if(errorCode != 0){console.log(errorCode);}
     }
     handleEvents ()
     {
