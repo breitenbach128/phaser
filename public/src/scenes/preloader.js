@@ -294,7 +294,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('hud_energybar1','assets/hud/hud_energybar1.png',{frameWidth: 16, frameHeight: 96});		
 		this.load.spritesheet('hud_energybar3','assets/hud/hud_energybar3.png',{frameWidth: 192, frameHeight: 24});	
 		this.load.spritesheet('hud_energybar3_solana_head','assets/hud/hud_energybar3_solana_head.png',{frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('hud_energybar3_bright_head','assets/hud/hud_energybar3_bright_head.png',{frameWidth: 32, frameHeight: 32});		
+		this.load.spritesheet('hud_energybar3_bright_head','assets/hud/hud_energybar3_bright_head.png',{frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('hud_corruptionbar1','assets/hud/hud_corruptionbar1.png',{frameWidth: 16, frameHeight: 96});
 		//Make these talking animations later		
 		this.load.image('hud_solana_head', 'assets/hud/hud_Solana_head.png');

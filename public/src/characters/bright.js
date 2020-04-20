@@ -196,10 +196,20 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     }
 
                     //Passing Soulight
-                    if(soullight.ownerid == 1){
-                        if(control_passPress){soullight.aimStart();};
-                        if(control_passRelease){soullight.aimStop();};
-                    }
+                    if (control_passPress && soullight.ownerid == 1) {        
+                        let losRc = Phaser.Physics.Matter.Matter.Query.ray(losBlockers,{x:solana.x,y:solana.y},{x:soullight.x,y:soullight.y});                  
+                        if(Phaser.Math.Distance.Between(soullight.x,soullight.y,solana.x,solana.y) > soullight.freePassDistance){                                
+                            soullight.aimStart() 
+                        }else{
+                            if(losRc.length == 0){
+                                soullight.passLight();
+                            }else{
+                                soullight.aimStart() 
+                            }
+                        }                        
+                    };
+                    if (control_passRelease && soullight.ownerid == 1) { if(soullight.aimer.started){soullight.aimStop();} };
+
                     //Throw Pulse. Can only do it if you have the soulight
                     if(control_pulsePress && soullight.ownerid == 1){
                         //This needs a solid visual indicator that they players can perform this merge
@@ -390,6 +400,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     return (keyPad.checkKeyState('SPC') == 1);
                 case 'beam':
                     return (keyPad.checkMouseState('MB0') > 0);
+                case 'grab':
+                    return (keyPad.checkKeyState('T') == 1);
                 case 'pass':
                     return (keyPad.checkKeyState('R') == 1);
                 case 'passR':

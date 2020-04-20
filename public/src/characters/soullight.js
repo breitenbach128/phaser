@@ -42,21 +42,21 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.base_speed = 1;
         this.max_speed = 50;//25 
         this.accel = 1;
-        this.projectile_speed = 14;//12
+        this.projectile_speed = 8;//14
         this.sprite.setFriction(.3,.3);
         this.sprite.setIgnoreGravity(true);
         this.protection_radius = {value:200, max: 200, original: 250};//How much does the light protect;
         this.protection_circle = new Phaser.Geom.Circle(config.x, config.y, 250);
         this.throw = {x:0,y:0};
         this.readyThrow = false;
-
+        this.transfer = -1
         this.aimer = this.scene.add.image(this.x,this.y,'soullightblast').setScale(.5).setOrigin(0.5);
         this.aimer.setVisible(false);
         this.aimer.ready = true;
         this.aimer.started = false;
         this.aimerRadius = 52;
         this.aimerCircle = new Phaser.Geom.Circle(this.x, this.y, this.aimerRadius);
-        
+        this.freePassDistance = 64;
         this.isBeaming = false;//If it is beaming, it can will carry Bright with it.
         this.passChain = [];//Soulight pass to each of these entities in order.
         this.passChainIndex = 0;
@@ -69,6 +69,17 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         //Create Soulight Effect
         //This should be inactive until the player retrieves the soulight gem for the first time.
         this.scene.particle_soulight = this.scene.add.particles('shapes',  this.scene.cache.json.get('effect-flame-fall'));   
+        this.sparkerMgr = this.scene.add.particles('lightburst-1');
+        this.sparkler = this.sparkerMgr.createEmitter({
+            active:true,
+            frequency: 300, 
+            x: 0,
+            y: 0,
+            speed: { min: 35, max: 45 },
+            scale: { start: 0.3, end: 0.0 },
+            lifespan: 3000,
+            blendMode: 'ADD'
+        });
         //this.particle_soulight.emitters.list[0].setScale(0.5);
         this.scene.particle_soulight.emitters.list[0].setLifespan(160);
         this.scene.particle_soulight.setActive(false);
@@ -89,6 +100,13 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         //For Light raycast border
         this.protection_circle.x = this.x;
         this.protection_circle.y = this.y;
+        
+        //Particle Emit        
+        let strTarg = this.ownerid == 0 ? bright : solana;
+        this.setProxPartStream(strTarg);
+        //this.sparkler.emitParticleAt(this.x,this.y,1);
+        //Update transfer
+        if(this.transfer != -1){this.transfer.update(time,delta)};
 
         //DEBUG
         this.debug.setPosition(this.x+32,this.y-64);
@@ -145,7 +163,15 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed)};
         if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
     }
-    
+    setProxPartStream(target){
+        
+        let dist = Phaser.Math.Distance.Between(this.x,this.y,target.x,target.y);
+        if(dist < this.freePassDistance && !this.sparkler.on){this.sparkler.start()};
+        if(dist > this.freePassDistance && this.sparkler.on){this.sparkler.stop()};
+        this.sparkler.setAngle(Phaser.Math.Angle.Between(this.x,this.y,target.x,target.y)*(180/Math.PI));
+        this.sparkler.setLifespan((dist/40)*1000);
+        this.sparkler.setPosition(this.x,this.y);
+    }
     setAimer(){ 
 
         let gameScale = camera_main.zoom;
@@ -183,9 +209,9 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         if(this.aimer.ready && this.aimer.started){
             this.aimer.ready = false;
             this.aimer.started = false;
-            let transfer = new SoulTransfer(this.scene,this.x,this.y,'soullightblast',0,this);
-            transfer.rotation = this.aimer.rotation;
-            transfer.fire(transfer.rotation,this.projectile_speed);
+            this.transfer = new SoulTransfer(this.scene,this.x,this.y,'soullightblast',0,this);
+            this.transfer.rotation = this.aimer.rotation;
+            this.transfer.fire(this.transfer.rotation,this.projectile_speed);
         }
     }
     homeLight(target){        
@@ -289,12 +315,16 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
             .setCollidesWith([ CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.ENEMY, CATEGORY.BRIGHT, CATEGORY.SOLANA, CATEGORY.DARK, CATEGORY.MIRROR ]);
           //Custom properties
         this.parent = parent;
-        this.timer = this.scene.time.addEvent({ delay: 2000, callback: this.kill, callbackScope: this, loop: false });
+        this.deathtimer = this.scene.time.addEvent({ delay: 5000, callback: this.kill, callbackScope: this, loop: false });
         this.alive = true;
+        this.isGrabbed = false;
+        this.grabbedBy = -1;
 
         this.soundfling = game.sound.add('wavingtorch',{volume: 0.04});
         this.soundfling.addMarker({name:'soul-fling',start:.25,duration:.5});        
         this.soundfling.addMarker({name:'soul-burn-impact',start:1,duration:.2});
+
+
     }
     chain(angle,speed,obj){
         this.fire(angle,speed);
@@ -318,7 +348,7 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         //Hit other target, so trigger the launch of the soulight.
         if(this.parent.ownerid != id){
             this.parent.readyPass();
-            this.timer = this.scene.time.addEvent({ delay: 100, callback: this.kill, callbackScope: this, loop: false });
+            this.deathtimer = this.scene.time.addEvent({ delay: 0, callback: this.kill, callbackScope: this, loop: false });
         }
 
     }
@@ -327,7 +357,7 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         let safetyBoundsVec = {x:Math.cos(this.rotation+Math.PI)*mapTileSize.tw,y:Math.sin(this.rotation+Math.PI)*mapTileSize.tw};
         this.parent.startChain(this.x+safetyBoundsVec.x,this.y+safetyBoundsVec.y);
         this.soundfling.play('soul-burn-impact');
-        this.timer = this.scene.time.addEvent({ delay: 100, callback: this.kill, callbackScope: this, loop: false });
+        this.deathtimer = this.scene.time.addEvent({ delay: 100, callback: this.kill, callbackScope: this, loop: false });
         //DO effect
         let burst = light_bursts.get(this.x,this.y);
         burst.burst(this.x,this.y);
@@ -335,13 +365,40 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         //Need to make it inactive here.
         this.setVelocity(0,0);
         this.setPosition(-1000,-1000);
+    }    
+    setGrabbed(grabber){
+        this.setFrictionAir(0.1);
+        this.isGrabbed = true;
+        this.grabbedBy = grabber;
+        //this.setCollidesWith([ 0 ]);
+        this.deathtimer.pause = true;
+        //this.deathtimer = this.scene.time.addEvent({ delay: 1000, callback: function(){this.setCollidesWith([ CATEGORY.DARK, CATEGORY.SOLANA])}, callbackScope: this, loop: false });
+        //TO create the effect, I might want to just let it cycle around the play. Turning off collisions with a short timer might do it
+    }
+    homeBullet(target){        
+        let angle = Phaser.Math.Angle.Between(this.x,this.y,target.x,target.y);
+        let sp = this.parent.projectile_speed;
+        let targetDistance = Phaser.Math.Distance.Between(this.x,this.y,target.x,target.y);
+        if(targetDistance <= sp){sp = targetDistance};
+        let hX = Math.cos(angle);
+        let hY = Math.sin(angle);  
+
+        //this.setVelocity(hX*sp,hY*sp);
+        this.applyForce({x:hX*0.001,y:hY*0.001});
+        // if(Phaser.Math.Distance.Between(this.x,this.y,target.x,target.y) < this.width){
+        //     //Just move onto it. Should speed up the transfer
+        //     this.setPosition(target.x,target.y);
+        // }
     }
     update(time,delta)
     {
-        
+        if(this.isGrabbed){
+            this.homeBullet(this.grabbedBy);
+        }
     }
     kill(){
         this.parent.readyAimer();
+        this.parent.transfer = -1;
         this.destroy();
     }
 

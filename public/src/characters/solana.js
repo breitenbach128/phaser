@@ -126,6 +126,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             let control_passRelease = this.getControllerAction('passR');
             let control_brightFollow = this.getControllerAction('brightFollow');
             let control_bomb = this.getControllerAction('bomb');
+            let control_grab = this.getControllerAction('grab');
             //console.log("SOL_R:",control_right,this.getControllerAction('right'),keyPad.checkKeyState('D'));
 
             if (this.control_lock == false) {
@@ -229,9 +230,20 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         this.mv_direction.x = 0;
                     }
                     //Passing Soulight
-                    if (soullight.ownerid == 0 && soullight.claimed) {
-                        if (control_passPress) { soullight.aimStart() };
-                        if (control_passRelease) { soullight.aimStop(); };
+                    if(soullight.claimed){
+                        if (control_passPress && soullight.ownerid == 0) {    
+                            let losRc = Phaser.Physics.Matter.Matter.Query.ray(losBlockers,{x:bright.x,y:bright.y},{x:soullight.x,y:soullight.y}); 
+                            if(Phaser.Math.Distance.Between(soullight.x,soullight.y,bright.x,bright.y) > soullight.freePassDistance){                                
+                                soullight.aimStart() 
+                            }else{
+                                if(losRc.length == 0){
+                                    soullight.passLight();
+                                }else{
+                                    soullight.aimStart() 
+                                }
+                            }                        
+                        };
+                        if (control_passRelease && soullight.ownerid == 0) { if(soullight.aimer.started){soullight.aimStop();} };
                     }
                     // if (this.jumpLock) {
                     //     //this.sprite.setVelocityX(this.kickOff);
@@ -284,6 +296,13 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     if(control_bomb){
                         this.activateBomb();
                     }
+                    if(control_grab){
+                        if(soullight.transfer != -1 && soullight.transfer != undefined){
+                            if(Phaser.Math.Distance.Between(this.x,this.y,soullight.transfer.x,soullight.transfer.y) < soullight.freePassDistance*2){
+                                soullight.transfer.setGrabbed(this);
+                            }
+                        }
+                    }
                 }
             }
             
@@ -335,6 +354,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     return (gamePad[this.ctrlDeviceId].checkButtonState('A') == 1);
                 case 'bomb':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('B') == 1);
+                case 'grab':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('X') == 1);
                 case 'shoot':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('rightTrigger') > 0);
                 case 'shootR':
@@ -364,6 +385,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     return (keyPad.checkKeyState('SPC') == 1);
                 case 'bomb':
                     return (keyPad.checkKeyState('G') == 1);
+                case 'grab':
+                    return (keyPad.checkKeyState('T') == 1);
                 case 'shoot':
                     return (keyPad.checkMouseState('MB0') > 0);
                 case 'shootR':

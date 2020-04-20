@@ -1194,9 +1194,13 @@ var GameScene = new Phaser.Class({
         if(playerMode == 0){
             solana.setController(playerConfig[0].ctrl);
             bright.setController(playerConfig[0].ctrl);
+            hud.brightStatBarHead.setFrame(1);
+            hud.solanaStatBarHead.setFrame(0)
         }else if(playerMode == 1){
             solana.setController(playerConfig[0].ctrl);
             bright.setController(playerConfig[1].ctrl);
+            hud.brightStatBarHead.setFrame(0);
+            hud.solanaStatBarHead.setFrame(0)
 
         }
 
@@ -1418,9 +1422,13 @@ var GameScene = new Phaser.Class({
                 curr_player=players.BRIGHT;
                 if(bright.light_status == 0){bright.reAlignBright();}            
                 //this.cameras.main.startFollow(bright.sprite,true,.1,.1,0,0); 
+                hud.brightStatBarHead.setFrame(0);
+                hud.solanaStatBarHead.setFrame(1)
             }else{
                 curr_player=players.SOLANA;
                 //this.cameras.main.startFollow(solana.sprite,true,.1,.1,0,0);
+                hud.brightStatBarHead.setFrame(1);
+                hud.solanaStatBarHead.setFrame(0)
             }
         }
         
