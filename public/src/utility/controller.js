@@ -231,7 +231,8 @@ class KeyboardMouseControl {
             Z: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z),s:0},
             G: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.G),s:0},
             T: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T),s:0},
-            SHIFT: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT),s:0}
+            SHIFT: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT),s:0},
+            CTRL: {b:scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL),s:0}
 
         }
         this.msbuttons= {

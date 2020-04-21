@@ -117,7 +117,9 @@ var GameScene = new Phaser.Class({
 
         //Draw Debug
         this.matter.world.createDebugGraphic();
-        this.matter.world.drawDebug = false;
+        this.matter.world.drawDebug = false;        
+        this.worldGrid = this.add.grid(0,0,map.widthInPixels*2,map.heightInPixels*2,16,16,0x333333,0.1,0x000000,0.8).setOrigin(0);
+        this.worldGrid.setVisible(false);
         //Add Labels for tile bodies for easier collision management
         this.collisionLayer.forEachTile(function (tile) {
             // In Tiled, the platform tiles have been given a "type" property which is a string
@@ -631,7 +633,6 @@ var GameScene = new Phaser.Class({
                     soullight.setPosition(exitObj.x,exitObj.y-32);
                     solana.setLastEntrance(exitObj);
                     this.cameras.main.centerOn(exitObj.x,exitObj.y); 
-
                 }
                 if(exitObj.name == current_exit.bright){                    
                     bright.setPosition(exitObj.x,exitObj.y-32);
@@ -1386,6 +1387,7 @@ var GameScene = new Phaser.Class({
             bodiesClicked.forEach(e=>{
                 this.debugDrag.push(e);
             });
+            this.worldGrid.setVisible(true);
         }else if(keyPad.checkMouseState('MB2') > 1){
             if(keyPad.checkKeyState('SHIFT') >= 1){
                 let vertChange = (pointer.position.y-pointer.prevPosition.y);
@@ -1393,8 +1395,19 @@ var GameScene = new Phaser.Class({
                     if(e.gameObject != undefined){e.gameObject.angle+=Math.round(vertChange/2);};
                 })
             }else{
+                let posX = pointer.worldX;
+                let posY = pointer.worldY;
+                let gridLock = (keyPad.checkKeyState('CTRL') >= 1);
+                if(gridLock){
+                    posX = Math.round(posX/16)*16;
+                    posY = Math.round(posY/16)*16;
+                }
                 this.debugDrag.forEach(e=>{
-                    if(e.gameObject != undefined){e.gameObject.setPosition(pointer.worldX,pointer.worldY);};
+                    if(e.gameObject != undefined){
+                        let xO = (Math.floor(e.gameObject.width/16) % 2) * -8;
+                        let yO = (Math.floor(e.gameObject.height/16) % 2) * -8;
+                        e.gameObject.setPosition(posX+xO,posY+yO);
+                    };
                 })
             }
         }else if(keyPad.checkMouseState('MB2') == -1){
@@ -1412,6 +1425,7 @@ var GameScene = new Phaser.Class({
                 };
             })
             this.debugDrag = [];
+            this.worldGrid.setVisible(false);
         }
          
         
