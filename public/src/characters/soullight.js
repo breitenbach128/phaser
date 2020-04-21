@@ -304,7 +304,7 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
             frictionStatic: 0,
             frictionAir: 0.00,
             friction: 0.0,
-            restitution: 0.7,
+            restitution: 1,
             label: "SOULTRANSFER"
           });
           this
@@ -319,11 +319,12 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         this.alive = true;
         this.isGrabbed = false;
         this.grabbedBy = -1;
-
+        this.inGrabDis = false;
         this.soundfling = game.sound.add('wavingtorch',{volume: 0.04});
         this.soundfling.addMarker({name:'soul-fling',start:.25,duration:.5});        
         this.soundfling.addMarker({name:'soul-burn-impact',start:1,duration:.2});
-
+        this.soundGrabAlert = game.sound.add('coin',{volume: 0.8});
+        this.soundGrabbed = game.sound.add('grabbedLight',{volume: 0.3});
 
     }
     chain(angle,speed,obj){
@@ -369,6 +370,7 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
     setGrabbed(grabber){
         this.setFrictionAir(0.1);
         this.isGrabbed = true;
+        this.soundGrabbed.play();
         this.grabbedBy = grabber;
         //this.setCollidesWith([ 0 ]);
         this.deathtimer.pause = true;
@@ -392,6 +394,20 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
     }
     update(time,delta)
     {
+        let checkDis = this.parent.ownerid == 0 ? distanceBetweenObjects(this,bright): distanceBetweenObjects(this,solana);
+        if(checkDis < this.parent.freePassDistance*2 && !this.inGrabDis){
+            this.soundGrabAlert.play();
+            this.inGrabDis = true;
+            this.twGrow = this.scene.tweens.add({
+                targets: this,
+                scale: 0.4,              
+                ease: 'Linear',
+                yoyo: true,       
+                duration: 100,  
+                onComplete: function(tween, targets, obj){},
+                onCompleteParams: [this],
+            }); 
+        }
         if(this.isGrabbed){
             this.homeBullet(this.grabbedBy);
         }
@@ -399,6 +415,7 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
     kill(){
         this.parent.readyAimer();
         this.parent.transfer = -1;
+        if(this.inGrabDis){this.twGrow.remove();}
         this.destroy();
     }
 

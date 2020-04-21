@@ -782,9 +782,11 @@ class TMXWater{
                     const i = wb.columns.findIndex((col, i) => col.x >= (gameObjectB.x-wb.x) && i);
                     const speed = gameObjectB.body.speed * 3;
                     const numDroplets = Math.ceil(gameObjectB.body.speed) * 5;
-                    wb.trackingList.push({obj:gameObjectB,faValue:gameObjectB.body.frictionAir});
+                    let jb = gameObjectB.jump_speed != undefined ? gameObjectB.jump_speed : -1;
+                    wb.trackingList.push({obj:gameObjectB,faValue:gameObjectB.body.frictionAir,jBoost: jb});
                     //console.log("prev WB List",wb.trackingList);
                     gameObjectB.setFrictionAir(0.25);
+                    if(jb != -1){gameObjectB.jump_speed = 0.055};
                     wb.splash(Phaser.Math.Clamp(i, 0, wb.columns.length - 1), speed, numDroplets);
                     //console.log("post WB List",wb.trackingList);
                     //console.log("Column",i,wb.columns[i],wb);
@@ -798,6 +800,7 @@ class TMXWater{
                 wb.trackingList.forEach(function(e,i){
                     if(e.obj == gameObjectB){
                         gameObjectB.setFrictionAir(e.faValue);
+                        if(e.jBoost != -1){gameObjectB.jump_speed = e.jBoost};
                         //console.log("Water end: Remove friction",e);
                         removeAt = i;                        
                     }

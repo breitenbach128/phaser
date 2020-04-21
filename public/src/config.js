@@ -27,7 +27,11 @@
                 gravity: { y: 1.5 },
                 positionIterations: 12, //8
                 velocityIterations: 10, //6
-                constraintIterations: 8 //2
+                constraintIterations: 8, //2
+                // restingThresh: 0.1,
+                // restingThreshTangent: 0.1,
+                // positionDampen: 0.1,
+                // positionWarming: 0.1
             }
         },
         // Install the scene plugin
@@ -88,7 +92,8 @@
         tsPairs:[
             {tsName:'mainlevbuild1',tsKey:'PF_SET3_v1_0_mainlevbuild1'},
             {tsName:'mainlevbuild2',tsKey:'PF_SET3_v1_0_mainlevbuild2'},
-            {tsName:'mainlevbuild3',tsKey:'PF_SET3_v1_0_mainlevbuild3'}
+            {tsName:'mainlevbuild3',tsKey:'PF_SET3_v1_0_mainlevbuild3'},
+            {tsName:'32Tileset',tsKey:'tiles32'}
         ],
         backgrounds:['PF_SET3_v1_0_background4']
         },

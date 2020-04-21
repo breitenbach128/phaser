@@ -254,8 +254,8 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
         .setStatic(true)
         .setIgnoreGravity(true);    
 
-        this.debug = scene.add.text(this.x, this.y-16, 'plate', { fontSize: '10px', fill: '#00FF00', resolution: 2 });             
-
+        this.debug = this.scene.add.text(this.x, this.y-16, 'plate', { fontSize: '10px', fill: '#00FF00', resolution: 2 });             
+        this.plateSound = this.scene.sound.add('switch1');
 
     }
     setup(x,y, properties,name){
@@ -301,6 +301,7 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
     usePlate(){
         if(this.ready == true){
             this.ready = false;
+            this.plateSound.play();
             if(this.allowReset){
                 this.plateTimer = this.scene.time.addEvent({ delay: 1000, callback: this.plateComplete, callbackScope: this, loop: false });
             }
@@ -316,9 +317,6 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
                     this.setFrame(0); 
                     this.triggerTarget();
                 }
-            }else{
-                //Player chunk sound so play knows they can use the lever right now. Make sure sound only plays if not playing.
-                console.log("Plate sound: Tink! Click!");
             }
         }
 
@@ -713,12 +711,16 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         this.ready = true;
         this.setHighSpeed = 0;
         this.immobile = true;
-        if(properties){
+        this.tmloop = -1;
+        this.autostart = false;
+        if(properties != undefined && Object.keys(properties).length > 0){
             this.target.name = properties.targetName;
             this.target.type = properties.targetType;
             this.path = JSON.parse(properties.path);
+            this.tmloop = properties.loop;
+            this.autostart = properties.autostart;
         }
-       if(this.path){ 
+       if(this.autostart && this.path){ 
             this.setPath(this.path) // test tween
             this.immobile = false;
        }else{
@@ -731,7 +733,10 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
     {       
 
         this.debug.setPosition(this.x, this.y-16);
-        this.debug.setText(this.name+" "+String(this.body.velocity.x.toFixed(4))+":"+String(this.body.velocity.y.toFixed(4)));
+        this.debug.setText(this.name+" "
+        +String(this.body.velocity.x.toFixed(2))+":"
+        +String(this.body.velocity.y.toFixed(2))+":"
+        +String(this.ready));
         // body is static so must manually update velocity for friction to work
         this.setVelocityX((this.x - this.prev.x));
         this.setVelocityY((this.y - this.prev.y));
@@ -760,14 +765,21 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         });
         return r;
     }
+    activateTrigger(){
+        if(this.ready == true){
+            this.ready = false;  
+            this.setPath(this.path);
+        }
+    }
     setPath(path){
         //For each coord in the array, start tweening to at a specific time. The coord array contains
         // x, y, time, hold objects for each tween x,y,t,h
         //positioning is relative
-        var timeline = this.scene.tweens.createTimeline();
-        timeline.loop = -1;
+        this.timeline = this.scene.tweens.createTimeline();
+        this.timeline.setCallback('onComplete',this.platComplete,[this],this.timeline);
+        this.timeline.loop = this.tmloop;
         path.forEach(function(e){
-            timeline.add({
+            this.timeline.add({
                 targets: this,
                 x: this.x+e.x,
                 y: this.y+e.y,
@@ -778,7 +790,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         
         },this);
 
-        timeline.play();
+        this.timeline.play();
     }
     usePlatform(){
         if(this.ready == true){
@@ -793,9 +805,8 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         }
 
     }
-    plateComplete(){
-        //console.log("plate ready again");
-        //this.ready = true;
+    platComplete(plat){
+        plat.ready = true;
     }
     trackOneWay(){
         let targetObjTop = this.onWayTracker.obj.getTopCenter();
@@ -896,7 +907,7 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
         return r;
     }
     turnOn(){
-        this.anims.play('lamp-turn-on', true); 
+        if(this.brightness == 0){this.anims.play('lamp-turn-on', true); }
         this.brightness = this.max_brightness;
         this.triggerTarget();
     }
@@ -906,7 +917,7 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
     }
     decay(){
         this.brightness = (this.brightness - this.decayRate );
-        if(this.brightness  < 0){this.brightness = 0;};
+        if(this.brightness  <= 0){this.turnOff();};
     }
     update()
     {

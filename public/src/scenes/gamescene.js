@@ -44,7 +44,7 @@ var GameScene = new Phaser.Class({
         mapTileSize.th = map.tileHeight;
         //Get the lvl config from config.js object
         let lvlCfg = getLevelConfigByName(current_map);
-        console.log(current_map,lvlCfg)
+        console.log(this.matter.world)
         //console.log(map);
         //Create Background - This will need to be custom based on the map.
         lvlCfg.backgrounds.forEach(e=>{
@@ -108,7 +108,7 @@ var GameScene = new Phaser.Class({
         //Clear Light Polygons
         lightPolygons = [];
         //Generate shadow canvas
-        this.shadow_background =  this.add.rectangle(0,0,map.widthInPixels*2, map.heightInPixels*2,0x000000,0.9);
+        this.shadow_background =  this.add.rectangle(0,0,map.widthInPixels*2, map.heightInPixels*2,0x000000,0.7);
         this.shadow_graphic = this.make.graphics();    
         this.shadow_graphic.setPosition(0,0);        
         this.shadow_mask = this.shadow_graphic.createGeometryMask();
@@ -194,6 +194,7 @@ var GameScene = new Phaser.Class({
             shapeObject.setStatic(true);
             shapeObject.setCollisionCategory(CATEGORY.GROUND) 
             shapeObject.body.label = 'GROUND'; 
+            shapeObject.body.friction = 0.01;
             //console.log("Poly Object",shapeObject);
             //Need to add light blocking polygon check here.
             hulls.push(shapeObject);
@@ -517,7 +518,14 @@ var GameScene = new Phaser.Class({
                 x_offset = tmxObjRef.width/2;
                 y_offset = tmxObjRef.height/2;
                 //let newFallPlat = new Fallplat(this,tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-1);
-                platfalls.get(tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-1);
+                let oG = -1;
+                map.tilesets.forEach(e=>{
+                    if(e.image.key == 'tiles32'){
+                        oG = e.firstgid;
+                    }
+                })
+                platfalls.get(tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-oG);
+                
 
             }else if(tmxObjRef.type == "breakabletile"){  
                 //Changed this to layer object. I may still want this, so leave it in for now. 3/14/2020 - BNB
@@ -1003,8 +1011,9 @@ var GameScene = new Phaser.Class({
                         }
                     }  
                 }
-                //Between Fallplat and Solana
-                if ((bodyA.label === 'FALLPLAT' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'FALLPLAT')) {
+                //Between Fallplat and Solana and Bright
+                let fallplatHitList = ['SOLANA','BRIGHT'];
+                if ((bodyA.label === 'FALLPLAT' && fallplatHitList.includes(bodyB.label)) || (fallplatHitList.includes(bodyA.label) && bodyB.label === 'FALLPLAT')) {
                     //Get Bullet Object and run hit function
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'FALLPLAT');
                     if (gObjs[0].active && gObjs[0].y > gObjs[1].y){
@@ -1012,7 +1021,7 @@ var GameScene = new Phaser.Class({
                     }  
                 }
                 //Between Fallplat and ANYTHING ELSE
-                if ((bodyA.label === 'FALLPLAT' && bodyB.label !== 'SOLANA') || (bodyA.label !== 'SOLANA' && bodyB.label === 'FALLPLAT')) {
+                if ((bodyA.label === 'FALLPLAT' && !fallplatHitList.includes(bodyB.label)) || (!fallplatHitList.includes(bodyA.label) && bodyB.label === 'FALLPLAT')) {
                     //Get Bullet Object and run hit function
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'FALLPLAT');
                     //if (gObjs[0].ready == false && gObjs[0].y < gObjs[1].tile.pixelY){
@@ -1232,6 +1241,7 @@ var GameScene = new Phaser.Class({
         //Lights2d
         // solana.setPipeline('Light2D');
         // let light  = this.lights.addLight(0, 0, 200).setScrollFactor(0.0).setIntensity(2);
+        this.debugDrag = [];
         
     },
     update: function (time, delta)
@@ -1373,16 +1383,35 @@ var GameScene = new Phaser.Class({
             //this.matter.world.engine.world.bodies
             let bodiesClicked = Phaser.Physics.Matter.Matter.Query.point(this.matter.world.localWorld.bodies, {x:pointer.worldX, y:pointer.worldY});
             console.log(bodiesClicked);
-            // bodiesClicked.forEach(e=>{
-            //     if(e.label == 'CRATE'){
-            //         e.gameObject.clicked();
-            //     }
-            // });
+            bodiesClicked.forEach(e=>{
+                this.debugDrag.push(e);
+            });
+        }else if(keyPad.checkMouseState('MB2') > 1){
+            if(keyPad.checkKeyState('SHIFT') >= 1){
+                let vertChange = (pointer.position.y-pointer.prevPosition.y);
+                this.debugDrag.forEach(e=>{
+                    if(e.gameObject != undefined){e.gameObject.angle+=Math.round(vertChange/2);};
+                })
+            }else{
+                this.debugDrag.forEach(e=>{
+                    if(e.gameObject != undefined){e.gameObject.setPosition(pointer.worldX,pointer.worldY);};
+                })
+            }
         }else if(keyPad.checkMouseState('MB2') == -1){
-            // let c = crates.getChildren();
-            // c.forEach(e=>{                
-            //     e.released();                
-            // });
+            this.debugDrag.forEach(e=>{
+                if(e.gameObject != undefined){
+                    let debugObj = {
+                        class: e.gameObject.constructor.name,
+                        angle: e.gameObject.angle,
+                        bounds: {
+                            min: {x:e.bounds.min.x.toFixed(2),y:e.bounds.min.y.toFixed(2)},
+                            max: {x:e.bounds.max.x.toFixed(2),y:e.bounds.max.y.toFixed(2)},
+                        }
+                    }
+                    console.log(debugObj);
+                };
+            })
+            this.debugDrag = [];
         }
          
         
@@ -1559,7 +1588,9 @@ var GameScene = new Phaser.Class({
     }
     
 });
+//************************************************//
 //External Functions
+//************************************************//
 function playPause(){
     //console.log('Pause',keyPad, solana.getControllerAction('right'),keyPad.checkKeyState('D'));
 
@@ -1568,6 +1599,10 @@ function playResume(){
     //console.log('Resume',keyPad, solana.getControllerAction('right'),keyPad.checkKeyState('D'));
     //Setup keypad clear on next update
     //playScene.clearKeypad();    
+}
+function distanceBetweenObjects(a,b){
+    //returns distance between two game objects
+    return Phaser.Math.Distance.Between(a.x,a.y,b.x,b.y);
 }
 function getObjectTilePosition(x,y,ts){
     return {x: Math.floor(x/ts),y: Math.floor(y/ts)};
@@ -1597,7 +1632,7 @@ function setupTriggerTargets(triggerGroup,triggerGroupName,scene){
     //Currently restricted to types. I need to expand this
     triggerGroup.children.each(function(trigger) {
         //console.log(triggerGroupName,trigger.target);
-        if(trigger.target.name){
+        if(trigger.target.name != -1 && trigger.target.name != undefined){
             let nameList = trigger.target.name.split(",");//Comma delimited listing of target names
             nameList.forEach(name=>{
                 if(trigger.target.type == "gate"){
@@ -1613,6 +1648,13 @@ function setupTriggerTargets(triggerGroup,triggerGroupName,scene){
                         //console.log("Trigger had gate target, searching names");
                         if(zone.name == name){
                             trigger.setTarget(zone);
+                        }
+                    },trigger);
+                }else if(trigger.target.type == "platform"){
+                    platforms.children.each(function(platform) {
+                        //console.log("Trigger had gate target, searching names");
+                        if(platform.name == name){
+                            trigger.setTarget(platform);
                         }
                     },trigger);
                 }

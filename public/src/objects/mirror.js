@@ -9,14 +9,14 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
-        const mainBody =  Bodies.rectangle(0, 0, w, h*.5);
+        const mainBody =  Bodies.rectangle(0, 0, w, h*0.5);
         
         const compoundBody = Body.create({
             parts: [mainBody],
             frictionStatic: 1,//0.0
             frictionAir: 1,//0.08
-            friction: 1,//0.1
-            restitution: 0,
+            friction: 0,//0.1
+            restitution: 1,
             density: 1.0,//0.009
             label: "MIRROR"
         });
@@ -29,7 +29,8 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
         //.setStatic(true)
         //.setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setIgnoreGravity(true)
-        .setVisible(false);    
+        .setVisible(false)
+        .setStatic(true);    
 
         //Mirror Sensor for Solana Interaction
         this.sensor = new MirrorSensor(this,x,y);
@@ -48,15 +49,15 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
         this.setPosition(x,y);
         this.sensor.setPosition(x,y);
         //Mirror Constraint for pivoting
-        let rotation_constraint = Phaser.Physics.Matter.Matter.Constraint.create(
-            {
-              pointA: { x: this.x, y: this.y },
-              bodyB: this.sprite.body,
-              length: 0,
-              stiffness: 0.5
-            }
-          );
-        this.scene.matter.world.add(rotation_constraint);
+        // let rotation_constraint = Phaser.Physics.Matter.Matter.Constraint.create(
+        //     {
+        //       pointA: { x: this.x, y: this.y },
+        //       bodyB: this.sprite.body,
+        //       length: 0,
+        //       stiffness: 0.5
+        //     }
+        //   );
+        //this.scene.matter.world.add(rotation_constraint);
 
         this.angle = angle;
         this.minAngle = angle - 45;
