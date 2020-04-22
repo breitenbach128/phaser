@@ -614,6 +614,17 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             }
         }   
     }
+    receiveHealth(health){
+       this.hp+=health;
+       if(this.hp > this.max_hp){
+           this.hp = 5;
+           for(let i=0;i < Phaser.Math.Between(1,3);i++){
+                let ls = light_shards.get();
+                ls.spawn(this.x,this.y,300,solana);
+            }
+        };
+       hud.setHealth(this.hp,0);
+    }
     disableInvuln(){
         this.invuln = false;
         this.clearTint();
@@ -829,3 +840,64 @@ class SolBomb extends Phaser.Physics.Matter.Sprite{
         }
     }
 }
+
+//Health
+class Heart extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'health_blip', 0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+        this.setActive(true);
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.rectangle(x,y,w,h);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.00,
+            friction: 0.8,//Was 0.1
+            restitution: 0.3,
+            label: 'HEART'
+        });
+ 
+        this
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.SOLID)
+        .setCollidesWith([ CATEGORY.BRIGHT, CATEGORY.SOLANA, CATEGORY.GROUND, CATEGORY.SOLID])
+        .setPosition(x, y+h*0.20) 
+        this.isReady = false;
+
+        this.readyTimer = this.scene.time.addEvent({ delay: 1000, callback: function(){this.isReady = true;}, callbackScope: this, loop: false });
+
+        this.scene.matterCollision.addOnCollideActive({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    gameObjectA.collect(gameObjectB)
+                }
+            }
+        });
+    }
+    setup(x,y, properties,name){
+        this.setActive(true); 
+        this.setPosition(x,y);
+        this.name = name;
+ 
+    }
+    update(time, delta)
+    {       
+
+
+    }
+    collect(obj){
+        if(this.isReady){
+            obj.receiveHealth(1);
+            this.destroy();
+        }
+    }
+};

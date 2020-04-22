@@ -472,10 +472,10 @@ class SecretTile extends Phaser.Physics.Matter.Sprite{
     {       
         if(this.ready){
             let tileDistance = 2;
-            let thisTile = getObjectTilePosition(this.x,this.y,32);
-            let solanaTile = getObjectTilePosition(solana.x,solana.y,32);
-            let brightTile = getObjectTilePosition(bright.x,bright.y,32);
-            let soulightTile = getObjectTilePosition(soullight.x,soullight.y,32);
+            let thisTile = getObjectTilePosition(this.x,this.y,16);
+            let solanaTile = getObjectTilePosition(solana.x,solana.y,16);
+            let brightTile = getObjectTilePosition(bright.x,bright.y,16);
+            let soulightTile = getObjectTilePosition(soullight.x,soullight.y,16);
             this.debug.setText(String(thisTile.x)+","+String(thisTile.y));
             if(Phaser.Math.Distance.Between(thisTile.x,thisTile.y,solanaTile.x,solanaTile.y) < tileDistance
                 || Phaser.Math.Distance.Between(thisTile.x,thisTile.y,brightTile.x,brightTile.y) < tileDistance
@@ -811,3 +811,70 @@ class TMXWater{
     }
 }
 
+//Chest
+class Chest extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'chest', 0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+        this.setActive(true);
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.rectangle(x,y,w*0.80,h*0.60,{isSensor:true});
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.00,
+            friction: 1,//Was 0.1
+            label: 'CHEST'
+        });
+
+        compoundBody.render.sprite.yOffset = .65; 
+        this
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.SOLID)
+        .setCollidesWith([ CATEGORY.BRIGHT, CATEGORY.SOLANA])
+        .setPosition(x, y+h*0.20)
+        .setStatic(true);  
+        this.isOpen = false;
+
+        this.scene.matterCollision.addOnCollideActive({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    let control_up = solana.ctrlDeviceId >= 0? gamePad[solana.ctrlDeviceId].checkButtonState('up') > 0 : keyPad.checkKeyState('W') > 0;
+                    if(control_up) {
+                        //Interact
+                        gameObjectA.open();
+                    }
+                }
+            }
+        });
+        //Up to date queue
+        this.scene.events.on("update", this.update, this);
+    }
+    setup(x,y, properties,name){
+        this.setActive(true); 
+        this.setPosition(x,y);
+        this.name = name;
+ 
+    }
+    update(time, delta)
+    {       
+
+
+    }
+    open(){
+        console.log("Try open");
+        if(!this.isOpen){
+            this.isOpen = true;
+            this.anims.play('chest-open',true);
+            let heart = new Heart(this.scene,this.x,this.y-16);
+        }
+    }
+};

@@ -73,9 +73,7 @@ var GameScene = new Phaser.Class({
         secretTiles = this.add.group({classType:SecretTile, runChildUpdate:true});
         fghiddenlayer.forEachTile(function (tile) {
             if(tile.index != -1){
-                //console.log(tile);
-                let newImgIndex = tile.index - tile.tileset.firstgid;
-                let secretTile = new SecretTile(this,tile.pixelX+tile.width/2,tile.pixelY+tile.height/2,tile.tileset.image.key,newImgIndex).setOrigin(0.5).setDepth(DEPTH_LAYERS.FG);
+                let secretTile = new SecretTile(this,tile.pixelX+tile.width/2,tile.pixelY+tile.height/2,tile.tileset.image.key,tile.index-tile.tileset.firstgid).setOrigin(0.5).setDepth(DEPTH_LAYERS.FG);
                 secretTiles.add(secretTile);
             }
         },this);
@@ -84,9 +82,7 @@ var GameScene = new Phaser.Class({
         if(fgbreakablelayer){
             fgbreakablelayer.forEachTile(function (tile) {
                 if(tile.index != -1){
-                    //console.log(tile);
-                    let newImgIndex = tile.index - tile.tileset.firstgid;
-                    let breakTile = new BreakableTile(this,tile.pixelX+tile.width/2,tile.pixelY+tile.height/2,tile.tileset.image.key,newImgIndex).setOrigin(0.5).setDepth(DEPTH_LAYERS.FG);
+                    let breakTile = new BreakableTile(this,tile.pixelX+tile.width/2,tile.pixelY+tile.height/2,tile.tileset.image.key,tile.index-tile.tileset.firstgid).setOrigin(0.5).setDepth(DEPTH_LAYERS.FG);
                 }
             },this);
             fgbreakablelayer.destroy();
@@ -588,6 +584,9 @@ var GameScene = new Phaser.Class({
                 let wtprops = getTileProperties(tmxObjRef.properties);
                 let wtOps = {dampening: .0001,tension: 0.01,texture: 'water'};
                 let wt = new TMXWater(this,tmxObjRef.x,tmxObjRef.y,tmxObjRef.width,tmxObjRef.height,tmxObjRef.height,wtOps);
+            }else if(tmxObjRef.type == 'chest'){
+                let chestProps = getTileProperties(tmxObjRef.properties);
+                let chest = new Chest(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
             }
         }
         //Spawn Triggers
@@ -2125,12 +2124,17 @@ function createAnimations(scene){
         frames: scene.anims.generateFrameNumbers('telebeam', { frames:[0,1,2] }),
         frameRate: 12,
         repeat: -1
-    }); 
-     
+    });      
     scene.anims.create({
         key: 'light-shield',
         frames: scene.anims.generateFrameNumbers('solana_shield', { frames:[0,1,2,1,0] }),
         frameRate: 12,
         repeat: -1
+    });       
+    scene.anims.create({
+        key: 'chest-open',
+        frames: scene.anims.generateFrameNumbers('chest', { frames:[0,1,2] }),
+        frameRate: 4,
+        repeat: 0
     }); 
 }

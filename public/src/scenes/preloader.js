@@ -202,9 +202,9 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('PF_SET2_v1_0_decorative_obj', 'tmx/tilesets/PF_SET2_v1.0/decorative_obj.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('PF_SET2_v1_0_mainlevbuild1', 'tmx/tilesets/PF_SET2_v1.0/mainlevbuild1.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('PF_SET2_v1_0_mainlevbuild2', 'tmx/tilesets/PF_SET2_v1.0/mainlevbuild2.png', {frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('PF_SET3_v1_0_mainlevbuild1', 'tmx/tilesets/PF_SET3_v1.0/mainlevbuild1.png', {frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('PF_SET3_v1_0_mainlevbuild2', 'tmx/tilesets/PF_SET3_v1.0/mainlevbuild2.png', {frameWidth: 32, frameHeight: 32});
-		this.load.spritesheet('PF_SET3_v1_0_mainlevbuild3', 'tmx/tilesets/PF_SET3_v1.0/mainlevbuild3.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('PF_SET3_v1_0_mainlevbuild1', 'tmx/tilesets/PF_SET3_v1.0/mainlevbuild1.png', {frameWidth: 16, frameHeight: 16});
+		this.load.spritesheet('PF_SET3_v1_0_mainlevbuild2', 'tmx/tilesets/PF_SET3_v1.0/mainlevbuild2.png', {frameWidth: 16, frameHeight: 16});
+		this.load.spritesheet('PF_SET3_v1_0_mainlevbuild3', 'tmx/tilesets/PF_SET3_v1.0/mainlevbuild3.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('PF_Set4_v1_0_anim_water', 'tmx/tilesets/PF_Set4_v1.0/anim_water.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('PF_Set4_v1_0_anim_water2', 'tmx/tilesets/PF_Set4_v1.0/anim_water2.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('PF_Set4_v1_0_decorative1', 'tmx/tilesets/PF_Set4_v1.0/decorative1.png', {frameWidth: 32, frameHeight: 32});
@@ -255,6 +255,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('telebeam', 'assets/objects/telebeam.png', {frameWidth: 64, frameHeight: 64});
 		this.load.spritesheet('window_shatter', 'assets/objects/window_shatter.png', {frameWidth: 64, frameHeight: 96});
         this.load.spritesheet('solana_shield', 'assets/objects/solana_shield.png', {frameWidth: 32, frameHeight: 32});
+        this.load.spritesheet('chest', 'assets/objects/chest.png', {frameWidth: 64, frameHeight: 48});
 		//SoulCrystals
 		this.load.spritesheet('soulcrystal_blue', 'assets/objects/crystal-qubodup-ccby3-32-blue.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('soulcrystal_grey', 'assets/objects/crystal-qubodup-ccby3-32-grey.png', {frameWidth: 32, frameHeight: 32});		
@@ -331,6 +332,7 @@ var Preloader = new Phaser.Class({
 		this.load.audio('impact_hurt_groan',['snd/johnj_human_impact_hit_punch_head_slam_male_groan.mp3'])
 		this.load.audio('hitting_wall',  ['snd/Hitting_Wall.wav']);
 		this.load.audio('wavingtorch',  ['snd/WavingTorch.wav']);
+		this.load.audio('shard1',  ['snd/shard1.wav']);
 		this.load.audio('theme1',  ['snd/theme1.wav']);
 		this.load.audio('intro1',  ['snd/intro1.ogg']);
 		this.load.audio('forestTheme1',  ['snd/safe_room_theme.ogg']);

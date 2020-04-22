@@ -150,6 +150,7 @@ class LightShard extends Phaser.Physics.Matter.Sprite{
         this.max_speed = 7;
         this.angleMod = 0;
         this.angleModRate = -0.10;
+        this.collectSnd = this.scene.sound.add('shard1',{volume: 0.10});
     }
     spawn(x, y, life, target)
     {       
@@ -168,6 +169,7 @@ class LightShard extends Phaser.Physics.Matter.Sprite{
     }
     hit(){
         this.lifespan = 0;
+        this.collectSnd.play();
         this.kill();
     }
     kill(){
