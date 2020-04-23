@@ -183,7 +183,8 @@
         ENEMY: 512,
         SOLANA_UP: 1024,
         SHIELD: 2048,
-        BOSS: 4096
+        BOSS: 4096,
+        VEHICLE: 8192
 
     }
     const DEPTH_LAYERS = {
@@ -449,6 +450,13 @@
         }
         return -1;
     }
+    //Define Sum Function for Arrays
+    Array.prototype.sum = function(prop){
+        return this.reduce( function(a, b){
+            return a + b[prop];
+        }, 0);
+    };
+    
     //Wrap a number to a max. I.E: If the max is 1.0, 1.5 would give 0.5;
     function wrapAtMax(x, m) {
         return (x%m + m)%m;

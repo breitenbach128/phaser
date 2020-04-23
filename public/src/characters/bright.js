@@ -597,7 +597,7 @@ class BrightSensors extends Phaser.Physics.Matter.Sprite{
         this.sprite
         .setExistingBody(compoundBody)          
         .setCollisionCategory(CATEGORY.BRIGHT)
-        .setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.BARRIER ])
+        .setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.BARRIER, CATEGORY.VEHICLE ])
         .setScale(1.0)
         .setFixedRotation() 
         .setPosition(x, y)

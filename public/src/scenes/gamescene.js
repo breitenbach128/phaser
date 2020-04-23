@@ -136,35 +136,15 @@ var GameScene = new Phaser.Class({
             //}
         });
         
-        //Raycasting - setup. For troubleshooting ONLY - REmove once no longer needed.
-        // lightCanvas = this.add.graphics(0, 0);
-        // lightCanvas.setVisible(false);
-        // lightCanvas.setAlpha(0.5);
-
-        //console.log("Raycasting :",lightCanvas,lightPolygons);
-
-
-        //NEED TO TEST THIS OUT WITH JUMP CODE. I NEED TO CREATE A TRUE GAME OBJECT HERE, SO I CAN REFERENCE THE TYPE.
-        //NOT ABSOLUTELY NEEDED, BUT PROBABLY BETTER.
 
         //Test Hulls Layer for Object Creation for collision. Very Effecient.
         //See http://labs.phaser.io/edit.html?src=src/game%20objects/tilemap/collision/matter%20ghost%20collisions.js
-        // let rectCarve = map.findObject('hulls', function (obj) { return obj.name === 'hull'; });
-        // let rectHull = this.matter.add.rectangle(
-        //     rectCarve.x + (rectCarve.width / 2), rectCarve.y + (rectCarve.height / 2),
-        //     rectCarve.width, rectCarve.height,
-        //     { isStatic: true }
-        // );
-        
-        // rectHull.label = 'GROUND';
-        // rectHull.collisionFilter.category = CATEGORY.GROUND;
-        // rectHull.friction = .9;
-
-        // console.log("RectHull",rectHull,rectCarve)
+ 
         
         let hullsLayer = map.getObjectLayer('hulls');
         hulls = [];
         hullsLayer.objects.forEach(e=>{
+            let hullprops = getTileProperties(e.properties);
             //console.log(e);
             let newBody = null;
             let shapeObject = null;
@@ -192,9 +172,9 @@ var GameScene = new Phaser.Class({
             shapeObject.setStatic(true);
             shapeObject.setCollisionCategory(CATEGORY.GROUND) 
             shapeObject.body.label = 'GROUND'; 
-            shapeObject.body.friction = 0.01;
-            //console.log("Poly Object",shapeObject);
-            //Need to add light blocking polygon check here.
+            //Make the friction come from a property setter. Default to 0.01.
+            
+            shapeObject.body.friction = hullprops != undefined? (hullprops.friction != undefined ? hullprops.friction : 0.01 ) : 0.01;
             hulls.push(shapeObject);
             losBlockers.push(shapeObject.body);
         });
@@ -779,6 +759,7 @@ var GameScene = new Phaser.Class({
               if (gameObjectB !== undefined &&
                 (gameObjectB instanceof TMXPlatform
                       || gameObjectB instanceof Barrier
+                      || gameObjectB instanceof Vehicle
                       || gameObjectB instanceof TMXGate
                       || gameObjectB instanceof TMXPlate
                       || gameObjectB instanceof Fallplat
@@ -855,6 +836,7 @@ var GameScene = new Phaser.Class({
               if (gameObjectB !== undefined &&
                 (gameObjectB instanceof TMXPlatform
                 || gameObjectB instanceof Barrier
+                || gameObjectB instanceof Vehicle
                 || gameObjectB instanceof TMXGate
                 || gameObjectB instanceof TMXPlate
                 || gameObjectB instanceof Fallplat
@@ -910,7 +892,7 @@ var GameScene = new Phaser.Class({
                 }
 
                 if (gameObjectB !== undefined && gameObjectB instanceof TMXZone) {
-                    gameObjectB.enterZone(bright,1);
+                    gameObjectB.inZone(bright,1);
                 } 
             }
         });
@@ -964,7 +946,7 @@ var GameScene = new Phaser.Class({
               }
               //Solana Enters a zone trigger
               if (gameObjectB !== undefined && gameObjectB instanceof TMXZone) {
-                    gameObjectB.enterZone(solana,0);
+                    gameObjectB.inZone(solana,0);
               }
 
               if (gameObjectB !== undefined && gameObjectB instanceof NPCSensor) {
@@ -1242,7 +1224,12 @@ var GameScene = new Phaser.Class({
         // solana.setPipeline('Light2D');
         // let light  = this.lights.addLight(0, 0, 200).setScrollFactor(0.0).setIntensity(2);
         this.debugDrag = [];
-        
+
+        //Test Car setup (for mine cart)
+        let car = new Vehicle(this,704,2082).setDepth(solana.depth+1);
+        car.wA.setDepth(car.depth+1);
+        car.wB.setDepth(car.depth+1);
+        console.log(car)
     },
     update: function (time, delta)
     {

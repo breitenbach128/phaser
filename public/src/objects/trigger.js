@@ -445,7 +445,8 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             parts: [mainBody],
             frictionStatic: 0,
             frictionAir: 0.02,
-            friction: 0.1
+            friction: 0.1,
+            label: "TMXZone"
         });
 
         this.sprite
@@ -457,6 +458,10 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
 
         this.debug = scene.add.text(this.x, this.y, 'Zone', { fontSize: '10px', fill: '#00FF00', resolution: 2 }).setOrigin(0.5);             
         
+        //Add Matter collisionStart detector on all bodies.
+        //When a new collisions starts, check the mass of all bodies in the zone that meet the body label filter. if the zone type is weight,
+        //then check the total mass against the max allowed mass. If it meets it meets or exceeds the mass, trigger the target.
+        //This can create the effect of "falling" platforms that with enough crates and rocks, will tumble down, opening new paths.
 
     }
     setup(x,y, properties,name,w,h){
@@ -472,7 +477,9 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         this.resetTimer = [-1,-1];
         this.effect = -1;
         this.zoneWidth = w;
-        this.zoneHeight = h;
+        this.zoneHeight = h;  
+        this.totalBodies = [];
+        this.massThrehold = 100;
         //Zones can do certain things.
         //
         if(properties){
@@ -483,6 +490,8 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             this.allowReset = properties.allowReset;
             this.resetDelay =properties.resetDelay;
             this.ready = properties.ready != undefined ? [properties.ready,properties.ready] : [true,true];
+            this.massThrehold = properties.massThrehold != undefined ? properties.massThrehold : 100;
+            
         }
         //Types:
         //Target: Triggers a target
@@ -531,14 +540,51 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             this.teleporterGradeient.setVisible(false);
             //this.teleporterGradeient.setAlpha(0.2);
 
+       }else if(this.zonedata.type == 'mass'){
+           //Restrict collision types
+            this.setCollidesWith([CATEGORY.SOLANA,CATEGORY.DARK,CATEGORY.SOLID])
+           
+           //Add Collision Listener to track mass of all active collisions
+            this.scene.matterCollision.addOnCollideStart({
+                objectA: [this],
+                callback: eventData => {
+                    const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;                    
+                    //Calc total Body mass in area
+                    //let obs = Phaser.Physics.Matter.MatterPhysics.intersectRect(gameObjectA.getTopLeft().x,gameObjectA.getTopLeft().y,gameObjectA.width,gameObjectA.height);
+                    //console.log("mass zone",gameObjectA.scene.matter.intersectRect(0,0,2,2));
+                    // let obs = Phaser.Physics.Matter.Matter.Query.collides(bodyA, gameObjectA.scene.matter.world.localWorld.bodies);
+                    // console.log(obs);
+                    if(gameObjectB != undefined){
+                        this.totalBodies.push(bodyB);
+                    }
+                }
+            });
+            this.scene.matterCollision.addOnCollideEnd({
+                objectA: [this],
+                callback: eventData => {
+                    const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;                    
+                    gameObjectA.totalBodies.forEach((e,i)=>{
+                        if(bodyB == e){
+                            gameObjectA.totalBodies.splice(i,1);
+                        }
+                    });
+                }
+            });
        }
  
     }
     update(time, delta)
     {       
-
+        let tMass = 0;
+        if(this.totalBodies.length > 0){
+            tMass = this.totalBodies.sum('mass');
+            if(tMass >= this.massThrehold && this.ready){
+                this.ready = false;
+                this.triggerTarget(0);//Player id does not matter sinze it is mass
+            }
+        }
         this.debug.setPosition(this.x, this.y-16);
-        this.debug.setText("Zone Status:"+String(this.name)+":"+String(this.ready));
+        this.debug.setText("Zone name:"+String(this.name)+": rState :"+String(this.ready)+": Mass :"+String(tMass)+"/"+String(this.massThrehold));
     }
     setTarget(targetObject){
         this.target.object.push(targetObject);
@@ -570,7 +616,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
     useZone(playerid){
 
     }
-    enterZone(obj,id){
+    inZone(obj,id){
         //Do something base on zome type
 
         if(this.ready[id] == true){
@@ -663,7 +709,6 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         this.sprite
         .setExistingBody(compoundBody)         
         .setCollisionCategory(CATEGORY.SOLID)
-        //.setCollidesWith([ ~CATEGORY.SOLANA_UP ])
         .setPosition(x, y)
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setStatic(true)
@@ -719,6 +764,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
             this.path = JSON.parse(properties.path);
             this.tmloop = properties.loop;
             this.autostart = properties.autostart;
+            if(properties.frame != undefined){this.setFrame(properties.frame)};
         }
        if(this.autostart && this.path){ 
             this.setPath(this.path) // test tween

@@ -44,6 +44,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
           .setFixedRotation() // Sets inertia to infinity so the player can't rotate
           .setPosition(x, y);
 
+        console.log("Solana's mass",this.body.mass); 
         //this.sprite.setIgnoreGravity(true);
         //Custom Properties
         this.hp = 5;
@@ -734,7 +735,8 @@ class SolBomb extends Phaser.Physics.Matter.Sprite{
             frictionStatic: 0,
             frictionAir: 0.02,
             friction: 0.2,
-            restitution: 0.1
+            restitution: 0.1,
+            label: "SOLBOMB"
         });
 
         //this.orbitEllipse = new Phaser.Geom.Ellipse(solana.x, solana.y, solana.width*(0.86), solana.height*(0.25));
@@ -809,13 +811,15 @@ class SolBomb extends Phaser.Physics.Matter.Sprite{
         this.isLit = true;
         this.orbitTween.remove();
         this.setIgnoreGravity(false);
-        this.setCollidesWith([CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.DARK]);
+        this.setCollidesWith([CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.DARK, CATEGORY.ENEMY]);
         this.lifeTimer = this.scene.time.addEvent({ delay: this.lifespan, callback: this.unready, callbackScope: this, loop: false });
         
     }
     unready(){
         let jumpBurst = new JumpBurst(this.scene,this.x,this.y);
         if(this.holdConstraint){this.scene.matter.world.remove(this.holdConstraint);}
+        //Detonate
+        //Remove
         this.destroy();
     }
     grabbed(){
