@@ -330,7 +330,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.prev_position.x = this.x;
         this.prev_position.y = this.y;
 
-        this.drawDebugText();
+        //this.drawDebugText();
     }
     drawDebugText(){
         this.debug.setPosition(this.sprite.x, this.sprite.y-32);

@@ -262,6 +262,8 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
         this.ready = true;
         this.dead = false;
         this.spawnPos = {x:x,y:y};
+        this.shakeCount = 3;
+        this.shakeTime = 150; // Shakes 3 times at 150ms each
         
     }
     setup(x,y){
@@ -270,6 +272,10 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
         this.spawnPos.x = x;
         this.spawnPos.y = y;
 
+    }
+    setShakeTime(ms,ct){
+        this.shakeTime = ms;
+        this.shakeCount = ct;
     }
     reset(){
         this.setActive(true);
@@ -314,8 +320,8 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
                 x: this.x+1,               // '+=100'
                 y: this.y+1,               // '+=100'
                 ease: 'Bounce.InOut',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-                duration: 150,
-                repeat: 3,            // -1: infinity
+                duration: this.shakeTime,
+                repeat: this.shakeCount,            // -1: infinity
                 yoyo: true,
                 onComplete: this.openComplete,
                 onCompleteParams: [this],

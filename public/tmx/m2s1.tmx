@@ -1180,7 +1180,7 @@
    </properties>
   </object>
   <object id="44" name="mirror1" type="mirror" gid="9335" x="560" y="384" width="32" height="32" rotation="135"/>
-  <object id="45" name="mirror2" type="mirror" gid="9335" x="800" y="400" width="32" height="32" rotation="-125"/>
+  <object id="45" name="mirror2" type="mirror" gid="9335" x="801" y="408" width="32" height="32" rotation="-135"/>
   <object id="51" name="rock" type="rock" x="688" y="496" width="16" height="16"/>
   <object id="52" name="rock" type="rock" x="688" y="512" width="16" height="16"/>
   <object id="53" name="rock" type="rock" x="688" y="528" width="16" height="16"/>
@@ -1192,9 +1192,24 @@
   </object>
   <object id="76" name="platfall1" type="platfall" gid="9180" x="496" y="752" width="32" height="32"/>
   <object id="77" name="platfall2" type="platfall" gid="9180" x="560" y="752" width="32" height="32"/>
-  <object id="95" name="platfall6" type="platfall" gid="9180" x="560" y="1024" width="32" height="32"/>
-  <object id="96" name="platfall7" type="platfall" gid="9180" x="512" y="1008" width="32" height="32"/>
-  <object id="97" name="platfall8" type="platfall" gid="9180" x="448" y="1024" width="32" height="32"/>
+  <object id="95" name="platfall6" type="platfall" gid="9180" x="560" y="1024" width="32" height="32">
+   <properties>
+    <property name="shakeCount" type="int" value="6"/>
+    <property name="shakeTime" type="int" value="150"/>
+   </properties>
+  </object>
+  <object id="96" name="platfall7" type="platfall" gid="9180" x="512" y="1008" width="32" height="32">
+   <properties>
+    <property name="shakeCount" type="int" value="6"/>
+    <property name="shakeTime" type="int" value="150"/>
+   </properties>
+  </object>
+  <object id="97" name="platfall8" type="platfall" gid="9180" x="448" y="1024" width="32" height="32">
+   <properties>
+    <property name="shakeCount" type="int" value="6"/>
+    <property name="shakeTime" type="int" value="150"/>
+   </properties>
+  </object>
   <object id="98" name="platfall4" type="platfall" gid="9180" x="688" y="1008" width="32" height="32"/>
   <object id="99" name="platfall5" type="platfall" gid="9180" x="640" y="992" width="32" height="32"/>
   <object id="100" name="platfall3" type="platfall" gid="9180" x="736" y="960" width="32" height="32"/>

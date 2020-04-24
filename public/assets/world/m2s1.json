@@ -517,12 +517,12 @@
                  "height":32,
                  "id":45,
                  "name":"mirror2",
-                 "rotation":-125,
+                 "rotation":-135,
                  "type":"mirror",
                  "visible":true,
                  "width":32,
-                 "x":800,
-                 "y":400
+                 "x":801,
+                 "y":408
                 }, 
                 {
                  "height":16,
@@ -614,6 +614,17 @@
                  "height":32,
                  "id":95,
                  "name":"platfall6",
+                 "properties":[
+                        {
+                         "name":"shakeCount",
+                         "type":"int",
+                         "value":6
+                        }, 
+                        {
+                         "name":"shakeTime",
+                         "type":"int",
+                         "value":150
+                        }],
                  "rotation":0,
                  "type":"platfall",
                  "visible":true,
@@ -626,6 +637,17 @@
                  "height":32,
                  "id":96,
                  "name":"platfall7",
+                 "properties":[
+                        {
+                         "name":"shakeCount",
+                         "type":"int",
+                         "value":6
+                        }, 
+                        {
+                         "name":"shakeTime",
+                         "type":"int",
+                         "value":150
+                        }],
                  "rotation":0,
                  "type":"platfall",
                  "visible":true,
@@ -638,6 +660,17 @@
                  "height":32,
                  "id":97,
                  "name":"platfall8",
+                 "properties":[
+                        {
+                         "name":"shakeCount",
+                         "type":"int",
+                         "value":6
+                        }, 
+                        {
+                         "name":"shakeTime",
+                         "type":"int",
+                         "value":150
+                        }],
                  "rotation":0,
                  "type":"platfall",
                  "visible":true,

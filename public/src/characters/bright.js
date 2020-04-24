@@ -334,8 +334,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     if(this.body.velocity.y < -this.max_speed.ground ){this.setVelocityY(-this.max_speed.ground );};
                 }
 
-                this.debug.setPosition(this.sprite.x, this.sprite.y-64);
-                this.debug.setText("Pulse Power:"+String(this.abPulse.c));
+                // this.debug.setPosition(this.sprite.x, this.sprite.y-64);
+                // this.debug.setText("Pulse Power:"+String(this.abPulse.c));
             }else if(curr_player==players.SOLANA && playerMode == 0){
                 //Allow Single Player Follow Mode
                 if(this.followMode){

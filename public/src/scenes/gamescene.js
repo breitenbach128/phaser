@@ -502,7 +502,13 @@ var GameScene = new Phaser.Class({
                         oG = e.firstgid;
                     }
                 })
-                platfalls.get(tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-oG);
+                let platfallprops = getTileProperties(tmxObjRef.properties);
+                let pf = platfalls.get(tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-oG);
+                if(platfallprops != undefined){
+                    if(platfallprops.shakeTime != undefined && platfallprops.shakeCount != undefined){
+                        pf.setShakeTime(platfallprops.shakeTime,platfallprops.shakeCount);
+                    }
+                }
                 
 
             }else if(tmxObjRef.type == "breakabletile"){  
@@ -1105,14 +1111,14 @@ var GameScene = new Phaser.Class({
                 //Between Soulight and Solana
                 if ((bodyA.label === 'SOULLIGHT' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'SOULLIGHT')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULLIGHT');
-                    if (gObjs[0].active){
+                    if (gObjs[0].active && gObjs[0].ownerid != 0){
                         gObjs[0].lockLight(gObjs[1],0);
                     }  
                 }
                 //Between Soulight and Bright
                 if ((bodyA.label === 'SOULLIGHT' && bodyB.label === 'BRIGHT') || (bodyA.label === 'BRIGHT' && bodyB.label === 'SOULLIGHT')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULLIGHT');
-                    if (gObjs[0].active){
+                    if (gObjs[0].active && gObjs[0].ownerid != 1){
                         gObjs[0].lockLight(gObjs[1],1);
                     }  
                 }

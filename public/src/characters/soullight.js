@@ -35,7 +35,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.ownerid = 0;
         this.claimed = false; // No one owns it at the begining of the game. This prevents passing it around.
 
-        this.debug = this.scene.add.text(this.x, this.y-16, 'SoulLight', { fontSize: '10px', fill: '#00FF00' });              
+        this.debug = this.scene.add.text(this.x, this.y-16, 'SoulLight', { resolution:2, fontSize: '10px', fill: '#00FF00' }).setOrigin(0.5);              
         this.passing = false;  
         this.threshhold_distance = 64;  
         this.move_speed = 50;
@@ -110,7 +110,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 
         //DEBUG
         this.debug.setPosition(this.x+32,this.y-64);
-        this.debug.setText(String(this.x.toFixed(2))+":"+String(this.y.toFixed(2)));
+        this.debug.setText("passing:"+String(this.passing));
         let soullight_border_verts = soullight.protection_circle.getPoints(24);
         soullight_border_verts.forEach(function(e,i) {
             soullight.radDebug[i].setPosition(e.x,e.y);
@@ -220,11 +220,10 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         if(targetDistance <= this.move_speed){this.move_speed = targetDistance};
         this.throw.x = Math.cos(angle);
         this.throw.y = Math.sin(angle);  
-
         this.setVelocity(this.throw.x*this.move_speed,this.throw.y*this.move_speed);
-        if(Phaser.Math.Distance.Between(this.x,this.y,target.x,target.y) < 32){
-            //Just move onto it. Should speed up the transfer
-            this.setPosition(target.x,target.y);
+        if(targetDistance < this.width){
+            let tId = this.ownerid == 0 ? 1 : 0;
+            this.lockLight(target,tId);
         }
     }
     passLight(){
