@@ -567,6 +567,26 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == 'chest'){
                 let chestProps = getTileProperties(tmxObjRef.properties);
                 let chest = new Chest(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+            }else if(tmxObjRef.type == 'line'){
+                console.log(tmxObjRef);
+                let g_sp1 = this.add.graphics();
+                g_sp1.setPosition(tmxObjRef.x,tmxObjRef.y);
+                g_sp1.lineStyle(2, 0xFF00FF, 1.0);
+                // let spl = new Phaser.Curves.Spline(tmxObjRef.polyline);
+                // spl.draw(g_sp1);
+                let polyPath =  new Phaser.Curves.Path();
+                tmxObjRef.polyline.forEach((e,i)=>{
+                    if(i==0){
+                        polyPath.moveTo(e);
+                    }else{
+                        polyPath.lineTo(e);
+                    };
+                });
+                polyPath.draw(g_sp1);
+            }else if(tmxObjRef.type == 'minecart'){
+                let cart = new Vehicle(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2).setDepth(DEPTH_LAYERS.FRONT);
+                cart.wA.setDepth(DEPTH_LAYERS.FRONT);
+                cart.wB.setDepth(DEPTH_LAYERS.FRONT);
             }
         }
         //Spawn Triggers
@@ -885,6 +905,9 @@ var GameScene = new Phaser.Class({
             callback: eventData => {
               const { bodyB, gameObjectB, bodyA, gameObjectA } = eventData;
 
+              let control_up = bright.ctrlDeviceId >= 0? gamePad[bright.ctrlDeviceId].checkButtonState('up') > 0 : keyPad.checkKeyState('W') > 0;
+              let control_down = bright.ctrlDeviceId >= 0? gamePad[bright.ctrlDeviceId].checkButtonState('down') > 0 : keyPad.checkKeyState('S') > 0;
+
                 if (gameObjectB !== undefined && gameObjectB instanceof TMXPlate) {
                     if (gameObjectA.light_status == 1) {//Only in Dark Mode
                         gameObjectB.usePlate();
@@ -894,6 +917,17 @@ var GameScene = new Phaser.Class({
                 if (gameObjectB !== undefined && gameObjectB instanceof TMXZone) {
                     gameObjectB.inZone(bright,1);
                 } 
+
+                if (gameObjectB !== undefined && gameObjectB instanceof MirrorSensor) {
+                    if(curr_player==players.BRIGHT){
+                        //Only control if currently the active control object
+                        if(control_up) {
+                            gameObjectB.parent.rotateMirror(2);
+                        }else if(control_down) {
+                            gameObjectB.parent.rotateMirror(-2);
+                        }
+                    }
+                }
             }
         });
         this.matterCollision.addOnCollideActive({
@@ -1225,11 +1259,6 @@ var GameScene = new Phaser.Class({
         // let light  = this.lights.addLight(0, 0, 200).setScrollFactor(0.0).setIntensity(2);
         this.debugDrag = [];
 
-        //Test Car setup (for mine cart)
-        let car = new Vehicle(this,704,2082).setDepth(solana.depth+1);
-        car.wA.setDepth(car.depth+1);
-        car.wB.setDepth(car.depth+1);
-        console.log(car)
     },
     update: function (time, delta)
     {

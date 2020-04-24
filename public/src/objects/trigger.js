@@ -628,7 +628,14 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                 }
                 if(this.zonedata.type == "hurt"){
                     let hurtParse = JSON.parse(this.zonedata.value);
-                    obj.receiveDamage(hurtParse.damage);
+                    if(id == 1){
+                        if(obj.light_status == 0){
+                            //Zones don't hurt dark
+                            obj.receiveDamage(hurtParse.damage);
+                        }
+                    }else{
+                        obj.receiveDamage(hurtParse.damage);
+                    }
                 }
                 if(this.zonedata.type == "force"){
                     let vectorParse = JSON.parse(this.zonedata.value);
