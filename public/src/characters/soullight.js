@@ -54,7 +54,8 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.aimer.setVisible(false);
         this.aimer.ready = true;
         this.aimer.started = false;
-        this.aimerRadius = 52;
+        this.aimerRadius = 32;
+        this.lastStickVec = {x:0,y:0};
         this.aimerCircle = new Phaser.Geom.Circle(this.x, this.y, this.aimerRadius);
         this.freePassDistance = 64;
         this.isBeaming = false;//If it is beaming, it can will carry Bright with it.
@@ -110,7 +111,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 
         //DEBUG
         this.debug.setPosition(this.x+32,this.y-64);
-        this.debug.setText("passing:"+String(this.passing));
+        this.debug.setText("tVec2:"+String(this.lastStickVec.x)+":"+String(this.lastStickVec.y));
         let soullight_border_verts = soullight.protection_circle.getPoints(24);
         soullight_border_verts.forEach(function(e,i) {
             soullight.radDebug[i].setPosition(e.x,e.y);
@@ -175,28 +176,28 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
     setAimer(){ 
 
         let gameScale = camera_main.zoom;
-        let targVector = this.scene.getMouseVectorByCamera(this.ownerid);        
-        
+        let targVector = this.scene.getMouseVectorByCamera(this.ownerid);
+
+        // //Make visible
+        // let pointerDis = Phaser.Math.Distance.Between(pointer.worldX,pointer.worldY,this.x,this.y);
+        // if(pointerDis <= 64 && !this.aimer.visible){
+        //     this.aimer.setVisible(true);
+        // }
+        // if(pointerDis > 64 && this.aimer.visible){
+        //     this.aimer.setVisible(false);
+        // }
+
         if(this.owner.ctrlDeviceId >= 0){
-            let gpVectors = this.scene.getGamepadVectors(this.owner.ctrlDeviceId,this.aimerRadius,this.x,this.y)
-            let selectStick = gpVectors[1].x == this.x && gpVectors[1].y == this.y ? 0 : 1; // L / R , If right stick is not being used, us left stick.
-            targVector = gpVectors[selectStick];
+            let gpVectors = this.scene.getGamepadVectors(this.owner.ctrlDeviceId);
+            //let selectStick = gpVectors[1].x == 0 && gpVectors[1].y == 0 ? 0 : 1; // L / R , If right stick is not being used, us left stick.             
+            let selectStick = 1;//Only Right Stick Counts
+            if(gpVectors[selectStick].x != 0 || gpVectors[selectStick].y != 0){this.lastStickVec = gpVectors[selectStick];};
+            targVector = this.scene.getRelativeRadiusVector(this.x,this.y,this.lastStickVec.x,this.lastStickVec.y,this.aimerRadius);            
         }
-        this.aimerCircle.x = this.x;
-        this.aimerCircle.y = this.y;
 
-        let angle = Phaser.Math.Angle.Between(this.x,this.y, targVector.x,targVector.y);
-        let normAngle = Phaser.Math.Angle.Normalize(angle);
-        let deg = Phaser.Math.RadToDeg(normAngle);
-
-        let point = Phaser.Geom.Circle.CircumferencePoint(this.aimerCircle, normAngle);
-
-        this.aimer.setPosition(point.x,point.y);
-
-        this.aimer.rotation = normAngle;
-
-        // this.aimLine.setPosition(this.x,this.y);
-        // this.aimLine.setRotation(normAngle);
+        let aimpoint = this.scene.getCircleAimPoint(this.x,this.y,this.aimerCircle,targVector.x,targVector.y)        
+        this.aimer.setPosition(aimpoint.p.x,aimpoint.p.y);
+        this.aimer.rotation = aimpoint.normangle;
     }
     aimStart(){
         if(this.aimer.ready){
@@ -209,10 +210,13 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         if(this.aimer.ready && this.aimer.started){
             this.aimer.ready = false;
             this.aimer.started = false;
-            this.transfer = new SoulTransfer(this.scene,this.x,this.y,'soullightblast',0,this);
-            this.transfer.rotation = this.aimer.rotation;
-            this.transfer.fire(this.transfer.rotation,this.projectile_speed);
+            this.shootTransfer();
         }
+    }
+    shootTransfer(){
+        this.transfer = new SoulTransfer(this.scene,this.x,this.y,'soullightblast',0,this);
+        this.transfer.rotation = this.aimer.rotation;
+        this.transfer.fire(this.transfer.rotation,this.projectile_speed);
     }
     homeLight(target){        
         let angle = Phaser.Math.Angle.Between(this.x,this.y,target.x,target.y);

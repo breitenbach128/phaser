@@ -807,6 +807,15 @@ var GameScene = new Phaser.Class({
                 if(bodyA.label == "BRIGHT_TOP"){
                     bright.touching.up++;
                 }                         
+              }
+              if(gameObjectB !== undefined && gameObjectB instanceof Enemy){
+                console.log("stomped!")
+                if(bodyA.label == "BRIGHT_BOTTOM"){
+                    if (gameObjectB.active && bright.light_status == 1){
+                        //Add Check on downward speed and create splatter effect.
+                        gameObjectB.receiveDamage(1);
+                    } 
+                } 
               } 
             }
         });
@@ -1598,7 +1607,7 @@ var GameScene = new Phaser.Class({
         let gameScale = camera_main.zoom;
         let targVector = {x:pointer.worldX,y:pointer.worldY};
         //Adjust for Split Screen
-        if(this.cameraLevel == 3 && (playerId == 0 || playerId == 2)){
+        if(this.cameraLevel == 3 && (playerId == 0 || playerId == 1)){
             let cameraSources = ['cam_p1','cam_p2'];
             let camera = this.cameras.getCamera(cameraSources[playerId]);
             let camVec = pointer.positionToCamera(camera);
@@ -1607,16 +1616,27 @@ var GameScene = new Phaser.Class({
         }
         return targVector;
     },
-    getGamepadVectors(gamePadID,radius,x,y){
+    getGamepadVectors(gamePadID){
         if(gamePad[gamePadID]){
+            //Raw Sticks Vectors
             let stickRight = gamePad[gamePadID].getStickRight(.1);
             let stickLeft = gamePad[gamePadID].getStickLeft(.1);
-            let rightVector = {x:x+stickRight.x*radius,y:y+stickRight.y*radius};
-            let leftVector = {x:x+stickLeft.x*radius,y:y+stickLeft.y*radius};
-            return [leftVector,rightVector];
+            return [stickLeft,stickRight];
         }
         
         return [{x:0,y:0},{x:0,y:0}];
+    },
+    getRelativeRadiusVector(pX,pY,tX,tY,radius){
+        return {x:pX+tX*radius,y:pY+tY*radius};
+    },
+    getCircleAimPoint(x,y,circle,vX,vY){
+        circle.x = x;
+        circle.y = y;
+        let angle = Phaser.Math.Angle.Between(x,y,vX,vY);
+        let normangle = Phaser.Math.Angle.Normalize(angle);
+        let deg = Phaser.Math.RadToDeg(normangle);
+        let point = Phaser.Geom.Circle.CircumferencePoint(circle, normangle);
+        return {p:point,angle:angle,normangle:normangle,deg:deg};
     },
     clearKeypad(){
         this.doKPClear = true;

@@ -185,7 +185,7 @@ class Rock extends Phaser.Physics.Matter.Sprite{
         this.readyCrush = false;
         this.crushTimer = this.scene.time.addEvent({ delay: 300, callback: this.setReadyCrush, callbackScope: this, loop: false });
         //Add it so rocks an only collide with ground,solid and dark for a few ms. should allow me to use them as an effect.
-        this.setCollidesWith([CATEGORY.SOLID,CATEGORY.GROUND,CATEGORY.DARK]);
+        this.setCollidesWith([CATEGORY.SOLID,CATEGORY.GROUND,CATEGORY.DARK,CATEGORY.BRIGHT]);
     }
     update(time, delta)
     {       

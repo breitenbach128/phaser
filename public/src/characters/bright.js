@@ -75,7 +75,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         //ABILITIES
         this.abPulseRadius = 64;
         this.abPulse = {c:0,max:100,doCharge:false,vec:{x:0,y:0},circle:new Phaser.Geom.Circle(x, y, this.abPulseRadius)};//32 Is the circle radius
-
+        this.lastStickVec = {x:0,y:0};
         //Abilities
         this.beamAbility = new BrightBeam(this.scene,this.x,this.y,this.rotation);
         this.beamReady = true;
@@ -372,17 +372,17 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 case 'beam':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('X') == 1);
                 case 'pass':
-                    return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == 1);
-                case 'passR':
-                    return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == -1);
-                case 'pulse':
-                    return (gamePad[this.ctrlDeviceId].checkButtonState('B') == 1);
-                case 'pulseR':
-                    return (gamePad[this.ctrlDeviceId].checkButtonState('B') == -1);
-                case 'changeplayer':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('leftTrigger') == 1);
-                case 'dash':
+                case 'passR':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('leftTrigger') == -1);
+                case 'pulse':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('rightTrigger') == 1);
+                case 'pulseR':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('rightTrigger') == -1);
+                case 'changeplayer':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == 1);
+                case 'dash':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('B') == 1);
                 default:
                     return false;
             }
@@ -527,25 +527,20 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         solana.x = this.x;
         solana.y = this.y;
         //Update Vectors
-        let targVector = this.scene.getMouseVectorByCamera(this.ownerid); 
+        let targVector = this.scene.getMouseVectorByCamera(players.BRIGHTID);
         if(this.ctrlDeviceId >= 0){
-            let gpVectors = this.scene.getGamepadVectors(this.ctrlDeviceId,this.abPulseRadius,this.x,this.y)
-            let selectStick = gpVectors[1].x == this.x && gpVectors[1].y == this.y ? 0 : 1; // L / R , If right stick is not being used, us left stick.
-            targVector = gpVectors[selectStick];
+            let gpVectors = this.scene.getGamepadVectors(this.ctrlDeviceId);
+            //let selectStick = gpVectors[1].x == 0 && gpVectors[1].y == 0 ? 0 : 1; // L / R , If right stick is not being used, us left stick.             
+            let selectStick = 1;//Only Right Stick Counts
+            if(gpVectors[selectStick].x != 0 || gpVectors[selectStick].y != 0){this.lastStickVec = gpVectors[selectStick];};
+            targVector = this.scene.getRelativeRadiusVector(this.x,this.y,this.lastStickVec.x,this.lastStickVec.y,this.abPulseRadius);            
         }
-        this.abPulse.circle.x = this.x;
-        this.abPulse.circle.y = this.y;
-
-        let angle = Phaser.Math.Angle.Between(this.x,this.y, targVector.x,targVector.y);
-        let normAngle = Phaser.Math.Angle.Normalize(angle);
-
-        let point = Phaser.Geom.Circle.CircumferencePoint(this.abPulse.circle, normAngle);
+        let aimpoint = this.scene.getCircleAimPoint(this.x,this.y,this.abPulse.circle,targVector.x,targVector.y)    
         //Emit Particles to mark target//Need Different particle style here, THIS IS MASSIVE AND TAKES UP WAAAY too much space.
-        this.effect[0].emitParticleAt(point.x,point.y,5);
+        this.effect[0].emitParticleAt(aimpoint.p.x,aimpoint.p.y,5);
         //Throw Power
         let power =  this.abPulse.c/1000;
-
-        this.abPulse.vec = {x:Math.cos(angle)*(power+power*0.5),y:Math.sin(angle)*power};//50% more power to X velocity
+        this.abPulse.vec = {x:Math.cos(aimpoint.angle)*(power+power*0.5),y:Math.sin(aimpoint.angle)*power};//50% more power to X velocity
     }
     pulseThrow(object){
         object.removeControlLock();
@@ -597,7 +592,7 @@ class BrightSensors extends Phaser.Physics.Matter.Sprite{
         this.sprite
         .setExistingBody(compoundBody)          
         .setCollisionCategory(CATEGORY.BRIGHT)
-        .setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.BARRIER, CATEGORY.VEHICLE ])
+        .setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.BARRIER, CATEGORY.VEHICLE, CATEGORY.ENEMY ])
         .setScale(1.0)
         .setFixedRotation() 
         .setPosition(x, y)

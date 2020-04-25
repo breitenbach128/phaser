@@ -79,6 +79,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.LightShield = new LightShield(this.scene,this.x+32,this.y,'solana_shield',0);
         this.LightShield.setActive(false);
         this.LightShield.setVisible(false);
+        this.lastStickVec = {x:0,y:0};
         //Create Sol Bombs
         this.solbombbag = [];
 
@@ -138,13 +139,15 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 }
                 //Detection Code for Jumping
 
-                if (this.touching.left > 0 && control_left) {
-                    this.onWall = true;
-                } else if (this.touching.right > 0 && control_right) {
-                    this.onWall = true;
-                } else {
-                    this.onWall = false;
-                }
+                // if (this.touching.left > 0 && control_left) {
+                //     this.onWall = true;
+                // } else if (this.touching.right > 0 && control_right) {
+                //     this.onWall = true;
+                // } else {
+                //     this.onWall = false;
+                // }
+                this.onWall = (this.touching.right || this.touching.left);
+
 
                 //Ground Check
                 if (this.touching.down > 0) {
@@ -275,24 +278,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     }
 
                     if(this.isShielding){
-                        let gameScale = camera_main.zoom;
-                        let targVector = this.scene.getMouseVectorByCamera(players.SOLANAID);        
-                        
-                        if(this.ctrlDeviceId >= 0){
-                            let gpVectors = this.scene.getGamepadVectors(this.ctrlDeviceId,this.LightShieldRadius,this.x,this.y)
-                            let selectStick = gpVectors[1].x == this.x && gpVectors[1].y == this.y ? 0 : 1; // L / R , If right stick is not being used, us left stick.
-                            targVector = gpVectors[selectStick];
-                        }
-                        this.LightShieldCircle.x = this.x;
-                        this.LightShieldCircle.y = this.y;  
-                
-                        let angle = Phaser.Math.Angle.Between(this.x,this.y, targVector.x,targVector.y);
-                        let normAngle = Phaser.Math.Angle.Normalize(angle);                
-                        let point = Phaser.Geom.Circle.CircumferencePoint(this.LightShieldCircle, normAngle);
-
-                        //this.LightShield.setPosition(point.x,point.y); 
-                        this.LightShield.setAim(point.x,point.y);                         
-                        this.LightShield.setRotation(normAngle);
+                        this.aimShield();
                     }
 
                     if(control_bomb){
@@ -363,11 +349,11 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 case 'shootR':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('rightTrigger') == -1);
                 case 'pass':
-                    return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == 1);
-                case 'passR':
-                    return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == -1);
-                case 'changeplayer':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('leftTrigger') == 1);
+                case 'passR':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('leftTrigger') == -1);
+                case 'changeplayer':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == 1);
                 case 'brightFollow':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('leftShoulder') == 1);
                 default:
@@ -427,6 +413,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     }
     jumpLockReset(){
         this.jumpLock = false;
+        this.setMaxMoveSpeed(0,0,0,0);
     }
     forgiveJump(){
         this.jumpReady = false;
@@ -457,13 +444,15 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         }
                
         if(this.touching.left > 0 && !this.onGround){
-            this.sprite.applyForce({x:mvVel*2,y:-0.003});
+            this.setMaxMoveSpeed(-6,6,-6,6);
+            this.sprite.applyForce({x:mvVel*4,y:-0.003});
             this.jumpLock = true;
             this.kickOff = mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
         }
-        if(this.touching.right > 0 && !this.onGround){
-            this.sprite.applyForce({x:-mvVel*2,y:-0.003});
+        if(this.touching.right > 0 && !this.onGround){            
+            this.setMaxMoveSpeed(-6,6,-6,6);
+            this.sprite.applyForce({x:-mvVel*4,y:-0.003});
             this.jumpLock = true;
             this.kickOff = -mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
@@ -486,6 +475,22 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         }
         this.jumpCount++;
         this.kickDusk(2);
+    }
+    aimShield(){
+        let gameScale = camera_main.zoom;
+        let targVector = this.scene.getMouseVectorByCamera(players.SOLANAID);  
+        if(this.ctrlDeviceId >= 0){
+            let gpVectors = this.scene.getGamepadVectors(this.ctrlDeviceId);
+            //let selectStick = gpVectors[1].x == 0 && gpVectors[1].y == 0 ? 0 : 1; // L / R , If right stick is not being used, us left stick.             
+            let selectStick = 1;//Only Right Stick Counts
+            if(gpVectors[selectStick].x != 0 || gpVectors[selectStick].y != 0){this.lastStickVec = gpVectors[selectStick];};
+            targVector = this.scene.getRelativeRadiusVector(this.x,this.y,this.lastStickVec.x,this.lastStickVec.y,this.LightShieldRadius);            
+        }
+        let aimpoint = this.scene.getCircleAimPoint(this.x,this.y,this.LightShieldCircle,targVector.x,targVector.y)  
+
+        //this.LightShield.setPosition(point.x,point.y); 
+        this.LightShield.setAim(aimpoint.p.x,aimpoint.p.y);                         
+        this.LightShield.setRotation(aimpoint.normangle);
     }
     addEffects(effects){
         //Loop through effect array. If found of same type, set new duration.
