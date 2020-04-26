@@ -89,12 +89,12 @@ class HudScene extends Phaser.Scene {
             this.setBossVisible(false);
 
             //Statbar Solana
-            this.solanaStatBar = new Statbar(this,this.cameras.main.width/4, 36, 'hud_energybar3',0,1,2,300,300,false,
+            this.solanaStatBar = new Statbar(this,this.cameras.main.width/4, 36, 'hud_energybar3',0,1,2,500,500,false,
             { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 },
             {dir: 'LR',tintPercent: 0.20, tintColor: 0xFFB6B6})
             this.solanaStatBarHead = this.add.image(this.cameras.main.width/4-96, 36, 'hud_energybar3_solana_head',0).setScale(2).setOrigin(0.5);
 
-            this.brightStatBar = new Statbar(this,this.cameras.main.width*(3/4), 36, 'hud_energybar3',0,1,2,300,300,false,
+            this.brightStatBar = new Statbar(this,this.cameras.main.width*(3/4), 36, 'hud_energybar3',0,1,2,500,500,false,
             { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 },
             {dir: 'RL',tintPercent: 0.20, tintColor: 0xFFB6B6})
             this.brightStatBarHead = this.add.image(this.cameras.main.width*(3/4)+96, 36, 'hud_energybar3_bright_head',0).setScale(2).setOrigin(0.5);

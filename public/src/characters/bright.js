@@ -139,7 +139,10 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             let darkMode = 1;
             let brightMode = 0;
             //Drain Energy since not bright
-            if(this.light_status == darkMode){hud.alterEnergyBright(-0.5);};
+            if(this.light_status == darkMode){
+                hud.alterEnergyBright(-0.5);
+                if(hud.brightStatBar.getValue() <= 0){this.receiveDamage(1);};
+            };
             //This creates a wobble of contention for add and remove values on different update loops.
             //I should calc all the values and then apply the final result one time.
 
@@ -485,6 +488,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             this.hp = 5;
             hud.setHealth(this.hp,1);
             this.alive = true; 
+            hud.alterEnergyBright(500);
             if(soullight.ownerid == 1){
                 soullight.passLight();
             }
@@ -510,6 +514,13 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             }
         }
     }
+    receiveHealth(health){
+        this.hp+=health;
+        if(this.hp > this.max_hp){
+            this.hp = 5;
+         };
+        hud.setHealth(this.hp,1);
+     }
     pulseCharge(object){
         //Move Solana Off Screen
         object.setControlLock();

@@ -1131,6 +1131,14 @@ var GameScene = new Phaser.Class({
                         gObjs[0].lockLight(gObjs[1],1);
                     }  
                 }
+                //Between Solbomb and Bright
+                if ((bodyA.label === 'SOLBOMB' && bodyB.label === 'BRIGHT') || (bodyA.label === 'BRIGHT' && bodyB.label === 'SOLBOMB')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOLBOMB');
+                    if (gObjs[0].active){
+                        gObjs[0].unready();
+                        gObjs[1].receiveHealth(1);
+                    }  
+                }
                 //Between SoulTransfer and Solana
                 if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'SOULTRANSFER')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
@@ -1581,6 +1589,7 @@ var GameScene = new Phaser.Class({
 		this.scene.start('mainmenu');
     },
     generateEnergy(){
+        //This looks choppy. I need to make it a single factor, alter the factor and then apply it. 
         hud.alterEnergySolana(2);
         hud.alterEnergyBright(2);
     },

@@ -784,7 +784,7 @@ class SolBomb extends Phaser.Physics.Matter.Sprite{
             },
             onUpdateParams:[this]
         });
-        this.light_radius = 150;
+        this.light_radius = 8;
         this.light_radius_max = 150;
         this.isLit = false;
         this.lifespan = 20000;
@@ -812,6 +812,7 @@ class SolBomb extends Phaser.Physics.Matter.Sprite{
     }
     ready(lifespan){
         this.isGrabbed  = false;
+        this.light_radius = 150;
         this.lifespan = lifespan;
         this.isLit = true;
         this.orbitTween.remove();

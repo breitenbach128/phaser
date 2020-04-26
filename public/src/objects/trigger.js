@@ -655,7 +655,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                 let positionParse = JSON.parse(this.zonedata.value)
 
                 this.scene.time.addEvent({ 
-                    delay: 1500, 
+                    delay: 300, 
                     callback: function(){
                         //Need additional check to make sure I am still within zone completely. Only teleport if totally inside zone.
                         obj.setPosition(positionParse.x,positionParse.y)
