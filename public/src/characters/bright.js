@@ -572,14 +572,16 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             soullight.passLight();
             this.toDark();
         }
+        console.log("Bright Entered water.",this.light_status,this.jump_speed);
     }
     exitWater(){
         this.jump_speed = 0.020;
         if(this.light_status == 0){
-            this.setFrictionAir(0.01);
-        }else{
             this.setFrictionAir(0.30);
+        }else{
+            this.setFrictionAir(0.01);
         }
+        console.log("Bright Exited water.",this.light_status,this.jump_speed);
     }
 }
 
