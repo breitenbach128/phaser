@@ -131,6 +131,13 @@ class Crate extends Phaser.Physics.Matter.Sprite{
             this.isGrabbed  = false;
         }
     }
+    
+    enterWater(){
+        this.setFrictionAir(0.35);
+    }
+    exitWater(){
+        this.setFrictionAir(0.02);
+    }
 };
 
 class Rock extends Phaser.Physics.Matter.Sprite{
@@ -228,6 +235,12 @@ class Rock extends Phaser.Physics.Matter.Sprite{
             let ls = light_shards.get();
             ls.spawn(this.x,this.y,300,solana);
         }
+    }    
+    enterWater(){
+        this.setFrictionAir(0.25);
+    }
+    exitWater(){
+        this.setFrictionAir(0.05);
     }
 };
 
@@ -784,9 +797,24 @@ class TMXWater{
         this.scene = scene;
 
         this.waterbody = this.scene.add.water(x, y, w, h, d, opt);
-        this.waterbody.trackingList = []; 
-
+        console.log(this.waterbody)
         this.scene.matterCollision.addOnCollideStart({
+            objectA: this.waterbody.sensor,
+            callback: ({ gameObjectB, gameObjectA }) => {
+                if(gameObjectB instanceof Solana
+                    || gameObjectB instanceof Bright
+                    || gameObjectB instanceof Crate
+                    || gameObjectB instanceof Rock
+                    || gameObjectB instanceof SolBomb
+                    || gameObjectB instanceof Enemy
+                    || gameObjectB instanceof Bullet){
+                        
+                        gameObjectB.enterWater();
+ 
+                }
+            },
+        });
+        this.scene.matterCollision.addOnCollideEnd({
             objectA: this.waterbody.sensor,
             callback: ({ gameObjectA: wb, gameObjectB, }) => {
                 if(gameObjectB instanceof Solana
@@ -796,35 +824,12 @@ class TMXWater{
                     || gameObjectB instanceof SolBomb
                     || gameObjectB instanceof Enemy
                     || gameObjectB instanceof Bullet){
-                    const i = wb.columns.findIndex((col, i) => col.x >= (gameObjectB.x-wb.x) && i);
-                    const speed = gameObjectB.body.speed * 3;
-                    const numDroplets = Math.ceil(gameObjectB.body.speed) * 5;
-                    let jb = gameObjectB.jump_speed != undefined ? gameObjectB.jump_speed : -1;
-                    wb.trackingList.push({obj:gameObjectB,faValue:gameObjectB.body.frictionAir,jBoost: jb});
-                    //console.log("prev WB List",wb.trackingList);
-                    gameObjectB.setFrictionAir(0.25);
-                    if(jb != -1){gameObjectB.jump_speed = 0.055};
-                    wb.splash(Phaser.Math.Clamp(i, 0, wb.columns.length - 1), speed, numDroplets);
-                    //console.log("post WB List",wb.trackingList);
-                    //console.log("Column",i,wb.columns[i],wb);
-                }
-            },
-        });
-        this.scene.matterCollision.addOnCollideEnd({
-            objectA: this.waterbody.sensor,
-            callback: ({ gameObjectA: wb, gameObjectB, }) => {
-                let removeAt = -1;
-                wb.trackingList.forEach(function(e,i){
-                    if(e.obj == gameObjectB){
-                        gameObjectB.setFrictionAir(e.faValue);
-                        if(e.jBoost != -1){gameObjectB.jump_speed = e.jBoost};
-                        //console.log("Water end: Remove friction",e);
-                        removeAt = i;                        
+                        
+                        gameObjectB.exitWater();
                     }
-                });
-                if(removeAt != -1){wb.trackingList.splice(removeAt,1);};
             },
         });
+        //Construct set position function?
     }
 }
 

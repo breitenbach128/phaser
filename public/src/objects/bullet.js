@@ -98,6 +98,12 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
         }
 
     }
+    enterWater(){
+        this.setFrictionAir(0.25);
+    }
+    exitWater(){
+        this.setFrictionAir(0.00);
+    }
 
 };
 class SpiderSilk extends Bullet{

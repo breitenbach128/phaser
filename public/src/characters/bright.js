@@ -565,6 +565,18 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         
         this.abPulse.c = 0;
     }
+    enterWater(){
+        this.setFrictionAir(0.25);
+        this.jump_speed = 0.055;
+        if(this.light_status == 0){
+            soullight.passLight();
+            this.toDark();
+        }
+    }
+    exitWater(){
+        this.setFrictionAir(0.01);
+        this.jump_speed = 0.020;
+    }
 }
 
 class BrightSensors extends Phaser.Physics.Matter.Sprite{

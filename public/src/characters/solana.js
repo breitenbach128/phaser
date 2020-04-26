@@ -654,6 +654,14 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.solbombbag.splice(0,1);
         }
     }
+    enterWater(){
+        this.setFrictionAir(0.25);
+        this.jump_speed = 0.055;
+    }
+    exitWater(){
+        this.setFrictionAir(0.08);
+        this.jump_speed = 0.045;
+    }
 }
 
 
@@ -848,6 +856,12 @@ class SolBomb extends Phaser.Physics.Matter.Sprite{
             this.scene.matter.world.remove(this.holdConstraint);
             this.isGrabbed  = false;
         }
+    }
+    enterWater(){
+        this.setFrictionAir(0.25);
+    }
+    exitWater(){
+        this.setFrictionAir(0.02)
     }
 }
 
