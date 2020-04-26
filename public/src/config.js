@@ -95,7 +95,7 @@
             {tsName:'mainlevbuild3',tsKey:'PF_SET3_v1_0_mainlevbuild3'},
             {tsName:'32Tileset',tsKey:'tiles32'}
         ],
-        backgrounds:['PF_SET3_v1_0_background4']
+        backgrounds:['PF_SET3_v1_0_background1','PF_SET3_v1_0_background2','PF_SET3_v1_0_background3','PF_SET3_v1_0_background4']
         },
         {name:'m6s1',
         tsPairs:[
