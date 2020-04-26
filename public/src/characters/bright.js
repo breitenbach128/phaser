@@ -574,8 +574,12 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         }
     }
     exitWater(){
-        this.setFrictionAir(0.01);
         this.jump_speed = 0.020;
+        if(this.light_status == 0){
+            this.setFrictionAir(0.01);
+        }else{
+            this.setFrictionAir(0.30);
+        }
     }
 }
 

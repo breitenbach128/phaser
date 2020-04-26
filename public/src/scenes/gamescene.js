@@ -1699,29 +1699,36 @@ function setupTriggerTargets(triggerGroup,triggerGroupName,scene){
         if(trigger.target.name != -1 && trigger.target.name != undefined){
             let nameList = trigger.target.name.split(",");//Comma delimited listing of target names
             nameList.forEach(name=>{
-                if(trigger.target.type == "gate"){
-                    //Search all gets
-                    gates.children.each(function(gate) {
-                        //console.log("Trigger had gate target, searching names");
-                        if(gate.name == name){
-                            trigger.setTarget(gate);
-                        }
-                    },trigger);
-                }else if(trigger.target.type == "zone"){
-                    triggerzones.children.each(function(zone) {
-                        //console.log("Trigger had gate target, searching names");
-                        if(zone.name == name){
-                            trigger.setTarget(zone);
-                        }
-                    },trigger);
-                }else if(trigger.target.type == "platform"){
-                    platforms.children.each(function(platform) {
-                        //console.log("Trigger had gate target, searching names");
-                        if(platform.name == name){
-                            trigger.setTarget(platform);
-                        }
-                    },trigger);
-                }
+ 
+                //Search all groups and setup targets
+                gates.children.each(function(gate) {
+                    //console.log("Trigger had gate target, searching names");
+                    if(gate.name == name){
+                        trigger.setTarget(gate);
+                    }
+                },trigger);
+
+                triggerzones.children.each(function(zone) {
+                    //console.log("Trigger had gate target, searching names");
+                    if(zone.name == name){
+                        trigger.setTarget(zone);
+                    }
+                },trigger);
+
+                platforms.children.each(function(platform) {
+                    //console.log("Trigger had gate target, searching names");
+                    if(platform.name == name){
+                        trigger.setTarget(platform);
+                    }
+                },trigger);
+
+                plates.children.each(function(plate) {
+                    //console.log("Trigger had gate target, searching names");
+                    if(plate.name == name){
+                        trigger.setTarget(plate);
+                    }
+                },trigger);
+                
             })
 
         }

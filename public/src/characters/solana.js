@@ -834,6 +834,7 @@ class SolBomb extends Phaser.Physics.Matter.Sprite{
         if(this.holdConstraint){this.scene.matter.world.remove(this.holdConstraint);}
         //Detonate
         //Remove
+        this.lifeTimer.remove();
         this.destroy();
     }
     grabbed(){

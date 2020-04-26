@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="50" height="150" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="257">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="50" height="150" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="260">
  <editorsettings>
   <export target="../assets/world/m2s1.json" format="json"/>
  </editorsettings>
@@ -1106,7 +1106,7 @@
     <property name="pBehav" value="patrol"/>
     <property name="scale" type="float" value="1"/>
     <property name="tint" value="#333333"/>
-    <property name="weapon" type="int" value="2"/>
+    <property name="weapon" type="int" value="4"/>
    </properties>
   </object>
   <object id="123" name="bat" type="air" gid="9298" x="432" y="1248" width="32" height="32">
@@ -1159,7 +1159,7 @@
     <property name="targetMap" value="none"/>
    </properties>
   </object>
-  <object id="2" name="west1" type="entrance" x="640" y="64" width="32" height="32"/>
+  <object id="2" name="west1" type="entrance" x="624" y="64" width="32" height="32"/>
   <object id="240" name="east1" type="exit" x="736" y="2288" width="48" height="96">
    <properties>
     <property name="targetExit" value="none"/>
@@ -1169,11 +1169,9 @@
   <object id="241" name="east1" type="entrance" x="688" y="2304" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="15" name="objects">
-  <object id="14" name="rock" type="rock" x="640" y="480" width="16" height="16"/>
-  <object id="15" name="rock" type="rock" x="640" y="496" width="16" height="16"/>
-  <object id="16" name="rock" type="rock" x="672" y="496" width="16" height="16"/>
+  <object id="16" name="rock" type="rock" x="688" y="544" width="16" height="16"/>
   <object id="32" name="water1" type="water" x="16" y="512" width="144" height="48"/>
-  <object id="38" name="soulcrystal0" type="soulcrystal" x="592" y="80" width="16" height="16">
+  <object id="38" name="soulcrystal0" type="soulcrystal" x="576" y="80" width="16" height="16">
    <properties>
     <property name="color" value="yellow"/>
     <property name="scid" type="int" value="0"/>
@@ -1326,17 +1324,19 @@
     <property name="source" value="plate1"/>
    </properties>
   </object>
-  <object id="54" name="gate3" type="gate" x="704" y="512" width="32" height="32">
+  <object id="54" name="gate3" type="gate" x="704" y="528" width="32" height="32">
    <properties>
+    <property name="autoclose" type="bool" value="true"/>
     <property name="customScale" value="{&quot;x&quot;:32,&quot;y&quot;:32}"/>
-    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:32}"/>
+    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:-64}"/>
     <property name="source" value="plate2"/>
    </properties>
   </object>
-  <object id="55" name="plate2" type="plate" x="752" y="544" width="32" height="16">
+  <object id="55" name="plate2" type="plate" x="656" y="496" width="32" height="16">
    <properties>
-    <property name="allowReset" type="bool" value="false"/>
-    <property name="targetName" value="gate3"/>
+    <property name="allowReset" type="bool" value="true"/>
+    <property name="state" type="int" value="0"/>
+    <property name="targetName" value="gate3,plate5"/>
     <property name="targetType" value="gate"/>
    </properties>
   </object>
@@ -1953,7 +1953,6 @@
   <object id="35" type="hull" x="448" y="560" width="352" height="16"/>
   <object id="42" type="hull" x="528" y="448" width="16" height="32"/>
   <object id="43" type="hull" x="592" y="448" width="16" height="32"/>
-  <object id="48" type="hull" x="624" y="512" width="64" height="48"/>
   <object id="49" type="hull" x="608" y="480" width="32" height="16"/>
   <object id="50" type="hull" x="704" y="480" width="32" height="64"/>
   <object id="71" type="hull" x="112" y="352" width="96" height="48"/>
@@ -2047,8 +2046,11 @@
   </object>
   <object id="245" type="hull" x="736" y="1744" width="49" height="36"/>
   <object id="248" type="hull" x="752" y="720" width="32" height="176"/>
-  <object id="254" type="hull" x="560" y="560">
-   <polygon points="0,0 0,-16 64,-48 64,0"/>
+  <object id="258" type="hull" x="560" y="560">
+   <polygon points="0,0 0,-16 32,-32 48,-32 48,0"/>
+  </object>
+  <object id="259" type="hull" x="608" y="528">
+   <polygon points="0,0 16,-16 80,-16 80,32 0,32"/>
   </object>
  </objectgroup>
 </map>

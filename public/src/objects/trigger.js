@@ -254,7 +254,7 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
         .setStatic(true)
         .setIgnoreGravity(true);    
 
-        this.debug = this.scene.add.text(this.x, this.y-16, 'plate', { fontSize: '10px', fill: '#00FF00', resolution: 2 });             
+        this.debug = this.scene.add.text(this.x, this.y-16, 'plate', { fontSize: '10px', fill: '#00FF00', resolution: 2 }).setOrigin(0.5);             
         this.plateSound = this.scene.sound.add('switch1');
 
     }
@@ -270,19 +270,25 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
             this.allowReset = properties.allowReset;
             this.target.name = properties.targetName;
             this.target.type = properties.targetType;
-        }
-       //console.log("setup",name, properties,this.target);
+            this.ready = properties.ready != undefined ? properties.ready : true;
+            this.platePosition = properties.state != undefined ? properties.state : 0;
+        }  
+        this.setFrame(this.platePosition);      
  
     }
     update(time, delta)
     {       
 
         this.debug.setPosition(this.x, this.y-16);
-        this.debug.setText("Plate Position:"+String(this.platePosition));
+        this.debug.setText("Plate state:"+String(this.platePosition)+"r:"+String(this.ready));
     }
     setTarget(targetObject){
         this.target.object.push(targetObject);
         //console.log("Set target for ", this.name);
+    }
+    activateTrigger(){
+        this.platePosition = 0;
+        this.setFrame(0); 
     }
     triggerTarget(){
         if(this.target.object.length > 0){
@@ -301,20 +307,16 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
     usePlate(){
         if(this.ready == true){
             this.ready = false;
-            this.plateSound.play();
+            
             if(this.allowReset){
                 this.plateTimer = this.scene.time.addEvent({ delay: 1000, callback: this.plateComplete, callbackScope: this, loop: false });
             }
-            //Timer is done.
             if(this.target.object.length > 0 && this.checkIfTargetsReady()){
-                //Target is ready to operate?
+
                 if(this.platePosition == 0){
+                    this.plateSound.play();
                     this.platePosition = 1;
                     this.setFrame(1);
-                    this.triggerTarget();
-                }else{
-                    this.platePosition = 0;
-                    this.setFrame(0); 
                     this.triggerTarget();
                 }
             }
@@ -323,7 +325,9 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
     }
     plateComplete(){
         //console.log("plate ready again");
-        this.ready = true;
+        this.ready = true;                   
+         this.platePosition = 0;
+        this.setFrame(0); 
     }
 };
 class TMXButton extends Phaser.Physics.Matter.Sprite{

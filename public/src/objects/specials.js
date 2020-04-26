@@ -797,7 +797,6 @@ class TMXWater{
         this.scene = scene;
 
         this.waterbody = this.scene.add.water(x, y, w, h, d, opt);
-        console.log(this.waterbody)
         this.scene.matterCollision.addOnCollideStart({
             objectA: this.waterbody.sensor,
             callback: ({ gameObjectB, gameObjectA }) => {
