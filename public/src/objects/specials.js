@@ -809,6 +809,10 @@ class TMXWater{
                     || gameObjectB instanceof Bullet){
                         
                         gameObjectB.enterWater();
+                        const i = gameObjectA.columns.findIndex((col, i) => col.x >= (gameObjectB.x-gameObjectA.x) && i);	
+                        const speed = gameObjectB.body.speed * 3;	                        
+                        const numDroplets = Math.ceil(gameObjectB.body.speed) * 5;		
+                        gameObjectA.splash(Phaser.Math.Clamp(i, 0, gameObjectA.columns.length - 1), speed, numDroplets);
  
                 }
             },
