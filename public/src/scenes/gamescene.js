@@ -196,7 +196,7 @@ var GameScene = new Phaser.Class({
         
         //Once Game is ready, start updating HUD
         hud.setReady();
-
+        hud.playLevelTitle(lvlCfg.title);
         //Animations - Move to JSON later, if it makes sense       
         createAnimations(this);
 
@@ -1521,8 +1521,8 @@ var GameScene = new Phaser.Class({
             let cam_p2 = this.cameras.add(camera_main.width/2,0,camera_main.width/2,camera_main.height,false,'cam_p2');//Second Camera
             cam_p1.setBounds(0, 0, map.widthInPixels, map.heightInPixels+128);  
             cam_p2.setBounds(0, 0, map.widthInPixels, map.heightInPixels+128);  
-            cam_p1.setZoom(2);
-            cam_p2.setZoom(2);
+            cam_p1.setZoom(1.75);
+            cam_p2.setZoom(1.75);
             cam_p1.startFollow(solana,true,.8,.8,0,0);
             cam_p2.startFollow(bright,true,.8,.8,0,0);
         }else{

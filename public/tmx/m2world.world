@@ -1,0 +1,30 @@
+{
+    "maps": [
+        {
+            "fileName": "m2s1.tmx",
+            "x": 0,
+            "y": 0
+        }, 
+        {
+            "fileName": "m2s2.tmx",
+            "x": 800,
+            "y": 1200
+        }, 
+        {
+            "fileName": "m2s3.tmx",
+            "x": 800,
+            "y": 0
+        }, 
+        {
+            "fileName": "m2s4.tmx",
+            "x": 2400,
+            "y": 1200
+        }, 
+        {
+            "fileName": "m2s5.tmx",
+            "x": 2400,
+            "y": 0
+        }
+    ],
+    "type": "world"
+}

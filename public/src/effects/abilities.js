@@ -7,7 +7,7 @@ class BrightBeam {
         this.y = y;
         this.rects = [];
         this.angle = angle;
-        this.width = 10;//Pixel size of a default chunk
+        this.width = 8;//Pixel size of a default chunk
         this.height = 4;//Pixel size of default chunk
         this.ready = true;
         //NOT WORKING
@@ -49,12 +49,13 @@ class BrightBeam {
             active:true,
             x: 0,
             y: 0,
-            angle: 300,
-            speed: { min: 50, max: -50 },
-            gravityY: -400,
-            scale: { start: 0.2, end: 0.0 },
-            lifespan: 500,
-            blendMode: 'ADD'
+            angle: 0,
+            radial: true,
+            speed: 40,
+            scale: { start: 0.20, end: 0.1 },
+            alpha: { start: 1, end: 0 },
+            lifespan: 300,
+            blendMode: 'NORMAL'
         });
         this.sparker.setVisible(true);
         
@@ -72,6 +73,7 @@ class BrightBeam {
         let bulletSpeed = 5;
         let vecX = Math.cos(angle)*bulletSpeed;
         let vecY = Math.sin(angle)*bulletSpeed;  
+        this.sparker.setAngle(Phaser.Math.RadToDeg(angle));
         
         this.blast.fire(this.x,this.y, vecX, vecY, 35);
 
@@ -91,32 +93,15 @@ class BrightBeam {
             
             let beamblock = ab_brightbeams.get(dX, dY, 'beam1')  
             beamblock.setup(this,angle);
-
+            beamblock.setVisible(false);
             r++;
             let ck = Phaser.Physics.Matter.Matter.Query.collides(beamblock.body, this.scene.matter.world.localWorld.bodies);
             //console.log(ck);
             this.rects.push(beamblock);
             if(ck.length > 2 || r > 15){
                 doMake = false;
-
                 //Try just killing the last one
                 beamblock.destroy();
-
-            //     //Start a new loop to rescale the body until it no longer collides.
-            //     //rescale method Phaser.Physics.Matter.Matter.Body.scale(body,x,y,worldpoint)
-
-
-            //     let newScale = 1;
-            //     while(ck.length > 2){
-            //         newScale = newScale*.5;
-            //         console.log("Scaleing beam body", newScale);
-            //         // let tX = Math.cos(angle)*((this.width*newScale))*(r-1)+this.x;
-            //         // let tY = Math.sin(angle)*((this.width*newScale))*(r-1)+this.y;
-            //         // newRect2.setPosition(tX,tY);
-            //         Phaser.Physics.Matter.Matter.Body.scale(newRect2.body,newScale,1)
-            //         newRect2.setScale(newScale,1);
-            //         ck = Phaser.Physics.Matter.Matter.Query.collides(newRect2.body, this.scene.matter.world.localWorld.bodies);
-            //     }
             }
 
         }
@@ -152,7 +137,6 @@ class BrightBeamBlock extends Phaser.Physics.Matter.Image{
         .setCollidesWith([ CATEGORY.SOLANA, CATEGORY.DARK, CATEGORY.SOLID])
         .setPosition(x,y)
         .setStatic(true);  
-        console.log("block created");
 
     }
     setup(parent,angle){
@@ -191,7 +175,8 @@ class BrightBeamBlock extends Phaser.Physics.Matter.Image{
         }
         if(this.beginDecay && this.delayDecay.i < this.delayDecay.m){
             this.delayDecay.i++;
-            this.particleEffect.emitParticleAt(this.x,this.y,1);
+            let p = this.particleEffect.emitParticleAt(this.x,this.y,1);
+            //p.rotation = this.rotation;
         };
     }
     cleanUp(tween, targets, beam){

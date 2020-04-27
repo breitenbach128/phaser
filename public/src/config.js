@@ -73,6 +73,7 @@
     //Map Configurations - Each level will have a name from the preloader. The tsKey will also come from the preloader. The tsName is from Tiled.
     var level_configs = [
         {name:'m1s1',
+        title: 'A Title',
         tsPairs:[
             {tsName:'decorative',tsKey:'PF_Caslte_1_0_decorative'},
             {tsName:'mainlevbuild_A',tsKey:'PF_Caslte_1_0_mainlevbuild_A'},
@@ -81,6 +82,7 @@
         backgrounds:['PF_Caslte_1_0_background_day1','PF_Caslte_1_0_background_day2','PF_Caslte_1_0_background_day3']
         },
         {name:'m1s1a',
+        title: 'A Title',
         tsPairs:[
             {tsName:'decorative',tsKey:'PF_Caslte_1_0_decorative'},
             {tsName:'mainlevbuild_A',tsKey:'PF_Caslte_1_0_mainlevbuild_A'},
@@ -89,6 +91,7 @@
         backgrounds:['PF_Caslte_1_0_background_day1','PF_Caslte_1_0_background_day2','PF_Caslte_1_0_background_day3']
         },
         {name:'m2s1',
+        title: 'The Mine Shaft',
         tsPairs:[
             {tsName:'mainlevbuild1',tsKey:'PF_SET3_v1_0_mainlevbuild1'},
             {tsName:'mainlevbuild2',tsKey:'PF_SET3_v1_0_mainlevbuild2'},
@@ -98,6 +101,7 @@
         backgrounds:['PF_SET3_v1_0_background1','PF_SET3_v1_0_background2','PF_SET3_v1_0_background3','PF_SET3_v1_0_background4']
         },
         {name:'m6s1',
+        title: 'A Title',
         tsPairs:[
             {tsName:'mainlevbuild1',tsKey:'PF_SET3_v1_0_mainlevbuild1'},
             {tsName:'mainlevbuild2',tsKey:'PF_SET3_v1_0_mainlevbuild2'},
@@ -106,6 +110,7 @@
         backgrounds:['PF_SET3_v1_0_background4']
         },
         {name:'m6s1a',
+        title: 'A Title',
         tsPairs:[
             {tsName:'mainlevbuild1',tsKey:'PF_SET3_v1_0_mainlevbuild1'},
             {tsName:'mainlevbuild2',tsKey:'PF_SET3_v1_0_mainlevbuild2'},

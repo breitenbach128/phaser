@@ -115,7 +115,30 @@ class HudScene extends Phaser.Scene {
 
             // Setup Speaker Class
             this.storySpeech = new HudSpeech(this);
+
+            //Add HUD function to allow for level intro name text to fade in and fade out.
+            this.levelName = this.add.text(this.cameras.main.width/2, 
+                -100, 
+                'LEVEL NAME', 
+                { 
+                 fontFamily: 'visitorTT1',
+                 align: 'center',   
+                 fontSize: '72px',
+                 fill: '#FFFFFF', 
+                 stroke: '#000000', 
+                 strokeThickness: 4 }
+
+            ).setOrigin(0.5);
+
         }
+    }
+    playLevelTitle(title){
+        this.levelName.setText(title);
+        var levelNameTw = this.tweens.createTimeline();
+        levelNameTw.add({targets: this.levelName,x: this.levelName.x,y:160,ease: 'Power1',duration: 3000,hold: 100}); 
+        levelNameTw.add({targets: this.levelName,alpha: 0,ease: 'Power1',duration: 2000,hold: 100}); 
+        levelNameTw.add({targets: this.levelName,x: this.levelName.x,y:-100,ease: 'Power1',duration: 3000,hold: 100}); 
+        levelNameTw.play();
     }
     setBossVisible(value){
         for(let i=0;i < this.boss_bar.length;i++){this.boss_bar[i].setVisible(value)};

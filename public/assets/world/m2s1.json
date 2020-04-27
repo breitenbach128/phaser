@@ -398,12 +398,12 @@
                         {
                          "name":"targetExit",
                          "type":"string",
-                         "value":"none"
+                         "value":"west1"
                         }, 
                         {
                          "name":"targetMap",
                          "type":"string",
-                         "value":"none"
+                         "value":"m1s1"
                         }],
                  "rotation":0,
                  "type":"exit",
@@ -1625,7 +1625,7 @@
                         {
                          "name":"zoneValue",
                          "type":"string",
-                         "value":"{\n    \"spkImageLeft\":\"hud_solana_head\",\n    \"spkImageRight\":\"hud_bright_head\",\n\"doPause\" : true,\n    \"speechdata\": [\n        {\n            \"p\": \"right\",\n            \"dur\": 3000,\n            \"txt\": \"I think I can fit through that hole.\"\n        },\n        {\n            \"p\": \"right\",\n            \"dur\": 3000,\n            \"txt\": \"I'll have to fly in and then pass the light to you. We'd best be quick.\"\n        }\n    ]\n}"
+                         "value":"{\n    \"spkImageLeft\":\"hud_solana_head\",\n    \"spkImageRight\":\"hud_bright_head\",\n\"doPause\" : false,\n    \"speechdata\": [\n        {\n            \"p\": \"right\",\n            \"dur\": 3000,\n            \"txt\": \"I think I can fit through that hole.\"\n        },\n        {\n            \"p\": \"right\",\n            \"dur\": 3000,\n            \"txt\": \"I'll have to fly in and then pass the light to you. We'd best be quick.\"\n        }\n    ]\n}"
                         }],
                  "rotation":0,
                  "type":"zone",
@@ -2075,7 +2075,7 @@
                         {
                          "name":"zoneValue",
                          "type":"string",
-                         "value":"{\n    \"spkImageLeft\":\"hud_solana_head\",\n    \"spkImageRight\":\"hud_bright_head\",\n\"doPause\" : true,\n    \"speechdata\": [\n        {\n            \"p\": \"right\",\n            \"dur\": 3000,\n            \"txt\": \"It looks like there is a lever under the water.\"\n        },\n        {\n            \"p\": \"right\",\n            \"dur\": 3000,\n            \"txt\": \"I wonder what it does...\"\n        }\n    ]\n}"
+                         "value":"{\n    \"spkImageLeft\":\"hud_solana_head\",\n    \"spkImageRight\":\"hud_bright_head\",\n\"doPause\" : false,\n    \"speechdata\": [\n        {\n            \"p\": \"right\",\n            \"dur\": 3000,\n            \"txt\": \"It looks like there is a lever under the water.\"\n        },\n        {\n            \"p\": \"right\",\n            \"dur\": 3000,\n            \"txt\": \"I wonder what it does...\"\n        }\n    ]\n}"
                         }],
                  "rotation":0,
                  "type":"zone",
@@ -4465,6 +4465,12 @@
                         {
                          "x":48,
                          "y":0
+                        }],
+                 "properties":[
+                        {
+                         "name":"friction",
+                         "type":"float",
+                         "value":0.9
                         }],
                  "rotation":0,
                  "type":"hull",

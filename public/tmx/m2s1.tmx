@@ -1162,8 +1162,8 @@
   <object id="2" name="west1" type="entrance" x="624" y="64" width="32" height="32"/>
   <object id="240" name="east1" type="exit" x="736" y="2288" width="48" height="96">
    <properties>
-    <property name="targetExit" value="none"/>
-    <property name="targetMap" value="none"/>
+    <property name="targetExit" value="west1"/>
+    <property name="targetMap" value="m1s1"/>
    </properties>
   </object>
   <object id="241" name="east1" type="entrance" x="688" y="2304" width="32" height="32"/>
@@ -1423,7 +1423,7 @@
     <property name="zoneValue">{
     &quot;spkImageLeft&quot;:&quot;hud_solana_head&quot;,
     &quot;spkImageRight&quot;:&quot;hud_bright_head&quot;,
-&quot;doPause&quot; : true,
+&quot;doPause&quot; : false,
     &quot;speechdata&quot;: [
         {
             &quot;p&quot;: &quot;right&quot;,
@@ -1555,7 +1555,7 @@
     <property name="zoneValue">{
     &quot;spkImageLeft&quot;:&quot;hud_solana_head&quot;,
     &quot;spkImageRight&quot;:&quot;hud_bright_head&quot;,
-&quot;doPause&quot; : true,
+&quot;doPause&quot; : false,
     &quot;speechdata&quot;: [
         {
             &quot;p&quot;: &quot;right&quot;,
@@ -2047,6 +2047,9 @@
   <object id="245" type="hull" x="736" y="1744" width="49" height="36"/>
   <object id="248" type="hull" x="752" y="720" width="32" height="176"/>
   <object id="258" type="hull" x="560" y="560">
+   <properties>
+    <property name="friction" type="float" value="0.9"/>
+   </properties>
    <polygon points="0,0 0,-16 32,-32 48,-32 48,0"/>
   </object>
   <object id="259" type="hull" x="608" y="528">
