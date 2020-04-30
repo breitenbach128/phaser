@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="100" height="75" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="369">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="100" height="75" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="370">
  <editorsettings>
   <export target="../assets/world/m2s2.json" format="json"/>
  </editorsettings>
@@ -856,7 +856,7 @@
     <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:300},{&quot;x&quot;:0,&quot;y&quot;:-80,&quot;t&quot;:3000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
    </properties>
   </object>
-  <object id="330" name="platform6" type="platform" x="1264" y="736" width="48" height="16">
+  <object id="330" name="platform6" type="platform" x="1264" y="752" width="48" height="16">
    <properties>
     <property name="autostart" type="bool" value="false"/>
     <property name="loop" type="int" value="0"/>
@@ -868,13 +868,13 @@
     <property name="loop" type="int" value="0"/>
    </properties>
   </object>
-  <object id="332" name="platform7" type="platform" x="1312" y="672" width="48" height="16">
+  <object id="332" name="platform7" type="platform" x="1312" y="704" width="48" height="16">
    <properties>
     <property name="autostart" type="bool" value="false"/>
     <property name="loop" type="int" value="0"/>
    </properties>
   </object>
-  <object id="333" name="platform8" type="platform" x="1264" y="608" width="48" height="16">
+  <object id="333" name="platform8" type="platform" x="1264" y="656" width="48" height="16">
    <properties>
     <property name="autostart" type="bool" value="false"/>
     <property name="loop" type="int" value="0"/>
@@ -960,6 +960,12 @@
     <property name="autostart" type="bool" value="false"/>
     <property name="loop" type="int" value="-1"/>
     <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:-96,&quot;t&quot;:3000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+   </properties>
+  </object>
+  <object id="369" name="platform11" type="platform" x="1312" y="608" width="48" height="16">
+   <properties>
+    <property name="autostart" type="bool" value="false"/>
+    <property name="loop" type="int" value="0"/>
    </properties>
   </object>
  </objectgroup>
