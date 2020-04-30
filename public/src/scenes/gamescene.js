@@ -1136,7 +1136,8 @@ var GameScene = new Phaser.Class({
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOLBOMB');
                     if (gObjs[0].active){
                         gObjs[0].unready();
-                        gObjs[1].receiveHealth(1);
+                        gObjs[1].receiveHealth(1);                        
+                        hud.alterEnergyBright(50);
                     }  
                 }
                 //Between SoulTransfer and Solana

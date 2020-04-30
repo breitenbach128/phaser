@@ -1449,8 +1449,8 @@
                         }, 
                         {
                          "name":"decayRate",
-                         "type":"int",
-                         "value":1
+                         "type":"float",
+                         "value":0.1
                         }, 
                         {
                          "name":"targetName",

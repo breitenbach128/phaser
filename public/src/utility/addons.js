@@ -293,33 +293,34 @@ class Statbar{
 	};
 	alterValue(val){
 		let n = this.values.n + val;
-        if(n < 0){n=0;};
-        if(n > this.values.max){
+		if(n <= 0){
+			n=0;
+		}else if(n > this.values.max){
             n=this.values.max;
-        }else{
-            this.values.n = n;
-			let newValue = Math.round((this.values.n/this.values.max)*this.FILL.width);
-			
-			//Setup Crop Direction
-			let crops = [0,0,newValue,this.FILL.height]; //LR - DEFAULT
+        }
+		this.values.n = n;
+		let newValue = Math.round((this.values.n/this.values.max)*this.FILL.width);
+		
+		//Setup Crop Direction
+		let crops = [0,0,newValue,this.FILL.height]; //LR - DEFAULT
 
-			if(this.cropOptions.dir == 'RL'){
-				crops = [this.FILL.width-newValue,0,newValue,this.FILL.height];
-			}else if(this.cropOptions.dir == 'TB'){
-				crops = [0,0,this.FILL.width,newValue];
-			}else if(this.cropOptions.dir == 'BT'){
-				crops = [0,this.FILL.height-newValue,this.FILL.width,newValue];
-			}
-
-            //Alter the bar values
-			this.FILL.setCrop(crops[0],crops[1],crops[2],crops[3]);
-			
-            if(n <= (this.values.max*this.cropOptions.tintPercent)){
-                this.FILL.setTint(this.cropOptions.tintColor);
-            }else{
-                this.FILL.clearTint();
-            };
+		if(this.cropOptions.dir == 'RL'){
+			crops = [this.FILL.width-newValue,0,newValue,this.FILL.height];
+		}else if(this.cropOptions.dir == 'TB'){
+			crops = [0,0,this.FILL.width,newValue];
+		}else if(this.cropOptions.dir == 'BT'){
+			crops = [0,this.FILL.height-newValue,this.FILL.width,newValue];
 		}
+
+		//Alter the bar values
+		this.FILL.setCrop(crops[0],crops[1],crops[2],crops[3]);
+		
+		if(n <= (this.values.max*this.cropOptions.tintPercent)){
+			this.FILL.setTint(this.cropOptions.tintColor);
+		}else{
+			this.FILL.clearTint();
+            };
+		
 		this.text.setText(String(this.values.n)+"/"+String(this.values.max));
 	}
 	destroy(){

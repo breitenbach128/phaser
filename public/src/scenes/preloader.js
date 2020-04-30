@@ -166,6 +166,7 @@ var Preloader = new Phaser.Class({
 		this.load.tilemapTiledJSON('m1s1', 'assets/world/m1s1.json');
 		this.load.tilemapTiledJSON('m1s1a', 'assets/world/m1s1a.json');
 		this.load.tilemapTiledJSON('m2s1', 'assets/world/m2s1.json');
+		this.load.tilemapTiledJSON('m2s2', 'assets/world/m2s2.json');
 		this.load.tilemapTiledJSON('m6s1', 'assets/world/m6s1.json');
 		this.load.tilemapTiledJSON('m6s1a', 'assets/world/m6s1a.json');
 		//Map Tilesets

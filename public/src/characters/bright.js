@@ -518,7 +518,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.hp+=health;
         if(this.hp > this.max_hp){
             this.hp = 5;
-         };
+         };         
         hud.setHealth(this.hp,1);
      }
     pulseCharge(object){

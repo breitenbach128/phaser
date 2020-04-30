@@ -128,16 +128,17 @@ class HudScene extends Phaser.Scene {
                  stroke: '#000000', 
                  strokeThickness: 4 }
 
-            ).setOrigin(0.5);
+            ).setAlpha(0).setOrigin(0.5);
 
         }
     }
     playLevelTitle(title){
         this.levelName.setText(title);
         var levelNameTw = this.tweens.createTimeline();
-        levelNameTw.add({targets: this.levelName,x: this.levelName.x,y:160,ease: 'Power1',duration: 3000,hold: 100}); 
+        levelNameTw.add({targets: this.levelName,x: this.levelName.x,y:160,ease: 'Power1',duration: 500,hold: 100}); 
+        levelNameTw.add({targets: this.levelName,alpha: 1,ease: 'Power1',duration: 2000,hold: 100});  
         levelNameTw.add({targets: this.levelName,alpha: 0,ease: 'Power1',duration: 2000,hold: 100}); 
-        levelNameTw.add({targets: this.levelName,x: this.levelName.x,y:-100,ease: 'Power1',duration: 3000,hold: 100}); 
+        levelNameTw.add({targets: this.levelName,x: this.levelName.x,y:-100,ease: 'Power1',duration: 500,hold: 100}); 
         levelNameTw.play();
     }
     setBossVisible(value){

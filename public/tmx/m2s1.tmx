@@ -1377,7 +1377,7 @@
    <properties>
     <property name="alwaysOn" type="bool" value="false"/>
     <property name="brightness_max" type="int" value="125"/>
-    <property name="decayRate" type="int" value="1"/>
+    <property name="decayRate" type="float" value="0.1"/>
     <property name="targetName" value="platform1"/>
     <property name="targetType" value="platform"/>
    </properties>

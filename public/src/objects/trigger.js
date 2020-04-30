@@ -544,7 +544,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             this.teleporterGradeient.setVisible(false);
             //this.teleporterGradeient.setAlpha(0.2);
 
-       }else if(this.zonedata.type == 'mass'){
+        }else if(this.zonedata.type == 'mass'){
            //Restrict collision types
             this.setCollidesWith([CATEGORY.SOLANA,CATEGORY.DARK,CATEGORY.SOLID])
            
@@ -572,6 +572,31 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                             gameObjectA.totalBodies.splice(i,1);
                         }
                     });
+                }
+            });
+        }else if(this.zonedata.type == 'hurt'){
+            let spark1 = this.scene.add.particles('shapes');
+            this.sparker = spark1.createEmitter({
+                active:true,
+                x: this.x,
+                y: this.y,
+                frame: {
+                    frames: [
+                        "circle_05"
+                    ],
+                    cycle: false,
+                    quantity: 1
+                },
+                gravityY: -100,
+                scale: { start: 0.5, end: 0.0 },
+                alpha: { start: 1, end: 0 },
+                blendMode: 'ADD',
+                tint: [
+                    4263489
+                ],
+                emitZone: {
+                    source: new Phaser.Geom.Rectangle(-w/2,0,w,0),
+                    type: "random"
                 }
             });
        }
@@ -772,12 +797,12 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         if(properties != undefined && Object.keys(properties).length > 0){
             this.target.name = properties.targetName;
             this.target.type = properties.targetType;
-            this.path = JSON.parse(properties.path);
+            this.path = properties.path != undefined ? JSON.parse(properties.path) : -1;
             this.tmloop = properties.loop;
             this.autostart = properties.autostart;
             if(properties.frame != undefined){this.setFrame(properties.frame)};
         }
-       if(this.autostart && this.path){ 
+       if(this.autostart && (this.path != undefined && this.path != -1)){ 
             this.setPath(this.path) // test tween
             this.immobile = false;
        }else{
@@ -824,8 +849,10 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
     }
     activateTrigger(){
         if(this.ready == true){
-            this.ready = false;  
-            this.setPath(this.path);
+            this.ready = false; 
+            if((this.path != undefined && this.path != -1)){ 
+                this.setPath(this.path);
+            }
         }
     }
     setPath(path){
@@ -945,6 +972,11 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
         
        //console.log("setup",name, properties,this.target);
         if(this.alwaysOn){this.turnOn();};
+
+        //Add tint depending on lamp type to help the player know the effect
+        if(this.decayRate != 0){
+            this.setTint(0x9b32a8);
+        }
     }
     setTarget(targetObject){
         this.target.object.push(targetObject);
