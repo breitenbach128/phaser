@@ -27,7 +27,7 @@ class Vehicle extends Phaser.Physics.Matter.Sprite{
         this
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.VEHICLE)
-        .setCollidesWith([CATEGORY.GROUND,CATEGORY.SOLID,CATEGORY.SOLANA,CATEGORY.DARK,CATEGORY.BRIGHT])
+        .setCollidesWith([CATEGORY.GROUND,CATEGORY.SOLID,CATEGORY.SOLANA,CATEGORY.DARK,CATEGORY.BRIGHT,CATEGORY.BARRIER])
         .setPosition(x, y) 
 
         this.wA = scene.matter.add.image(this.x,this.y,'minecart_wheel');
