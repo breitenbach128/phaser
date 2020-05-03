@@ -1215,6 +1215,19 @@ var GameScene = new Phaser.Class({
                     lampObj.turnOn();
 
                 }
+                //Lamps and Dark/Brigth
+                if ((bodyA.label === 'BRIGHT' && bodyB.label === 'CRYSTAL_LAMP') || (bodyA.label === 'CRYSTAL_LAMP' && bodyB.label === 'BRIGHT')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'BRIGHT');
+                    if(gObjs[0].light_status == 0){
+                        //Bright mode, touching lamp drains energy and turns the lamp on.
+                        gObjs[1].turnOn();
+                        hud.alterEnergyBright(-50);
+                    }else{
+                        gObjs[1].breaklamp();
+                        hud.alterEnergyBright(50);
+                    }
+
+                }
                 //Lamps and Soul Tranfser
                 if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'CRYSTAL_LAMP') || (bodyA.label === 'CRYSTAL_LAMP' && bodyB.label === 'SOULTRANSFER')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');

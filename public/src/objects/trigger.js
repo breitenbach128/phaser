@@ -995,6 +995,16 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
         });
         return r;
     }
+    breaklamp(){
+
+        if(this.brightness != 0){
+            for(let i=0;i < Phaser.Math.Between(1,3);i++){
+                let ls = light_shards.get();
+                ls.spawn(this.x,this.y,300,solana);
+            }
+        }
+        this.destroy();
+    }
     turnOn(){
         if(this.brightness == 0){this.anims.play('lamp-turn-on', true); }
         this.brightness = this.max_brightness;

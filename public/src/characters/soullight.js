@@ -403,7 +403,7 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
             this.inGrabDis = true;
             this.twGrow = this.scene.tweens.add({
                 targets: this,
-                scale: 0.4,              
+                scale: 0.2,              
                 ease: 'Linear',
                 yoyo: true,       
                 duration: 100,  
