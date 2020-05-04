@@ -31,7 +31,10 @@
                 // restingThresh: 0.1,
                 // restingThreshTangent: 0.1,
                 // positionDampen: 0.1,
-                // positionWarming: 0.1
+                // positionWarming: 0.1,
+                plugins: {
+                    attractors: true
+                }
             }
         },
         // Install the scene plugin

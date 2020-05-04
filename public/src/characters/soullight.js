@@ -217,6 +217,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.transfer = new SoulTransfer(this.scene,this.x,this.y,'soullightblast',0,this);
         this.transfer.rotation = this.aimer.rotation;
         this.transfer.fire(this.transfer.rotation,this.projectile_speed);
+        this.transfer.setDepth(DEPTH_LAYERS.FRONT);
     }
     homeLight(target){        
         let angle = Phaser.Math.Angle.Between(this.x,this.y,target.x,target.y);

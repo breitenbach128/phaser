@@ -381,7 +381,9 @@ class BreakableTile extends Phaser.Physics.Matter.Sprite{
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 
                 if (gameObjectB !== undefined && gameObjectB instanceof BrightSensors) {
-                    this.impact(gameObjectB);
+                    if(bright.light_status == 1){
+                        this.impact(gameObjectB);
+                    }
                 }
             }
         });
@@ -493,6 +495,7 @@ class SecretTile extends Phaser.Physics.Matter.Sprite{
 
         this.ready = true;
         this.debug = this.scene.add.text(this.x, this.y, 'SECRET', { resolution: 2, fontSize: '8px', fill: '#00FF00' }).setDepth(DEPTH_LAYERS.FG).setOrigin(0.5);
+        this.debug.setVisible(false);
     }
     setup(x,y){
         this.setActive(true);
@@ -627,7 +630,7 @@ class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
             parts: [mainBody, this.sensors.bottom, this.sensors.top],
             frictionStatic: 0,
             frictionAir: 0.00,
-            friction: 0,//Was 0.1
+            friction: 1,//Was 0.1
             label: 'PLATSWING'
         });
 
@@ -648,10 +651,40 @@ class PlatSwingTween extends Phaser.Physics.Matter.Sprite{
         //Fake Velocity
         this.prev = {x:x,y:y};
         this.onWayTracker = -1;
+
+        //Setup to allow to carry riders
+        this.scene.matterCollision.addOnCollideActive({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    let bVelX = gameObjectA.body.velocity.x;
+                    let bVelY = gameObjectA.body.velocity.y;
+                    let minX = bVelX < 0 ? bVelX : 0;
+                    let maxX = bVelX > 0 ? bVelX : 0;
+                    let minY = bVelY < 0 ? bVelY : 0;
+                    let maxY = bVelY > 0 ? bVelY : 0;
+                    gameObjectB.setMaxMoveSpeed(minX,maxX,minY,maxY);
+                }
+            }
+        });
+        this.scene.matterCollision.addOnCollideEnd({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    gameObjectB.setMaxMoveSpeed(0,0,0,0);
+                }
+            }
+        });
     }
-    setup(x,y,properties,name){
+    setup(x,y,properties,name,w,h){
         this.setActive(true); 
         this.setPosition(x,y);
+        this.setSize(w,h);
+        this.setDisplaySize(w,h);
         this.name = name;
         this.swingDeg = properties.start;
         this.swingRadius = properties.radius;

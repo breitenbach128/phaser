@@ -36,7 +36,6 @@ var GameScene = new Phaser.Class({
         // this.soundTheme.play('themepart1',{loop: true, volume: 0.20});
         this.soundTheme.play({loop: true, volume: 0.20});   
 
-
         //Make the map
         map = this.make.tilemap({key: current_map});   
         //Update Global Tilesizes
@@ -536,7 +535,7 @@ var GameScene = new Phaser.Class({
                 //Dynamically Resize platforms Swing
                 swingTw.setSize(tmxObjRef.width,tmxObjRef.height);
                 swingTw.setDisplaySize(tmxObjRef.width,tmxObjRef.height);
-                swingTw.setup(swingTw.x,swingTw.y, getTileProperties(tmxObjRef.properties),tmxObjRef.name);
+                swingTw.setup(swingTw.x,swingTw.y, getTileProperties(tmxObjRef.properties),tmxObjRef.name,tmxObjRef.width,tmxObjRef.height);
 
             }else if(tmxObjRef.type == 'soulcrystal'){
                 let scprops = getTileProperties(tmxObjRef.properties);
@@ -792,6 +791,7 @@ var GameScene = new Phaser.Class({
                       || gameObjectB instanceof PlatSwingTween
                       || gameObjectB instanceof PlatSwing
                       || gameObjectB instanceof BreakableTile 
+                      || gameObjectB instanceof Crate 
                       || gameObjectB instanceof BrightBeamBlock)) {   
                 
                 //handle plaform jumping allowance             
@@ -882,11 +882,7 @@ var GameScene = new Phaser.Class({
 
                     //handle plaform jumping allowance             
                     if(bodyA.label == "SOLANA_TOP"){
-                        solana.touching.up++;
-                        if(bodyB.label == "PLAT_BOTTOM" && gameObjectA.body.velocity.y < 0){
-                            //Start tracking and disable collisions
-                            gameObjectB.oneWayStart(gameObjectA,'up');
-                        }                       
+                        solana.touching.up++;                    
                     }
                     if(bodyA.label == "SOLANA_BOTTOM"){
                         solana.touching.down++;                        
@@ -900,7 +896,16 @@ var GameScene = new Phaser.Class({
                     }
                     if(bodyA.label == "SOLANA_LEFT"){
                         solana.touching.left++;
-                    }                            
+                    }        
+                    
+                    let platformOneWayStarts = ['SOLANA_TOP','SOLANA_RIGHT','SOLANA_LEFT'];
+                    if(platformOneWayStarts.includes(bodyA.label) && bodyB.label == "PLAT_BOTTOM"){
+                        if(gameObjectA.body.velocity.y < 0){
+                            //Start tracking and disable collisions
+                            gameObjectB.oneWayStart(gameObjectA,'up');
+                        }
+                    }
+
               }
             //Handle Platform Pass thru
 
@@ -1137,7 +1142,7 @@ var GameScene = new Phaser.Class({
                     if (gObjs[0].active){
                         gObjs[0].unready();
                         gObjs[1].receiveHealth(1);                        
-                        hud.alterEnergyBright(50);
+                        gObjs[1].addEnergy(50);
                     }  
                 }
                 //Between SoulTransfer and Solana
@@ -1188,7 +1193,7 @@ var GameScene = new Phaser.Class({
                 if ((bodyA.label === 'FIREFLY' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'FIREFLY')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'FIREFLY');
                     if (gObjs[0].active){
-                        hud.alterEnergySolana(10);
+                        gObjs[1].addEnergy(10);
                         fireflies.killAndHide(gObjs[0]);
                         //gObjs[0].collect();
                     }  
@@ -1220,11 +1225,14 @@ var GameScene = new Phaser.Class({
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'BRIGHT');
                     if(gObjs[0].light_status == 0){
                         //Bright mode, touching lamp drains energy and turns the lamp on.
-                        gObjs[1].turnOn();
-                        hud.alterEnergyBright(-50);
-                    }else{
+                        let brightDiff = gObjs[1].max_brightness - gObjs[1].brightness;
+                        if(brightDiff > 0){
+                            gObjs[1].turnOn();
+                            gObjs[0].addEnergy(-brightDiff);
+                        }
+                    }else{                       
+                        gObjs[0].addEnergy(gObjs[1].brightness);
                         gObjs[1].breaklamp();
-                        hud.alterEnergyBright(50);
                     }
 
                 }
@@ -1295,6 +1303,31 @@ var GameScene = new Phaser.Class({
         // solana.setPipeline('Light2D');
         // let light  = this.lights.addLight(0, 0, 200).setScrollFactor(0.0).setIntensity(2);
         this.debugDrag = [];
+
+        //Attractor Debug - ONly affects bodies AFTER it was made.
+        // var sun = this.matter.add.image(400, 200, 'button_sun', null, {
+        //     shape: {
+        //         type: 'circle',
+        //         radius: 64
+        //     },
+        //     plugin: {
+        //         attractors: [
+        //             function (bodyA, bodyB) {
+        //                 console.log("attractor",bodyB.label);
+        //                 return {
+        //                     x: (bodyA.position.x - bodyB.position.x) * 0.000001,
+        //                     y: (bodyA.position.y - bodyB.position.y) * 0.000001
+        //                 };
+        //             }
+        //         ]
+        //     }
+        // });
+        // sun.setCollisionCategory(CATEGORY.SOLID)
+        // sun.setCollidesWith([CATEGORY.SOLANA])
+        // sun.setScale(0.30);
+        // sun.setPosition(solana.x,solana.y-32);
+        // sun.setIgnoreGravity(true);
+
 
     },
     update: function (time, delta)
@@ -1401,7 +1434,7 @@ var GameScene = new Phaser.Class({
         solana.inLight = solana_in_light;
         let rate_of_energy_drain_outside_light = 1;
         if(!solana_in_light){
-            hud.alterEnergySolana(-rate_of_energy_drain_outside_light);
+            solana.addEnergy(-rate_of_energy_drain_outside_light);
             if(hud.solanaStatBar.getValue() <= 0){solana.receiveDamage(1);};
         };
 
@@ -1604,8 +1637,8 @@ var GameScene = new Phaser.Class({
     },
     generateEnergy(){
         //This looks choppy. I need to make it a single factor, alter the factor and then apply it. 
-        hud.alterEnergySolana(2);
-        hud.alterEnergyBright(2);
+        solana.addEnergy(2);
+        bright.addEnergy(2);
     },
     saveData(){
         //Save Polaris Data

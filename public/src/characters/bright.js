@@ -47,6 +47,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.light_status = 0;//0 - Bright, 1 - Dark;
         this.hp = 5;
         this.max_hp = 5;
+        this.energyChange = 0;
         this.mv_speed = 3;
         this.roll_speed = 0.400;
         this.jump_speed = 0.020;
@@ -89,12 +90,13 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.controller;
         this.ctrlDevice;
         this.ctrlDeviceId = -1;
+
     }
 
     update()
     {
-            this.bg.setPosition(this.x,this.y);
-            if(this.alive){
+        this.bg.setPosition(this.x,this.y);
+        if(this.alive){
                 this.effect[0].emitters.list[0].setPosition(this.x,this.y);
                 this.sensor.setPosition(this.x,this.y);
                 if(this.dialogue.isRunning){
@@ -140,7 +142,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             let brightMode = 0;
             //Drain Energy since not bright
             if(this.light_status == darkMode){
-                hud.alterEnergyBright(-0.5);
+                this.addEnergy(-1);
                 if(hud.brightStatBar.getValue() <= 0){this.receiveDamage(1);};
             };
             //This creates a wobble of contention for add and remove values on different update loops.
@@ -356,6 +358,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     }
                 }
             }
+            this.resetEnergy();
         }
 
     }    
@@ -488,7 +491,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             this.hp = 5;
             hud.setHealth(this.hp,1);
             this.alive = true; 
-            hud.alterEnergyBright(500);
+            this.addEnergy(1500);
             if(soullight.ownerid == 1){
                 soullight.passLight();
             }
@@ -520,7 +523,14 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             this.hp = 5;
          };         
         hud.setHealth(this.hp,1);
-     }
+    }
+    addEnergy(e){
+        this.energyChange+=e;
+    }
+    resetEnergy(){
+        hud.alterEnergyBright(this.energyChange);
+        this.energyChange = 0;
+    }
     pulseCharge(object){
         //Move Solana Off Screen
         object.setControlLock();

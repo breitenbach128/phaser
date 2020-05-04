@@ -152,10 +152,11 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
 
 
     }
-    setup(x,y,properties,name){
-        this.setActive(true);
-        
-        this.setPosition(x,y);
+    setup(x,y,properties,name,w,h){
+        this.setActive(true);        
+        this.setPosition(x,y);        
+        this.setSize(w,h);
+        this.setDisplaySize(w,h);
         this.name = name;        
         this.ready = true;
         this.prevVel = {x:0,y:0};       
@@ -595,7 +596,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                     4263489
                 ],
                 emitZone: {
-                    source: new Phaser.Geom.Rectangle(-w/2,0,w,0),
+                    source: new Phaser.Geom.Rectangle(-w/2,-h/2,w,h),
                     type: "random"
                 }
             });
@@ -728,8 +729,8 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         const { width: w, height: h } = this.sprite;
         const mainBody =  Bodies.rectangle(0, 0, w, h);
         this.sensors = {
-            top: Bodies.rectangle(0, -h*0.70, w , h*0.60, { isSensor: true }),
-            bottom: Bodies.rectangle(0, h*0.70, w , h*0.60, { isSensor: true })
+            top: Bodies.rectangle(0, -h*0.60, w , h*0.60, { isSensor: true }),
+            bottom: Bodies.rectangle(0, h*0.60, w , h*0.60, { isSensor: true })
           };
         this.sensors.top.label = "PLAT_TOP";
         this.sensors.bottom.label = "PLAT_BOTTOM";
@@ -745,6 +746,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         this.sprite
         .setExistingBody(compoundBody)         
         .setCollisionCategory(CATEGORY.SOLID)
+        .setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK])
         .setPosition(x, y)
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setStatic(true)

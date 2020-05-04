@@ -49,6 +49,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //Custom Properties
         this.hp = 5;
         this.max_hp = 5;
+        this.energyChange = 0;
         this.max_mv_speed = {minX: -0.55,maxX: 0.55,minY: -4.9,maxY: 4.9, thrown: 10};
         this.max_mv_speed_baseX = 0.55;
         this.max_mv_speed_baseY = 4.9;
@@ -160,7 +161,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 if ((this.onGround || this.onWall) && this.body.velocity.y >= 0) { this.jumpCount = 0 }; //Add velocity check to not reset jump count if going up.
 
                 //Check Jump ready
-                if (this.onGround || this.onWall || (soullight.ownerid == 0 && soullight.claimed && this.jumpCount < 2)) {
+                if (this.onGround || this.onWall || (soullight.ownerid == 0 && checkSolbitOwned(1) && this.jumpCount < 2)) {
                     this.jumpReady = true;
 
                 } else {                    
@@ -195,8 +196,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
                 //Slow Descent if on Wall
                 if (this.onWall && !this.onGround) {
-                    if (Math.round(this.body.velocity.y) >= 0) { //Upwards
-                        this.setVelocityY(0);
+                    if (Math.round(this.body.velocity.y) >= 0) { //Downwards
+                        //this.setVelocityY(0);
                         if (!this.isAnimLocked) { this.sprite.anims.play('solana-wallslide', true); };
                     }
                 }
@@ -310,7 +311,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             if(this.body.velocity.y > this.max_mv_speed.maxY ){this.setVelocityY(this.max_mv_speed.maxY+0.1);};//0.1 from Jenkins testing
         }  
 
+
         //DO THIS LAST
+        this.resetEnergy();
+
         this.mv_Xdiff = Math.round(this.x - this.prev_position.x);
         this.mv_Ydiff = Math.round(this.y - this.prev_position.y);
         this.prev_position.x = this.x;
@@ -630,6 +634,13 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             }
         };
        hud.setHealth(this.hp,0);
+    }
+    addEnergy(e){
+        this.energyChange+=e;
+    }
+    resetEnergy(){
+        hud.alterEnergySolana(this.energyChange);
+        this.energyChange = 0;
     }
     disableInvuln(){
         this.invuln = false;

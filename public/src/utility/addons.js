@@ -281,7 +281,7 @@ class Statbar{
 		this.BG = scene.add.image(x, y, texture, bgIndex).setOrigin(0.5);
 		this.FG = scene.add.image(x, y, texture, fgIndex).setOrigin(0.5);
 		this.FILL = scene.add.image(x, y, texture ,fillIndex).setOrigin(0.5);
-		this.values = {n: n, max: max};
+		this.values = {n: n, max: max, prev: n};
 		this.text = scene.add.text(x, y, String(n)+"/"+String(max), textOptions).setOrigin(0.5); //Standard Text Styling
 		this.cropOptions = cropOptions != undefined ? cropOptions: {dir: 'LR',tintPercent: 0.0, tintColor: 0x000000}; // <Direction>,<TintPercent>,<TintColor>
 		//Directions  = <LR>,<RL>,<TB>,<BT>
@@ -291,7 +291,37 @@ class Statbar{
 	getValue(){
 		return this.values.n;
 	};
+	updateBar(){
+		//Only Update on Change
+		if(this.values.prev != this.values.n){
+			let curPer = this.values.n/this.values.max;
+			let newValue = Math.round((curPer)*this.FILL.width);
+			
+			//Setup Crop Direction
+			let crops = [0,0,newValue,this.FILL.height]; //LR - DEFAULT
+
+			if(this.cropOptions.dir == 'RL'){
+				crops = [this.FILL.width-newValue,0,newValue,this.FILL.height];
+			}else if(this.cropOptions.dir == 'TB'){
+				crops = [0,0,this.FILL.width,newValue];
+			}else if(this.cropOptions.dir == 'BT'){
+				crops = [0,this.FILL.height-newValue,this.FILL.width,newValue];
+			}
+
+			//Alter the bar values
+			this.FILL.setCrop(crops[0],crops[1],crops[2],crops[3]);
+			
+			if(curPer <= this.cropOptions.tintPercent){
+				this.FILL.setTint(this.cropOptions.tintColor);
+			}else{
+				this.FILL.clearTint();
+				};
+			
+			this.text.setText(String(this.values.n)+"/"+String(this.values.max));
+		}
+	}
 	alterValue(val){
+		this.values.prev = this.values.n;
 		let n = this.values.n + val;
 		if(n <= 0){
 			n=0;
@@ -299,29 +329,6 @@ class Statbar{
             n=this.values.max;
         }
 		this.values.n = n;
-		let newValue = Math.round((this.values.n/this.values.max)*this.FILL.width);
-		
-		//Setup Crop Direction
-		let crops = [0,0,newValue,this.FILL.height]; //LR - DEFAULT
-
-		if(this.cropOptions.dir == 'RL'){
-			crops = [this.FILL.width-newValue,0,newValue,this.FILL.height];
-		}else if(this.cropOptions.dir == 'TB'){
-			crops = [0,0,this.FILL.width,newValue];
-		}else if(this.cropOptions.dir == 'BT'){
-			crops = [0,this.FILL.height-newValue,this.FILL.width,newValue];
-		}
-
-		//Alter the bar values
-		this.FILL.setCrop(crops[0],crops[1],crops[2],crops[3]);
-		
-		if(n <= (this.values.max*this.cropOptions.tintPercent)){
-			this.FILL.setTint(this.cropOptions.tintColor);
-		}else{
-			this.FILL.clearTint();
-            };
-		
-		this.text.setText(String(this.values.n)+"/"+String(this.values.max));
 	}
 	destroy(){
 		//Remove Objects
