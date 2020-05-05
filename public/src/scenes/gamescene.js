@@ -354,6 +354,11 @@ var GameScene = new Phaser.Class({
             classType: SolBomb,
             runChildUpdate: true 
         });
+        //Solbombs
+        gears = this.add.group({ 
+            classType: TMXGear,
+            runChildUpdate: true 
+        });
         
         //Clear Boss
         boss = -1;
@@ -474,7 +479,7 @@ var GameScene = new Phaser.Class({
                 if(tmxObjRef.rotation != 0){      
                     Phaser.Math.RotateAround(centerPoint,tmxOrigin.x,tmxOrigin.y,rotRad);
                 }     
-                mir.setup(centerPoint.x,centerPoint.y,tmxObjRef.rotation);
+                mir.setup(centerPoint.x,centerPoint.y,tmxObjRef.rotation,tmxObjRef.name);
             }else if(tmxObjRef.type == "window"){  
                 let bar = barriers.get(-1000,-1000,"tmxwindow",0,true);
                 let tmxOrigin = {x:tmxObjRef.x,y:tmxObjRef.y};
@@ -615,6 +620,8 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == "zone"){
                 triggerObj = triggerzones.get();
                 triggerObj.setDisplaySize(tmxObjRef.width, tmxObjRef.height);
+            }else if(tmxObjRef.type == "gear"){                
+                triggerObj = gears.get();
             }
             if(triggerObj){
                 let trig_x_offset = tmxObjRef.width/2;
@@ -656,6 +663,7 @@ var GameScene = new Phaser.Class({
         setupTriggerTargets(triggerzones,"zones",this);
         setupTriggerTargets(platforms,"platforms",this);
         setupTriggerTargets(crystallamps,"crystallamps",this);
+        setupTriggerTargets(gears,"gears",this);
 
         //Particles
         emitter_dirt_spray = this.add.particles('impact1').createEmitter({
@@ -1153,8 +1161,8 @@ var GameScene = new Phaser.Class({
                     }  
                 }                
                 //Between SoulTransfer and Solid/Ground
-                let SoulTransferBurnList1 = ['SOLID','GROUND'];
-                if((bodyA.label == 'SOULTRANSFER' && bulletHitList1.includes(bodyB.label)) || (bodyB.label == 'SOULTRANSFER' && bulletHitList1.includes(bodyA.label)) ){
+                let SoulTransferBurnList1 = ['SOLID','GROUND','ROCK'];
+                if((bodyA.label == 'SOULTRANSFER' && SoulTransferBurnList1.includes(bodyB.label)) || (bodyB.label == 'SOULTRANSFER' && SoulTransferBurnList1.includes(bodyA.label)) ){
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
                     if (gObjs[0].active){
                         gObjs[0].burn();
@@ -1742,40 +1750,41 @@ function createLightPolygon(x, y, polyset) {
 function setupTriggerTargets(triggerGroup,triggerGroupName,scene){
     //Currently restricted to types. I need to expand this
     triggerGroup.children.each(function(trigger) {
-        //console.log(triggerGroupName,trigger.target);
+
         if(trigger.target.name != -1 && trigger.target.name != undefined){
             let nameList = trigger.target.name.split(",");//Comma delimited listing of target names
             nameList.forEach(name=>{
  
                 //Search all groups and setup targets
                 gates.children.each(function(gate) {
-                    //console.log("Trigger had gate target, searching names");
                     if(gate.name == name){
                         trigger.setTarget(gate);
                     }
                 },trigger);
 
                 triggerzones.children.each(function(zone) {
-                    //console.log("Trigger had gate target, searching names");
                     if(zone.name == name){
                         trigger.setTarget(zone);
                     }
                 },trigger);
 
                 platforms.children.each(function(platform) {
-                    //console.log("Trigger had gate target, searching names");
                     if(platform.name == name){
                         trigger.setTarget(platform);
                     }
                 },trigger);
 
                 plates.children.each(function(plate) {
-                    //console.log("Trigger had gate target, searching names");
                     if(plate.name == name){
                         trigger.setTarget(plate);
                     }
                 },trigger);
                 
+                mirrors.children.each(function(mirror) {
+                    if(mirror.name == name){
+                        trigger.setTarget(mirror);
+                    }
+                },trigger);
             })
 
         }

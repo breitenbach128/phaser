@@ -141,7 +141,7 @@
     triggerzones,platforms,barriers,secretTiles,
     ab_solarblasts,crystallamps,ab_brightbeams,
     rocks,crates,npcs,spiders,boss,light_shards,
-    breakabletiles,light_bursts,solbombs;    
+    breakabletiles,light_bursts,solbombs,gears;    
     var new_enemy;
     var spawner;
     var spawnlayer;

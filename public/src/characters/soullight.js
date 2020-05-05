@@ -50,10 +50,11 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.throw = {x:0,y:0};
         this.readyThrow = false;
         this.transfer = -1
-        this.aimer = this.scene.add.image(this.x,this.y,'soullightblast').setScale(.5).setOrigin(0.5);
+        this.aimer = this.scene.add.sprite(this.x,this.y,'soullightblast').setScale(.5).setOrigin(0.5);
         this.aimer.setVisible(false);
         this.aimer.ready = true;
         this.aimer.started = false;
+        this.aimer.chargeTime = 0;
         this.aimerRadius = 32;
         this.lastStickVec = {x:0,y:0};
         this.aimerCircle = new Phaser.Geom.Circle(this.x, this.y, this.aimerRadius);
@@ -154,7 +155,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         }else{
             if(this.protection_radius.value <  this.protection_radius.max){this.protection_radius.value+=25;};
         }
-        if(this.aimer.started){
+        if(this.aimer.started){            
             //Update Aimer
             this.setAimer();
         }
@@ -195,9 +196,12 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
             targVector = this.scene.getRelativeRadiusVector(this.x,this.y,this.lastStickVec.x,this.lastStickVec.y,this.aimerRadius);            
         }
 
-        let aimpoint = this.scene.getCircleAimPoint(this.x,this.y,this.aimerCircle,targVector.x,targVector.y)        
+        let aimpoint = this.scene.getCircleAimPoint(this.x,this.y,this.aimerCircle,targVector.x,targVector.y)      
+        let powerlevel = Math.ceil(Phaser.Math.Clamp(this.aimer.chargeTime,0,120) / 30);  
+        this.aimer.setFrame(powerlevel);
         this.aimer.setPosition(aimpoint.p.x,aimpoint.p.y);
         this.aimer.rotation = aimpoint.normangle;
+        this.aimer.chargeTime++;
     }
     aimStart(){
         if(this.aimer.ready){
@@ -210,14 +214,18 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         if(this.aimer.ready && this.aimer.started){
             this.aimer.ready = false;
             this.aimer.started = false;
-            this.shootTransfer();
+            this.shootTransfer(this.aimer.chargeTime);
+            this.aimer.chargeTime = 0;
         }
     }
-    shootTransfer(){
-        this.transfer = new SoulTransfer(this.scene,this.x,this.y,'soullightblast',0,this);
+    shootTransfer(plvl){
+        let powerlevel = Math.ceil(Phaser.Math.Clamp(plvl,0,120) / 30);
+        this.transfer = new SoulTransfer(this.scene,this.x,this.y,'soullightblast',powerlevel,this);
         this.transfer.rotation = this.aimer.rotation;
-        this.transfer.fire(this.transfer.rotation,this.projectile_speed);
+        this.transfer.fire(this.transfer.rotation,this.projectile_speed*(1+(powerlevel*0.10)));
         this.transfer.setDepth(DEPTH_LAYERS.FRONT);
+        //Cost Energy to fire
+        this.owner.addEnergy(-powerlevel*50);
     }
     homeLight(target){        
         let angle = Phaser.Math.Angle.Between(this.x,this.y,target.x,target.y);
@@ -329,6 +337,7 @@ class SoulTransfer extends Phaser.Physics.Matter.Sprite{
         this.soundfling.addMarker({name:'soul-burn-impact',start:1,duration:.2});
         this.soundGrabAlert = game.sound.add('coin',{volume: 0.8});
         this.soundGrabbed = game.sound.add('grabbedLight',{volume: 0.3});
+        this.powerlevel = frame;
 
     }
     chain(angle,speed,obj){

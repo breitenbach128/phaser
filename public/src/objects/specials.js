@@ -175,9 +175,12 @@ class Rock extends Phaser.Physics.Matter.Sprite{
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 
                 if (gameObjectB !== undefined && gameObjectB instanceof Bright) {
-                    if(gameObjectB.light_status == 1){//ONLY DARK CAN CRUSH ROCKS
+                    if(gameObjectB.light_status == 1){//ONLY DARK  MODE CAN CRUSH ROCKS
                         this.impact(gameObjectB);
                     }
+                }
+                if(gameObjectB !== undefined && gameObjectB instanceof SoulTransfer){
+                    this.impact(gameObjectB);
                 }
             }
         });
@@ -192,7 +195,7 @@ class Rock extends Phaser.Physics.Matter.Sprite{
         this.readyCrush = false;
         this.crushTimer = this.scene.time.addEvent({ delay: 300, callback: this.setReadyCrush, callbackScope: this, loop: false });
         //Add it so rocks an only collide with ground,solid and dark for a few ms. should allow me to use them as an effect.
-        this.setCollidesWith([CATEGORY.SOLID,CATEGORY.GROUND,CATEGORY.DARK,CATEGORY.BRIGHT]);
+        this.setCollidesWith([CATEGORY.SOLID,CATEGORY.GROUND,CATEGORY.DARK,CATEGORY.BRIGHT,CATEGORY.BULLET,CATEGORY.BARRIER]);
     }
     update(time, delta)
     {       
@@ -203,16 +206,16 @@ class Rock extends Phaser.Physics.Matter.Sprite{
     }
     setReadyCrush(){
         this.readyCrush = true;
-        this.setCollidesWith([CATEGORY.SOLID,CATEGORY.GROUND,CATEGORY.DARK,CATEGORY.SOLANA,CATEGORY.VEHICLE]);
+        this.setCollidesWith([CATEGORY.SOLID,CATEGORY.GROUND,CATEGORY.DARK,CATEGORY.SOLANA,CATEGORY.VEHICLE,CATEGORY.BULLET,CATEGORY.BARRIER]);
     }
     impact(obj){
         if(this.readyCrush){
             this.sound_gotCrushed.play();
-            let fromBody = obj.body;
-            let speed = Math.sqrt(Math.pow(fromBody.velocity.x,2)+Math.pow(fromBody.velocity.y,2));
-            let force = speed*fromBody.density*100;
-            if(force >= 2){                
-                //console.log("Rock Impact", force >> 0,speed >> 0,fromBody.density);
+            let fromBody = obj.body;            
+            let force = fromBody.speed*fromBody.density*100;
+            //console.log("Rock Impact", force);
+            if(force >= 1){                
+                
                 if(Phaser.Math.Between(1,5) == 1){ //20%
                     if(this.scale > 0.25){
                         for(let r=0;r< Phaser.Math.Between(1,3);r++){

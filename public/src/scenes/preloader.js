@@ -257,6 +257,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('window_shatter', 'assets/objects/window_shatter.png', {frameWidth: 64, frameHeight: 96});
         this.load.spritesheet('solana_shield', 'assets/objects/solana_shield.png', {frameWidth: 32, frameHeight: 32});
         this.load.spritesheet('chest', 'assets/objects/chest.png', {frameWidth: 64, frameHeight: 48});
+        this.load.spritesheet('gear', 'assets/objects/gear.png', {frameWidth: 16, frameHeight: 16});
         this.load.spritesheet('minecart', 'assets/objects/minecart.png', {frameWidth: 96, frameHeight: 48});
         this.load.spritesheet('minecart_wheel', 'assets/objects/minecart_wheel.png', {frameWidth: 13, frameHeight: 13});
 		//SoulCrystals
@@ -280,7 +281,7 @@ var Preloader = new Phaser.Class({
 		
 		//Images
 		this.load.spritesheet('ability_solarblast', 'assets/objects/ability_solarblast.png', {frameWidth: 16, frameHeight: 16});		
-		this.load.image('soullightblast', 'assets/objects/soullightblastv2.png');
+		this.load.spritesheet('soullightblast', 'assets/objects/soullightblastv2.png',{frameWidth: 64, frameHeight: 64});
 		this.load.image('mask1', 'assets/objects/mask1.png');
 		this.load.image('mask2', 'assets/objects/mask2.png');
 		this.load.image('light1', 'assets/objects/light1.png');
