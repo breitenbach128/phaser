@@ -56,12 +56,19 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.aimer.started = false;
         this.aimer.chargeTime = 0;
         this.aimerRadius = 32;
+        this.aimerLine = this.scene.add.line(0,0,config.x,config.y,config.x,config.y,0xFF0000,0.8).setOrigin(0,0);
+        this.aimerRect = this.scene.add.rectangle(this.x,this.y-32,4,4,0xFF0000,1.0);
+        this.aimerReflectLine = this.scene.add.line(0,0,config.x,config.y,config.x,config.y,0xFF0000,0.8).setOrigin(0,0);
+
         this.lastStickVec = {x:0,y:0};
         this.aimerCircle = new Phaser.Geom.Circle(this.x, this.y, this.aimerRadius);
         this.freePassDistance = 64;
         this.isBeaming = false;//If it is beaming, it can will carry Bright with it.
         this.passChain = [];//Soulight pass to each of these entities in order.
         this.passChainIndex = 0;
+
+        //Camera Offset to make aim easier
+        this.viewoffset = {x:0,y:0};
 
         // this.aimLine = this.scene.add.line(200,200,25,0,50,0,0xff66ff)
         // this.aimLine.setLineWidth(4,4);
@@ -193,7 +200,44 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
             //let selectStick = gpVectors[1].x == 0 && gpVectors[1].y == 0 ? 0 : 1; // L / R , If right stick is not being used, us left stick.             
             let selectStick = 1;//Only Right Stick Counts
             if(gpVectors[selectStick].x != 0 || gpVectors[selectStick].y != 0){this.lastStickVec = gpVectors[selectStick];};
-            targVector = this.scene.getRelativeRadiusVector(this.x,this.y,this.lastStickVec.x,this.lastStickVec.y,this.aimerRadius);            
+            targVector = this.scene.getRelativeRadiusVector(this.x,this.y,this.lastStickVec.x,this.lastStickVec.y,this.aimerRadius);       
+            
+            //raycast line debug - ////////////////////////
+            //256 Distance Line
+            let ang2 = Phaser.Math.Angle.Between(this.x,this.y,targVector.x,targVector.y);
+            let qReturn = {x:this.x,y:this.y};
+            let qBody = null
+            for(let p=0;p< 256;p++){
+                let alpoint = {x:Math.cos(ang2)*p,y:Math.sin(ang2)*p};
+                qReturn = {x:this.x+alpoint.x,y:this.y+alpoint.y};
+                let pQuery = Phaser.Physics.Matter.Matter.Query.point(losBlockAndReflect,{x:this.x+alpoint.x,y:this.y+alpoint.y});
+                if(pQuery.length > 0){   
+                    qBody = pQuery[0]                 ;
+                    break;
+                }
+            }  
+            this.aimerLine.setTo(this.x,this.y,qReturn.x,qReturn.y);
+            this.aimerRect.setPosition(qReturn.x,qReturn.y);
+            //Get intersecting line from verticies
+            if(qBody){
+                let verts = qBody.vertices;
+                let tLine = -1;
+                for(let v=0;v < verts.length-1;v++){                    
+                    tLine = new Phaser.Geom.Line(verts[v].x,verts[v].y,verts[v+1].x,verts[v+1].y)
+                    let intchk = Phaser.Geom.Intersects.LineToLine(tLine,this.aimerLine.geom);
+                    if(intchk){
+                        break;
+                    }
+                }
+                if(tLine != -1){
+                    //console.log("intersecting line found:",qBody,verts,tLine);
+                    let reflectAng = Phaser.Geom.Line.ReflectAngle(this.aimerLine.geom,tLine);
+                    
+                    this.aimerReflectLine.setTo(qReturn.x,qReturn.y,qReturn.x+Math.cos(reflectAng)*32,qReturn.y+Math.sin(reflectAng)*32);
+                }
+            }  
+            //END RAYCAST DEBUG          
+
         }
 
         let aimpoint = this.scene.getCircleAimPoint(this.x,this.y,this.aimerCircle,targVector.x,targVector.y)      
@@ -202,15 +246,32 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.aimer.setPosition(aimpoint.p.x,aimpoint.p.y);
         this.aimer.rotation = aimpoint.normangle;
         this.aimer.chargeTime++;
+        
+        this.viewoffset.x = (aimpoint.p.x - this.x)*2;
+        this.viewoffset.y = (aimpoint.p.y - this.y)*2;
+
+
     }
     aimStart(){
         if(this.aimer.ready){
             this.aimer.started = true;
             this.aimer.setVisible(true);
+            //Reflection Lines and Geoms
+            this.aimerReflectLine.setVisible(true);
+            this.aimerLine.setVisible(true);
+            this.aimerRect.setVisible(true);
         }
     }
     aimStop(){
+        //Might need a tween to smooth out the camera transition
+        //this.viewoffset.x = 0;
+        //this.viewoffset.y = 0;
         this.aimer.setVisible(false);
+        //Reflection Lines and Geoms
+        this.aimerReflectLine.setVisible(false);
+        this.aimerLine.setVisible(false);
+        this.aimerRect.setVisible(false);
+
         if(this.aimer.ready && this.aimer.started){
             this.aimer.ready = false;
             this.aimer.started = false;

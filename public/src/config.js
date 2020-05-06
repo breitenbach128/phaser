@@ -147,6 +147,7 @@
     var spawnlayer;
     //Raycast
     var losBlockers = [];
+    var losBlockAndReflect = [];
     //NPC Control
     var guideDialogueIndex = 0;
     var tutorialRunning = false;

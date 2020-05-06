@@ -176,6 +176,7 @@ var GameScene = new Phaser.Class({
             shapeObject.body.friction = hullprops != undefined? (hullprops.friction != undefined ? hullprops.friction : 0.01 ) : 0.01;
             hulls.push(shapeObject);
             losBlockers.push(shapeObject.body);
+            losBlockAndReflect.push(shapeObject.body);
         });
 
         //Perimeter Block for Blocking Light
@@ -202,7 +203,7 @@ var GameScene = new Phaser.Class({
         bright.toDark(); //Bright Starts the game off as dark
 
         //Create Camera        
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels+128);  
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);  
         this.cameras.main.setBackgroundColor('#000000'); 
         this.cameras.main.roundPixels = true;
         this.cameras.main.setZoom(2);
@@ -480,6 +481,7 @@ var GameScene = new Phaser.Class({
                     Phaser.Math.RotateAround(centerPoint,tmxOrigin.x,tmxOrigin.y,rotRad);
                 }     
                 mir.setup(centerPoint.x,centerPoint.y,tmxObjRef.rotation,tmxObjRef.name);
+                losBlockAndReflect.push(mir.body);
             }else if(tmxObjRef.type == "window"){  
                 let bar = barriers.get(-1000,-1000,"tmxwindow",0,true);
                 let tmxOrigin = {x:tmxObjRef.x,y:tmxObjRef.y};
@@ -1195,6 +1197,7 @@ var GameScene = new Phaser.Class({
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'MIRROR');
                     if (gObjs[0].active){
                         gObjs[0].hit();
+                        //console.log("Mirror/ST Evt Data:",event.pairs[i]);
                     }  
                 }
                 //Solana and Fireflies
@@ -1348,7 +1351,7 @@ var GameScene = new Phaser.Class({
         let disPlayersY = Math.abs(solana.y - bright.y);
 
         let midPoint = {x:(solana.x+bright.x)/2,y:(solana.y+bright.y)/2}
-        this.cameras.main.centerOn(midPoint.x,midPoint.y);
+        this.cameras.main.centerOn(midPoint.x+soullight.viewoffset.x,midPoint.y+soullight.viewoffset.y);
         //Lvl 1, Normal Mode
         if(disPlayersX < 500 && disPlayersY < 250 && this.cameraLevel != 1){
             this.cameraLevel = 1;
@@ -1396,6 +1399,7 @@ var GameScene = new Phaser.Class({
             this.debugAimLine.strokePath();
             this.debugPointer.x = targVector.x-8;
             this.debugPointer.y = targVector.y-8;
+            this.debugAimLine.fillRect(midPoint.x,midPoint.y,8,8);
         }
 
         //Updates

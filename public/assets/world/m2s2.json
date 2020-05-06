@@ -749,8 +749,8 @@
                  "type":"telebeam",
                  "visible":true,
                  "width":64,
-                 "x":1536,
-                 "y":384
+                 "x":1477,
+                 "y":134
                 }, 
                 {
                  "height":64,
@@ -795,8 +795,8 @@
                  "type":"mirror",
                  "visible":true,
                  "width":32,
-                 "x":1353,
-                 "y":424
+                 "x":1399,
+                 "y":189
                 }, 
                 {
                  "gid":9335,
@@ -807,8 +807,8 @@
                  "type":"mirror",
                  "visible":true,
                  "width":32,
-                 "x":1419,
-                 "y":235
+                 "x":1570,
+                 "y":444
                 }, 
                 {
                  "height":16,
@@ -881,26 +881,20 @@
                 {
                  "gid":9335,
                  "height":32,
-                 "id":437,
-                 "name":"mirror9",
-                 "rotation":-135,
-                 "type":"mirror",
-                 "visible":true,
-                 "width":32,
-                 "x":1449,
-                 "y":320
-                }, 
-                {
-                 "gid":9335,
-                 "height":32,
                  "id":438,
                  "name":"mirror9",
-                 "rotation":135,
+                 "properties":[
+                        {
+                         "name":"notes",
+                         "type":"string",
+                         "value":"Needs to be at 135 to solve"
+                        }],
+                 "rotation":115,
                  "type":"mirror",
                  "visible":true,
                  "width":32,
-                 "x":1378,
-                 "y":298
+                 "x":1404,
+                 "y":392
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -2397,7 +2391,7 @@
                         {
                          "name":"targetName",
                          "type":"string",
-                         "value":"gate9,gate10,gate11"
+                         "value":"gate10,gate11"
                         }, 
                         {
                          "name":"targetType",
@@ -2420,7 +2414,7 @@
                         {
                          "name":"targetName",
                          "type":"string",
-                         "value":"mirror5"
+                         "value":"mirror9"
                         }],
                  "rotation":0,
                  "type":"gear",
