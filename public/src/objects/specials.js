@@ -270,7 +270,8 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
 
         this
         .setExistingBody(compoundBody)
-        .setCollisionCategory(CATEGORY.SOLID)
+        .setCollisionCategory(CATEGORY.SOLID)        
+        .setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK])
         .setPosition(x, y)
         .setFixedRotation() 
         .setStatic(true);
@@ -299,7 +300,6 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
         //this.ready = true;
         this.dead = false;
         this.setStatic(true);
-        console.log("platfall reset");
         let tween = this.scene.tweens.add({
             targets: this,
             alpha: 1.0,              
@@ -313,7 +313,6 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
         if(!this.dead){
             this.dead = true;
             this.alpha = 0.0;
-            console.log("platfall dead");
             this.resetTimer = this.scene.time.addEvent({ delay: 4000, callback: this.reset, callbackScope: this, loop: false });
         }
     }

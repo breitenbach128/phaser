@@ -896,7 +896,7 @@ var GameScene = new Phaser.Class({
                     }
                     if(bodyA.label == "SOLANA_BOTTOM"){
                         solana.touching.down++;                        
-                        if(bodyB.label == "PLAT_TOP" && gameObjectA.getControllerAction('down')){
+                        if(bodyB.label == "PLAT_TOP" && ((curr_player == players.SOLANA || playerMode > 0 ) && gameObjectA.getControllerAction('down'))){
                             //Allow Fall Thru of platform if pressing down
                             gameObjectB.oneWayStart(gameObjectA,'down');
                         }  
@@ -1081,7 +1081,7 @@ var GameScene = new Phaser.Class({
                 //the results.
 
                 //Better function for checking bullets with impact but not additional things
-                let bulletHitList1 = ['SOLID','GROUND','CRATE','PLATFORM'];
+                let bulletHitList1 = ['SOLID','GROUND','CRATE','PLATFORM','BREAKABLE'];
                 if((bodyA.label == 'BULLET' && bulletHitList1.includes(bodyB.label)) || (bodyB.label == 'BULLET' && bulletHitList1.includes(bodyA.label)) ){
                     const bulletBody = bodyA.label === 'BULLET' ? bodyA : bodyB;
                     const bulletObj = bulletBody.gameObject;
@@ -1163,7 +1163,7 @@ var GameScene = new Phaser.Class({
                     }  
                 }                
                 //Between SoulTransfer and Solid/Ground
-                let SoulTransferBurnList1 = ['SOLID','GROUND','ROCK'];
+                let SoulTransferBurnList1 = ['SOLID','GROUND','ROCK','BREAKABLE'];
                 if((bodyA.label == 'SOULTRANSFER' && SoulTransferBurnList1.includes(bodyB.label)) || (bodyB.label == 'SOULTRANSFER' && SoulTransferBurnList1.includes(bodyA.label)) ){
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
                     if (gObjs[0].active){

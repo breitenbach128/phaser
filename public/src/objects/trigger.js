@@ -505,13 +505,30 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         //Teleport: Teleports the player via transform
        //console.log("setup",name, properties,this.target);
        if(this.zonedata.type == "force"){
-            //Apply Wind Animation if wind
-            //Rotate direction to match x/y vector
-            this.sprite.anims.play('wind-1', true);
-            let vectorParse = JSON.parse(this.zonedata.value);
-            //var rad = Math.atan2(vectorParse.x, vectorParse.y);
-            //this.setRotation(rad);
-            if(vectorParse.x < 0){this.sprite.flipX  = true;};
+            let vectorParse = JSON.parse(this.zonedata.value);   //Use this to get angle
+            let v2ang = Phaser.Math.Angle.Between(0,0,vectorParse.x,vectorParse.y);
+            let wind1 = this.scene.add.particles('shapes');
+            this.wind1 = wind1.createEmitter({
+                active:true,
+                x: this.x,
+                y: this.y,
+                frame: {
+                    frames: [
+                        "trace_06"
+                    ],
+                    cycle: false,
+                    quantity: 1
+                },
+                speed: 100,
+                angle: Phaser.Math.RadToDeg(v2ang),
+                alpha: { start: 0.2, end: 0 },
+                blendMode: 'NORMAL',
+                emitZone: {
+                    source: new Phaser.Geom.Rectangle(-w/2,-h/2,w,h),
+                    type: "random"
+                }
+            });
+
        }else if(this.zonedata.type == "teleport"){
             this.effect=[
                 this.scene.add.particles('shapes',  new Function('return ' + this.scene.cache.text.get('effect-trigger-teleporter'))())
@@ -746,7 +763,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         this.sprite
         .setExistingBody(compoundBody)         
         .setCollisionCategory(CATEGORY.SOLID)
-        .setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK])
+        .setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK, CATEGORY.VEHICLE])
         .setPosition(x, y)
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setStatic(true)

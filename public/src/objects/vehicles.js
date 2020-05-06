@@ -33,7 +33,9 @@ class Vehicle extends Phaser.Physics.Matter.Sprite{
         this.wA = scene.matter.add.image(this.x,this.y,'minecart_wheel');
         this.wA.setBody({type: 'circle',radius:6},{friction: 0.9, density: 0.04, frictionAir: 0.01, frictionStatic: 0.01});       
         this.wB = scene.matter.add.image(this.x,this.y,'minecart_wheel')
-        this.wB.setBody({type: 'circle',radius:6},{friction: 0.9, density: 0.04, frictionAir: 0.01, frictionStatic: 0.01});  
+        this.wB.setBody({type: 'circle',radius:6},{friction: 0.9, density: 0.04, frictionAir: 0.01, frictionStatic: 0.01}); 
+        this.wA.setCollisionCategory(CATEGORY.VEHICLE);
+        this.wB.setCollisionCategory(CATEGORY.VEHICLE);
         this.wA.setCollidesWith([CATEGORY.GROUND,CATEGORY.SOLID]);
         this.wB.setCollidesWith([CATEGORY.GROUND,CATEGORY.SOLID]);
         let axelA = scene.matter.add.constraint(this.body, this.wA, 0, 0.0, {
