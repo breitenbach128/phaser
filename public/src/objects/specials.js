@@ -55,7 +55,7 @@ class Barrier extends Phaser.Physics.Matter.Sprite{
     {       
 
         this.debug.setPosition(this.x, this.y-16);
-        this.debug.setText("Zone Status:"+String(this.name));
+        this.debug.setText("Barrier:"+String(this.name));
     }
 };
 
@@ -271,7 +271,7 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
         this
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.SOLID)        
-        .setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK])
+        .setCollidesWith([CATEGORY.SOLANA, CATEGORY.BRIGHT, CATEGORY.DARK, CATEGORY.SOLID, CATEGORY.GROUND])
         .setPosition(x, y)
         .setFixedRotation() 
         .setStatic(true);
@@ -295,6 +295,7 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
         this.shakeCount = ct;
     }
     reset(){
+        console.log("platfall reset");
         this.setActive(true);
         this.setPosition(this.spawnPos.x,this.spawnPos.y); 
         //this.ready = true;
@@ -311,6 +312,7 @@ class Fallplat extends Phaser.Physics.Matter.Sprite{
     }
     setDead(){
         if(!this.dead){
+            console.log("platfall dead");
             this.dead = true;
             this.alpha = 0.0;
             this.resetTimer = this.scene.time.addEvent({ delay: 4000, callback: this.reset, callbackScope: this, loop: false });
@@ -420,6 +422,7 @@ class BreakableTile extends Phaser.Physics.Matter.Sprite{
             newRock.setup(this.x,this.y,0.25);  
             newRock.applyForce({x:Phaser.Math.FloatBetween(-0.0010,0.0010),y:Phaser.Math.FloatBetween(0.0,-0.0010)});                     
         }
+        camera_main.shake(80,.005);
         this.detailSprite.destroy();
         this.destroy();
     }
@@ -870,6 +873,7 @@ class TMXWater{
         //Construct set position function?
     }
 }
+//TMZ Liquid drops (Water puts out bright, turns him to dark. Acid hurts Dark. Corruption hurts Solana.)
 
 //Chest
 class Chest extends Phaser.Physics.Matter.Sprite{

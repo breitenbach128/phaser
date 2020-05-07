@@ -162,6 +162,8 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
         this.prevVel = {x:0,y:0};       
         this.mvdir = JSON.parse(properties.mvdir)
         this.isClosed = true;
+        this.twDuration = properties.duration == undefined ? 3000 : properties.duration;
+        this.twCompleteDelay = properties.completedelay == undefined ? 0 : properties.completedelay;
         this.closedPos = {x:x,y:y};
         this.openPos = {x:x+this.mvdir.x,y:y+this.mvdir.y}
         this.autoClose = properties.autoclose == undefined ? false : properties.autoclose;
@@ -197,7 +199,8 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
                     x: this.openPos.x,
                     y: this.openPos.y,
                     ease: 'Power1',
-                    duration: 3000,
+                    duration: this.twDuration,
+                    completeDelay: this.twCompleteDelay,
                     onComplete: this.openComplete,
                     onCompleteParams: [ this, true ]
                 });
@@ -207,7 +210,8 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
                     x: this.closedPos.x,
                     y: this.closedPos.y,
                     ease: 'Power1',
-                    duration: 3000,
+                    duration: this.twDuration,
+                    completeDelay: this.twCompleteDelay,
                     onComplete: this.openComplete,
                     onCompleteParams: [ this, false ]
                 });
@@ -763,7 +767,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         this.sprite
         .setExistingBody(compoundBody)         
         .setCollisionCategory(CATEGORY.SOLID)
-        .setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK, CATEGORY.VEHICLE])
+        .setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK, CATEGORY.VEHICLE, CATEGORY.SOLID])
         .setPosition(x, y)
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setStatic(true)
@@ -937,7 +941,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
 
     }
     oneWayEnd(){        
-        this.setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK]);
+        this.setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK, CATEGORY.VEHICLE, CATEGORY.SOLID]);
         this.onWayTracker = -1;
     }
 };

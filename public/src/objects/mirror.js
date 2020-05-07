@@ -63,8 +63,9 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
         this.angle = angle;
         this.minAngle = angle - 45;
         this.maxAngle = angle + 45;
-        this.flash = false;
 
+        this.flash = false;
+        console.log("Mirror Setup", angle, this.angle,this.minAngle,this.maxAngle,this.name)
         this.on('animationcomplete',this.mirrorAnimComplete,this); 
     }
     hit(){
@@ -79,8 +80,8 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
         this.debug.setPosition(this.x, this.y-16);
         this.debug.setText("Angle:"+String(this.angle));
         //Check Rotation Constraints
-        if(this.angle > this.maxAngle){ this.angle = this.maxAngle; }
-        if(this.angle < this.minAngle){ this.angle = this.minAngle; }
+        if(this.angle > this.maxAngle){ this.angle = this.maxAngle;console.log("Adjusting Mirror > Max", this.name) }
+        if(this.angle < this.minAngle){ this.angle = this.minAngle;console.log("Adjusting Mirror < min", this.name) }
     }
     rotateMirror(x){
         this.angle+=x;
