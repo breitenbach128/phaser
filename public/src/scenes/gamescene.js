@@ -1653,8 +1653,8 @@ var GameScene = new Phaser.Class({
     },
     generateEnergy(){
         //This looks choppy. I need to make it a single factor, alter the factor and then apply it. 
-        solana.addEnergy(2);
-        bright.addEnergy(2);
+        solana.addEnergy(20);
+        bright.addEnergy(20);
     },
     saveData(){
         //Save Polaris Data

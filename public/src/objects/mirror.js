@@ -125,6 +125,7 @@ class MirrorSensor extends Phaser.Physics.Matter.Image{
     }
 }
 
+//Add A bucket, or Y shape at the top to allow for easy rotation. Dark can just sit in and and roll.
 class TMXGear extends Phaser.Physics.Matter.Image{
     constructor(scene,x,y) {
         super(scene.matter.world, x, y, 'gear', 0)

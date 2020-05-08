@@ -598,6 +598,9 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             });
         }else if(this.zonedata.type == 'hurt'){
             let spark1 = this.scene.add.particles('shapes');
+            let hurtParse = JSON.parse(this.zonedata.value);
+            let gravY = hurtParse.gravY != undefined ? hurtParse.gravY : 0;
+            let gravX = hurtParse.gravX != undefined ? hurtParse.gravX : 0;
             this.sparker = spark1.createEmitter({
                 active:true,
                 x: this.x,
@@ -609,7 +612,8 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                     cycle: false,
                     quantity: 1
                 },
-                gravityY: -100,
+                gravityY: gravY,
+                gravityX: gravX,
                 scale: { start: 0.5, end: 0.0 },
                 alpha: { start: 1, end: 0 },
                 blendMode: 'ADD',
@@ -622,7 +626,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                 }
             });
        }else if(this.zonedata.type == 'liquid'){
-            this.scene.time.addEvent({ delay: 1000, callback: function(){let d = liquiddrops.get(x+Phaser.Math.Between(-w/2,w/2),y);}, callbackScope: this, loop: true });
+            //this.scene.time.addEvent({ delay: 1000, callback: function(){let d = liquiddrops.get(x+Phaser.Math.Between(-w/2,w/2),y);}, callbackScope: this, loop: true });
        }
  
     }

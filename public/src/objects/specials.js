@@ -18,7 +18,7 @@ class Barrier extends Phaser.Physics.Matter.Sprite{
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
-        const mainBody =  Bodies.rectangle(0, 0, w, h);
+        const mainBody =  Bodies.rectangle(0, 0, w*0.33, h, {chamfer : {radius: 2}});
 
         const compoundBody = Body.create({
             parts: [mainBody],
