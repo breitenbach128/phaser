@@ -874,7 +874,139 @@ class TMXWater{
     }
 }
 //TMZ Liquid drops (Water puts out bright, turns him to dark. Acid hurts Dark. Corruption hurts Solana.)
+class Droplet extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'liquiddroplet', 0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+        this.setActive(true);
 
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.rectangle(x,y,w*0.50,h*0.50);
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.20,
+            friction: 0.1,//Was 0.1
+            label: 'LIQUIDDROP'
+        });
+
+        this
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.LIQUID)
+        .setCollidesWith([CATEGORY.GROUND])
+        .setFixedRotation()
+        .setIgnoreGravity(true)
+        .setPosition(x, y); 
+
+        this.scene.matterCollision.addOnCollideStart({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    //gameObjectA.destroy();
+                }
+                if (gameObjectB !== undefined && bodyB.label == 'GROUND') {
+                    gameObjectA.impact();
+                }
+            }
+        });
+        this.setTint(0x0000CC);
+        let dripPosY = this.y+this.height*1.5
+        this.twfall = this.scene.tweens.add({
+            targets: this,
+            height: h*2.0,
+            width: w*0.5,
+            displayHeight: h*2.0,
+            displayWidth: w*0.5,              
+            y: dripPosY ,
+            ease: 'Linear',       
+            duration: 500,  
+            onComplete: function(tween, targets, mydrop){
+                mydrop.setIgnoreGravity(false);
+            },
+            onCompleteParams: [this],
+        });
+
+    }
+    impact(){
+        this.angle = 0;
+        let w = Phaser.Math.Between(this.width/2,this.width);
+        let h = this.height;
+        this.twimpact = this.scene.tweens.add({
+            targets: this,
+            height: 2,
+            width: w*5.0,
+            displayHeight: 2,
+            displayWidth: w*5.0,
+            ease: 'Linear',       
+            duration: 300,  
+            onComplete: function(tween, targets, mydrop){
+                targets[0].splashdown();
+            },
+            onCompleteParams: [this],
+        });
+    }
+    setup(x,y, properties,name){
+        this.setActive(true); 
+        this.setPosition(x,y);
+        this.name = name;
+ 
+    }
+    splashdown(){
+        this.splashtimer = this.scene.time.addEvent({ delay: 1000, callback: this.createdrips, callbackScope: this, loop: false });
+    }
+    createdrips(){
+        this.drips = [];
+        for(let d=0;d < Phaser.Math.Between(0,4);d++){
+            this.drips.push({x:this.x + Phaser.Math.Between(-this.width/4,this.width/4),y:this.y,n:0,m:Phaser.Math.Between(4,12)});
+        }
+        this.dripTimer = this.scene.time.addEvent({ delay: 100, callback: this.moddrips, callbackScope: this, loop: true });
+        this.gfxDrips = this.scene.add.graphics();
+        this.lifeTimer = this.scene.time.addEvent({ delay: 3000, callback: this.removedroplet, callbackScope: this, loop: false });
+    }
+    moddrips(){
+        let maxCount = 0;
+        this.drips.forEach(e=>{
+            if(e.n < e.m){
+                e.n++;
+            }else{
+                maxCount++;
+            }
+            
+        },this)
+        this.dripdown();        
+    }
+    dripdown(){    
+        this.gfxDrips.clear(); 
+        this.gfxDrips.lineStyle(1, 0x0000CC, 0.9);
+        this.drips.forEach(e=>{
+            this.gfxDrips.beginPath();
+            this.gfxDrips.moveTo(e.x, e.y);
+            this.gfxDrips.lineTo(e.x, e.y+e.n);
+            this.gfxDrips.closePath();
+            this.gfxDrips.strokePath();
+        },this)
+
+    }
+    removedroplet(){
+        this.gfxDrips.clear(); 
+        this.twfall.remove();
+        this.twimpact.remove();
+        this.dripTimer.remove()
+        this.gfxDrips.destroy();
+        this.destroy();
+    }
+    update(time, delta)
+    {       
+
+
+    }
+};
 //Chest
 class Chest extends Phaser.Physics.Matter.Sprite{
     constructor(scene,x,y) {

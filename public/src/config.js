@@ -141,7 +141,8 @@
     triggerzones,platforms,barriers,secretTiles,
     ab_solarblasts,crystallamps,ab_brightbeams,
     rocks,crates,npcs,spiders,boss,light_shards,
-    breakabletiles,light_bursts,solbombs,gears;    
+    breakabletiles,light_bursts,solbombs,gears,
+    liquiddrops;    
     var new_enemy;
     var spawner;
     var spawnlayer;
@@ -203,7 +204,8 @@
         SOLANA_UP: 1024,
         SHIELD: 2048,
         BOSS: 4096,
-        VEHICLE: 8192
+        VEHICLE: 8192,
+        LIQUID: 16384
 
     }
     const DEPTH_LAYERS = {

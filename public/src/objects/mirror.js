@@ -65,7 +65,6 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
         this.maxAngle = angle + 45;
 
         this.flash = false;
-        console.log("Mirror Setup", angle, this.angle,this.minAngle,this.maxAngle,this.name)
         this.on('animationcomplete',this.mirrorAnimComplete,this); 
     }
     hit(){

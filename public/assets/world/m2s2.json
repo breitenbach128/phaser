@@ -972,7 +972,7 @@
                  "type":"window",
                  "visible":true,
                  "width":32,
-                 "x":1040,
+                 "x":1008,
                  "y":240
                 }, 
                 {
@@ -984,7 +984,7 @@
                  "type":"window",
                  "visible":true,
                  "width":32,
-                 "x":1072,
+                 "x":1040,
                  "y":240
                 }, 
                 {
@@ -996,7 +996,7 @@
                  "type":"window",
                  "visible":true,
                  "width":32,
-                 "x":1104,
+                 "x":1072,
                  "y":240
                 }],
          "opacity":1,
@@ -1853,8 +1853,8 @@
                  "type":"platform",
                  "visible":true,
                  "width":32,
-                 "x":1178,
-                 "y":166
+                 "x":1312,
+                 "y":176
                 }, 
                 {
                  "height":79,
@@ -2943,6 +2943,48 @@
                  "width":32,
                  "x":1232,
                  "y":288
+                }, 
+                {
+                 "height":32,
+                 "id":472,
+                 "name":"zone6",
+                 "properties":[
+                        {
+                         "name":"allowReset",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"resetDelay",
+                         "type":"int",
+                         "value":1000
+                        }, 
+                        {
+                         "name":"targetName",
+                         "type":"string",
+                         "value":"none"
+                        }, 
+                        {
+                         "name":"targetType",
+                         "type":"string",
+                         "value":"none"
+                        }, 
+                        {
+                         "name":"zoneType",
+                         "type":"string",
+                         "value":"liquid"
+                        }, 
+                        {
+                         "name":"zoneValue",
+                         "type":"string",
+                         "value":"0"
+                        }],
+                 "rotation":0,
+                 "type":"zone",
+                 "visible":true,
+                 "width":176,
+                 "x":464,
+                 "y":320
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -3673,6 +3715,28 @@
                  "width":48,
                  "x":1264,
                  "y":240
+                }, 
+                {
+                 "height":16,
+                 "id":470,
+                 "name":"",
+                 "rotation":0,
+                 "type":"hull",
+                 "visible":true,
+                 "width":32,
+                 "x":976,
+                 "y":256
+                }, 
+                {
+                 "height":16,
+                 "id":471,
+                 "name":"",
+                 "rotation":0,
+                 "type":"hull",
+                 "visible":true,
+                 "width":160,
+                 "x":1104,
+                 "y":256
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -3681,7 +3745,7 @@
          "y":0
         }],
  "nextlayerid":18,
- "nextobjectid":470,
+ "nextobjectid":473,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.3",

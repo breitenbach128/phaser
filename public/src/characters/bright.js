@@ -15,7 +15,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
           parts: [mainBody],
           frictionStatic: 0.3,
           frictionAir: 0.3,
-          friction: 0.3,
+          friction: 0.8,
           restitution: 0.00,
           density: 0.05,
           label: "BRIGHT"

@@ -360,7 +360,11 @@ var GameScene = new Phaser.Class({
             classType: TMXGear,
             runChildUpdate: true 
         });
-        
+        //Solbombs
+        liquiddrops = this.add.group({ 
+            classType: Droplet,
+            runChildUpdate: true 
+        });
         //Clear Boss
         boss = -1;
 

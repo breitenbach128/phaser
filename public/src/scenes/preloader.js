@@ -319,6 +319,7 @@ var Preloader = new Phaser.Class({
 		//Water // https://github.com/jorbascrumps/phaser-plugin-water-body
 		this.load.image('droplet', 'assets/effects/water/droplet.png');
 		this.load.image('water', 'assets/effects/water/water.jpg');
+		this.load.image('liquiddroplet', 'assets/objects/droplet.png');
 
 		// font
 		this.load.bitmapFont('fontwhite', 'img/fontwhite.png', 'img/fontwhite.xml');
