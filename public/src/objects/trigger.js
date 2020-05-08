@@ -756,8 +756,8 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         const { width: w, height: h } = this.sprite;
         const mainBody =  Bodies.rectangle(0, 0, w, h);
         this.sensors = {
-            top: Bodies.rectangle(0, -h*0.60, w , h*0.60, { isSensor: true }),
-            bottom: Bodies.rectangle(0, h*0.60, w , h*0.60, { isSensor: true })
+            top: Bodies.rectangle(0, -h*0.60, w*1.20 , h*0.80, { isSensor: true }),
+            bottom: Bodies.rectangle(0, h*0.60, w*1.20 , h*0.80, { isSensor: true })
           };
         this.sensors.top.label = "PLAT_TOP";
         this.sensors.bottom.label = "PLAT_BOTTOM";
@@ -943,12 +943,13 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
     oneWayStart(player,d){
         this.setCollidesWith([~CATEGORY.SOLANA]);
         this.onWayTracker = {obj: player,  direction: d};
-        
+        this.setTint(0x004400);
 
     }
     oneWayEnd(){        
         this.setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK, CATEGORY.VEHICLE, CATEGORY.SOLID]);
         this.onWayTracker = -1;
+        this.clearTint();
     }
 };
 //Crystals can be charged with solar blasts to light up for a short period. They slowly get dimmer.

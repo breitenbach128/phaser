@@ -806,6 +806,7 @@ var GameScene = new Phaser.Class({
                       || gameObjectB instanceof PlatSwing
                       || gameObjectB instanceof BreakableTile 
                       || gameObjectB instanceof Crate 
+                      || gameObjectB instanceof TMXGear
                       || gameObjectB instanceof BrightBeamBlock)) {   
                 
                 //handle plaform jumping allowance             
@@ -891,7 +892,8 @@ var GameScene = new Phaser.Class({
                 || gameObjectB instanceof Fallplat
                 || gameObjectB instanceof PlatSwingTween  
                 || gameObjectB instanceof PlatSwing
-                || gameObjectB instanceof BreakableTile              
+                || gameObjectB instanceof BreakableTile 
+                || gameObjectB instanceof TMXGear             
                 || gameObjectB instanceof BrightBeamBlock)) {  
 
                     //handle plaform jumping allowance             
@@ -914,10 +916,10 @@ var GameScene = new Phaser.Class({
                     
                     let platformOneWayStarts = ['SOLANA_TOP','SOLANA_RIGHT','SOLANA_LEFT'];
                     if(platformOneWayStarts.includes(bodyA.label) && bodyB.label == "PLAT_BOTTOM"){
-                        if(gameObjectA.body.velocity.y < 0){
+                        //if(gameObjectA.body.velocity.y < 0){
                             //Start tracking and disable collisions
                             gameObjectB.oneWayStart(gameObjectA,'up');
-                        }
+                        //}
                     }
 
               }
@@ -1691,8 +1693,8 @@ var GameScene = new Phaser.Class({
     getGamepadVectors(gamePadID){
         if(gamePad[gamePadID]){
             //Raw Sticks Vectors
-            let stickRight = gamePad[gamePadID].getStickRight(.1);
-            let stickLeft = gamePad[gamePadID].getStickLeft(.1);
+            let stickRight = gamePad[gamePadID].getStickRight(.01);
+            let stickLeft = gamePad[gamePadID].getStickLeft(.01);
             return [stickLeft,stickRight];
         }
         

@@ -136,6 +136,11 @@ class TMXGear extends Phaser.Physics.Matter.Image{
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         //Set Control Sensor - Player can't collide with mirrors, but bullets can. Sensor can detect player inputs.
         const body =  Bodies.circle(0, 0, this.width*0.50);
+        // const prongLeft = Bodies.rectangle(-this.width/2, -this.height/2, this.width*0.10,this.height*0.50);
+        // const prongRight = Bodies.rectangle(this.width/2, -this.height/2, this.width*0.10,this.height*0.50);
+        // prongLeft.angle += Math.PI/4;
+        // prongRight.angle += -Math.PI/4;
+
         const controlBody = Body.create({
             parts: [body],
             frictionStatic: 0.20,
