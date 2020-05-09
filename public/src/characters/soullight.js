@@ -240,16 +240,19 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 
         }
 
-        let aimpoint = this.scene.getCircleAimPoint(this.x,this.y,this.aimerCircle,targVector.x,targVector.y)      
-        let powerlevel = Math.ceil(Phaser.Math.Clamp(this.aimer.chargeTime,0,120) / 30);  
+        let aimpoint = this.scene.getCircleAimPoint(this.x,this.y,this.aimerCircle,targVector.x,targVector.y)   
+        let aimerClamp = Phaser.Math.Clamp(this.aimer.chargeTime,0,120);   
+        let powerlevel = Math.ceil(aimerClamp / 30);  
         this.aimer.setFrame(powerlevel);
         this.aimer.setPosition(aimpoint.p.x,aimpoint.p.y);
         this.aimer.rotation = aimpoint.normangle;
         this.aimer.chargeTime++;
         
-        this.viewoffset.x = (aimpoint.p.x - this.x)*2;
-        this.viewoffset.y = (aimpoint.p.y - this.y)*2;
+        //this.viewoffset.x = (aimpoint.p.x - this.y)*2;
+        //this.viewoffset.y = (aimpoint.p.y - this.y)*2;
 
+        this.viewoffset.x = Math.cos(this.aimer.rotation)*aimerClamp;
+        this.viewoffset.y = Math.sin(this.aimer.rotation)*aimerClamp;
 
     }
     aimStart(){

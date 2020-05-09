@@ -937,17 +937,16 @@ class Droplet extends Phaser.Physics.Matter.Sprite{
         this.angle = 0;
         let w = Phaser.Math.Between(this.width/2,this.width);
         let h = this.height;
+        let rW = Phaser.Math.Between(16,32)
         this.twimpact = this.scene.tweens.add({
             targets: this,
             height: 2,
-            width: w*5.0,
+            width: rW,
             displayHeight: 2,
-            displayWidth: w*5.0,
+            displayWidth: rW,
             ease: 'Linear',       
             duration: 300,  
-            onComplete: function(tween, targets, mydrop){
-                targets[0].splashdown();
-            },
+            onComplete: this.splashdown,
             onCompleteParams: [this],
         });
     }
@@ -957,15 +956,15 @@ class Droplet extends Phaser.Physics.Matter.Sprite{
         this.name = name;
  
     }
-    splashdown(){
-        this.splashtimer = this.scene.time.addEvent({ delay: 1000, callback: this.createdrips, callbackScope: this, loop: false });
+    splashdown(tween, targets, mydrop){
+        mydrop.splashtimer = mydrop.scene.time.addEvent({ delay: 1000, callback: mydrop.createdrips, callbackScope: mydrop, loop: false });
     }
     createdrips(){
         this.drips = [];
         for(let d=0;d < Phaser.Math.Between(0,4);d++){
             this.drips.push({x:this.x + Phaser.Math.Between(-this.width/4,this.width/4),y:this.y,n:0,m:Phaser.Math.Between(4,12)});
         }
-        this.dripTimer = this.scene.time.addEvent({ delay: 100, callback: this.moddrips, callbackScope: this, loop: true });
+        this.dripTimer = this.scene.time.addEvent({ delay: 80, callback: this.moddrips, callbackScope: this, loop: true });
         this.gfxDrips = this.scene.add.graphics();
         this.lifeTimer = this.scene.time.addEvent({ delay: 3000, callback: this.removedroplet, callbackScope: this, loop: false });
     }
@@ -1003,7 +1002,7 @@ class Droplet extends Phaser.Physics.Matter.Sprite{
     }
     update(time, delta)
     {       
-
+        this.setRotation(0);
 
     }
 };

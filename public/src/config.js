@@ -25,8 +25,8 @@
             },
             matter: {
                 gravity: { y: 1.5 },
-                positionIterations: 12, //8
-                velocityIterations: 10, //6
+                positionIterations: 12, //12
+                velocityIterations: 10, //10
                 constraintIterations: 8, //2
                 // restingThresh: 0.1,
                 // restingThreshTangent: 0.1,

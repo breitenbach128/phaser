@@ -109,6 +109,7 @@ var GameScene = new Phaser.Class({
         this.shadow_mask = this.shadow_graphic.createGeometryMask();
         this.shadow_mask.setInvertAlpha();
         this.shadow_background.setMask(this.shadow_mask);
+        this.visiblityPolygon = {p: null, x:0, y:0};
 
         //Draw Debug
         this.matter.world.createDebugGraphic();
@@ -1249,7 +1250,7 @@ var GameScene = new Phaser.Class({
                         }
                     }else{                       
                         gObjs[0].addEnergy(gObjs[1].brightness);
-                        gObjs[1].breaklamp();
+                        gObjs[1].turnOff();
                     }
 
                 }
@@ -1422,7 +1423,7 @@ var GameScene = new Phaser.Class({
         //Draw lighting
         var solana_in_light = false;
         this.shadow_graphic.clear();
-        this.cutGraphicRaycastPolgon(soullight.x,soullight.y,1440);
+        this.cutGraphicRaycastPolygon(soullight.x,soullight.y,720);//1440
         //CENTER ON CAMERA AND CALC FOR ANY APPLICABLE OFFSETS        
         this.shadow_graphic.fillCircle(bright.x, bright.y, bright.light_radius);
 
@@ -1597,19 +1598,27 @@ var GameScene = new Phaser.Class({
             this.cameras.remove(cam_p2);
         }
     },
-    cutGraphicRaycastPolgon(x,y,range){
-        let shapes = [];
-        lightPolygons.forEach(function(e){
-            let d = Phaser.Math.Distance.Between(x,y,e[0][0],e[0][1]);
-            if(d < range){
-                shapes.push(e);            
-            }
-        });	
+    cutGraphicRaycastPolygon(x,y,range){
+        //Only Run the create light polygon if there is an position update, otherwise use the old polygon.
+        //This should save resources
+        if(this.visiblityPolygon.x != x || this.visiblityPolygon.y != y){
+            let shapes = [];
+            lightPolygons.forEach(function(e){
+                let d = Phaser.Math.Distance.Between(x,y,e[0][0],e[0][1]);
+                if(d < range){
+                    shapes.push(e);            
+                }
+            });	
 
-        let soullight_border_verts = soullight.protection_circle.getPoints(24);
-        shapes.push(createLightObstaclePolygon(0,0,soullight_border_verts));
+            let soullight_border_verts = soullight.protection_circle.getPoints(24);
+            shapes.push(createLightObstaclePolygon(0,0,soullight_border_verts));
 
-        var visibility = createLightPolygon(x, y, shapes);
+            this.visiblityPolygon.p = createLightPolygon(x, y, shapes);
+            this.visiblityPolygon.x = x;
+            this.visiblityPolygon.y = y;
+        }
+
+        let visibility = this.visiblityPolygon.p;
         if(visibility){
             this.shadow_graphic.beginPath();
             this.shadow_graphic.moveTo(visibility[0][0], visibility[0][1]);
@@ -1655,8 +1664,8 @@ var GameScene = new Phaser.Class({
     },
     generateEnergy(){
         //This looks choppy. I need to make it a single factor, alter the factor and then apply it. 
-        solana.addEnergy(20);
-        bright.addEnergy(20);
+        solana.addEnergy(5);
+        bright.addEnergy(5);
     },
     saveData(){
         //Save Polaris Data

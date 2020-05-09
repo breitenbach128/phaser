@@ -626,7 +626,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                 }
             });
        }else if(this.zonedata.type == 'liquid'){
-            //this.scene.time.addEvent({ delay: 1000, callback: function(){let d = liquiddrops.get(x+Phaser.Math.Between(-w/2,w/2),y);}, callbackScope: this, loop: true });
+            this.scene.time.addEvent({ delay: 1000, callback: function(){let d = liquiddrops.get(x+Phaser.Math.Between(-w/2,w/2),y);}, callbackScope: this, loop: true });
        }
  
     }
@@ -756,8 +756,8 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         const { width: w, height: h } = this.sprite;
         const mainBody =  Bodies.rectangle(0, 0, w, h);
         this.sensors = {
-            top: Bodies.rectangle(0, -h*0.60, w*1.20 , h*0.80, { isSensor: true }),
-            bottom: Bodies.rectangle(0, h*0.60, w*1.20 , h*0.80, { isSensor: true })
+            top: Bodies.rectangle(0, -h*0.70, w*1.40 , h*0.80, { isSensor: true }),
+            bottom: Bodies.rectangle(0, h*0.70, w*1.40 , h*0.80, { isSensor: true })
           };
         this.sensors.top.label = "PLAT_TOP";
         this.sensors.bottom.label = "PLAT_BOTTOM";
