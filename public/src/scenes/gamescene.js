@@ -604,6 +604,11 @@ var GameScene = new Phaser.Class({
                 let cart = new Vehicle(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2).setDepth(DEPTH_LAYERS.FRONT);
                 cart.wA.setDepth(DEPTH_LAYERS.FRONT);
                 cart.wB.setDepth(DEPTH_LAYERS.FRONT);
+            }else if(tmxObjRef.type == 'decal'){
+                let genprops = getTileProperties(tmxObjRef.properties);
+                let decal = this.add.sprite(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,genprops.texture);
+                decal.anims.play(genprops.anim, true);
+                
             }
         }
         //Spawn Triggers
@@ -2269,5 +2274,11 @@ function createAnimations(scene){
         frames: scene.anims.generateFrameNumbers('chest', { frames:[0,1,2] }),
         frameRate: 4,
         repeat: 0
+    });       
+    scene.anims.create({
+        key: 'fan-running',
+        frames: scene.anims.generateFrameNumbers('fan-1', { frames:[0,1,2,3,4,5] }),
+        frameRate: 12,
+        repeat: -1
     }); 
 }
