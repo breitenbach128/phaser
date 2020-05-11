@@ -143,6 +143,7 @@
     rocks,crates,npcs,spiders,boss,light_shards,
     breakabletiles,light_bursts,solbombs,gears,
     liquiddrops;    
+    var debug_drop_cout = 0;
     var new_enemy;
     var spawner;
     var spawnlayer;

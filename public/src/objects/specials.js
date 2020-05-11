@@ -911,7 +911,7 @@ class Droplet extends Phaser.Physics.Matter.Sprite{
                     //gameObjectA.destroy();
                 }
                 if (gameObjectB !== undefined && bodyB.label == 'GROUND') {
-                    gameObjectA.impact();
+                    if(gameObjectA.hitGround == false){ gameObjectA.impact();};
                 }
             }
         });
@@ -931,9 +931,12 @@ class Droplet extends Phaser.Physics.Matter.Sprite{
             },
             onCompleteParams: [this],
         });
+        this.id =0;
+        this.hitGround = false;
 
     }
     impact(){
+        this.hitGround = true;
         this.angle = 0;
         let w = Phaser.Math.Between(this.width/2,this.width);
         let h = this.height;
@@ -949,6 +952,7 @@ class Droplet extends Phaser.Physics.Matter.Sprite{
             onComplete: this.splashdown,
             onCompleteParams: [this],
         });
+        //console.log("impact",this.id);
     }
     setup(x,y, properties,name){
         this.setActive(true); 
@@ -958,6 +962,7 @@ class Droplet extends Phaser.Physics.Matter.Sprite{
     }
     splashdown(tween, targets, mydrop){
         mydrop.splashtimer = mydrop.scene.time.addEvent({ delay: 1000, callback: mydrop.createdrips, callbackScope: mydrop, loop: false });
+        //console.log("splashdown",mydrop.id);
     }
     createdrips(){
         this.drips = [];

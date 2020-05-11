@@ -130,7 +130,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             let control_passRelease = this.getControllerAction('passR');
             let control_brightFollow = this.getControllerAction('brightFollow');
             let control_bomb = this.getControllerAction('bomb');
-            let control_grab = this.getControllerAction('grab');
+            let control_grab = this.getControllerAction('grab');            
+            let control_jumphold = this.getControllerAction('jumphold');
             //console.log("SOL_R:",control_right,this.getControllerAction('right'),keyPad.checkKeyState('D'));
 
             if (this.control_lock == false) {
@@ -161,7 +162,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 if ((this.onGround || this.onWall) && this.body.velocity.y >= 0) { this.jumpCount = 0 }; //Add velocity check to not reset jump count if going up.
 
                 //Check Jump ready
-                if (this.onGround || this.onWall || (soullight.ownerid == 0 && checkSolbitOwned(1) && this.jumpCount < 2)) {
+                let sb_1_owned = checkSolbitOwned(1);
+                if (this.onGround || this.onWall || (soullight.ownerid == 0 && sb_1_owned && this.jumpCount < 2)) {
                     this.jumpReady = true;
 
                 } else {                    
@@ -169,6 +171,13 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     if (this.jumpTimerRunning == false) {
                         this.jumpTimer = this.scene.time.addEvent({ delay: 100, callback: this.forgiveJump, callbackScope: this, loop: false });
                         this.jumpTimerRunning = true;
+                    }
+                    if(this.jumpCount > 0 && !sb_1_owned || this.jumpCount > 1 && sb_1_owned){
+                        this.jumpReady = false;
+                    }
+                    //If Jump is held and the body is going up, extend the jump power and time
+                    if(control_jumphold && this.body.velocity.y < 0){
+                        this.applyForce({x:0,y:-this.jump_speed*0.025});
                     }
                 }
 
@@ -344,6 +353,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     return (gamePad[this.ctrlDeviceId].getStickLeft(.5).x > 0);
                 case 'jump':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('A') == 1);
+                case 'jumphold':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('A') > 1);
                 case 'bomb':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('B') == 1);
                 case 'grab':

@@ -626,7 +626,13 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                 }
             });
        }else if(this.zonedata.type == 'liquid'){
-            //this.scene.time.addEvent({ delay: 1000, callback: function(){let d = liquiddrops.get(x+Phaser.Math.Between(-w/2,w/2),y);}, callbackScope: this, loop: true });
+            
+            this.scene.time.addEvent({ delay: 1000, callback: function(){
+                
+                let d = liquiddrops.get(x+Phaser.Math.Between(-w/2,w/2),y);
+                d.id = debug_drop_cout;
+                debug_drop_cout++;
+            }, callbackScope: this, loop: true });
        }
  
     }
