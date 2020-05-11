@@ -403,7 +403,7 @@
                         {
                          "name":"targetMap",
                          "type":"string",
-                         "value":"m1s1"
+                         "value":"m2s2"
                         }],
                  "rotation":0,
                  "type":"exit",

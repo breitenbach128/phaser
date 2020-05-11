@@ -1163,7 +1163,7 @@
   <object id="240" name="east1" type="exit" x="736" y="2288" width="48" height="96">
    <properties>
     <property name="targetExit" value="west1"/>
-    <property name="targetMap" value="m1s1"/>
+    <property name="targetMap" value="m2s2"/>
    </properties>
   </object>
   <object id="241" name="east1" type="entrance" x="688" y="2304" width="32" height="32"/>
