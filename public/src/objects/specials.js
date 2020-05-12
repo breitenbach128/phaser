@@ -835,6 +835,7 @@ class TMXWater{
         this.scene = scene;
 
         this.waterbody = this.scene.add.water(x, y, w, h, d, opt);
+        console.log("Waterbody",this.waterbody)
         this.scene.matterCollision.addOnCollideStart({
             objectA: this.waterbody.sensor,
             callback: ({ gameObjectB, gameObjectA }) => {
@@ -928,6 +929,7 @@ class Droplet extends Phaser.Physics.Matter.Sprite{
             duration: 500,  
             onComplete: function(tween, targets, mydrop){
                 mydrop.setIgnoreGravity(false);
+                mydrop.setDepth(DEPTH_LAYERS.FG);
             },
             onCompleteParams: [this],
         });
@@ -971,6 +973,7 @@ class Droplet extends Phaser.Physics.Matter.Sprite{
         }
         this.dripTimer = this.scene.time.addEvent({ delay: 80, callback: this.moddrips, callbackScope: this, loop: true });
         this.gfxDrips = this.scene.add.graphics();
+        this.gfxDrips.setDepth(DEPTH_LAYERS.FG);
         this.lifeTimer = this.scene.time.addEvent({ delay: 3000, callback: this.removedroplet, callbackScope: this, loop: false });
     }
     moddrips(){

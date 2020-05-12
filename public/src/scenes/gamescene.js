@@ -59,10 +59,10 @@ var GameScene = new Phaser.Class({
         //Load the collision tiles
         var CollisionTiles = map.addTilesetImage('collision','collisions32');//called it collision in tiled
         // create the Graphic layers      
-        this.bglayer3 = map.createStaticLayer('bg3', tilesetImages, 0, 0);
-        this.bglayer2 = map.createStaticLayer('bg2', tilesetImages, 0, 0);
-        this.bglayer = map.createStaticLayer('bg', tilesetImages, 0, 0);
-        this.fglayer = map.createStaticLayer('fg', tilesetImages, 0, 0); 
+        this.bglayer3 = map.createStaticLayer('bg3', tilesetImages, 0, 0).setDepth(DEPTH_LAYERS.BG-3);
+        this.bglayer2 = map.createStaticLayer('bg2', tilesetImages, 0, 0).setDepth(DEPTH_LAYERS.BG-2);
+        this.bglayer = map.createStaticLayer('bg', tilesetImages, 0, 0).setDepth(DEPTH_LAYERS.BG-1);
+        this.fglayer = map.createStaticLayer('fg', tilesetImages, 0, 0).setDepth(DEPTH_LAYERS.FG); 
         //Create the special layers
         let fghiddenlayer= map.createDynamicLayer('fg_hidden', tilesetImages, 0, 0); 
         let fgbreakablelayer= map.createDynamicLayer('fg_breakable', tilesetImages, 0, 0); 
@@ -593,7 +593,7 @@ var GameScene = new Phaser.Class({
                     shapeObject.body.label = 'JUNK'; 
             }else if(tmxObjRef.type == 'water'){
                 let wtprops = getTileProperties(tmxObjRef.properties);
-                let wtOps = {dampening: .0001,tension: 0.01,texture: 'water'};
+                let wtOps = {dampening: .0001,tension: 0.01,texture: 'water',renderDepth: DEPTH_LAYERS.BG-4};
                 let wt = new TMXWater(this,tmxObjRef.x,tmxObjRef.y,tmxObjRef.width,tmxObjRef.height,tmxObjRef.height,wtOps);
             }else if(tmxObjRef.type == 'chest'){
                 let chestProps = getTileProperties(tmxObjRef.properties);
