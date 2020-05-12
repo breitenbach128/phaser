@@ -371,7 +371,12 @@ var GameScene = new Phaser.Class({
 
         speed = Phaser.Math.GetSpeed(300, 1);
        
-
+        //Create Pathing layer
+        let pathingLayer = map.getObjectLayer('pathing');
+        pathingLayer.objects.forEach(e=>{
+            pathingNodes.push(new PathingNode(e.name,e.polyline,e.x,e.y));
+        })
+        console.log(pathingNodes);
         //Create enemy layer
         enemylayer = map.getObjectLayer('enemies');
         //Create spawn layer 
@@ -447,9 +452,18 @@ var GameScene = new Phaser.Class({
                 }else{
                     new_enemy = enemies.get(tmxObjRef.x,tmxObjRef.y,EnemyType);
                 }
-
+                //Set manual path if available
                 if(props.path){
-                    path = props.path;
+                    path = JSON.parse(props.path);
+                }
+                //Accept Pathing Objects from TMX if available
+                if(props.pathid){
+                    let findPath = pathingNodes.find(e => {
+                        return e.name === props.pathid;
+                    })
+                    if(findPath){
+                        path = findPath.worldpoints;
+                    }
                 }
                 if(props.tint){
                     let newTint =  (Phaser.Display.Color.HexStringToColor(props.tint))._color; //0x333333

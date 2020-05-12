@@ -386,6 +386,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     return (keyPad.checkKeyState('D') > 0);
                 case 'jump':
                     return (keyPad.checkKeyState('SPC') == 1);
+                case 'jumphold':
+                    return (keyPad.checkKeyState('SPC') > 1);
                 case 'bomb':
                     return (keyPad.checkKeyState('G') == 1);
                 case 'grab':

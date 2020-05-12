@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="50" height="150" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="260">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="50" height="150" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="260">
  <editorsettings>
   <export target="../assets/world/m2s1.json" format="json"/>
  </editorsettings>
@@ -2056,4 +2056,5 @@
    <polygon points="0,0 16,-16 80,-16 80,32 0,32"/>
   </object>
  </objectgroup>
+ <objectgroup id="18" name="pathing"/>
 </map>

@@ -71,7 +71,7 @@
     var map; 
     var mapTileSize = {tw:32,th:32};
     var current_map = "m2s3";
-    var current_exit = {solana: "west1", bright: "west1"};
+    var current_exit = {solana: "south1", bright: "south1"};
     var world_backgrounds = [];
     //Map Configurations - Each level will have a name from the preloader. The tsKey will also come from the preloader. The tsName is from Tiled.
     var level_configs = [
@@ -157,6 +157,8 @@
     var new_enemy;
     var spawner;
     var spawnlayer;
+    //Pathing AI
+    var pathingNodes = [];
     //Raycast
     var losBlockers = [];
     var losBlockAndReflect = [];

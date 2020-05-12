@@ -7,7 +7,18 @@ var ENEMY_WEAPONS = [
     {name: 'claw',aimmed:false,prjTexture:'bullet',prjLife:16,prjVec:{x:2,y:0},range:64,onDeath:[]},
     {name: 'darkblip_shoot',aimmed:true,prjTexture:'bullet',prjLife:900,prjVec:{x:1,y:0},range:400,onDeath:[]}//5
 ]
-
+class PathingNode{
+    constructor(name,points,x,y){
+        this.name = name;
+        this.points = points;
+        this.x = x;
+        this.y = y;
+        this.worldpoints = [];
+        points.forEach(e=>{
+            this.worldpoints.push({x:e.x+x,y:e.y+y});
+        },this)
+    }
+}
 class Enemy extends Phaser.Physics.Matter.Sprite{
     constructor(scene,x,y,texture) {
         super(scene.matter.world, x, y, texture, 0)
@@ -157,7 +168,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         // +"\nPatrolPath:"+waypointString);
     }
     setPath(path){
-        this.waypoints = JSON.parse(path);
+        this.waypoints = path;
     }
     changeWeapon(speedVec,index,gun){
         this.wpSpeedMod = speedVec;//{x:4,y:1}
