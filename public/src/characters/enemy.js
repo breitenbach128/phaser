@@ -158,10 +158,6 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
             }
         }
 
-        let waypointString = "";
-        this.waypoints.forEach(e=>{
-            waypointString+="{"+e.x+":"+e.y+"},";
-        });
         // this.debug.setPosition(this.x, this.y-64);
         // this.debug.setText("BehavPass:"+this.behavior.passive
         // +"\nX:"+String(this.x>>0)+", Y:"+String(this.y>>0)

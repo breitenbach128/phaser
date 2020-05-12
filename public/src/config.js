@@ -223,9 +223,10 @@
     }
     const DEPTH_LAYERS = {
         BG: 10,
-        FG: 600,
         ENEMIES: 200,
         PLAYERS: 300,
+        PLATFORMS: 400,
+        FG: 600,
         FRONT: 999
     }
     var playerConfig = 

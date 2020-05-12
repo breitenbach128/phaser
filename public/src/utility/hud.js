@@ -171,6 +171,9 @@ class HudScene extends Phaser.Scene {
     }
     alterEnergySolana(energyChange){
         this.solanaStatBar.alterValue(energyChange);
+        if(this.solanaStatBar.getValue() <= 0){
+            solana.receiveDamage(1);
+        }
 
     }
     alterEnergyBright(energyChange){

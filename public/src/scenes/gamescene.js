@@ -653,6 +653,7 @@ var GameScene = new Phaser.Class({
                 let trig_x_offset = tmxObjRef.width/2;
                 let trig_y_offset = tmxObjRef.height/2;
                 triggerObj.setup(tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,getTileProperties(tmxObjRef.properties),tmxObjRef.name,tmxObjRef.width,tmxObjRef.height);
+                triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
             }
         }
           
@@ -1473,7 +1474,6 @@ var GameScene = new Phaser.Class({
         let rate_of_energy_drain_outside_light = 1;
         if(!solana_in_light){
             solana.addEnergy(-rate_of_energy_drain_outside_light);
-            if(hud.solanaStatBar.getValue() <= 0){solana.receiveDamage(1);};
         };
 
         //KEYPRESS DETECTION - USING CUSTOM CONTROLLER CLASS

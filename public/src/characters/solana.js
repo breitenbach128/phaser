@@ -73,6 +73,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.isAnimLocked = false;//Locks out new animations from playing to allow one to finish.
         this.isStunned = false;
         this.isSlowed = false;
+        this.isInWater = false;
         //Create Light Shield
         this.isShielding = false;
         this.LightShieldRadius = 20;
@@ -119,6 +120,9 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             }else if(this.isSlowed){
                 mv_speed = 0.00214285;
             }
+            if(this.isInWater){
+                this.addEnergy(-2);
+            }
 
             //Only control if currently the active control object
             let control_left = this.getControllerAction('left');
@@ -163,7 +167,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
                 //Check Jump ready
                 let sb_1_owned = checkSolbitOwned(1);
-                if (this.onGround || this.onWall || (soullight.ownerid == 0 && sb_1_owned && this.jumpCount < 2)) {
+                if (this.onGround || this.onWall || this.isInWater || (soullight.ownerid == 0 && sb_1_owned && this.jumpCount < 2)) {
                     this.jumpReady = true;
 
                 } else {                    
@@ -681,10 +685,12 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     enterWater(){
         this.setFrictionAir(0.25);
         this.jump_speed = 0.055;
+        this.isInWater = true;
     }
     exitWater(){
         this.setFrictionAir(0.08);
         this.jump_speed = 0.045;
+        this.isInWater = false;
     }
 }
 
