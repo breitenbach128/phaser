@@ -258,8 +258,8 @@
                  "type":"entrance",
                  "visible":true,
                  "width":32,
-                 "x":48,
-                 "y":1120
+                 "x":140,
+                 "y":384
                 }, 
                 {
                  "height":96,
@@ -302,12 +302,12 @@
                         {
                          "name":"targetExit",
                          "type":"string",
-                         "value":"west1"
+                         "value":"south1"
                         }, 
                         {
                          "name":"targetMap",
                          "type":"string",
-                         "value":"m2s2"
+                         "value":"m2s3"
                         }],
                  "rotation":0,
                  "type":"exit",
@@ -324,8 +324,8 @@
                  "type":"entrance",
                  "visible":true,
                  "width":32,
-                 "x":528,
-                 "y":32
+                 "x":512,
+                 "y":48
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -357,8 +357,8 @@
                  "type":"soulcrystal",
                  "visible":true,
                  "width":16,
-                 "x":64,
-                 "y":1088
+                 "x":156,
+                 "y":352
                 }, 
                 {
                  "height":16,
@@ -1538,8 +1538,8 @@
                  "rotation":0,
                  "type":"platform",
                  "visible":true,
-                 "width":112,
-                 "x":528,
+                 "width":128,
+                 "x":512,
                  "y":96
                 }, 
                 {
@@ -4177,7 +4177,7 @@
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }],
