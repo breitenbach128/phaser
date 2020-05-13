@@ -13,7 +13,7 @@
 class TMXLever extends Phaser.Physics.Matter.Sprite{
     constructor(scene,x,y) {
         super(scene.matter.world, x, y, 'lever', 0)
-        this.scene = config.scene;
+        this.scene = scene;
         // Create the physics-based sprite that we will move around and animate
         scene.matter.world.add(this);
         // config.scene.sys.displayList.add(this);

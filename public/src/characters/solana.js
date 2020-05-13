@@ -35,6 +35,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
        //Fix the draw offsets for the compound sprite.
         compoundBody.render.sprite.xOffset = .51;
         compoundBody.render.sprite.yOffset = .65;
+
+        //compoundBody.render.sprite.yOffset = 0.15; //3.23 update location
         compoundBody.label = "SOLANA";
 
         this.sprite
@@ -683,7 +685,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         }
     }
     enterWater(){
-        this.setFrictionAir(0.25);
+        this.setFrictionAir(0.35);
         this.jump_speed = 0.055;
         this.isInWater = true;
     }

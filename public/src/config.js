@@ -24,6 +24,7 @@
                 gravity: { y: 400 }
             },
             matter: {
+                debug: true,
                 gravity: { y: 1.5 },
                 positionIterations: 12, //12
                 velocityIterations: 10, //10
@@ -70,7 +71,7 @@
     //Tiles
     var map; 
     var mapTileSize = {tw:32,th:32};
-    var current_map = "m2s3";
+    var current_map = "m2s2";
     var current_exit = {solana: "south1", bright: "south1"};
     var world_backgrounds = [];
     //Map Configurations - Each level will have a name from the preloader. The tsKey will also come from the preloader. The tsName is from Tiled.
