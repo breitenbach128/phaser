@@ -51,15 +51,15 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.throw = {x:0,y:0};
         this.readyThrow = false;
         this.transfer = -1
-        this.aimer = this.scene.add.sprite(this.x,this.y,'soullightblast').setScale(.5).setOrigin(0.5);
+        this.aimer = this.scene.add.sprite(this.x,this.y,'soullightblast').setScale(.5).setOrigin(0.5).setDepth(this.depth);
         this.aimer.setVisible(false);
         this.aimer.ready = true;
         this.aimer.started = false;
         this.aimer.chargeTime = 0;
         this.aimerRadius = 32;
-        this.aimerLine = this.scene.add.line(0,0,config.x,config.y,config.x,config.y,0xFF0000,0.8).setOrigin(0,0);
-        this.aimerRect = this.scene.add.rectangle(this.x,this.y-32,4,4,0xFF0000,1.0);
-        this.aimerReflectLine = this.scene.add.line(0,0,config.x,config.y,config.x,config.y,0xFF0000,0.8).setOrigin(0,0);
+        this.aimerLine = this.scene.add.line(0,0,config.x,config.y,config.x,config.y,0xFF0000,0.8).setOrigin(0,0).setDepth(this.depth);
+        this.aimerRect = this.scene.add.rectangle(this.x,this.y-32,4,4,0xFF0000,1.0).setDepth(this.depth);
+        this.aimerReflectLine = this.scene.add.line(0,0,config.x,config.y,config.x,config.y,0xFF0000,0.8).setOrigin(0,0).setDepth(this.depth);
 
         this.lastStickVec = {x:0,y:0};
         this.aimerCircle = new Phaser.Geom.Circle(this.x, this.y, this.aimerRadius);
@@ -164,7 +164,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         }else{
             if(this.protection_radius.value <  this.protection_radius.max){this.protection_radius.value+=25;};
         }
-        if(this.aimer.started){            
+        if(this.aimer.started){      
             //Update Aimer
             this.setAimer();
         }
@@ -249,7 +249,6 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.aimer.setPosition(aimpoint.p.x,aimpoint.p.y);
         this.aimer.rotation = aimpoint.normangle;
         this.aimer.chargeTime++;
-        
         //this.viewoffset.x = (aimpoint.p.x - this.y)*2;
         //this.viewoffset.y = (aimpoint.p.y - this.y)*2;
 
@@ -276,13 +275,24 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.aimerReflectLine.setVisible(false);
         this.aimerLine.setVisible(false);
         this.aimerRect.setVisible(false);
-
         if(this.aimer.ready && this.aimer.started){
             this.aimer.ready = false;
             this.aimer.started = false;
             this.shootTransfer(this.aimer.chargeTime);
-            this.aimer.chargeTime = 0;
         }
+        this.scene.add.tween({
+            targets: this.aimer,
+            ease: 'Linear',
+            chargeTime: 0,
+            duration: 1000,
+            onUpdate: function(tween,targets,sl){
+                let aimerClamp = Phaser.Math.Clamp(sl.aimer.chargeTime,0,120); 
+                //console.log("Aimer Release chargetime",sl.aimer.chargeTime) 
+                sl.viewoffset.x = Math.cos(sl.aimer.rotation)*aimerClamp;
+                sl.viewoffset.y = Math.sin(sl.aimer.rotation)*aimerClamp;
+            },
+            onUpdateParams:[this]
+        });
     }
     shootTransfer(plvl){
         let powerlevel = Math.ceil(Phaser.Math.Clamp(plvl,0,120) / 30);
