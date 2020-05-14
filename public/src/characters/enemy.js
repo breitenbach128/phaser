@@ -54,8 +54,8 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
           density: 0.03,
         });
        //Fix the draw offsets for the compound sprite.
-        // compoundBody.render.sprite.xOffset = .5;
-        // compoundBody.render.sprite.yOffset = .60;
+        compoundBody.render.sprite.xOffset = .50;
+        compoundBody.render.sprite.yOffset = .50;
         compoundBody.label = "ENEMY";
 
         this

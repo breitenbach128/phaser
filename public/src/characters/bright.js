@@ -29,7 +29,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         .setPosition(x, y)
         .setIgnoreGravity(true);
         
-        this.bg = this.scene.add.image(x,y,'bright',0).setVisible(false);
+        this.setDepth(DEPTH_LAYERS.PLAYERS);
+        this.bg = this.scene.add.image(x,y,'bright',0).setVisible(false).setDepth(DEPTH_LAYERS.PLAYERS-1);
         this.scene.tweens.add({
             targets: this.bg,
             rotation: (Math.PI*2),              

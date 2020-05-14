@@ -13,7 +13,7 @@
 class TMXLever extends Phaser.Physics.Matter.Sprite{
     constructor(scene,x,y) {
         super(scene.matter.world, x, y, 'lever', 0)
-        this.scene = config.scene;
+        this.scene = scene;
         // Create the physics-based sprite that we will move around and animate
         scene.matter.world.add(this);
         // config.scene.sys.displayList.add(this);
@@ -139,7 +139,8 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
             frictionAir: 0.02,
             friction: 0.1
         });
-
+        compoundBody.render.sprite.xOffset = 0.50;
+        compoundBody.render.sprite.yOffset = 0.50;
         this.sprite
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.BARRIER)
@@ -598,6 +599,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             });
         }else if(this.zonedata.type == 'hurt'){
             let spark1 = this.scene.add.particles('shapes');
+            spark1.setDepth(DEPTH_LAYERS.FRONT);
             let hurtParse = JSON.parse(this.zonedata.value);
             let gravY = hurtParse.gravY != undefined ? hurtParse.gravY : 0;
             let gravX = hurtParse.gravX != undefined ? hurtParse.gravX : 0;
@@ -616,7 +618,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                 gravityX: gravX,
                 scale: { start: 0.5, end: 0.0 },
                 alpha: { start: 1, end: 0 },
-                blendMode: 'ADD',
+                blendMode: 'NORMAL',
                 tint: [
                     4263489
                 ],

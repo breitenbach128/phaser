@@ -103,7 +103,7 @@ var GameScene = new Phaser.Class({
         //Clear Light Polygons
         lightPolygons = [];
         //Generate shadow canvas
-        this.shadow_background =  this.add.rectangle(0,0,map.widthInPixels*2, map.heightInPixels*2,0x000000,0.7);
+        this.shadow_background =  this.add.rectangle(0,0,map.widthInPixels*2, map.heightInPixels*2,0x000000,0.7).setDepth(DEPTH_LAYERS.PLAYERS);
         this.shadow_graphic = this.make.graphics();    
         this.shadow_graphic.setPosition(0,0);        
         this.shadow_mask = this.shadow_graphic.createGeometryMask();
@@ -113,7 +113,7 @@ var GameScene = new Phaser.Class({
 
         //Draw Debug
         this.matter.world.createDebugGraphic();
-        this.matter.world.drawDebug = false;        
+        this.matter.world.drawDebug = true;        
         this.worldGrid = this.add.grid(0,0,map.widthInPixels*2,map.heightInPixels*2,16,16,0x333333,0.1,0x000000,0.8).setOrigin(0);
         this.worldGrid.setVisible(false);
         //Add Labels for tile bodies for easier collision management
@@ -189,7 +189,7 @@ var GameScene = new Phaser.Class({
         solana = new Solana(this,192,160);  
         bright = new Bright(this,192,128);
         soullight =new SoulLight({scene: this, x:192,y:128,sprite:'bright',frame:0},solana);
-
+        
         //
         this.changePlayerReady = true;
         //Emit Events
@@ -529,6 +529,7 @@ var GameScene = new Phaser.Class({
                 })
                 let platfallprops = getTileProperties(tmxObjRef.properties);
                 let pf = platfalls.get(tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-oG);
+                pf.setDepth(DEPTH_LAYERS.PLATFORMS);
                 if(platfallprops != undefined){
                     if(platfallprops.shakeTime != undefined && platfallprops.shakeCount != undefined){
                         pf.setShakeTime(platfallprops.shakeTime,platfallprops.shakeCount);
@@ -1380,18 +1381,18 @@ var GameScene = new Phaser.Class({
         let midPoint = {x:(solana.x+bright.x)/2,y:(solana.y+bright.y)/2}
         this.cameras.main.centerOn(midPoint.x+soullight.viewoffset.x,midPoint.y+soullight.viewoffset.y);
         //Lvl 1, Normal Mode
-        if(disPlayersX < 500 && disPlayersY < 250 && this.cameraLevel != 1){
+        if(disPlayersX < 400 && disPlayersY < 250 && this.cameraLevel != 1){
             this.cameraLevel = 1;
             this.cameras.main.zoomTo(2,1000,'Linear');
         }
         //Lvl 2, Zoom out
-        if((disPlayersX >= 500 && disPlayersX < 750) || (disPlayersY >= 250 && disPlayersY < 450) && this.cameraLevel != 2){
+        if((disPlayersX >= 400 && disPlayersX < 750) || (disPlayersY >= 250 && disPlayersY < 400) && this.cameraLevel != 2){
             if( this.cameraLevel == 3){this.splitScreen(false);}//If it was split screen, cancel that.
             this.cameraLevel = 2;
             this.cameras.main.zoomTo(1.75,1000,'Linear');            
         }
         //Lvl 3, Split the Camera
-        if((disPlayersX >= 750 || disPlayersY >= 450) && this.cameraLevel != 3){  
+        if((disPlayersX >= 750 || disPlayersY >= 400) && this.cameraLevel != 3){  
             this.cameraLevel = 3;          
             this.splitScreen(true);
         }

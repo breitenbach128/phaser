@@ -421,7 +421,8 @@ class HudSpeech{
         //Allow the speach item to be skipped if a button is pressed.
         if(hs.scene.skipSpeech.isDown && tween.progress < 0.90){
             //console.log("skip attempted");
-            tween.seek(0.90);
+            //tween.seek(0.90);
+            tween.nextState();
             hs.speaktext.setText("");
             hs.endSpeech(hs);
         }

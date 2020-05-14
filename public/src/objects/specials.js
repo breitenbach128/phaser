@@ -834,10 +834,13 @@ class TMXWater{
     constructor(scene,x,y,w,h,d,opt){
         this.scene = scene;
 
-        this.waterbody = this.scene.add.water(x, y, w, h, d, opt);
+        //this.waterbody = this.scene.add.water(x, y, w, h, d, opt);
+        //NOTE: ObjectA was this.waterbody.sensor
+        this.waterbody = this.scene.matter.add.rectangle(x+w/2,y+h/2,w,h, {isStatic:true, isSensor:true});
+        this.sprite = this.scene.add.rectangle(x+w/2,y+h/2,w,h,0x0099ff,0.7)
         console.log("Waterbody",this.waterbody)
         this.scene.matterCollision.addOnCollideStart({
-            objectA: this.waterbody.sensor,
+            objectA: this.waterbody,
             callback: ({ gameObjectB, gameObjectA }) => {
                 if(gameObjectB instanceof Solana
                     || gameObjectB instanceof Bright
@@ -848,16 +851,16 @@ class TMXWater{
                     || gameObjectB instanceof Bullet){
                         
                         gameObjectB.enterWater();
-                        const i = gameObjectA.columns.findIndex((col, i) => col.x >= (gameObjectB.x-gameObjectA.x) && i);	
-                        const speed = gameObjectB.body.speed * 3;	                        
-                        const numDroplets = Math.ceil(gameObjectB.body.speed) * 5;		
-                        gameObjectA.splash(Phaser.Math.Clamp(i, 0, gameObjectA.columns.length - 1), speed, numDroplets);
+                        // const i = gameObjectA.columns.findIndex((col, i) => col.x >= (gameObjectB.x-gameObjectA.x) && i);	
+                        // const speed = gameObjectB.body.speed * 3;	                        
+                        // const numDroplets = Math.ceil(gameObjectB.body.speed) * 5;		
+                        // gameObjectA.splash(Phaser.Math.Clamp(i, 0, gameObjectA.columns.length - 1), speed, numDroplets);
  
                 }
             },
         });
         this.scene.matterCollision.addOnCollideEnd({
-            objectA: this.waterbody.sensor,
+            objectA: this.waterbody,
             callback: ({ gameObjectA: wb, gameObjectB, }) => {
                 if(gameObjectB instanceof Solana
                     || gameObjectB instanceof Bright
@@ -1035,7 +1038,7 @@ class Chest extends Phaser.Physics.Matter.Sprite{
             label: 'CHEST'
         });
 
-        compoundBody.render.sprite.yOffset = .65; 
+        compoundBody.render.sprite.yOffset = 0.23; 
         this
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.SOLID)

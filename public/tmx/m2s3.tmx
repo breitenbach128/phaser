@@ -618,7 +618,7 @@
   <object id="265" name="south1" type="entrance" x="656" y="1120" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="15" name="objects">
-  <object id="273" name="water1" type="water" x="256" y="800" width="720" height="208"/>
+  <object id="273" name="water1" type="water" x="240" y="800" width="752" height="224"/>
   <object id="298" name="soulcrystal0" type="soulcrystal" x="704" y="1136" width="16" height="16">
    <properties>
     <property name="color" value="yellow"/>

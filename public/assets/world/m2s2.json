@@ -258,8 +258,8 @@
                  "type":"entrance",
                  "visible":true,
                  "width":32,
-                 "x":140,
-                 "y":384
+                 "x":1092,
+                 "y":788
                 }, 
                 {
                  "height":96,
@@ -357,8 +357,8 @@
                  "type":"soulcrystal",
                  "visible":true,
                  "width":16,
-                 "x":156,
-                 "y":352
+                 "x":1108,
+                 "y":756
                 }, 
                 {
                  "height":16,
@@ -4196,7 +4196,7 @@
  "nextobjectid":500,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.3.2",
+ "tiledversion":"1.3.4",
  "tileheight":16,
  "tilesets":[
         {

@@ -14,7 +14,7 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
-        const mainBody =  Bodies.circle(0, 0, w*0.80);
+        const mainBody =  Bodies.circle(0, 0, w*0.50);
 
         const compoundBody = Body.create({
             parts: [mainBody],
@@ -31,6 +31,8 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
         .setScale(0.75)
         .setIgnoreGravity(true);
                     
+        this.setDepth(DEPTH_LAYERS.FG);
+        
         this.damage = 1;    
         this.lifespan = 0;
         this.bounced = false;
