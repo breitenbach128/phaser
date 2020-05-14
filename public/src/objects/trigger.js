@@ -599,6 +599,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             });
         }else if(this.zonedata.type == 'hurt'){
             let spark1 = this.scene.add.particles('shapes');
+            spark1.setDepth(DEPTH_LAYERS.FRONT);
             let hurtParse = JSON.parse(this.zonedata.value);
             let gravY = hurtParse.gravY != undefined ? hurtParse.gravY : 0;
             let gravX = hurtParse.gravX != undefined ? hurtParse.gravX : 0;
@@ -617,7 +618,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                 gravityX: gravX,
                 scale: { start: 0.5, end: 0.0 },
                 alpha: { start: 1, end: 0 },
-                blendMode: 'ADD',
+                blendMode: 'NORMAL',
                 tint: [
                     4263489
                 ],

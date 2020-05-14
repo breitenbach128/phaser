@@ -31,6 +31,8 @@ class Bullet extends Phaser.Physics.Matter.Sprite{
         .setScale(0.75)
         .setIgnoreGravity(true);
                     
+        this.setDepth(DEPTH_LAYERS.FG);
+        
         this.damage = 1;    
         this.lifespan = 0;
         this.bounced = false;

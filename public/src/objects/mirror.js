@@ -32,6 +32,7 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
         .setVisible(false)
         .setStatic(true);    
 
+        this.setDepth(DEPTH_LAYERS.FG);
         //Mirror Sensor for Solana Interaction
         this.sensor = new MirrorSensor(this,x,y);
 
