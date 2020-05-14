@@ -621,8 +621,12 @@ var GameScene = new Phaser.Class({
                 cart.wB.setDepth(DEPTH_LAYERS.FRONT);
             }else if(tmxObjRef.type == 'decal'){
                 let genprops = getTileProperties(tmxObjRef.properties);
-                let decal = this.add.sprite(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,genprops.texture);
-                decal.anims.play(genprops.anim, true);
+                if(genprops.srctype == 'sprite'){
+                    let decal = this.add.sprite(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,genprops.texture);
+                    decal.anims.play(genprops.anim, true);
+                }else if(genprops.srctype == 'image'){
+                    let decal = this.add.image(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,genprops.texture);
+                }
                 
             }
         }

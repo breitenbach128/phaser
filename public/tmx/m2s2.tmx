@@ -604,7 +604,7 @@
     <property name="targetMap" value="m2s1"/>
    </properties>
   </object>
-  <object id="261" name="west1" type="entrance" x="1092" y="788" width="32" height="32"/>
+  <object id="261" name="west1" type="entrance" x="53" y="1124" width="32" height="32"/>
   <object id="496" name="north2" type="exit" x="1504" y="16" width="80" height="96">
    <properties>
     <property name="targetExit" value="west1"/>
@@ -621,7 +621,7 @@
   <object id="499" name="north1" type="entrance" x="512" y="48" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="15" name="objects">
-  <object id="301" name="soulcrystal0" type="soulcrystal" x="1108" y="756" width="16" height="16">
+  <object id="301" name="soulcrystal0" type="soulcrystal" x="69" y="1092" width="16" height="16">
    <properties>
     <property name="color" value="yellow"/>
     <property name="scid" type="int" value="0"/>
@@ -723,6 +723,7 @@
   <object id="488" name="fan1_decal" type="decal" x="32" y="416" width="64" height="32">
    <properties>
     <property name="anim" value="fan-running"/>
+    <property name="srctype" value="sprite"/>
     <property name="texture" value="fan-1"/>
    </properties>
   </object>

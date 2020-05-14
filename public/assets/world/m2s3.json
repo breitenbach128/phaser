@@ -403,6 +403,72 @@
                  "width":32,
                  "x":1312,
                  "y":1056
+                }, 
+                {
+                 "height":16,
+                 "id":314,
+                 "name":"mushroom",
+                 "properties":[
+                        {
+                         "name":"srctype",
+                         "type":"string",
+                         "value":"image"
+                        }, 
+                        {
+                         "name":"texture",
+                         "type":"string",
+                         "value":"mushroom1"
+                        }],
+                 "rotation":0,
+                 "type":"decal",
+                 "visible":true,
+                 "width":16,
+                 "x":736,
+                 "y":1168
+                }, 
+                {
+                 "height":16,
+                 "id":315,
+                 "name":"mushroom",
+                 "properties":[
+                        {
+                         "name":"srctype",
+                         "type":"string",
+                         "value":"image"
+                        }, 
+                        {
+                         "name":"texture",
+                         "type":"string",
+                         "value":"mushroom1"
+                        }],
+                 "rotation":0,
+                 "type":"decal",
+                 "visible":true,
+                 "width":16,
+                 "x":832,
+                 "y":1168
+                }, 
+                {
+                 "height":16,
+                 "id":316,
+                 "name":"mushroom",
+                 "properties":[
+                        {
+                         "name":"srctype",
+                         "type":"string",
+                         "value":"image"
+                        }, 
+                        {
+                         "name":"texture",
+                         "type":"string",
+                         "value":"mushroom1"
+                        }],
+                 "rotation":0,
+                 "type":"decal",
+                 "visible":true,
+                 "width":16,
+                 "x":1040,
+                 "y":1152
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1097,7 +1163,7 @@
          "y":0
         }],
  "nextlayerid":19,
- "nextobjectid":314,
+ "nextobjectid":317,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.4",

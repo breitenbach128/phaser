@@ -258,8 +258,8 @@
                  "type":"entrance",
                  "visible":true,
                  "width":32,
-                 "x":1092,
-                 "y":788
+                 "x":53,
+                 "y":1124
                 }, 
                 {
                  "height":96,
@@ -357,8 +357,8 @@
                  "type":"soulcrystal",
                  "visible":true,
                  "width":16,
-                 "x":1108,
-                 "y":756
+                 "x":69,
+                 "y":1092
                 }, 
                 {
                  "height":16,
@@ -935,6 +935,11 @@
                          "name":"anim",
                          "type":"string",
                          "value":"fan-running"
+                        }, 
+                        {
+                         "name":"srctype",
+                         "type":"string",
+                         "value":"sprite"
                         }, 
                         {
                          "name":"texture",

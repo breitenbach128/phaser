@@ -61,7 +61,7 @@
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-3-28-2020";
+    var buildVersion = "a-5-14-2020";
     var game;
     var hud;
     var playScene;
@@ -71,8 +71,8 @@
     //Tiles
     var map; 
     var mapTileSize = {tw:16,th:16};
-    var current_map = "m2s2";
-    var current_exit = {solana: "west1", bright: "west1"};
+    var current_map = "m2s3";
+    var current_exit = {solana: "south1", bright: "south1"};
     var world_backgrounds = [];
     //Map Configurations - Each level will have a name from the preloader. The tsKey will also come from the preloader. The tsName is from Tiled.
     var level_configs = [

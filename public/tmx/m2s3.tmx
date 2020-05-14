@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="75" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="314">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="75" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="317">
  <editorsettings>
   <export target="../assets/world/m2s3.json" format="json"/>
  </editorsettings>
@@ -638,6 +638,24 @@
   <object id="312" name="hive3" type="hive" x="1312" y="1056" width="32" height="32">
    <properties>
     <property name="bugsMax" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="314" name="mushroom" type="decal" x="736" y="1168" width="16" height="16">
+   <properties>
+    <property name="srctype" value="image"/>
+    <property name="texture" value="mushroom1"/>
+   </properties>
+  </object>
+  <object id="315" name="mushroom" type="decal" x="832" y="1168" width="16" height="16">
+   <properties>
+    <property name="srctype" value="image"/>
+    <property name="texture" value="mushroom1"/>
+   </properties>
+  </object>
+  <object id="316" name="mushroom" type="decal" x="1040" y="1152" width="16" height="16">
+   <properties>
+    <property name="srctype" value="image"/>
+    <property name="texture" value="mushroom1"/>
    </properties>
   </object>
  </objectgroup>

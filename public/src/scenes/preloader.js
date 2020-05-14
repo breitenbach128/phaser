@@ -296,6 +296,7 @@ var Preloader = new Phaser.Class({
 		this.load.image('triggerzone', 'assets/objects/triggerzone.png');
 		this.load.image('speechbubble', 'assets/hud/speechBubble.png');
 		this.load.image('tmxwindow', 'assets/objects/tmxwindow.png');
+		this.load.image('mushroom1', 'assets/objects/mushroom_1.png');
 		// - HUD
 		this.load.spritesheet('health_blip', 'assets/hud/health_blip.png',{frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('hud_interaction_control_arrows','assets/hud/hud_interaction_control_arrows.png',{frameWidth: 32, frameHeight: 32});
