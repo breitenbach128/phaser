@@ -70,9 +70,9 @@
     var global_gravity = 380;
     //Tiles
     var map; 
-    var mapTileSize = {tw:32,th:32};
+    var mapTileSize = {tw:16,th:16};
     var current_map = "m2s2";
-    var current_exit = {solana: "south1", bright: "south1"};
+    var current_exit = {solana: "west1", bright: "west1"};
     var world_backgrounds = [];
     //Map Configurations - Each level will have a name from the preloader. The tsKey will also come from the preloader. The tsName is from Tiled.
     var level_configs = [

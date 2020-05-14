@@ -139,7 +139,8 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
             frictionAir: 0.02,
             friction: 0.1
         });
-
+        compoundBody.render.sprite.xOffset = 0.50;
+        compoundBody.render.sprite.yOffset = 0.50;
         this.sprite
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.BARRIER)

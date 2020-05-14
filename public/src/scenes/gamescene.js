@@ -103,7 +103,7 @@ var GameScene = new Phaser.Class({
         //Clear Light Polygons
         lightPolygons = [];
         //Generate shadow canvas
-        this.shadow_background =  this.add.rectangle(0,0,map.widthInPixels*2, map.heightInPixels*2,0x000000,0.7);
+        this.shadow_background =  this.add.rectangle(0,0,map.widthInPixels*2, map.heightInPixels*2,0x000000,0.7).setDepth(DEPTH_LAYERS.PLAYERS);
         this.shadow_graphic = this.make.graphics();    
         this.shadow_graphic.setPosition(0,0);        
         this.shadow_mask = this.shadow_graphic.createGeometryMask();
@@ -189,7 +189,7 @@ var GameScene = new Phaser.Class({
         solana = new Solana(this,192,160);  
         bright = new Bright(this,192,128);
         soullight =new SoulLight({scene: this, x:192,y:128,sprite:'bright',frame:0},solana);
-
+        
         //
         this.changePlayerReady = true;
         //Emit Events

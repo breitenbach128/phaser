@@ -33,10 +33,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         });
         this.setScale(0.80);
        //Fix the draw offsets for the compound sprite.
-        compoundBody.render.sprite.xOffset = .51;
-        compoundBody.render.sprite.yOffset = .65;
-
-        //compoundBody.render.sprite.yOffset = 0.15; //3.23 update location
+        compoundBody.render.sprite.yOffset = 0.15;
         compoundBody.label = "SOLANA";
 
         this.sprite
@@ -732,6 +729,7 @@ class LightShield extends Phaser.Physics.Matter.Sprite{
             restitution: 1.0
         });
         compoundBody.render.sprite.xOffset = 0.63;
+        compoundBody.render.sprite.yOffset = 0.50;
 
         this
         .setExistingBody(compoundBody)
@@ -740,6 +738,7 @@ class LightShield extends Phaser.Physics.Matter.Sprite{
         .setPosition(x, y) // Sets inertia to infinity so the player can't rotate        
         .setIgnoreGravity(true);
 
+        this.setDepth(DEPTH_LAYERS.PLAYERS);
         this.setAlpha(0.65);
 
         this.holdConstraint = Phaser.Physics.Matter.Matter.Constraint.create({
@@ -801,7 +800,7 @@ class SolBomb extends Phaser.Physics.Matter.Sprite{
         .setFixedRotation();
 
         this.setScale(0.75);
-
+        this.setDepth(DEPTH_LAYERS.PLAYERS);
         this.orbitpos = 0;
         //this.orbitOS = Phaser.Math.FloatBetween(0,0.15); //Offset
         this.orbitOS = solbombs.getTotalUsed()*0.20; //Offset

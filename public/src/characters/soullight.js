@@ -30,6 +30,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
             .setPosition(config.x, config.y)
             .setIgnoreGravity(true);
 
+        this.setDepth(DEPTH_LAYERS.PLAYERS-1);
         this.owner = owner.sprite;
 
         this.ownerid = 0;
@@ -78,6 +79,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         //Create Soulight Effect
         //This should be inactive until the player retrieves the soulight gem for the first time.
         this.scene.particle_soulight = this.scene.add.particles('shapes',  this.scene.cache.json.get('effect-flame-fall'));   
+        this.scene.particle_soulight.setDepth(this.depth-1);
         this.sparkerMgr = this.scene.add.particles('lightburst-1');
         this.sparkler = this.sparkerMgr.createEmitter({
             active:true,
