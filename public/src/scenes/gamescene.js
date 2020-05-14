@@ -628,6 +628,11 @@ var GameScene = new Phaser.Class({
                     let decal = this.add.image(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,genprops.texture);
                 }
                 
+            }else if(tmxObjRef.type == 'trap'){
+                let trapprops = getTileProperties(tmxObjRef.properties);
+                if(trapprops.subtype == 'grinder'){
+                    let trap = new TrapGrinder(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2).setDepth(DEPTH_LAYERS.FRONT)
+                }
             }
         }
         //Spawn Triggers

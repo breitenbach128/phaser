@@ -41,7 +41,7 @@ class TMXLever extends Phaser.Physics.Matter.Sprite{
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setIgnoreGravity(true);    
 
-        this.debug = scene.add.text(this.x, this.y-16, 'Lever', { fontSize: '10px', fill: '#00FF00' });             
+        this.debug = scene.add.text(this.x, this.y-16, 'Lever', { fontSize: '10px', fill: '#00FF00' }).setDepth(this.depth+1);             
 
 
     }
@@ -149,7 +149,7 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
         .setStatic(true)
         .setIgnoreGravity(true);    
 
-        this.debug = scene.add.text(this.x, this.y-16, 'gate', { fontSize: '10px', fill: '#00FF00' });             
+        this.debug = scene.add.text(this.x, this.y-16, 'gate', { fontSize: '10px', fill: '#00FF00' }).setDepth(this.depth+1);             
 
 
     }
@@ -260,7 +260,7 @@ class TMXPlate extends Phaser.Physics.Matter.Sprite{
         .setStatic(true)
         .setIgnoreGravity(true);    
 
-        this.debug = this.scene.add.text(this.x, this.y-16, 'plate', { fontSize: '10px', fill: '#00FF00', resolution: 2 }).setOrigin(0.5);             
+        this.debug = this.scene.add.text(this.x, this.y-16, 'plate', { fontSize: '10px', fill: '#00FF00', resolution: 2 }).setOrigin(0.5).setDepth(this.depth+1);             
         this.plateSound = this.scene.sound.add('switch1');
 
     }
@@ -368,7 +368,7 @@ class TMXButton extends Phaser.Physics.Matter.Sprite{
         .setStatic(true)
         .setIgnoreGravity(true);    
 
-        this.debug = scene.add.text(this.x, this.y-16, 'TMXButton', { fontSize: '10px', fill: '#00FF00' });             
+        this.debug = scene.add.text(this.x, this.y-16, 'TMXButton', { fontSize: '10px', fill: '#00FF00' }).setDepth(this.depth+1);             
 
 
     }
@@ -466,7 +466,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         .setStatic(true)
         .setIgnoreGravity(true);    
 
-        this.debug = scene.add.text(this.x, this.y, 'Zone', { fontSize: '10px', fill: '#00FF00', resolution: 2 }).setOrigin(0.5);             
+        this.debug = scene.add.text(this.x, this.y, 'Zone', { fontSize: '10px', fill: '#00FF00', resolution: 2 }).setOrigin(0.5).setDepth(this.depth+1);             
         
         //Add Matter collisionStart detector on all bodies.
         //When a new collisions starts, check the mass of all bodies in the zone that meet the body label filter. if the zone type is weight,
@@ -787,7 +787,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         .setStatic(true)
         .setIgnoreGravity(true);    
 
-        this.debug = scene.add.text(this.x, this.y-16, 'platform', { fontSize: '10px', fill: '#00FF00' });             
+        this.debug = scene.add.text(this.x, this.y-16, 'platform', { fontSize: '10px', fill: '#00FF00' }).setDepth(this.depth+1);             
         this.onWayTracker = -1;
         //Setup to allow to carry riders
         this.scene.matterCollision.addOnCollideActive({

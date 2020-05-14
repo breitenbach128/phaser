@@ -24,6 +24,7 @@ class Vehicle extends Phaser.Physics.Matter.Sprite{
             label: "VEHICLE"
         });
 
+        compoundBody.render.sprite.yOffset = 0.5;
         this
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.VEHICLE)
