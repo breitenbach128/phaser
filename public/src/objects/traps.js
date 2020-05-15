@@ -36,18 +36,60 @@ class TrapGrinder extends Phaser.Physics.Matter.Image{
             objectA: [this],
             callback: eventData => {
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
-                
+                let spray = 'metal'
                 if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
                     //Solana Touch
+                    gameObjectB.receiveDamage(1);
+                    spray = 'blood';
+                }
+                if (gameObjectB !== undefined && gameObjectB instanceof Bright) {
+                    //Bright/Dark Touch
+                    gameObjectB.receiveDamage(1); 
+                    spray = 'blood';                   
                 }
                 if (gameObjectB !== undefined && gameObjectB instanceof Rock) {
-                    //Solana Touch
+                    //Rock Touch
+                    gameObjectB.finalCrush();
                 }
+                gameObjectA.spray(spray);
             }
         });
         //Up to date queue
         this.scene.events.on("update", this.update, this);
         this.scene.events.on("shutdown", this.remove, this);
+
+        //Particle Effects
+        let spray = this.scene.add.particles('shapes');
+        spray.setDepth(DEPTH_LAYERS.FG);
+        this.sprayEmmiter = spray.createEmitter({
+            active:true,
+            x: this.x,
+            y: this.y,
+            frame: {
+                frames: [
+                    "spark_03"
+                ],
+                cycle: false,
+                quantity: 1
+            },
+            frequency: -1,
+            gravityY: 200,
+            speed: 200,
+            angle: {min: -180, max: 0},
+            scale: {start:0.5,end:0.1},
+            rotate: {min: -90, max: 90},
+            blendMode: 'ADD',
+            tint: 0xfdee80
+        });
+    }
+    spray(type){
+        if(type == 'metal'){
+            this.sprayEmmiter.setTint(0xfdee80);
+        }else if(type == 'blood'){
+            this.sprayEmmiter.setTint(0xFF0000);
+        }
+
+        this.sprayEmmiter.emitParticle(5,this.x,this.y);
     }
     setup(x,y, properties,name){
         this.setActive(true); 
@@ -95,7 +137,8 @@ class ConveyorWheel extends Phaser.Physics.Matter.Image{
         .setCollidesWith([ CATEGORY.BRIGHT, CATEGORY.SOLANA, CATEGORY.SOLID])
         .setPosition(x, y)
         .setIgnoreGravity(true)
-        .setDensity(0.8); 
+        .setDensity(0.8)
+        .setDepth(DEPTH_LAYERS.PLATFORMS); 
         
         this.angvel = angvel;
         this.axle = Phaser.Physics.Matter.Matter.Constraint.create({
@@ -118,7 +161,9 @@ class ConveyorWheel extends Phaser.Physics.Matter.Image{
     }
     update(time, delta)
     {       
-        this.setAngularVelocity(this.angvel);
+        if(this.active){
+            this.setAngularVelocity(this.angvel);
+        }
 
     }
     remove(){

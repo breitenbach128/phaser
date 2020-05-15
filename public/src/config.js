@@ -227,6 +227,7 @@
         ENEMIES: 200,
         PLAYERS: 300,
         PLATFORMS: 400,
+        OBJECTS: 500,
         FG: 600,
         FRONT: 999
     }

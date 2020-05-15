@@ -141,7 +141,7 @@ class LightShard extends Phaser.Physics.Matter.Sprite{
         });
         this.setExistingBody(compoundBody).setCollisionCategory(CATEGORY.BULLET)
         .setCollidesWith([ CATEGORY.SOLANA]).setPosition(x, y)
-        .setScale(.25).setIgnoreGravity(true);
+        .setScale(.25).setIgnoreGravity(true).setDepth(DEPTH_LAYERS.FG);
         //Custom Props
         this.damage = 1;    
         this.lifespan = 0;

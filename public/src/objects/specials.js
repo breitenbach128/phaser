@@ -89,6 +89,7 @@ class Crate extends Phaser.Physics.Matter.Sprite{
         .setPosition(x, y) 
 
         this.isGrabbed  = false;
+        this.max_speed = 5;
     }
     setup(x,y){
         this.setActive(true);
@@ -109,6 +110,10 @@ class Crate extends Phaser.Physics.Matter.Sprite{
                 this.clearTint();
             }
         }
+        if(this.body.velocity.x > this.max_speed){this.setVelocityX(this.max_speed)};
+        if(this.body.velocity.x < -this.max_speed){this.setVelocityX(-this.max_speed)};
+        if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed);};
+        if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
     }
     grabbed(){
         if(!this.isGrabbed){
@@ -166,7 +171,8 @@ class Rock extends Phaser.Physics.Matter.Sprite{
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.SOLID)
         .setPosition(x, y) 
-        .setDensity(0.01);
+        .setDensity(0.01)
+        .setDepth(DEPTH_LAYERS.OBJECTS);
 
         //Setup Collision
         this.scene.matterCollision.addOnCollideStart({
@@ -227,17 +233,24 @@ class Rock extends Phaser.Physics.Matter.Sprite{
                     }                   
                     this.destroy();
                 }else{
-                    this.getShards();
-                    this.destroy();
+                    this.finalCrush();
                 }
 
             }
         }
     }
+    finalCrush(){
+        this.getShards();
+        this.destroy();
+    }
     getShards(){
-        for(let i=0;i < Phaser.Math.Between(1,3);i++){
-            let ls = light_shards.get();
-            ls.spawn(this.x,this.y,300,solana);
+        let losRc = Phaser.Physics.Matter.Matter.Query.ray(losBlockers,{x:solana.x,y:solana.y},{x:this.x,y:this.y});
+        //Only spawn shards if within range and has a clear line of sight.
+        if(Phaser.Math.Distance.Between(solana.x,solana.y,this.x,this.y) < 744 && losRc.length == 0){
+            for(let i=0;i < Phaser.Math.Between(1,3);i++){
+                let ls = light_shards.get();
+                ls.spawn(this.x,this.y,300,solana);
+            }
         }
     }    
     enterWater(){
