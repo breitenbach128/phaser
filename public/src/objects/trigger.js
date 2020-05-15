@@ -464,8 +464,9 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         .setPosition(x, y)
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setStatic(true)
-        .setIgnoreGravity(true);    
-
+        .setIgnoreGravity(true)
+        .setCollisionCategory(CATEGORY.BARRIER);    
+        this.setDepth(DEPTH_LAYERS.PLATFORMS);
         this.debug = scene.add.text(this.x, this.y, 'Zone', { fontSize: '10px', fill: '#00FF00', resolution: 2 }).setOrigin(0.5).setDepth(this.depth+1);             
         
         //Add Matter collisionStart detector on all bodies.

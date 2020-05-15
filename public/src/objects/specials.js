@@ -159,14 +159,14 @@ class Rock extends Phaser.Physics.Matter.Sprite{
             frictionStatic: 0.01,
             frictionAir: 0.05,
             friction: 1.0,
-            density: 0.5,
+            density: 0.01,
             label: "ROCK"
         });
-
         this
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.SOLID)
         .setPosition(x, y) 
+        .setDensity(0.01);
 
         //Setup Collision
         this.scene.matterCollision.addOnCollideStart({
@@ -196,6 +196,7 @@ class Rock extends Phaser.Physics.Matter.Sprite{
         this.crushTimer = this.scene.time.addEvent({ delay: 300, callback: this.setReadyCrush, callbackScope: this, loop: false });
         //Add it so rocks an only collide with ground,solid and dark for a few ms. should allow me to use them as an effect.
         this.setCollidesWith([CATEGORY.SOLID,CATEGORY.GROUND,CATEGORY.DARK,CATEGORY.BRIGHT,CATEGORY.BULLET,CATEGORY.BARRIER]);
+        
     }
     update(time, delta)
     {       

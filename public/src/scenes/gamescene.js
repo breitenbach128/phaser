@@ -631,8 +631,14 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == 'trap'){
                 let trapprops = getTileProperties(tmxObjRef.properties);
                 if(trapprops.subtype == 'grinder'){
-                    let trap = new TrapGrinder(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2).setDepth(DEPTH_LAYERS.FRONT)
+                    let trap = new TrapGrinder(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,trapprops.angvel).setDepth(DEPTH_LAYERS.FRONT)
                 }
+            }else if(tmxObjRef.type == 'conveyor'){
+                let conveyorprops = getTileProperties(tmxObjRef.properties); 
+                let sPoint = {x:tmxObjRef.x+tmxObjRef.polyline[0].x,y:tmxObjRef.y+tmxObjRef.polyline[0].y};
+                let ePoint = {x:tmxObjRef.x+tmxObjRef.polyline[1].x,y:tmxObjRef.y+tmxObjRef.polyline[1].y};
+                let conveyor = new Conveyor(this,sPoint,ePoint,conveyorprops.angvel);
+                
             }
         }
         //Spawn Triggers
