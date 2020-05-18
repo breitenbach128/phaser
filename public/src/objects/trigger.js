@@ -782,7 +782,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         this.sprite
         .setExistingBody(compoundBody)         
         .setCollisionCategory(CATEGORY.SOLID)
-        .setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK, CATEGORY.VEHICLE, CATEGORY.SOLID])
+        .setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK, CATEGORY.VEHICLE, CATEGORY.SOLID, CATEGORY.BULLET])
         .setPosition(x, y)
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setStatic(true)
@@ -956,7 +956,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
 
     }
     oneWayEnd(){        
-        this.setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK, CATEGORY.VEHICLE, CATEGORY.SOLID]);
+        this.setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT, CATEGORY.DARK, CATEGORY.VEHICLE, CATEGORY.SOLID, CATEGORY.BULLET]);
         this.onWayTracker = -1;
         this.clearTint();
     }

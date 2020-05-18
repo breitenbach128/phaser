@@ -51,13 +51,14 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.energyChange = 0;
         this.mv_speed = 3;
         this.roll_speed = 0.400;
-        this.jump_speed = 0.020;
+        this.jump_speed = 0.016;
         this.max_speed = {air:10,ground:10};
         this.alive = true;
         this.invuln = false;
         this.falling = false;
         this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { resolution: 2, fontSize: '10px', fill: '#00FF00' });
         this.touching = {up:0,down:0,left:0,right:0};
+        this.jumpCount = 0;
         this.airTime = 0;//For Camera Shake
         this.light_radius = 75;
         //Dialogue    
@@ -108,6 +109,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 if(this.touching.down == 0){
                     this.airTime++;
                 }else{
+                    this.jumpCount = 0;
                     this.airTime=0;
                     this.slamReady = true;
                 };
@@ -162,7 +164,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 let control_pulsePress = this.getControllerAction('pulse');
                 let control_pulseRelease = this.getControllerAction('pulseR');
                 let control_change = this.getControllerAction('changeplayer');
-                let control_dash = this.getControllerAction('dash');
+                let control_dash = this.getControllerAction('dash');  
+                let control_jumphold = this.getControllerAction('jumphold');
                 
                 //Change Player in Single Mode
                 if(playerMode == 0){
@@ -293,9 +296,15 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     //Dark Stop
                     if (control_down && this.airTime == 0) {
                         let angVel = this.body.angularVelocity;
-                        if(angVel > 0){this.setAngularVelocity(angVel-.05)};
-                        if(angVel < 0){this.setAngularVelocity(angVel+.05)};
-                        if(angVel < .10 && angVel > -.10){this.setAngularVelocity(0)};
+                        // if(angVel > 0){this.setAngularVelocity(angVel-.05)};
+                        // if(angVel < 0){this.setAngularVelocity(angVel+.05)};
+                        // if(angVel < .10 && angVel > -.10){this.setAngularVelocity(0)};
+                        this.setAngularVelocity(0);
+                        let bVelX = this.body.velocity.x;
+                        if(bVelX > 0){this.setVelocityX(bVelX-.10)};
+                        if(bVelX < 0){this.setVelocityX(bVelX+.10)};
+                        if(bVelX < .10 && bVelX > -.10){this.setVelocityX(0)};
+                        
                         //Kick up dust
                         if(this.body.velocity.x > 1 || this.body.velocity.x < -1){
                             let pQ = Math.round(Math.abs(this.body.velocity.x));
@@ -312,10 +321,13 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         // him to break thru multiple objects cleanly.
                     }
                     //Dark Jump
-                    if(control_jump && this.airTime <=  10){
+                    if(control_jump && this.jumpCount == 0){
                         this.sprite.applyForce({x:0,y:-this.jump_speed});
+                        this.jumpCount++;
                     }
-
+                    if(control_jumphold && this.body.velocity.y < 0){
+                        this.applyForce({x:0,y:-this.jump_speed*0.025});
+                    }
                     //Singularity
                     if(control_pulsePress){
                         let solAngle = Phaser.Math.Angle.Between(this.x,this.y,solana.x,solana.y);
@@ -376,6 +388,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     return (gamePad[this.ctrlDeviceId].getStickLeft(.5).x > 0);
                 case 'jump':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('A') == 1);
+                case 'jumphold':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('A') > 1);
                 case 'beam':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('X') == 1);
                 case 'pass':
@@ -405,6 +419,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     return (keyPad.checkKeyState('D') > 0);
                 case 'jump':
                     return (keyPad.checkKeyState('SPC') == 1);
+                case 'jumphold':
+                    return (keyPad.checkKeyState('SPC') > 1);
                 case 'beam':
                     return (keyPad.checkMouseState('MB0') > 0);
                 case 'grab':

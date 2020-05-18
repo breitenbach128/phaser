@@ -1101,7 +1101,9 @@ var GameScene = new Phaser.Class({
                     }  
                 }
                 //Between Fallplat and Solana and Bright
-                let fallplatHitList = ['SOLANA','BRIGHT'];
+                let fallplatHitList = ['SOLANA','BRIGHT',
+                'BRIGHT_TOP','BRIGHT_BOTTOM','BRIGHT_LEFT','BRIGHT_RIGHT','BRIGHTSENSORS',
+                'SOLANA_TOP','SOLANA_BOTTOM','SOLANA_LEFT','SOLANA_RIGHT'];
                 if ((bodyA.label === 'FALLPLAT' && fallplatHitList.includes(bodyB.label)) || (fallplatHitList.includes(bodyA.label) && bodyB.label === 'FALLPLAT')) {
                     //Get Bullet Object and run hit function
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'FALLPLAT');
