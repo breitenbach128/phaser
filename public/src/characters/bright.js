@@ -15,7 +15,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
           parts: [mainBody],
           frictionStatic: 0.3,
           frictionAir: 0.3,
-          friction: 0.8,
+          friction: 0.9,
           restitution: 0.00,
           density: 0.05,
           label: "BRIGHT"
@@ -30,7 +30,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         .setIgnoreGravity(true);
         
         this.setDepth(DEPTH_LAYERS.PLAYERS);
-        this.bg = this.scene.add.image(x,y,'bright',0).setVisible(false).setDepth(DEPTH_LAYERS.PLAYERS-1);
+        this.bg = this.scene.add.image(x,y,'bright',0).setVisible(false).setDepth(this.depth-1);
         this.scene.tweens.add({
             targets: this.bg,
             rotation: (Math.PI*2),              
@@ -178,6 +178,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     } 
                 }
                 if(this.light_status == brightMode){
+                    this.angle = 0;
                     //BRIGHT CONTROLS 
                     if(control_beam && this.beamReady ){
                         this.beamReady = false;
@@ -267,7 +268,11 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         this.sprite.anims.play('dark-idle', true);
                         if(!this.onGround){
                             if(this.body.velocity.x > -4){
-                                this.sprite.applyForce({x:-0.00020,y:0}) 
+                                let airVelX = 0.0010;
+                                if(this.body.velocity.x > 0){
+                                    airVelX = 0.0020;
+                                }
+                                this.sprite.applyForce({x:-airVelX,y:0}) 
                             }
                         }
                     }
@@ -275,8 +280,12 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         this.sprite.setAngularVelocity(this.roll_speed); 
                         this.sprite.anims.play('dark-idle', true);
                         if(!this.onGround){
-                            if(this.body.velocity.x < 4){
-                                this.sprite.applyForce({x:0.00020,y:0}) 
+                            if(this.body.velocity.x < 4){                                
+                                let airVelX = 0.0010;
+                                if(this.body.velocity.x < 0){
+                                    airVelX = 0.0020;
+                                }
+                                this.sprite.applyForce({x:airVelX,y:0}) 
                             }
                         }  
                     }
@@ -335,6 +344,12 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         let solPullVec = {x:-Math.cos(solAngle)*solForce,y:-Math.sin(solAngle)*solForce};
                         solana.applyForce(solPullVec);
                     }
+
+                    //Fake Angular Velocity friction
+                    let angVelCk = this.body.angularVelocity;
+                    if(angVelCk > 0){this.body.angularVelocity-=0.05;};
+                    if(angVelCk < 0){this.body.angularVelocity+=0.05;};
+                    if(angVelCk < .10 && angVelCk > -.10){this.body.angularVelocity = 0};
                 }
 
                
@@ -555,9 +570,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
         this.abPulse.doCharge = true;
         //As It charges, the max particles and size should increase, making it glow more.
-        this.effect[0].setVisible(true);
+        //this.effect[0].setVisible(true);
         camera_main.flash(500,255,255,255);
-        
+        this.bg.setDepth(this.depth-1);
     }
     pulseUpdate(){
         //Update Solana "Hold"
@@ -574,7 +589,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         }
         let aimpoint = this.scene.getCircleAimPoint(this.x,this.y,this.abPulse.circle,targVector.x,targVector.y)    
         //Emit Particles to mark target//Need Different particle style here, THIS IS MASSIVE AND TAKES UP WAAAY too much space.
-        this.effect[0].emitParticleAt(aimpoint.p.x,aimpoint.p.y,5);
+        
+        //this.effect[0].emitParticleAt(aimpoint.p.x,aimpoint.p.y,5);
+
         //Throw Power
         let power =  this.abPulse.c/1000;
         this.abPulse.vec = {x:Math.cos(aimpoint.angle)*(power+power*0.5),y:Math.sin(aimpoint.angle)*power};//50% more power to X velocity

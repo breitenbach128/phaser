@@ -248,7 +248,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.aimer.setFrame(powerlevel);
         this.aimer.setPosition(aimpoint.p.x,aimpoint.p.y);
         this.aimer.rotation = aimpoint.normangle;
-        this.aimer.chargeTime++;
+        //this.aimer.chargeTime++;
         //this.viewoffset.x = (aimpoint.p.x - this.y)*2;
         //this.viewoffset.y = (aimpoint.p.y - this.y)*2;
 

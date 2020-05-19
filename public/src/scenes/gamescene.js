@@ -603,7 +603,7 @@ var GameScene = new Phaser.Class({
                 console.log(tmxObjRef);
                 let g_sp1 = this.add.graphics();
                 g_sp1.setPosition(tmxObjRef.x,tmxObjRef.y);
-                g_sp1.lineStyle(2, 0x002699, 1.0);
+                g_sp1.lineStyle(4, 0x000000, 1.0);
                 // let spl = new Phaser.Curves.Spline(tmxObjRef.polyline);
                 // spl.draw(g_sp1);
                 let polyPath =  new Phaser.Curves.Path();
@@ -618,6 +618,8 @@ var GameScene = new Phaser.Class({
 
 
                 //polyPath.draw(g_sp1);
+                polySpline.draw(g_sp1);
+                g_sp1.lineStyle(2, 0x444444, 0.8);
                 polySpline.draw(g_sp1);
                 g_sp1.setDepth(DEPTH_LAYERS.FG);
             }else if(tmxObjRef.type == 'minecart'){
@@ -1405,13 +1407,13 @@ var GameScene = new Phaser.Class({
         //Lvl 1, Normal Mode
         if(disPlayersX < 400 && disPlayersY < 250 && this.cameraLevel != 1){
             this.cameraLevel = 1;
-            this.cameras.main.zoomTo(2,1000,'Linear');
+            this.cameras.main.zoomTo(2,1000,'Linear',true);
         }
         //Lvl 2, Zoom out
         if((disPlayersX >= 400 && disPlayersX < 750) || (disPlayersY >= 250 && disPlayersY < 400) && this.cameraLevel != 2){
             if( this.cameraLevel == 3){this.splitScreen(false);}//If it was split screen, cancel that.
             this.cameraLevel = 2;
-            this.cameras.main.zoomTo(1.75,1000,'Linear');            
+            this.cameras.main.zoomTo(1.75,1000,'Linear',true);            
         }
         //Lvl 3, Split the Camera
         if((disPlayersX >= 750 || disPlayersY >= 400) && this.cameraLevel != 3){  
@@ -1625,15 +1627,17 @@ var GameScene = new Phaser.Class({
     },
     splitScreen(enable){
         if(enable){
-            let cam_p1 = this.cameras.add(0,0,camera_main.width/2,camera_main.height,false,'cam_p1');//Second Camera
-            let cam_p2 = this.cameras.add(camera_main.width/2,0,camera_main.width/2,camera_main.height,false,'cam_p2');//Second Camera
+            let cam_p1 = this.cameras.add(0,0,camera_main.width,camera_main.height/2,false,'cam_p1');//Second Camera
+            let cam_p2 = this.cameras.add(0,camera_main.height/2,camera_main.width,camera_main.height/2,false,'cam_p2');//Second Camera
             cam_p1.setBounds(0, 0, map.widthInPixels, map.heightInPixels+128);  
             cam_p2.setBounds(0, 0, map.widthInPixels, map.heightInPixels+128);  
-            cam_p1.setZoom(1.75);
-            cam_p2.setZoom(1.75);
+            cam_p1.setZoom(1.50);
+            cam_p2.setZoom(1.50);
             cam_p1.startFollow(solana,true,.8,.8,0,0);
             cam_p2.startFollow(bright,true,.8,.8,0,0);
+            camera_main.setVisible(false);
         }else{
+            camera_main.setVisible(true);
             let cam_p1 = this.cameras.getCamera('cam_p1');
             let cam_p2 = this.cameras.getCamera('cam_p2');
             this.cameras.remove(cam_p1);

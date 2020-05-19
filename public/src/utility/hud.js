@@ -20,7 +20,7 @@ class HudScene extends Phaser.Scene {
 
             let debugString =  "CamX:"+String(Math.round(camera_main.worldView.x))
             +"\nCamY:" + String(Math.round(camera_main.worldView.y))
-            +"\nPlayerMode:" + String(playerMode)
+            +"\nZoomMode:" + String(playScene.cameraLevel)
             +"\nKeyPress_X:" + String(this.skipSpeech.isDown)
             +"\nDisPlayers:"+String(disPlayers)+":"+String(disPlayersX.toFixed(0))+":"+String(disPlayersY.toFixed(0));
             this.debug.setText(debugString);
