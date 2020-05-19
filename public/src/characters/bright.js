@@ -266,14 +266,18 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         this.sprite.setAngularVelocity(-this.roll_speed);           
                         this.sprite.anims.play('dark-idle', true);
                         if(!this.onGround){
-                            this.sprite.applyForce({x:-0.000020,y:0}) 
+                            if(this.body.velocity.x > -4){
+                                this.sprite.applyForce({x:-0.00020,y:0}) 
+                            }
                         }
                     }
                     if (control_right) {     
                         this.sprite.setAngularVelocity(this.roll_speed); 
                         this.sprite.anims.play('dark-idle', true);
                         if(!this.onGround){
-                            this.sprite.applyForce({x:0.000020,y:0}) 
+                            if(this.body.velocity.x < 4){
+                                this.sprite.applyForce({x:0.00020,y:0}) 
+                            }
                         }  
                     }
                     if(!control_left && !control_right){
