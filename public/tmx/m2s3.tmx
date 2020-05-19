@@ -720,10 +720,10 @@
   <object id="423" name="window2" type="window" gid="9372" x="247" y="80" width="32" height="33"/>
   <object id="440" name="chest1" type="chest" x="416" y="736" width="64" height="48"/>
   <object id="441" name="line1" type="line" x="448" y="352">
-   <polyline points="0,0 -32,64 -160,64 -160,80"/>
+   <polyline points="0,-8 -25,66 -152,70 -168,80"/>
   </object>
   <object id="442" name="line2" type="line" x="448" y="432">
-   <polyline points="0,0 -240,0"/>
+   <polyline points="0,-8 -120,-8 -239,-6"/>
   </object>
  </objectgroup>
  <objectgroup id="16" name="triggers">

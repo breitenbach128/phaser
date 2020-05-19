@@ -603,10 +603,11 @@ var GameScene = new Phaser.Class({
                 console.log(tmxObjRef);
                 let g_sp1 = this.add.graphics();
                 g_sp1.setPosition(tmxObjRef.x,tmxObjRef.y);
-                g_sp1.lineStyle(2, 0xFF00FF, 1.0);
+                g_sp1.lineStyle(2, 0x002699, 1.0);
                 // let spl = new Phaser.Curves.Spline(tmxObjRef.polyline);
                 // spl.draw(g_sp1);
                 let polyPath =  new Phaser.Curves.Path();
+                let polySpline =  new Phaser.Curves.Spline(tmxObjRef.polyline);
                 tmxObjRef.polyline.forEach((e,i)=>{
                     if(i==0){
                         polyPath.moveTo(e);
@@ -614,7 +615,10 @@ var GameScene = new Phaser.Class({
                         polyPath.lineTo(e);
                     };
                 });
-                polyPath.draw(g_sp1);
+
+
+                //polyPath.draw(g_sp1);
+                polySpline.draw(g_sp1);
                 g_sp1.setDepth(DEPTH_LAYERS.FG);
             }else if(tmxObjRef.type == 'minecart'){
                 let cart = new Vehicle(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2).setDepth(DEPTH_LAYERS.FRONT);
