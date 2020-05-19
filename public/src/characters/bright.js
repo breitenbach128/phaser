@@ -58,8 +58,10 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.falling = false;
         this.debug = this.scene.add.text(this.x, this.y-16, 'bright', { resolution: 2, fontSize: '10px', fill: '#00FF00' });
         this.touching = {up:0,down:0,left:0,right:0};
+        this.onGround = false;
         this.jumpCount = 0;
-        this.airTime = 0;//For Camera Shake
+        this.jumpCountPrev = 0;
+        this.airTime = 40;//For Camera Shake
         this.light_radius = 75;
         //Dialogue    
         this.dialogue = new Dialogue(this.scene,[{speaker:this,ttl:0,text:""}],54,-40);  
@@ -101,18 +103,20 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         if(this.alive){
                 this.effect[0].emitters.list[0].setPosition(this.x,this.y);
                 this.sensor.setPosition(this.x,this.y);
+                this.sensor.update();
                 if(this.dialogue.isRunning){
                     this.dialogue.update();
                 }
-                //REMOVE WALL JUMPING by allowing on a jump when touching down
-                //if(this.touching.up==0 && this.touching.down == 0 && this.touching.left == 0 && this.touching.right == 0){
-                if(this.touching.down == 0){
-                    this.airTime++;
-                }else{
-                    this.jumpCount = 0;
+
+                if(this.touching.down > 0){
+                    this.onGround = true;
                     this.airTime=0;
                     this.slamReady = true;
-                };
+                }else{
+                    this.onGround = false;
+                    this.airTime++;
+                }
+                
                 if(this.abPulse.doCharge){
                     this.pulseUpdate();
                     
@@ -259,25 +263,18 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 }else{
                     //DARK CONTROLS
                     if (control_left) {          
-                        this.sprite.setAngularVelocity(-this.roll_speed);   
-                        //this.applyForce({x:-this.roll_speed/50,y:0});          
+                        this.sprite.setAngularVelocity(-this.roll_speed);           
                         this.sprite.anims.play('dark-idle', true);
-
-                        if(this.airTime > 0 && this.airTime < 3){
-                            this.sprite.setVelocityX(-this.mv_speed); 
+                        if(!this.onGround){
+                            this.sprite.applyForce({x:-0.000020,y:0}) 
                         }
-
-
                     }
                     if (control_right) {     
-                        this.sprite.setAngularVelocity(this.roll_speed);  
-                        //this.applyForce({x:this.roll_speed/50,y:0});                  
-
+                        this.sprite.setAngularVelocity(this.roll_speed); 
                         this.sprite.anims.play('dark-idle', true);
-                        if(this.airTime > 0 && this.airTime < 3){
-                            this.sprite.setVelocityX(this.mv_speed); 
-                        }                 
-
+                        if(!this.onGround){
+                            this.sprite.applyForce({x:0.000020,y:0}) 
+                        }  
                     }
                     if(!control_left && !control_right){
                         this.sprite.anims.play('dark-idle', true);//Idle
@@ -321,9 +318,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         // him to break thru multiple objects cleanly.
                     }
                     //Dark Jump
-                    if(control_jump && this.jumpCount == 0){
+                    if(control_jump && this.onGround){
                         this.sprite.applyForce({x:0,y:-this.jump_speed});
-                        this.jumpCount++;
                     }
                     if(control_jumphold && this.body.velocity.y < 0){
                         this.applyForce({x:0,y:-this.jump_speed*0.025});
@@ -339,7 +335,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
                
                 //Max Velocities
-                if(this.airTime >  0){        
+                if(this.airTime > 0){        
                     if(this.body.velocity.x > this.max_speed.air ){this.setVelocityX(this.max_speed.air);};
                     if(this.body.velocity.x < -this.max_speed.air ){this.setVelocityX(-this.max_speed.air );};
                     if(this.body.velocity.y > this.max_speed.air ){this.setVelocityY(this.max_speed.air);};
@@ -353,7 +349,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 }
 
                 // this.debug.setPosition(this.sprite.x, this.sprite.y-64);
-                // this.debug.setText("Pulse Power:"+String(this.abPulse.c));
+                // this.debug.setText("JumpCount:"+String(this.jumpCount)+":"+String(this.touching.down));
             }else if(curr_player==players.SOLANA && playerMode == 0){
                 //Allow Single Player Follow Mode
                 if(this.followMode){
@@ -373,7 +369,6 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             }
             this.resetEnergy();
         }
-
     }    
     getControllerAction(action){
         if(this.ctrlDeviceId >=0){
@@ -623,7 +618,7 @@ class BrightSensors extends Phaser.Physics.Matter.Sprite{
     
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
-        const mainBody = Bodies.circle(0,0,w*.1);
+        const mainBody = Bodies.circle(0,0,w*.1, {isSensor: true});
 
         this.sensors = {
           bottom: Bodies.rectangle(0, h * 0.12, w * 0.16, 2, { isSensor: true }),
@@ -649,14 +644,13 @@ class BrightSensors extends Phaser.Physics.Matter.Sprite{
         .setExistingBody(compoundBody)          
         .setCollisionCategory(CATEGORY.BRIGHT)
         .setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.BARRIER, CATEGORY.VEHICLE, CATEGORY.ENEMY ])
-        .setScale(1.0)
         .setFixedRotation() 
         .setPosition(x, y)
         .setIgnoreGravity(true)
         .setVisible(false);
 
- 
-
+        this.touching = {up:0,down:0,left:0,right:0};
+      
     }
     update(time, delta)
     {       

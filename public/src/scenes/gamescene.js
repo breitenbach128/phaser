@@ -615,6 +615,7 @@ var GameScene = new Phaser.Class({
                     };
                 });
                 polyPath.draw(g_sp1);
+                g_sp1.setDepth(DEPTH_LAYERS.FG);
             }else if(tmxObjRef.type == 'minecart'){
                 let cart = new Vehicle(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2).setDepth(DEPTH_LAYERS.FRONT);
                 cart.wA.setDepth(DEPTH_LAYERS.FRONT);
