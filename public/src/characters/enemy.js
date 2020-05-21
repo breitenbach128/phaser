@@ -1,4 +1,5 @@
 //When enemies are hit, they lose globs of oily shadow, of varying size, that fly off of them.
+//let testbody = playScene.matter.add.softBody(solana.x+32,solana.y-64,2,2,-4,0,true,8,{ignoreGravity: false,collisionFilter: {mask: 130 }},{})
 var ENEMY_WEAPONS = [
     {name: 'slime_lob',aimmed:false,prjTexture:'bullet',prjLife:600,prjVec:{x:1,y:-1},range:256,onDeath:[]},//0
     {name: 'slime_melee',aimmed:false,prjTexture:'bullet',prjLife:32,prjVec:{x:1,y:0},range:32,onDeath:[]},

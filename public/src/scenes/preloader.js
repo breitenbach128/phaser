@@ -299,6 +299,7 @@ var Preloader = new Phaser.Class({
 		this.load.image('mushroom1', 'assets/objects/mushroom_1.png');
 		this.load.image('grinder', 'assets/objects/grinder.png');
 		this.load.image('conveyor_wheel', 'assets/objects/conveyor_wheel.png');
+		this.load.image('oilblob2', 'assets/objects/oil_blob2.png');
 		// - HUD
 		this.load.spritesheet('health_blip', 'assets/hud/health_blip.png',{frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('hud_interaction_control_arrows','assets/hud/hud_interaction_control_arrows.png',{frameWidth: 32, frameHeight: 32});
