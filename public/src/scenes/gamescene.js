@@ -600,7 +600,7 @@ var GameScene = new Phaser.Class({
                 let chestProps = getTileProperties(tmxObjRef.properties);
                 let chest = new Chest(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
             }else if(tmxObjRef.type == 'line'){
-                console.log(tmxObjRef);
+                
                 let g_sp1 = this.add.graphics();
                 g_sp1.setPosition(tmxObjRef.x,tmxObjRef.y);
                 g_sp1.lineStyle(4, 0x000000, 1.0);

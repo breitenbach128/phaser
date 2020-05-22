@@ -852,7 +852,7 @@ class TMXWater{
         //NOTE: ObjectA was this.waterbody.sensor
         this.waterbody = this.scene.matter.add.rectangle(x+w/2,y+h/2,w,h, {isStatic:true, isSensor:true});
         this.sprite = this.scene.add.rectangle(x+w/2,y+h/2,w,h,0x0099ff,0.7)
-        console.log("Waterbody",this.waterbody)
+        //console.log("Waterbody",this.waterbody)
         this.scene.matterCollision.addOnCollideStart({
             objectA: this.waterbody,
             callback: ({ gameObjectB, gameObjectA }) => {

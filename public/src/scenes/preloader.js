@@ -279,6 +279,8 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('boss_slime_main', 'assets/characters/boss/boss_slime.png', {frameWidth: 256, frameHeight: 256});
 		this.load.spritesheet('boss_slime_column', 'assets/characters/boss/boss_slime_column.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('boss_slime_acidpool', 'assets/characters/boss/boss_slime_acidpool.png', {frameWidth: 32, frameHeight: 32});
+		//Enemies		
+		this.load.spritesheet('shrieker', 'assets/objects/mushroom_2.png', {frameWidth: 32, frameHeight: 32});
 		//Controller
 		this.load.image('icon_kb_spcbar', 'assets/UI/Keyboard_Mouse/Dark/Keyboard_Black_Space.png');
 		

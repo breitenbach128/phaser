@@ -266,28 +266,28 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     if (control_left) {          
                         this.sprite.setAngularVelocity(-this.roll_speed);           
                         this.sprite.anims.play('dark-idle', true);
-                        if(!this.onGround){
-                            if(this.body.velocity.x > -4){
-                                let airVelX = 0.0010;
-                                if(this.body.velocity.x > 0){
-                                    airVelX = 0.0020;
-                                }
-                                this.sprite.applyForce({x:-airVelX,y:0}) 
-                            }
-                        }
+                        // if(!this.onGround){
+                        //     if(this.body.velocity.x > -4){
+                        //         let airVelX = 0.0010;
+                        //         if(this.body.velocity.x > 0){
+                        //             airVelX = 0.0020;
+                        //         }
+                        //         this.sprite.applyForce({x:-airVelX,y:0}) 
+                        //     }
+                        // }
                     }
                     if (control_right) {     
                         this.sprite.setAngularVelocity(this.roll_speed); 
                         this.sprite.anims.play('dark-idle', true);
-                        if(!this.onGround){
-                            if(this.body.velocity.x < 4){                                
-                                let airVelX = 0.0010;
-                                if(this.body.velocity.x < 0){
-                                    airVelX = 0.0020;
-                                }
-                                this.sprite.applyForce({x:airVelX,y:0}) 
-                            }
-                        }  
+                        // if(!this.onGround){
+                        //     if(this.body.velocity.x < 4){                                
+                        //         let airVelX = 0.0010;
+                        //         if(this.body.velocity.x < 0){
+                        //             airVelX = 0.0020;
+                        //         }
+                        //         this.sprite.applyForce({x:airVelX,y:0}) 
+                        //     }
+                        // }  
                     }
                     if(!control_left && !control_right){
                         this.sprite.anims.play('dark-idle', true);//Idle
