@@ -96,9 +96,9 @@ class BrightBeam {
             beamblock.setVisible(false);
             r++;
             let ck = Phaser.Physics.Matter.Matter.Query.collides(beamblock.body, this.scene.matter.world.localWorld.bodies);
-            //console.log(ck);
+            //console.log(ck.length,r);
             this.rects.push(beamblock);
-            if(ck.length > 2 || r > 15){
+            if(ck.length > 1 || r > 15){
                 doMake = false;
                 //Try just killing the last one
                 beamblock.destroy();

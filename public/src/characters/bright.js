@@ -522,7 +522,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             this.hp = 5;
             hud.setHealth(this.hp,1);
             this.alive = true; 
-            this.addEnergy(1500);
+            this.addEnergy(5000);
             if(soullight.ownerid == 1){
                 soullight.passLight();
             }
