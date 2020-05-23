@@ -280,6 +280,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
             this.aimer.started = false;
             this.shootTransfer(this.aimer.chargeTime);
         }
+        this.aimer.chargeTime = 0;
         //This was for the camera "look" with the direction of aim. Did not really feel right, and messed up the camera view by causing thrashing.
         // this.scene.add.tween({
         //     targets: this.aimer,

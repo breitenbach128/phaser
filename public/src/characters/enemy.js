@@ -982,7 +982,7 @@ class EnemyBlobC{
         this.subblobs = [];
         for(let i=0;i<16;i++){
 
-            this.subblobs.push(new BlobCBit(scene,x-w/2+(i*8),y));
+            this.subblobs.push(new BlobCBit(scene,x-w/2+(i*8),y, this));
         }
         this.attractForce = 0.0010;
         this.scene.events.on("update", this.update, this);        
@@ -1061,16 +1061,19 @@ class EnemyBlobC{
         }
         
     }
+    killblobbit(){
+        
+    }
 }
 class BlobCBit extends Phaser.Physics.Matter.Sprite{
-    constructor(scene,x,y) {
+    constructor(scene,x,y, blob) {
         super(scene.matter.world, x, y, 'oilblob2', 0)
         this.scene = scene;
         scene.matter.world.add(this);
         scene.add.existing(this); 
 
         this.setActive(true);
-
+        this.blob = blob;
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this;
         //const mainBody =  Bodies.circle(0,0,w*.50);
@@ -1092,6 +1095,10 @@ class BlobCBit extends Phaser.Physics.Matter.Sprite{
         .setPosition(x, y) 
         .setDensity(0.01)
         .setDepth(DEPTH_LAYERS.OBJECTS);
+    }
+    death(){
+        //When this orb dies, it is spliced out of the parent blob's array.
+
     }
 }
 class EnemyShrieker extends Phaser.Physics.Matter.Sprite{

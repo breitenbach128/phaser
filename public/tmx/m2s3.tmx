@@ -728,7 +728,7 @@
    <polyline points="0,-8 -25,66 -152,70 -168,80"/>
   </object>
   <object id="443" name="line2" type="line" x="448" y="432">
-   <polyline points="0,-7 -16,32 -16,80 -160,80 -160,16 -256,16 -256,0 -248,0"/>
+   <polyline points="0,-7 -16,32 -16,80 -144,64 -160,16 -240,16 -256,0 -248,0"/>
   </object>
   <object id="444" name="line3" type="line" x="208" y="288">
    <polyline points="0,0 -48,64 -96,64 -96,144 -104,155"/>
