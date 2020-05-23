@@ -419,13 +419,7 @@ var GameScene = new Phaser.Class({
         for(e=0;e<enemylayer.objects.length;e++){
             let tmxObjRef = enemylayer.objects[e];
             let props = getTileProperties(tmxObjRef.properties);
-            let EnemyType = props.enemyType;
-            let EnemyClass = props.enemyClass;
-            let PassiveBehavior = props.pBehav;
-            let AggressivBehavior = props.aBehav;
-            let weapon = props.weapon;
-            let new_enemy;
-            let path = '[{"x":0,"y":0}]';
+
 
             //Boss?
             if(tmxObjRef.type == "boss"){
@@ -443,7 +437,18 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == "spider"){
                 spider = spiders.get(tmxObjRef.x,tmxObjRef.y);
                 spider.setPosition(tmxObjRef.x,tmxObjRef.y);
+            }else if(tmxObjRef.type == "shrieker"){
+                let skr = new EnemyShrieker(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y-tmxObjRef.height/2);
+            }else if(tmxObjRef.type == "blob"){
+                let blobC = new EnemyBlobC(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y-tmxObjRef.height/2,tmxObjRef.width,tmxObjRef.height);
             }else{
+                let EnemyType = props.enemyType;
+                let EnemyClass = props.enemyClass;
+                let PassiveBehavior = props.pBehav;
+                let AggressivBehavior = props.aBehav;
+                let weapon = props.weapon;
+                let new_enemy;
+                let path = '[{"x":0,"y":0}]';
                 //Standard Types            
                 if(EnemyClass == 'ground'){
                     new_enemy = enemies.get(tmxObjRef.x,tmxObjRef.y,EnemyType);
@@ -2322,4 +2327,17 @@ function createAnimations(scene){
         frameRate: 12,
         repeat: -1
     }); 
+    scene.anims.create({
+        key: 'shrieker-shriek',
+        frames: scene.anims.generateFrameNumbers('shrieker', { frames:[0,1,2,2,2,1,0] }),
+        frameRate: 12,
+        repeat: 0
+    }); 
+    scene.anims.create({
+        key: 'shrieker-shrivel',
+        frames: scene.anims.generateFrameNumbers('shrieker', { frames:[3,4,5,6,7,8,9,10] }),
+        frameRate: 12,
+        repeat: 0
+    }); 
+    
 }

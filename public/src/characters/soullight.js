@@ -248,12 +248,12 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.aimer.setFrame(powerlevel);
         this.aimer.setPosition(aimpoint.p.x,aimpoint.p.y);
         this.aimer.rotation = aimpoint.normangle;
-        //this.aimer.chargeTime++;
+        this.aimer.chargeTime++;
         //this.viewoffset.x = (aimpoint.p.x - this.y)*2;
         //this.viewoffset.y = (aimpoint.p.y - this.y)*2;
 
-        this.viewoffset.x = Math.cos(this.aimer.rotation)*aimerClamp;
-        this.viewoffset.y = Math.sin(this.aimer.rotation)*aimerClamp;
+        //this.viewoffset.x = Math.cos(this.aimer.rotation)*aimerClamp;
+        //this.viewoffset.y = Math.sin(this.aimer.rotation)*aimerClamp;
 
     }
     aimStart(){
@@ -280,19 +280,20 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
             this.aimer.started = false;
             this.shootTransfer(this.aimer.chargeTime);
         }
-        this.scene.add.tween({
-            targets: this.aimer,
-            ease: 'Linear',
-            chargeTime: 0,
-            duration: 1000,
-            onUpdate: function(tween,targets,sl){
-                let aimerClamp = Phaser.Math.Clamp(sl.aimer.chargeTime,0,120); 
-                //console.log("Aimer Release chargetime",sl.aimer.chargeTime) 
-                sl.viewoffset.x = Math.cos(sl.aimer.rotation)*aimerClamp;
-                sl.viewoffset.y = Math.sin(sl.aimer.rotation)*aimerClamp;
-            },
-            onUpdateParams:[this]
-        });
+        //This was for the camera "look" with the direction of aim. Did not really feel right, and messed up the camera view by causing thrashing.
+        // this.scene.add.tween({
+        //     targets: this.aimer,
+        //     ease: 'Linear',
+        //     chargeTime: 0,
+        //     duration: 1000,
+        //     onUpdate: function(tween,targets,sl){
+        //         let aimerClamp = Phaser.Math.Clamp(sl.aimer.chargeTime,0,120); 
+        //         //console.log("Aimer Release chargetime",sl.aimer.chargeTime) 
+        //         sl.viewoffset.x = Math.cos(sl.aimer.rotation)*aimerClamp;
+        //         sl.viewoffset.y = Math.sin(sl.aimer.rotation)*aimerClamp;
+        //     },
+        //     onUpdateParams:[this]
+        // });
     }
     shootTransfer(plvl){
         let powerlevel = Math.ceil(Phaser.Math.Clamp(plvl,0,120) / 30);

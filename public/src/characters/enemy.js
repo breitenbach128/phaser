@@ -307,7 +307,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
     }
     setBehavior(p,a,wp){
         this.behavior = {passive:p,aggressive:a,weapon:ENEMY_WEAPONS[wp]};
-        console.log("Enemy Set Behavior",this.behavior);
+        //console.log("Enemy Set Behavior",this.behavior);
     }
     death(animation, frame){
         for(let i=0;i < Phaser.Math.Between(1,5);i++){
@@ -954,19 +954,69 @@ class EnemyBlobC{
         this.scene = scene;
         this.active = true;
         let shapeObject = this.scene.add.rectangle(x + (w / 2), y + (h / 2),w, h);
-        this.blobObj = this.scene.matter.add.gameObject(shapeObject, { shape: { type: 'rectangle', flagInternal: true },isSensor: false });        
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter;
+        //this.blobObj = this.scene.matter.add.gameObject(shapeObject, { shape: { type: 'rectangle', flagInternal: true },isSensor: false }); 
+        const mainBody =  Bodies.rectangle(0,0,w,h);
+        this.sensors = {
+            top: Bodies.rectangle(0, -h*0.60, w*0.80, 6, { isSensor: true, friction: 0.0,density: 0.0001,label:"SENSOR_TOP"}), 
+            bottom: Bodies.rectangle(0, h*0.60, w*0.80, 6, { isSensor: true, friction: 0.0,density: 0.0001,label:"SENSOR_BOTTOM"}),
+            left: Bodies.rectangle(-w*0.60, 0, 6, h*0.80 , { isSensor: true, friction: 0.0,density: 0.0001,label:"SENSOR_LEFT"}),
+            right: Bodies.rectangle(w*0.60, 0, 6, h*0.80 , { isSensor: true, friction: 0.0,density: 0.0001,label:"SENSOR_RIGHT"})
+          };
+
+        const compoundBody = Body.create({
+            parts: [mainBody,this.sensors.top,this.sensors.bottom,this.sensors.left,this.sensors.right],
+            frictionStatic: 0.01,
+            frictionAir: 0.05,
+            friction: 0.9,
+            density: 0.01,
+            restitution: 0.7,
+            label: "BLOB"
+        });
+
+        this.blobObj = this.scene.matter.add.gameObject(shapeObject, compoundBody);        
         this.blobObj.setCollisionCategory(CATEGORY.ENEMY);
         this.blobObj.setCollidesWith([CATEGORY.GROUND]);
+        this.blobObj.setPosition(x,y);
 
         this.subblobs = [];
         for(let i=0;i<16;i++){
 
             this.subblobs.push(new BlobCBit(scene,x-w/2+(i*8),y));
         }
-        this.attractForce = 0.0015;
+        this.attractForce = 0.0010;
         this.scene.events.on("update", this.update, this);        
         this.scene.events.on("shutdown", this.remove, this);
         this.moveTimer = this.scene.time.addEvent({ delay: 1500, callback: this.hunt, callbackScope: this, loop: true });
+        this.wanderDirection = -1;
+        this.blobObj.touching = {top:0,left:0,bottom:0,right:0};
+        //Sensor Collision Checking
+        this.scene.matter.world.on('beforeupdate', function (event) {
+            this.blobObj.touching.left = 0;
+            this.blobObj.touching.right = 0;
+            this.blobObj.touching.up = 0;
+            this.blobObj.touching.down = 0;    
+        },this);
+        this.scene.matterCollision.addOnCollideActive({
+            objectA: [this.sensors.left,this.sensors.right],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                if (gameObjectB !== undefined && 
+                    (gameObjectB instanceof Phaser.GameObjects.Rectangle
+                    || gameObjectB instanceof Phaser.GameObjects.Ellipse
+                    || gameObjectB instanceof Phaser.GameObjects.Polygon)) {
+                    if (bodyB.label == 'GROUND'){
+                        if(bodyA.label == "SENSOR_RIGHT"){
+                            gameObjectA.touching.right++;
+                        }
+                        if(bodyA.label == "SENSOR_LEFT"){
+                            gameObjectA.touching.left++;
+                            
+                        }
+                    }                
+                  }
+            }
+        });
     }
     update(time,delta){
         if(this.active){
@@ -984,15 +1034,27 @@ class EnemyBlobC{
     hunt(){
         if(this.canSee(solana)){
             if(solana.x < this.blobObj.x){
-                this.blobObj.applyForce({x:-0.008,y:-0.015})
+                this.wanderDirection = -1;
             }else if(solana.x > this.blobObj.x){
-                this.blobObj.applyForce({x:0.008,y:-0.015})
+                this.wanderDirection = 1;
             }
         }
+        let queryX = this.blobObj.x+(this.wanderDirection*this.blobObj.width);
+        let rayTo = Phaser.Physics.Matter.Matter.Query.ray(losBlockers,{x:queryX,y:this.blobObj.y},{x:queryX,y:this.blobObj.y+32});
+        if(rayTo.length == 0){
+            //Flip wander because of pitfall
+            this.wanderDirection=this.wanderDirection*-1
+        }else if(this.blobObj.touching.left > 0){
+            this.wanderDirection = 1;
+        }else if(this.blobObj.touching.right > 0){
+            this.wanderDirection = -1;
+        }
+
+        this.blobObj.applyForce({x:this.wanderDirection*0.008,y:-0.015})
     }
     canSee(target){
-        let rayTo = Phaser.Physics.Matter.Matter.Query.ray(this.scene.matter.world.localWorld.bodies,{x:this.x,y:this.y},{x:target.x,y:target.y});
-        if(rayTo.length < 3){
+        let rayTo = Phaser.Physics.Matter.Matter.Query.ray(losBlockers,{x:this.blobObj.x,y:this.blobObj.y},{x:target.x,y:target.y});
+        if(rayTo.length < 1){
             return true;
         }else{
             return false;
@@ -1047,7 +1109,7 @@ class EnemyShrieker extends Phaser.Physics.Matter.Sprite{
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this;
         //const mainBody =  Bodies.circle(0,0,w*.50);
-        const mainBody =  Bodies.rectangle(0,0,w,h);
+        const mainBody =  Bodies.rectangle(0,0,w*0.95,h*0.90, {chamfer: {radius: 10}});
 
         const compoundBody = Body.create({
             parts: [mainBody],
@@ -1061,23 +1123,72 @@ class EnemyShrieker extends Phaser.Physics.Matter.Sprite{
         this
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.SOLID)
-        .setFixedRotation()
         .setPosition(x, y) 
         .setDensity(0.01)
         .setDepth(DEPTH_LAYERS.OBJECTS);
 
+        this.setStatic(true);
         this.screamTimer = this.scene.time.addEvent({ delay: 5000, callback: this.scream, callbackScope: this, loop: true });
+        this.screamPower = 0.010;
+        //Need stronger power if above within a 90 degree space. Otherwise lower it to 0.01 to smooth out the push effect.
+        this.animScream = [0,1,2];
+        this.animShrivel = [3,4,5,6,7,8,9,10];
+        this.canScream = true;
+
+        //Collision
+        this.scene.matterCollision.addOnCollideStart({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                
+                if (gameObjectB !== undefined && gameObjectB instanceof Bright) {
+                    if(gameObjectB.light_status == 0){
+                        gameObjectA.shrivel();
+                    }
+                }
+                if(gameObjectB !== undefined && gameObjectB instanceof SoulTransfer){
+                    gameObjectA.shrivel();
+                    gameObjectB.burn();
+                }
+            }
+        });
     }
     scream(){
-        this.screamCircle = this.scene.add.ellipse(this.x,this.y,this.width,this.height,0x0000DD,0.3);
+        if(this.canScream){
+            this.screamCircle = this.scene.add.ellipse(this.x,this.y,this.width,this.height,0x0000DD,0.3);
+            this.anims.play('shrieker-shriek',true);
+            let tween = this.scene.tweens.add({
+                targets: this.screamCircle,
+                scale: 4.0,               
+                ease: 'Linear',       
+                duration: 500,  
+                onComplete: function(tween, targets, shroom){shroom.screamCircle.destroy();shroom.setFrame(0)},
+                onUpdate: function(tween,targets, shroom){
+                    if(Phaser.Math.Distance.Between(shroom.x,shroom.y,solana.x,solana.y) < (shroom.screamCircle.displayWidth)/2){
+                        let a = Phaser.Math.Angle.Between(shroom.x,shroom.y,solana.x,solana.y);
+                        let adeg = Phaser.Math.RadToDeg(a);
+                        let pow = shroom.screamPower;
+                        if(adeg > -135 && adeg < -45){pow = pow*10;}
+                        solana.applyForce({x:Math.cos(a)*pow,y:Math.sin(a)*pow});
+                    }
+                },
+                onUpdateParams: [this],
+                onCompleteParams: [this],
+            });
+        }
+    }
+    shrivel(){
+        if(this.canScream){
+            this.canScream = false;
+            this.disableScreamTimer = this.scene.time.addEvent({ delay: 4000, callback: this.unshrivel, callbackScope: this, loop: false });
+            this.anims.play('shrieker-shrivel',true);
+        }else{
+            this.disableScreamTimer.reset({ delay: 4000, callback: this.unshrivel, callbackScope: this, loop: false });
+        }
 
-        let tween = this.scene.tweens.add({
-            targets: this.screamCircle,
-            scale: 4.0,               
-            ease: 'Linear',       
-            duration: 500,  
-            onComplete: function(tween, targets, shroom){shroom.screamCircle.destroy();},
-            onCompleteParams: [this],
-        });
+    }
+    unshrivel(){
+        this.canScream = true;
+        this.anims.playReverse('shrieker-shrivel',true);
     }
 }
