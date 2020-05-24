@@ -985,9 +985,10 @@ class EnemyBlobC{
             this.subblobs.push(new BlobCBit(scene,x-w/2+(i*8),y, this));
         }
         this.attractForce = 0.0010;
+        this.spawnTracker  = {c:0,max:300};
         this.scene.events.on("update", this.update, this);        
         this.scene.events.on("shutdown", this.remove, this);
-        this.moveTimer = this.scene.time.addEvent({ delay: 1500, callback: this.hunt, callbackScope: this, loop: true });
+        this.moveTimer = this.scene.time.addEvent({ delay: 1500, callback: this.hunt, callbackScope: this, loop: false });
         this.wanderDirection = -1;
         this.blobObj.touching = {top:0,left:0,bottom:0,right:0};
         //Sensor Collision Checking
@@ -1022,22 +1023,40 @@ class EnemyBlobC{
         if(this.active){
             for(let i=0;i<this.subblobs.length;i++){
                 let bit = this.subblobs[i];
+                let attrMod = this.attractForce*(this.subblobs.length/12);
                 let fAng = Phaser.Math.Angle.Between(bit.x,bit.y,this.blobObj.x,this.blobObj.y);
-                bit.applyForce({x:Math.cos(fAng)*this.attractForce,y:Math.sin(fAng)*this.attractForce});
+                bit.applyForce({x:Math.cos(fAng)*attrMod,y:Math.sin(fAng)*attrMod});
+            }
+            
+            if(this.spawnTracker.c >= this.spawnTracker.max){
+                this.spawnTracker.c = 0;
+                if(this.subblobs.length < 16){
+                    this.subblobs.push(new BlobCBit(this.scene,this.blobObj.x-this.blobObj.width/2,this.blobObj.y, this));
+                }
+            }else{
+                this.spawnTracker.c++;
             }
         }
 
     }
     remove(){
         this.active = false;
+        this.moveTimer.remove();
+        this.scene.matterCollision.addOnCollideActive({
+            objectA: [this.sensors.left,this.sensors.right],
+            callback: eventData => {}
+        })
+        this.blobObj.destroy();
     }
     hunt(){
+        let huntdelay = 1500;
         if(this.canSee(solana)){
             if(solana.x < this.blobObj.x){
                 this.wanderDirection = -1;
             }else if(solana.x > this.blobObj.x){
                 this.wanderDirection = 1;
             }
+            huntdelay = distanceBetweenObjects(solana,this.blobObj) > 256 ? 1000: 750;
         }
         let queryX = this.blobObj.x+(this.wanderDirection*this.blobObj.width);
         let rayTo = Phaser.Physics.Matter.Matter.Query.ray(losBlockers,{x:queryX,y:this.blobObj.y},{x:queryX,y:this.blobObj.y+32});
@@ -1051,6 +1070,7 @@ class EnemyBlobC{
         }
 
         this.blobObj.applyForce({x:this.wanderDirection*0.008,y:-0.015})
+        this.moveTimer = this.scene.time.addEvent({ delay: huntdelay, callback: this.hunt, callbackScope: this, loop: false });
     }
     canSee(target){
         let rayTo = Phaser.Physics.Matter.Matter.Query.ray(losBlockers,{x:this.blobObj.x,y:this.blobObj.y},{x:target.x,y:target.y});
@@ -1062,7 +1082,11 @@ class EnemyBlobC{
         
     }
     killblobbit(){
+        for( var i = 0; i < this.subblobs.length; i++){ if ( this.subblobs[i].alive === false) { this.subblobs.splice(i, 1); i--; }};
         
+        if(this.subblobs.length == 0){
+            this.remove();
+        }
     }
 }
 class BlobCBit extends Phaser.Physics.Matter.Sprite{
@@ -1095,9 +1119,25 @@ class BlobCBit extends Phaser.Physics.Matter.Sprite{
         .setPosition(x, y) 
         .setDensity(0.01)
         .setDepth(DEPTH_LAYERS.OBJECTS);
+        
+        this.alive = true;
+
+        this.scene.matterCollision.addOnCollideStart({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                if (gameObjectB !== undefined && gameObjectB instanceof SoulTransfer) {
+                        gameObjectA.death();
+                        gameObjectB.burn();
+                  }
+            }
+        });
     }
     death(){
         //When this orb dies, it is spliced out of the parent blob's array.
+        this.alive = false;
+        this.blob.killblobbit();
+        this.destroy();
 
     }
 }

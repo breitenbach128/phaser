@@ -493,7 +493,10 @@
             return a + b[prop];
         }, 0);
     };
-    
+    //Scale a number from one range to another.
+    const scale = (num, in_min, in_max, out_min, out_max) => {
+        return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+      }
     //Wrap a number to a max. I.E: If the max is 1.0, 1.5 would give 0.5;
     function wrapAtMax(x, m) {
         return (x%m + m)%m;
