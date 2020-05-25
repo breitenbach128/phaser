@@ -438,7 +438,14 @@ var GameScene = new Phaser.Class({
                 spider = spiders.get(tmxObjRef.x,tmxObjRef.y);
                 spider.setPosition(tmxObjRef.x,tmxObjRef.y);
             }else if(tmxObjRef.type == "shrieker"){
-                let skr = new EnemyShrieker(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y-tmxObjRef.height/2);
+                let tmxOrigin = {x:tmxObjRef.x,y:tmxObjRef.y};
+                let centerPoint = new Phaser.Geom.Point(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y-tmxObjRef.height/2);
+                let rotRad = Phaser.Math.DegToRad(tmxObjRef.rotation);
+                if(tmxObjRef.rotation != 0){      
+                    Phaser.Math.RotateAround(centerPoint,tmxOrigin.x,tmxOrigin.y,rotRad);
+                }  
+                let skr = new EnemyShrieker(this,centerPoint.x,centerPoint.y);
+                skr.setRotation(rotRad);
             }else if(tmxObjRef.type == "blob"){
                 let blobC = new EnemyBlobC(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y-tmxObjRef.height/2,tmxObjRef.width,tmxObjRef.height);
             }else{

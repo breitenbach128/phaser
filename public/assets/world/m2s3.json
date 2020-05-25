@@ -271,11 +271,11 @@
                  "height":32,
                  "id":447,
                  "name":"shrieker2",
-                 "rotation":0,
+                 "rotation":90,
                  "type":"shrieker",
                  "visible":true,
                  "width":32,
-                 "x":896,
+                 "x":688,
                  "y":496
                 }, 
                 {
@@ -295,12 +295,12 @@
                  "height":32,
                  "id":449,
                  "name":"shrieker3",
-                 "rotation":0,
+                 "rotation":-180,
                  "type":"shrieker",
                  "visible":true,
                  "width":32,
-                 "x":960,
-                 "y":496
+                 "x":752,
+                 "y":352
                 }, 
                 {
                  "gid":9298,

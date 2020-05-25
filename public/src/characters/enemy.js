@@ -1129,9 +1129,21 @@ class BlobCBit extends Phaser.Physics.Matter.Sprite{
                 if (gameObjectB !== undefined && gameObjectB instanceof SoulTransfer) {
                         gameObjectA.death();
                         gameObjectB.burn();
-                  }
+                }
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    gameObjectB.receiveDamage(1);
+                    //gameObjectA.death();
+                }
             }
         });
+        this.attachedTo = blob;
+        this.isClung = false;//Clinging to Solana or Dark? Used for the attraction modifier.
+    }
+    update(time,delta){
+
+    }
+    attachTo(){
+
     }
     death(){
         //When this orb dies, it is spliced out of the parent blob's array.
@@ -1206,9 +1218,9 @@ class EnemyShrieker extends Phaser.Physics.Matter.Sprite{
             this.anims.play('shrieker-shriek',true);
             let tween = this.scene.tweens.add({
                 targets: this.screamCircle,
-                scale: 4.0,               
+                scale: 5.0,               
                 ease: 'Linear',       
-                duration: 500,  
+                duration: 1000,  
                 onComplete: function(tween, targets, shroom){shroom.screamCircle.destroy();shroom.setFrame(0)},
                 onUpdate: function(tween,targets, shroom){
                     if(Phaser.Math.Distance.Between(shroom.x,shroom.y,solana.x,solana.y) < (shroom.screamCircle.displayWidth)/2){
@@ -1227,6 +1239,7 @@ class EnemyShrieker extends Phaser.Physics.Matter.Sprite{
     shrivel(){
         if(this.canScream){
             this.canScream = false;
+            this.screamTimer.paused = true;
             this.disableScreamTimer = this.scene.time.addEvent({ delay: 4000, callback: this.unshrivel, callbackScope: this, loop: false });
             this.anims.play('shrieker-shrivel',true);
         }else{
@@ -1235,6 +1248,7 @@ class EnemyShrieker extends Phaser.Physics.Matter.Sprite{
 
     }
     unshrivel(){
+        this.screamTimer.paused = false;
         this.canScream = true;
         this.anims.playReverse('shrieker-shrivel',true);
     }

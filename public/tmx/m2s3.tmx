@@ -607,9 +607,9 @@
    </properties>
   </object>
   <object id="446" name="shrieker1" type="shrieker" gid="9298" x="832" y="496" width="32" height="32"/>
-  <object id="447" name="shrieker2" type="shrieker" gid="9298" x="896" y="496" width="32" height="32"/>
+  <object id="447" name="shrieker2" type="shrieker" gid="9298" x="688" y="496" width="32" height="32" rotation="90"/>
   <object id="448" name="shrieker3" type="shrieker" gid="9298" x="960" y="496" width="32" height="32"/>
-  <object id="449" name="shrieker3" type="shrieker" gid="9298" x="960" y="496" width="32" height="32"/>
+  <object id="449" name="shrieker3" type="shrieker" gid="9298" x="752" y="352" width="32" height="32" rotation="-180"/>
   <object id="450" name="blob1" type="blob" gid="9298" x="832" y="656" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="13" name="spawns"/>
