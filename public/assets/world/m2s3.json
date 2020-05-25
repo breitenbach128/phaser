@@ -1043,6 +1043,28 @@
                  "width":0,
                  "x":112,
                  "y":288
+                }, 
+                {
+                 "height":32,
+                 "id":451,
+                 "name":"grinder10",
+                 "properties":[
+                        {
+                         "name":"angvel",
+                         "type":"float",
+                         "value":-0.2
+                        }, 
+                        {
+                         "name":"subtype",
+                         "type":"string",
+                         "value":"grinder"
+                        }],
+                 "rotation":0,
+                 "type":"trap",
+                 "visible":true,
+                 "width":32,
+                 "x":256,
+                 "y":528
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -3474,7 +3496,7 @@
          "y":0
         }],
  "nextlayerid":19,
- "nextobjectid":451,
+ "nextobjectid":452,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.4",

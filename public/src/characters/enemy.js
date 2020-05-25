@@ -1262,16 +1262,72 @@ class EnemySpiker {
         this.base = this.scene.matter.add.image(x, y-16, 'spiker', 2, { shape: {type:'rectangle',width:20,height:28}, chamfer: { radius: 5 }, mass: 200, restitution: 0.0, friction: 0.5, frictionAir: 0.5 });
         this.base.setStatic(true);
         //Arm
-        this.arm = this.scene.matter.add.image(x, y-48, 'spiker', 1, { shape: {type:'rectangle',width:16,height:28}, chamfer: { radius: 5 }, mass: 0.3, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
-        this.scene.matter.add.joint(this.base,this.arm, 1, 1,{
-            pointA: { x: 0, y: (-this.arm.height/2) },
-            pointB: { x: 0, y: (this.arm.height/2) },
-        });
+        this.armsegements = [];
+        for(let s=0;s<4;s++){
+            let newSeg = this.scene.matter.add.image(x, y-48-(s*12), 'spiker', 3, { shape: {type:'rectangle',width:12,height:12}, chamfer: { radius: 2 }, mass: 0.3, restitution: 0.0, friction: 0.9, frictionAir: 0.03 });
+            if(s == 0){
+                this.scene.matter.add.joint(this.base,newSeg, 1, 1,{
+                    pointA: { x: 0, y: (-14) },
+                    pointB: { x: 0, y: (6) },
+                });
+            }else{
+                this.scene.matter.add.joint(this.armsegements[s-1],newSeg, 1, 1,{
+                    pointA: { x: 0, y: (-6) },
+                    pointB: { x: 0, y: (6) },
+                });
+            }
+            this.armsegements.push(newSeg);
+        }
         //Stinger
-        this.stinger = this.scene.matter.add.image(x, y-48, 'spiker', 0, { shape: {type:'circle', radius: 8} , mass: 0.3, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
-        this.scene.matter.add.joint(this.arm,this.stinger, 8, 0.8,{
-            pointA: { x: 0, y: (-this.stinger.height/2) },
-            pointB: { x: 0, y: 0 },
+        this.stinger = this.scene.matter.add.image(x, y-48-(this.armsegements.length*12), 'spiker', 0, { shape: {type:'circle', radius: 8} , mass: 0.3, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
+        this.scene.matter.add.joint(this.armsegements[this.armsegements.length-1],this.stinger, 8, 0.4,{
+            pointA: { x: 0, y: (-6) },
+            pointB: { x: 0, y: 4 },
         });
+        
+        this.scene.events.on("update", this.update, this);        
+        this.scene.events.on("shutdown", this.remove, this);
+        this.active = true;
+        this.stingerForce = 0.01;
+        //Attack timer -Make the attack look correct.
+        this.attackTimer = this.scene.time.addEvent({ delay: 1500, callback: this.attack, callbackScope: this, loop: true });
+    }
+    update(time,delta){
+        if(this.active){
+            let target = solana;
+            let solDis = distanceBetweenObjects(solana,this.stinger);
+            if(solDis < 128){
+                let angToPlayer = Phaser.Math.Angle.Between(this.stinger.x,this.stinger.y,target.x,target.y);
+                this.stinger.setRotation(angToPlayer+(Math.PI/4));
+                this.stinger.applyForce({x:Math.cos(angToPlayer)*this.stingerForce,y:Math.sin(angToPlayer)*this.stingerForce});
+            }
+        }
+    } 
+    attack(){
+
+    }
+    shrink(){
+        let tween = this.scene.tweens.add({
+            targets: this.base,
+            y: this.base.y+64,               
+            ease: 'Linear',       
+            duration: 1000, 
+        });
+    }
+    grow(){
+        let tween = this.scene.tweens.add({
+            targets: this.base,
+            y: this.base.y-64,               
+            ease: 'Linear',       
+            duration: 1000, 
+        });
+    }
+    remove(){
+        this.active = false;
+        this.base.destroy();
+        this.armsegements.forEach(e=>{
+            e.destroy();
+        });        
+        this.stinger.destroy();
     }
 }
