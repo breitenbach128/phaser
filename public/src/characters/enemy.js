@@ -1259,19 +1259,19 @@ class EnemySpiker {
         this.scene = scene;
         //base
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules   
-        this.base = this.scene.matter.add.image(x, y-16, 'spiker', 2, { shape: 'rectangle', chamfer: { radius: 5 }, mass: 200, restitution: 0.0, friction: 0.5, frictionAir: 0.5 });
+        this.base = this.scene.matter.add.image(x, y-16, 'spiker', 2, { shape: {type:'rectangle',width:20,height:28}, chamfer: { radius: 5 }, mass: 200, restitution: 0.0, friction: 0.5, frictionAir: 0.5 });
         this.base.setStatic(true);
         //Arm
-        this.arm = this.scene.matter.add.image(x, y-48, 'spiker', 1, { shape: 'rectangle', chamfer: { radius: 5 }, mass: 0.3, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
+        this.arm = this.scene.matter.add.image(x, y-48, 'spiker', 1, { shape: {type:'rectangle',width:16,height:28}, chamfer: { radius: 5 }, mass: 0.3, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
         this.scene.matter.add.joint(this.base,this.arm, 1, 1,{
             pointA: { x: 0, y: (-this.arm.height/2) },
             pointB: { x: 0, y: (this.arm.height/2) },
         });
         //Stinger
-        this.stinger = this.scene.matter.add.image(x, y-48, 'spiker', 0, { shape: 'circle',  radius: 8 , mass: 0.3, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
-        this.scene.matter.add.joint(this.arm,this.stinger, 1, 1,{
+        this.stinger = this.scene.matter.add.image(x, y-48, 'spiker', 0, { shape: {type:'circle', radius: 8} , mass: 0.3, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
+        this.scene.matter.add.joint(this.arm,this.stinger, 8, 0.8,{
             pointA: { x: 0, y: (-this.stinger.height/2) },
-            pointB: { x: 0, y: (this.stinger.height/2) },
+            pointB: { x: 0, y: 0 },
         });
     }
 }
