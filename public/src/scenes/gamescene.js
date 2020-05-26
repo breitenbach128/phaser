@@ -448,6 +448,8 @@ var GameScene = new Phaser.Class({
                 skr.setRotation(rotRad);
             }else if(tmxObjRef.type == "blob"){
                 let blobC = new EnemyBlobC(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y-tmxObjRef.height/2,tmxObjRef.width,tmxObjRef.height);
+            }else if(tmxObjRef.type == "spiker"){
+                let spiker = new EnemySpiker(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,0)
             }else{
                 let EnemyType = props.enemyType;
                 let EnemyClass = props.enemyClass;

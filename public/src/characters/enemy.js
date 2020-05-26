@@ -1259,19 +1259,20 @@ class EnemySpiker {
         this.scene = scene;
         //base
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules   
-        this.base = this.scene.matter.add.image(x, y-16, 'spiker', 2, { shape: {type:'rectangle',width:20,height:28}, chamfer: { radius: 5 }, mass: 200, restitution: 0.0, friction: 0.5, frictionAir: 0.5 });
+        this.base = this.scene.matter.add.image(x, y-16, 'spiker', 2, { shape: {type:'rectangle',width:16,height:16}, chamfer: { radius: 5 }, mass: 200, restitution: 0.0, friction: 0.5, frictionAir: 0.5 });
         this.base.setStatic(true);
         //Arm
         this.armsegements = [];
         for(let s=0;s<4;s++){
             let newSeg = this.scene.matter.add.image(x, y-48-(s*12), 'spiker', 3, { shape: {type:'rectangle',width:12,height:12}, chamfer: { radius: 2 }, mass: 0.3, restitution: 0.0, friction: 0.9, frictionAir: 0.03 });
+            //newSeg.setCollidesWith([0]);
             if(s == 0){
-                this.scene.matter.add.joint(this.base,newSeg, 1, 1,{
-                    pointA: { x: 0, y: (-14) },
+                this.scene.matter.add.joint(this.base,newSeg, 2, 1,{
+                    pointA: { x: 0, y: (-9) },
                     pointB: { x: 0, y: (6) },
                 });
             }else{
-                this.scene.matter.add.joint(this.armsegements[s-1],newSeg, 1, 1,{
+                this.scene.matter.add.joint(this.armsegements[s-1],newSeg, 2, 1,{
                     pointA: { x: 0, y: (-6) },
                     pointB: { x: 0, y: (6) },
                 });
@@ -1288,9 +1289,9 @@ class EnemySpiker {
         this.scene.events.on("update", this.update, this);        
         this.scene.events.on("shutdown", this.remove, this);
         this.active = true;
-        this.stingerForce = 0.01;
+        this.stingerForce = 0.0008;
         //Attack timer -Make the attack look correct.
-        this.attackTimer = this.scene.time.addEvent({ delay: 1500, callback: this.attack, callbackScope: this, loop: true });
+        this.attackTimer = {c:0,f:90}
     }
     update(time,delta){
         if(this.active){
@@ -1299,22 +1300,36 @@ class EnemySpiker {
             if(solDis < 128){
                 let angToPlayer = Phaser.Math.Angle.Between(this.stinger.x,this.stinger.y,target.x,target.y);
                 this.stinger.setRotation(angToPlayer+(Math.PI/4));
-                this.stinger.applyForce({x:Math.cos(angToPlayer)*this.stingerForce,y:Math.sin(angToPlayer)*this.stingerForce});
+                let curForce = this.stingerForce;
+                if(this.attackTimer.c >= this.attackTimer.f){
+                    curForce = 0.10;
+                    this.attackTimer.c = 0;
+                }
+                this.stinger.applyForce({x:Math.cos(angToPlayer)*curForce,y:Math.sin(angToPlayer)*curForce});
+                
+                this.attackTimer.c++;
+            }else{
+                this.attackTimer.c = 0;
             }
         }
     } 
-    attack(){
-
-    }
     shrink(){
+        this.armsegements.forEach(e=>{
+            e.setCollidesWith([CATEGORY.SOLID])
+        })
         let tween = this.scene.tweens.add({
             targets: this.base,
             y: this.base.y+64,               
             ease: 'Linear',       
             duration: 1000, 
         });
+        
+
     }
     grow(){
+        this.armsegements.forEach(e=>{
+            e.setCollidesWith([1])
+        })
         let tween = this.scene.tweens.add({
             targets: this.base,
             y: this.base.y-64,               

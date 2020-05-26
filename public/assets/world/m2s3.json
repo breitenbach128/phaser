@@ -313,6 +313,18 @@
                  "width":32,
                  "x":832,
                  "y":656
+                }, 
+                {
+                 "gid":9298,
+                 "height":16,
+                 "id":452,
+                 "name":"spiker1",
+                 "rotation":0,
+                 "type":"spiker",
+                 "visible":true,
+                 "width":16,
+                 "x":656,
+                 "y":496
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -3496,7 +3508,7 @@
          "y":0
         }],
  "nextlayerid":19,
- "nextobjectid":452,
+ "nextobjectid":453,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.4",

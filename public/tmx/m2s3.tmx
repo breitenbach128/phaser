@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="75" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="452">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="75" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="453">
  <editorsettings>
   <export target="../assets/world/m2s3.json" format="json"/>
  </editorsettings>
@@ -611,6 +611,7 @@
   <object id="448" name="shrieker3" type="shrieker" gid="9298" x="960" y="496" width="32" height="32"/>
   <object id="449" name="shrieker3" type="shrieker" gid="9298" x="752" y="352" width="32" height="32" rotation="-180"/>
   <object id="450" name="blob1" type="blob" gid="9298" x="832" y="656" width="32" height="32"/>
+  <object id="452" name="spiker1" type="spiker" gid="9298" x="656" y="496" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="13" name="spawns"/>
  <objectgroup id="14" name="exit">
