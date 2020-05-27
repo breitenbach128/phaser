@@ -44,6 +44,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sensor = new BrightSensors(scene,x,y);
 
 
+        console.log("Brights's mass",this.body.mass);
         //Custom properties
         this.light_status = 0;//0 - Bright, 1 - Dark;
         this.hp = 5;
@@ -266,28 +267,28 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     if (control_left) {          
                         this.sprite.setAngularVelocity(-this.roll_speed);           
                         this.sprite.anims.play('dark-idle', true);
-                        // if(!this.onGround){
-                        //     if(this.body.velocity.x > -4){
-                        //         let airVelX = 0.0010;
-                        //         if(this.body.velocity.x > 0){
-                        //             airVelX = 0.0020;
-                        //         }
-                        //         this.sprite.applyForce({x:-airVelX,y:0}) 
-                        //     }
-                        // }
+                        if(!this.onGround &&  this.touching.left == 0){
+                            if(this.body.velocity.x > -4){
+                                let airVelX = 0.0010;
+                                if(this.body.velocity.x > 0){
+                                    airVelX = 0.0020;
+                                }
+                                this.sprite.applyForce({x:-airVelX,y:0}) 
+                            }
+                        }
                     }
                     if (control_right) {     
                         this.sprite.setAngularVelocity(this.roll_speed); 
                         this.sprite.anims.play('dark-idle', true);
-                        // if(!this.onGround){
-                        //     if(this.body.velocity.x < 4){                                
-                        //         let airVelX = 0.0010;
-                        //         if(this.body.velocity.x < 0){
-                        //             airVelX = 0.0020;
-                        //         }
-                        //         this.sprite.applyForce({x:airVelX,y:0}) 
-                        //     }
-                        // }  
+                        if(!this.onGround && this.touching.right == 0){
+                            if(this.body.velocity.x < 4){                                
+                                let airVelX = 0.0010;
+                                if(this.body.velocity.x < 0){
+                                    airVelX = 0.0020;
+                                }
+                                this.sprite.applyForce({x:airVelX,y:0}) 
+                            }
+                        }  
                     }
                     if(!control_left && !control_right){
                         this.sprite.anims.play('dark-idle', true);//Idle
@@ -477,6 +478,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite.anims.play('dark-idle', false);
         this.sprite.setIgnoreGravity(false);
         this.sprite.setCollisionCategory(CATEGORY.DARK);
+        this.sensor.setCollisionCategory(CATEGORY.DARK);
         this.sprite.setDensity(0.01);//0.01
         this.bg.setVisible(false);
     }
@@ -487,6 +489,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.sprite.anims.play('bright-idle', false);
         this.sprite.setIgnoreGravity(true);
         this.sprite.setCollisionCategory(CATEGORY.BRIGHT);
+        this.sensor.setCollisionCategory(CATEGORY.BRIGHT);
         this.sprite.setDensity(0.01);
         this.bg.setVisible(true);
         //Tween back to straight up
@@ -663,7 +666,7 @@ class BrightSensors extends Phaser.Physics.Matter.Sprite{
         });
         this.sprite
         .setExistingBody(compoundBody)          
-        .setCollisionCategory(CATEGORY.BRIGHT)
+        .setCollisionCategory(CATEGORY.DARK)
         .setCollidesWith([ CATEGORY.GROUND,CATEGORY.SOLID, CATEGORY.BARRIER, CATEGORY.VEHICLE, CATEGORY.ENEMY ])
         .setFixedRotation() 
         .setPosition(x, y)

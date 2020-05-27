@@ -852,11 +852,11 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
     update(time, delta)
     {       
 
-        this.debug.setPosition(this.x, this.y-16);
-        this.debug.setText(this.name+" "
-        +String(this.body.velocity.x.toFixed(2))+":"
-        +String(this.body.velocity.y.toFixed(2))+":"
-        +String(this.ready));
+        // this.debug.setPosition(this.x, this.y-16);
+        // this.debug.setText(this.name+" "
+        // +String(this.body.velocity.x.toFixed(2))+":"
+        // +String(this.body.velocity.y.toFixed(2))+":"
+        // +String(this.ready));
         // body is static so must manually update velocity for friction to work
         this.setVelocityX((this.x - this.prev.x));
         this.setVelocityY((this.y - this.prev.y));
@@ -1067,3 +1067,48 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
 
 }
 
+class Seesaw extends Phaser.Physics.Matter.Image {
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'seesaw');
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+
+        this.setActive(true);
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.rectangle(0, 0, w, h);
+        
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.2,
+            friction: 0.5,
+            label: 'SEESAW'
+        });
+
+        this
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.SOLID)
+        .setCollidesWith([CATEGORY.SOLANA,CATEGORY.DARK, CATEGORY.SOLID])
+        .setPosition(x, y)
+        .setIgnoreGravity(true)
+        .setVisible(true);  
+
+        this.pivotConstraint = Phaser.Physics.Matter.Matter.Constraint.create(
+            {
+              pointA: { x: this.x, y: this.y },
+              bodyB: this.body,
+              length: 0,
+              stiffness: 1
+            }
+          );
+        this.scene.matter.world.add(this.pivotConstraint);
+    }
+    update()
+    {
+
+    }
+
+}

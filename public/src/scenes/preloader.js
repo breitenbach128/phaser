@@ -261,6 +261,7 @@ var Preloader = new Phaser.Class({
         this.load.spritesheet('gear', 'assets/objects/gear.png', {frameWidth: 16, frameHeight: 16});
         this.load.spritesheet('minecart', 'assets/objects/minecart.png', {frameWidth: 96, frameHeight: 48});
 		this.load.spritesheet('minecart_wheel', 'assets/objects/minecart_wheel.png', {frameWidth: 13, frameHeight: 13});
+        this.load.image('seesaw', 'assets/objects/seesaw.png');
 		//Props
 		this.load.spritesheet('fan-1', 'assets/objects/fan-1.png', {frameWidth: 64, frameHeight: 32});
 		//SoulCrystals

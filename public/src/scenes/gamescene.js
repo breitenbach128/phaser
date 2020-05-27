@@ -451,51 +451,51 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == "spiker"){
                 let spiker = new EnemySpiker(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,0)
             }else{
-                let EnemyType = props.enemyType;
-                let EnemyClass = props.enemyClass;
-                let PassiveBehavior = props.pBehav;
-                let AggressivBehavior = props.aBehav;
-                let weapon = props.weapon;
-                let new_enemy;
-                let path = '[{"x":0,"y":0}]';
-                //Standard Types            
-                if(EnemyClass == 'ground'){
-                    new_enemy = enemies.get(tmxObjRef.x,tmxObjRef.y,EnemyType);
-                }else if(EnemyClass == 'air'){
-                    new_enemy = enemiesFly.get(tmxObjRef.x,tmxObjRef.y,EnemyType);                
-                }else{
-                    new_enemy = enemies.get(tmxObjRef.x,tmxObjRef.y,EnemyType);
-                }
-                //Set manual path if available
-                if(props.path){
-                    path = JSON.parse(props.path);
-                }
-                //Accept Pathing Objects from TMX if available
-                if(props.pathid){
-                    let findPath = pathingNodes.find(e => {
-                        return e.name === props.pathid;
-                    })
-                    if(findPath){
-                        path = findPath.worldpoints;
-                    }
-                }
-                if(props.tint){
-                    let newTint =  (Phaser.Display.Color.HexStringToColor(props.tint))._color; //0x333333
-                    new_enemy.setTint(newTint);
-                }
-                if(props.scale){
-                    new_enemy.setScale(props.scale);
-                }
+                // let EnemyType = props.enemyType;
+                // let EnemyClass = props.enemyClass;
+                // let PassiveBehavior = props.pBehav;
+                // let AggressivBehavior = props.aBehav;
+                // let weapon = props.weapon;
+                // let new_enemy;
+                // let path = '[{"x":0,"y":0}]';
+                // //Standard Types            
+                // if(EnemyClass == 'ground'){
+                //     new_enemy = enemies.get(tmxObjRef.x,tmxObjRef.y,EnemyType);
+                // }else if(EnemyClass == 'air'){
+                //     new_enemy = enemiesFly.get(tmxObjRef.x,tmxObjRef.y,EnemyType);                
+                // }else{
+                //     new_enemy = enemies.get(tmxObjRef.x,tmxObjRef.y,EnemyType);
+                // }
+                // //Set manual path if available
+                // if(props.path){
+                //     path = JSON.parse(props.path);
+                // }
+                // //Accept Pathing Objects from TMX if available
+                // if(props.pathid){
+                //     let findPath = pathingNodes.find(e => {
+                //         return e.name === props.pathid;
+                //     })
+                //     if(findPath){
+                //         path = findPath.worldpoints;
+                //     }
+                // }
+                // if(props.tint){
+                //     let newTint =  (Phaser.Display.Color.HexStringToColor(props.tint))._color; //0x333333
+                //     new_enemy.setTint(newTint);
+                // }
+                // if(props.scale){
+                //     new_enemy.setScale(props.scale);
+                // }
 
-                if(new_enemy){
-                    //Setup Enemy
-                    new_enemy.setActive(true);
-                    new_enemy.setVisible(true);
-                    new_enemy.setBehavior(PassiveBehavior,AggressivBehavior,weapon);
-                    new_enemy.setPath(path);
+                // if(new_enemy){
+                //     //Setup Enemy
+                //     new_enemy.setActive(true);
+                //     new_enemy.setVisible(true);
+                //     new_enemy.setBehavior(PassiveBehavior,AggressivBehavior,weapon);
+                //     new_enemy.setPath(path);
                     
                     
-                } 
+                // } 
             }
         }
         //Spawn Objects
@@ -667,6 +667,8 @@ var GameScene = new Phaser.Class({
             //Check for Type first, to determine the GET method used.
             let triggerObj;
             let tmxObjRef = triggerlayer.objects[e];
+            let trig_x_offset = tmxObjRef.width/2;
+            let trig_y_offset = tmxObjRef.height/2;
             if(tmxObjRef.type == "lever"){  
                 triggerObj = new TMXLever(this,tmxObjRef.x,tmxObjRef.y);             
                 levers.add(triggerObj);
@@ -685,10 +687,12 @@ var GameScene = new Phaser.Class({
                 triggerObj.setDisplaySize(tmxObjRef.width, tmxObjRef.height);
             }else if(tmxObjRef.type == "gear"){                
                 triggerObj = gears.get();
+            }else if(tmxObjRef.type == "seesaw"){ 
+                let seesaw = new Seesaw(this,tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset);
+                seesaw.setDisplaySize(tmxObjRef.width, tmxObjRef.height);
+                seesaw.setSize(tmxObjRef.width, tmxObjRef.height);
             }
             if(triggerObj){
-                let trig_x_offset = tmxObjRef.width/2;
-                let trig_y_offset = tmxObjRef.height/2;
                 triggerObj.setup(tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,getTileProperties(tmxObjRef.properties),tmxObjRef.name,tmxObjRef.width,tmxObjRef.height);
                 triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
             }
@@ -864,6 +868,7 @@ var GameScene = new Phaser.Class({
                       || gameObjectB instanceof PlatSwing
                       || gameObjectB instanceof BreakableTile 
                       || gameObjectB instanceof Crate 
+                      || gameObjectB instanceof Seesaw 
                       || gameObjectB instanceof TMXGear
                       || gameObjectB instanceof BrightBeamBlock)) {   
                 
@@ -951,7 +956,8 @@ var GameScene = new Phaser.Class({
                 || gameObjectB instanceof PlatSwingTween  
                 || gameObjectB instanceof PlatSwing
                 || gameObjectB instanceof BreakableTile 
-                || gameObjectB instanceof TMXGear             
+                || gameObjectB instanceof TMXGear
+                || gameObjectB instanceof Seesaw              
                 || gameObjectB instanceof BrightBeamBlock)) {  
 
                     //handle plaform jumping allowance             
@@ -1121,6 +1127,11 @@ var GameScene = new Phaser.Class({
                         }
                     }  
                 }
+                if ((bodyA.label === 'ENEMY_STINGER' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'ENEMY_STINGER')) {                    
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'ENEMY');
+                    gObjs[1].receiveDamage(1);
+                }
+
                 //Between Fallplat and Solana and Bright
                 let fallplatHitList = ['SOLANA','BRIGHT',
                 'BRIGHT_TOP','BRIGHT_BOTTOM','BRIGHT_LEFT','BRIGHT_RIGHT','BRIGHTSENSORS',
@@ -1482,7 +1493,7 @@ var GameScene = new Phaser.Class({
         //Draw lighting
         var solana_in_light = false;
         this.shadow_graphic.clear();
-        this.cutGraphicRaycastPolygon(soullight.x,soullight.y,720);//1440
+        this.cutGraphicRaycastPolygon(soullight.x << 0,soullight.y << 0,720);//1440
         //CENTER ON CAMERA AND CALC FOR ANY APPLICABLE OFFSETS        
         this.shadow_graphic.fillCircle(bright.x, bright.y, bright.light_radius);
 

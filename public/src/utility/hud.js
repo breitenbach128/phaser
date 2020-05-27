@@ -22,7 +22,7 @@ class HudScene extends Phaser.Scene {
             +"\nCamY:" + String(Math.round(camera_main.worldView.y))
             +"\nZoomMode:" + String(playScene.cameraLevel)
             +"\nKeyPress_X:" + String(this.skipSpeech.isDown)
-            +"\nDisPlayers:"+String(disPlayers)+":"+String(disPlayersX.toFixed(0))+":"+String(disPlayersY.toFixed(0));
+            +"\nDisPlayers:"+String(disPlayers)+":"+String(disPlayersX << 0)+":"+String(disPlayersY << 0);
             this.debug.setText(debugString);
 
             this.shard_data_l.setText(this.shard_totals.light+" x");

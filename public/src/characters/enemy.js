@@ -1024,7 +1024,12 @@ class EnemyBlobC{
             for(let i=0;i<this.subblobs.length;i++){
                 let bit = this.subblobs[i];
                 let attrMod = this.attractForce*(this.subblobs.length/12);
-                let fAng = Phaser.Math.Angle.Between(bit.x,bit.y,this.blobObj.x,this.blobObj.y);
+                let targObj = this.blobObj;
+                if(bit.isClung){
+                    targObj = bit.attachedTo;
+                    attrMod = this.attractForce;
+                }
+                let fAng = Phaser.Math.Angle.Between(bit.x,bit.y,targObj.x,targObj.y);
                 bit.applyForce({x:Math.cos(fAng)*attrMod,y:Math.sin(fAng)*attrMod});
             }
             
@@ -1119,8 +1124,6 @@ class BlobCBit extends Phaser.Physics.Matter.Sprite{
         .setPosition(x, y) 
         .setDensity(0.01)
         .setDepth(DEPTH_LAYERS.OBJECTS);
-        
-        this.alive = true;
 
         this.scene.matterCollision.addOnCollideStart({
             objectA: [this],
@@ -1132,18 +1135,43 @@ class BlobCBit extends Phaser.Physics.Matter.Sprite{
                 }
                 if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
                     gameObjectB.receiveDamage(1);
-                    //gameObjectA.death();
+                    gameObjectA.attach(gameObjectB);
                 }
             }
         });
-        this.attachedTo = blob;
+        
+        this.alive = true;
+        this.attachedTo = blob.blobObj;
         this.isClung = false;//Clinging to Solana or Dark? Used for the attraction modifier.
+        this.isSplooshing = false;
+        
+        this.scene.events.on("update", this.update, this);        
+        this.scene.events.on("shutdown", this.death, this);
     }
     update(time,delta){
+        if(!this.isSplooshing && this.alive){
+            if(distanceBetweenObjects(this,this.attachedTo) > 256){
+                this.sploosh();
+            }
+        }
+    }
+    sploosh(){
+        this.setRotation(0);
+        this.setVelocityX(0);
+        this.isSplooshing = true;
+        let twSploosh = this.scene.tweens.add({
+            targets: this,
+            scaleY: 0.2,               
+            ease: 'Linear',       
+            duration: 500,  
+            onComplete: function(tween, targets, blobit){blobit.death();},
+            onCompleteParams: [this],
+        });
 
     }
-    attachTo(){
-
+    attach(target){
+        this.attachedTo = target;
+        this.isClung = true;        
     }
     death(){
         //When this orb dies, it is spliced out of the parent blob's array.
@@ -1187,13 +1215,14 @@ class EnemyShrieker extends Phaser.Physics.Matter.Sprite{
         .setDepth(DEPTH_LAYERS.OBJECTS);
 
         this.setStatic(true);
-        this.screamTimer = this.scene.time.addEvent({ delay: 5000, callback: this.scream, callbackScope: this, loop: true });
+        this.screamTimer = this.scene.time.addEvent({ delay: 1100, callback: this.scream, callbackScope: this, loop: true });
         this.screamPower = 0.010;
         //Need stronger power if above within a 90 degree space. Otherwise lower it to 0.01 to smooth out the push effect.
         this.animScream = [0,1,2];
         this.animShrivel = [3,4,5,6,7,8,9,10];
         this.canScream = true;
-
+        this.screamCircle = this.scene.add.ellipse(this.x,this.y,this.width,this.height,0x0000DD,0.3);
+        this.screamCircle.setVisible(false);
         //Collision
         this.scene.matterCollision.addOnCollideStart({
             objectA: [this],
@@ -1214,26 +1243,30 @@ class EnemyShrieker extends Phaser.Physics.Matter.Sprite{
     }
     scream(){
         if(this.canScream){
-            this.screamCircle = this.scene.add.ellipse(this.x,this.y,this.width,this.height,0x0000DD,0.3);
-            this.anims.play('shrieker-shriek',true);
-            let tween = this.scene.tweens.add({
-                targets: this.screamCircle,
-                scale: 5.0,               
-                ease: 'Linear',       
-                duration: 1000,  
-                onComplete: function(tween, targets, shroom){shroom.screamCircle.destroy();shroom.setFrame(0)},
-                onUpdate: function(tween,targets, shroom){
-                    if(Phaser.Math.Distance.Between(shroom.x,shroom.y,solana.x,solana.y) < (shroom.screamCircle.displayWidth)/2){
-                        let a = Phaser.Math.Angle.Between(shroom.x,shroom.y,solana.x,solana.y);
-                        let adeg = Phaser.Math.RadToDeg(a);
-                        let pow = shroom.screamPower;
-                        if(adeg > -135 && adeg < -45){pow = pow*10;}
-                        solana.applyForce({x:Math.cos(a)*pow,y:Math.sin(a)*pow});
-                    }
-                },
-                onUpdateParams: [this],
-                onCompleteParams: [this],
-            });
+            let disSolana = distanceBetweenObjects(solana,this);
+            let disBright = bright.light_status == 0 ? distanceBetweenObjects(bright,this) : 9999;
+            if(disSolana < 128 || disBright < 128){
+                this.anims.play('shrieker-shriek',true);
+                this.screamCircle.setVisible(true);
+                let tween = this.scene.tweens.add({
+                    targets: this.screamCircle,
+                    scale: 5.0,               
+                    ease: 'Linear',       
+                    duration: 1000,  
+                    onComplete: function(tween, targets, shroom){shroom.screamCircle.setScale(1.0);shroom.screamCircle.setVisible(false);shroom.setFrame(0)},
+                    onUpdate: function(tween,targets, shroom){
+                        if(Phaser.Math.Distance.Between(shroom.x,shroom.y,solana.x,solana.y) < (shroom.screamCircle.displayWidth)/2){
+                            let a = Phaser.Math.Angle.Between(shroom.x,shroom.y,solana.x,solana.y);
+                            let adeg = Phaser.Math.RadToDeg(a);
+                            let pow = shroom.screamPower;
+                            if(adeg > -135 && adeg < -45){pow = pow*10;}
+                            solana.applyForce({x:Math.cos(a)*pow,y:Math.sin(a)*pow});
+                        }
+                    },
+                    onUpdateParams: [this],
+                    onCompleteParams: [this],
+                });
+            }   
         }
     }
     shrivel(){
@@ -1280,7 +1313,7 @@ class EnemySpiker {
             this.armsegements.push(newSeg);
         }
         //Stinger
-        this.stinger = this.scene.matter.add.image(x, y-48-(this.armsegements.length*12), 'spiker', 0, { shape: {type:'circle', radius: 8} , mass: 0.3, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
+        this.stinger = this.scene.matter.add.image(x, y-48-(this.armsegements.length*12), 'spiker', 0, { shape: {type:'circle', radius: 8} , label: "ENEMY_STINGER",mass: 0.3, restitution: 0.0, friction: 0.5, frictionAir: 0.03 });
         this.scene.matter.add.joint(this.armsegements[this.armsegements.length-1],this.stinger, 8, 0.4,{
             pointA: { x: 0, y: (-6) },
             pointB: { x: 0, y: 4 },
