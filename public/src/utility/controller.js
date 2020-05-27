@@ -164,7 +164,7 @@ class GamepadControl {
                 if(this.usesAnalogDirPad){
                     let apd_Keys = Object.keys(this.dirPadAnalogs);
                     apd_Keys.forEach(function(k){
-                        let chk = (this.dirPadAnalogs[k].i == this.dirPadAnalogs[k].v);
+                        let chk = (pad.axes[this.dirPadAnalogs[k].i] == this.dirPadAnalogs[k].v);
                         if(!chk){
                             this.dirPadAnalogs[k].s = this.dirPadAnalogs[k].s > 0 ? -1 : 0;                        
                         }else{

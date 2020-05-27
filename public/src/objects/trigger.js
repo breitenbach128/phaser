@@ -825,19 +825,21 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         this.setSize(w,h);
         this.setDisplaySize(w,h);
         this.name = name;
-        this.platformPosition = 0;
+        this.platformPosition = 0; //0 to 1
         this.target = {name: -1,type: -1, object: []};
         this.ready = true;
         this.setHighSpeed = 0;
         this.immobile = true;
         this.tmloop = -1;
         this.autostart = false;
+        this.togglePath = false;
         if(properties != undefined && Object.keys(properties).length > 0){
             this.target.name = properties.targetName;
             this.target.type = properties.targetType;
             this.path = properties.path != undefined ? JSON.parse(properties.path) : -1;
             this.tmloop = properties.loop;
             this.autostart = properties.autostart;
+            this.togglePath = properties.togglepath != undefined ? properties.togglepath : false;
             if(properties.frame != undefined){this.setFrame(properties.frame)};
         }
        if(this.autostart && (this.path != undefined && this.path != -1)){ 
@@ -901,10 +903,16 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         this.timeline.setCallback('onComplete',this.platComplete,[this],this.timeline);
         this.timeline.loop = this.tmloop;
         path.forEach(function(e){
+            let dX = e.x;
+            let dY = e.y; 
+            if(this.togglePath && this.platformPosition == 1){
+                dX = e.x*-1;
+                dY = e.y*-1;
+            }
             this.timeline.add({
                 targets: this,
-                x: this.x+e.x,
-                y: this.y+e.y,
+                x: this.x+dX,
+                y: this.y+dY,
                 ease: 'Cubic.easeInOut',
                 duration: e.t,
                 hold: e.h
@@ -929,6 +937,8 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
     }
     platComplete(plat){
         plat.ready = true;
+        plat.platformPosition = 1 - plat.platformPosition;
+        console.log("Platform tween complete",plat.name,plat.platformPosition,plat.togglePath);
     }
     trackOneWay(){
         let targetObjTop = this.onWayTracker.obj.getTopCenter();

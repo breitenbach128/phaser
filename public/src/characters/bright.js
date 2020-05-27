@@ -211,7 +211,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     }
 
                     //Passing Soulight
-                    if (control_passPress && soullight.ownerid == 1) {        
+                    if (control_passPress && soullight.ownerid == 1 && !this.abPulse.doCharge) {        
                         let losRc = Phaser.Physics.Matter.Matter.Query.ray(losBlockers,{x:solana.x,y:solana.y},{x:soullight.x,y:soullight.y});                  
                         if(Phaser.Math.Distance.Between(soullight.x,soullight.y,solana.x,solana.y) > soullight.freePassDistance){                                
                             soullight.aimStart() 

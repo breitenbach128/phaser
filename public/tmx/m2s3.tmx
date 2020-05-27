@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="75" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="456">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="75" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="465">
  <editorsettings>
   <export target="../assets/world/m2s3.json" format="json"/>
  </editorsettings>
@@ -584,7 +584,7 @@
     <property name="weapon" type="int" value="5"/>
    </properties>
   </object>
-  <object id="269" name="bat2" type="air" gid="9298" x="1200" y="928" width="32" height="32">
+  <object id="269" name="bat2" type="air" gid="9298" x="1200" y="864" width="32" height="32">
    <properties>
     <property name="aBehav" value="attack"/>
     <property name="enemyClass" value="air"/>
@@ -607,12 +607,11 @@
    </properties>
   </object>
   <object id="446" name="shrieker1" type="shrieker" gid="9298" x="832" y="496" width="32" height="32"/>
-  <object id="447" name="shrieker2" type="shrieker" gid="9298" x="1056" y="1056" width="32" height="32" rotation="90"/>
   <object id="448" name="shrieker3" type="shrieker" gid="9298" x="960" y="496" width="32" height="32"/>
   <object id="449" name="shrieker3" type="shrieker" gid="9298" x="1152" y="384" width="32" height="32" rotation="-180"/>
   <object id="450" name="blob1" type="blob" gid="9298" x="832" y="656" width="32" height="32"/>
-  <object id="452" name="spiker1" type="spiker" gid="9298" x="656" y="496" width="16" height="16"/>
-  <object id="455" name="shrieker2" type="shrieker" gid="9298" x="1120" y="1168" width="32" height="32"/>
+  <object id="452" name="spiker1" type="spiker" gid="9298" x="784" y="1184" width="16" height="16"/>
+  <object id="461" name="spiker2" type="spiker" gid="9298" x="896" y="1184" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="13" name="spawns"/>
  <objectgroup id="14" name="exit">
@@ -651,14 +650,14 @@
   <object id="316" name="crate" type="crate" x="864" y="624" width="16" height="16"/>
   <object id="322" name="crate" type="crate" x="880" y="624" width="16" height="16"/>
   <object id="326" name="crate" type="crate" x="880" y="608" width="16" height="16"/>
-  <object id="337" name="grinder1" type="trap" x="176" y="528" width="32" height="32">
+  <object id="337" name="grinder1" type="trap" x="192" y="528" width="32" height="32">
    <properties>
     <property name="angvel" type="float" value="0.2"/>
     <property name="subtype" value="grinder"/>
    </properties>
   </object>
   <object id="338" name="mirror2" type="mirror" gid="9335" x="800" y="528" width="32" height="32" rotation="-90"/>
-  <object id="345" name="grinder2" type="trap" x="208" y="528" width="32" height="32">
+  <object id="345" name="grinder2" type="trap" x="224" y="528" width="32" height="32">
    <properties>
     <property name="angvel" type="float" value="-0.2"/>
     <property name="subtype" value="grinder"/>
@@ -727,7 +726,7 @@
   <object id="423" name="window2" type="window" gid="9372" x="247" y="80" width="32" height="33"/>
   <object id="440" name="chest1" type="chest" x="416" y="736" width="64" height="48"/>
   <object id="441" name="line1" type="line" x="448" y="352">
-   <polyline points="0,-8 -25,66 -152,70 -168,80"/>
+   <polyline points="0,7 -25,66 -152,70 -168,80"/>
   </object>
   <object id="443" name="line2" type="line" x="448" y="432">
    <polyline points="0,-7 -16,32 -16,80 -144,64 -160,16 -240,16 -256,0 -248,0"/>
@@ -744,13 +743,47 @@
     <property name="subtype" value="grinder"/>
    </properties>
   </object>
+  <object id="456" name="grinder12" type="trap" x="1072" y="944" width="32" height="32">
+   <properties>
+    <property name="angvel" type="float" value="-0.2"/>
+    <property name="subtype" value="grinder"/>
+   </properties>
+  </object>
+  <object id="457" name="grinder11" type="trap" x="1168" y="1008" width="32" height="32">
+   <properties>
+    <property name="angvel" type="float" value="-0.2"/>
+    <property name="subtype" value="grinder"/>
+   </properties>
+  </object>
+  <object id="458" name="grinder15" type="trap" x="1184" y="528" width="32" height="32">
+   <properties>
+    <property name="angvel" type="float" value="-0.2"/>
+    <property name="subtype" value="grinder"/>
+   </properties>
+  </object>
+  <object id="459" name="grinder14" type="trap" x="1152" y="672" width="32" height="32">
+   <properties>
+    <property name="angvel" type="float" value="-0.2"/>
+    <property name="subtype" value="grinder"/>
+   </properties>
+  </object>
+  <object id="460" name="grinder13" type="trap" x="1104" y="800" width="32" height="32">
+   <properties>
+    <property name="angvel" type="float" value="-0.2"/>
+    <property name="subtype" value="grinder"/>
+   </properties>
+  </object>
+  <object id="464" name="line5" type="line" x="448" y="296">
+   <polyline points="0,0 -179,1 -261,25 -333,41 -344,56"/>
+  </object>
  </objectgroup>
  <objectgroup id="16" name="triggers">
   <object id="266" name="platform1" type="platform" x="1056" y="1168" width="176" height="16">
    <properties>
     <property name="autostart" type="bool" value="false"/>
     <property name="loop" type="int" value="0"/>
-    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:-672,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:-672,&quot;t&quot;:9000,&quot;h&quot;:0}]"/>
+    <property name="togglepath" type="bool" value="true"/>
    </properties>
   </object>
   <object id="267" name="button1" type="button" x="1216" y="1136" width="16" height="16">
@@ -880,16 +913,16 @@
    <properties>
     <property name="alwaysOn" type="bool" value="false"/>
     <property name="brightness_max" type="int" value="96"/>
-    <property name="decayRate" type="float" value="0"/>
+    <property name="decayRate" type="float" value="5"/>
     <property name="targetName" value="platform6c"/>
     <property name="targetType" value="none"/>
    </properties>
   </object>
-  <object id="334" name="lamp2" type="crystallamp" x="448" y="336" width="16" height="16">
+  <object id="334" name="lamp2" type="crystallamp" x="448" y="352" width="16" height="16">
    <properties>
     <property name="alwaysOn" type="bool" value="false"/>
     <property name="brightness_max" type="int" value="96"/>
-    <property name="decayRate" type="float" value="0"/>
+    <property name="decayRate" type="float" value="5"/>
     <property name="targetName" value="platform6a"/>
     <property name="targetType" value="none"/>
    </properties>
@@ -926,28 +959,32 @@
    <properties>
     <property name="autostart" type="bool" value="false"/>
     <property name="loop" type="int" value="0"/>
-    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:-48,&quot;t&quot;:3000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:-48,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+    <property name="togglepath" type="bool" value="true"/>
    </properties>
   </object>
   <object id="361" name="platform6c" type="platform" x="192" y="416" width="16" height="16">
    <properties>
     <property name="autostart" type="bool" value="false"/>
     <property name="loop" type="int" value="0"/>
-    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:-64,&quot;t&quot;:3000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:-48,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+    <property name="togglepath" type="bool" value="true"/>
    </properties>
   </object>
   <object id="362" name="platform6d" type="platform" x="96" y="432" width="16" height="16">
    <properties>
     <property name="autostart" type="bool" value="false"/>
     <property name="loop" type="int" value="0"/>
-    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:64,&quot;t&quot;:3000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:64,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+    <property name="togglepath" type="bool" value="true"/>
    </properties>
   </object>
   <object id="363" name="platform6a" type="platform" x="272" y="432" width="16" height="16">
    <properties>
     <property name="autostart" type="bool" value="false"/>
     <property name="loop" type="int" value="0"/>
-    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:-144,&quot;y&quot;:0,&quot;t&quot;:1000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:-144,&quot;y&quot;:0,&quot;t&quot;:1000,&quot;h&quot;:0}]"/>
+    <property name="togglepath" type="bool" value="true"/>
    </properties>
   </object>
   <object id="364" name="lever4" type="lever" x="336" y="192" width="32" height="32">
@@ -1158,6 +1195,23 @@
     <property name="zoneValue" value="{&quot;damage&quot;:1,&quot;gravY&quot;:80}"/>
    </properties>
   </object>
+  <object id="462" name="platform6e" type="platform" x="112" y="352" width="16" height="16">
+   <properties>
+    <property name="autostart" type="bool" value="false"/>
+    <property name="loop" type="int" value="0"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:80,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+    <property name="togglepath" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="463" name="lamp5" type="crystallamp" x="448" y="288" width="16" height="16">
+   <properties>
+    <property name="alwaysOn" type="bool" value="false"/>
+    <property name="brightness_max" type="int" value="96"/>
+    <property name="decayRate" type="float" value="5"/>
+    <property name="targetName" value="platform6e"/>
+    <property name="targetType" value="none"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup color="#00ff00" id="17" name="hulls">
   <object id="260" type="hull" x="560" y="1184" width="1040" height="16">
@@ -1278,7 +1332,7 @@
   <object id="270" name="bat1" type="ai" x="1072" y="752">
    <polyline points="0,0 144,0"/>
   </object>
-  <object id="271" name="bat2" type="ai" x="1072" y="912">
+  <object id="271" name="bat2" type="ai" x="1072" y="848">
    <polyline points="0,0 52,48 144,0"/>
   </object>
   <object id="313" name="bat3" type="a" x="1312" y="768">
