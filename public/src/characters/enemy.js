@@ -1222,6 +1222,11 @@ class EnemyShrieker extends Phaser.Physics.Matter.Sprite{
         this.animShrivel = [3,4,5,6,7,8,9,10];
         this.canScream = true;
         this.screamCircle = this.scene.add.ellipse(this.x,this.y,this.width,this.height,0x0000DD,0.3);
+        this.screamCircle.blendMode = Phaser.BlendModes.ADD;
+        this.screamCircle.isStroked = true;
+        this.screamCircle.strokeColor = 0xFFFFFF;
+        this.screamCircle.strokeAlpha = 0.5;
+        this.screamCircle.lineWidth = 1;
         this.screamCircle.setVisible(false);
         //Collision
         this.scene.matterCollision.addOnCollideStart({
@@ -1259,7 +1264,7 @@ class EnemyShrieker extends Phaser.Physics.Matter.Sprite{
                             let a = Phaser.Math.Angle.Between(shroom.x,shroom.y,solana.x,solana.y);
                             let adeg = Phaser.Math.RadToDeg(a);
                             let pow = shroom.screamPower;
-                            if(adeg > -135 && adeg < -45){pow = pow*10;}
+                            if(adeg > -135 && adeg < -45){pow = pow*5;}
                             solana.applyForce({x:Math.cos(a)*pow,y:Math.sin(a)*pow});
                         }
                     },

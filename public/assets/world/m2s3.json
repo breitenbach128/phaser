@@ -311,8 +311,8 @@
                  "type":"spiker",
                  "visible":true,
                  "width":16,
-                 "x":784,
-                 "y":1184
+                 "x":1408,
+                 "y":400
                 }, 
                 {
                  "gid":9298,
@@ -323,7 +323,19 @@
                  "type":"spiker",
                  "visible":true,
                  "width":16,
-                 "x":896,
+                 "x":1376,
+                 "y":400
+                }, 
+                {
+                 "gid":9298,
+                 "height":32,
+                 "id":465,
+                 "name":"shrieker4",
+                 "rotation":0,
+                 "type":"shrieker",
+                 "visible":true,
+                 "width":32,
+                 "x":848,
                  "y":1184
                 }],
          "opacity":1,
@@ -3815,7 +3827,7 @@
          "y":0
         }],
  "nextlayerid":19,
- "nextobjectid":465,
+ "nextobjectid":466,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.4",

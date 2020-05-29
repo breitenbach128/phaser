@@ -38,11 +38,11 @@ class Exit extends Phaser.Physics.Matter.Sprite{
                 
                 if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
                     this.startTouch(0);
-                    current_exit.solana = this.targetExit;
+                    //current_exit.solana = this.targetExit;
                 }
                 if (gameObjectB !== undefined && gameObjectB instanceof Bright) {
                     this.startTouch(1);
-                    current_exit.bright = this.targetExit;
+                    //current_exit.bright = this.targetExit;
                 }
             }
         });
@@ -145,9 +145,19 @@ class Exit extends Phaser.Physics.Matter.Sprite{
         //First, Save State
         this.scene.saveData();
         //Then, Transition to new map
+        this.setPlayerExits();
         current_map = this.targetMap;
         this.triggered = true;   
         this.scene.scene.restart();
+    }
+    setPlayerExits(){
+        if(this.touchedBy[0]){current_exit.solana = this.targetExit;};
+        if(this.touchedBy[1]){current_exit.bright = this.targetExit;};
+
+        if(this.partnerExitName != 'none'){
+            if(this.partnerExit.touchedBy[0]){current_exit.solana = this.targetExit;};
+            if(this.partnerExit.touchedBy[1]){current_exit.bright = this.targetExit;};
+        }
     }
 
 };
