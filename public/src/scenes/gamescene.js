@@ -2359,5 +2359,11 @@ function createAnimations(scene){
         frameRate: 12,
         repeat: 0
     }); 
+    scene.anims.create({
+        key: 'inchworm-crawl',
+        frames: scene.anims.generateFrameNumbers('inchworm-1', { frames:[0,1,2,3] }),
+        frameRate: 12,
+        repeat: -1
+    }); 
     
 }

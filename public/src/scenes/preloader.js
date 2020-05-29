@@ -264,6 +264,7 @@ var Preloader = new Phaser.Class({
         this.load.image('seesaw', 'assets/objects/seesaw.png');
 		//Props
 		this.load.spritesheet('fan-1', 'assets/objects/fan-1.png', {frameWidth: 64, frameHeight: 32});
+		this.load.spritesheet('inchworm-1', 'assets/objects/props_inchworm.png', {frameWidth: 16, frameHeight: 16});
 		//SoulCrystals
 		this.load.spritesheet('soulcrystal_blue', 'assets/objects/crystal-qubodup-ccby3-32-blue.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('soulcrystal_grey', 'assets/objects/crystal-qubodup-ccby3-32-grey.png', {frameWidth: 32, frameHeight: 32});		

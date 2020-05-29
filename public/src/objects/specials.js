@@ -851,6 +851,7 @@ class TMXWater{
         //this.waterbody = this.scene.add.water(x, y, w, h, d, opt);
         //NOTE: ObjectA was this.waterbody.sensor
         this.waterbody = this.scene.matter.add.rectangle(x+w/2,y+h/2,w,h, {isStatic:true, isSensor:true});
+        this.brightBlocker = this.scene.matter.add.rectangle(x+w/2,y+h/2,w,h, {isStatic:true, collisionFilter: {mask:CATEGORY.BRIGHT}});
         this.sprite = this.scene.add.rectangle(x+w/2,y+h/2,w,h,0x0099ff,0.7)
         //console.log("Waterbody",this.waterbody)
         this.scene.matterCollision.addOnCollideStart({

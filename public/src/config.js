@@ -71,8 +71,8 @@
     //Tiles
     var map; 
     var mapTileSize = {tw:16,th:16};
-    var current_map = "m2s1";
-    var current_exit = {solana: "east1", bright: "east1"};
+    var current_map = "m2s3";
+    var current_exit = {solana: "south1", bright: "south1"};
     var world_backgrounds = [];
     //Map Configurations - Each level will have a name from the preloader. The tsKey will also come from the preloader. The tsName is from Tiled.
     var level_configs = [
