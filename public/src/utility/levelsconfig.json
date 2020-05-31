@@ -1,0 +1,202 @@
+[
+    {
+        "name": "m1s1",
+        "title": "A Title",
+        "tsPairs": [
+            {
+                "tsName": "decorative",
+                "tsKey": "PF_Caslte_1_0_decorative"
+            },
+            {
+                "tsName": "mainlevbuild_A",
+                "tsKey": "PF_Caslte_1_0_mainlevbuild_A"
+            },
+            {
+                "tsName": "mainlevbuild_B",
+                "tsKey": "PF_Caslte_1_0_mainlevbuild_B"
+            }
+        ],
+        "backgrounds": [
+            "PF_Caslte_1_0_background_day1",
+            "PF_Caslte_1_0_background_day2",
+            "PF_Caslte_1_0_background_day3"
+        ]
+    },
+    {
+        "name": "m1s1a",
+        "title": "A Title",
+        "tsPairs": [
+            {
+                "tsName": "decorative",
+                "tsKey": "PF_Caslte_1_0_decorative"
+            },
+            {
+                "tsName": "mainlevbuild_A",
+                "tsKey": "PF_Caslte_1_0_mainlevbuild_A"
+            },
+            {
+                "tsName": "mainlevbuild_B",
+                "tsKey": "PF_Caslte_1_0_mainlevbuild_B"
+            }
+        ],
+        "backgrounds": [
+            "PF_Caslte_1_0_background_day1",
+            "PF_Caslte_1_0_background_day2",
+            "PF_Caslte_1_0_background_day3"
+        ]
+    },
+    {
+        "name": "m2s1",
+        "title": "The Mine Shaft",
+        "tsPairs": [
+            {
+                "tsName": "mainlevbuild1",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild1"
+            },
+            {
+                "tsName": "mainlevbuild2",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild2"
+            },
+            {
+                "tsName": "mainlevbuild3",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild3"
+            },
+            {
+                "tsName": "32Tileset",
+                "tsKey": "tiles32"
+            }
+        ],
+        "backgrounds": [
+            "PF_SET3_v1_0_background1",
+            "PF_SET3_v1_0_background2",
+            "PF_SET3_v1_0_background3",
+            "PF_SET3_v1_0_background4"
+        ]
+    },
+    {
+        "name": "m2s2",
+        "title": "The Lower Mines",
+        "tsPairs": [
+            {
+                "tsName": "mainlevbuild1",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild1"
+            },
+            {
+                "tsName": "mainlevbuild2",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild2"
+            },
+            {
+                "tsName": "mainlevbuild3",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild3"
+            },
+            {
+                "tsName": "32Tileset",
+                "tsKey": "tiles32"
+            }
+        ],
+        "backgrounds": [
+            "PF_SET3_v1_0_background1",
+            "PF_SET3_v1_0_background2",
+            "PF_SET3_v1_0_background3",
+            "PF_SET3_v1_0_background4"
+        ]
+    },
+    {
+        "name": "m2s3",
+        "title": "The Upper Mines",
+        "tsPairs": [
+            {
+                "tsName": "mainlevbuild1",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild1"
+            },
+            {
+                "tsName": "mainlevbuild2",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild2"
+            },
+            {
+                "tsName": "mainlevbuild3",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild3"
+            },
+            {
+                "tsName": "32Tileset",
+                "tsKey": "tiles32"
+            }
+        ],
+        "backgrounds": [
+            "PF_SET3_v1_0_background1",
+            "PF_SET3_v1_0_background2",
+            "PF_SET3_v1_0_background3",
+            "PF_SET3_v1_0_background4"
+        ]
+    },
+    {
+        "name": "m2s5",
+        "title": "The Ore Extractor",
+        "tsPairs": [
+            {
+                "tsName": "mainlevbuild1",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild1"
+            },
+            {
+                "tsName": "mainlevbuild2",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild2"
+            },
+            {
+                "tsName": "mainlevbuild3",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild3"
+            },
+            {
+                "tsName": "32Tileset",
+                "tsKey": "tiles32"
+            }
+        ],
+        "backgrounds": [
+            "PF_SET3_v1_0_background1",
+            "PF_SET3_v1_0_background2",
+            "PF_SET3_v1_0_background3",
+            "PF_SET3_v1_0_background4"
+        ]
+    },
+    {
+        "name": "m6s1",
+        "title": "A Title",
+        "tsPairs": [
+            {
+                "tsName": "mainlevbuild1",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild1"
+            },
+            {
+                "tsName": "mainlevbuild2",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild2"
+            },
+            {
+                "tsName": "mainlevbuild3",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild3"
+            }
+        ],
+        "backgrounds": [
+            "PF_SET3_v1_0_background4"
+        ]
+    },
+    {
+        "name": "m6s1a",
+        "title": "A Title",
+        "tsPairs": [
+            {
+                "tsName": "mainlevbuild1",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild1"
+            },
+            {
+                "tsName": "mainlevbuild2",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild2"
+            },
+            {
+                "tsName": "mainlevbuild3",
+                "tsKey": "PF_SET3_v1_0_mainlevbuild3"
+            }
+        ],
+        "backgrounds": [
+            "PF_SET3_v1_0_background4"
+        ]
+    }
+]

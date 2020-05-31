@@ -42,9 +42,7 @@ var GameScene = new Phaser.Class({
         mapTileSize.tw = map.tileWidth;   
         mapTileSize.th = map.tileHeight;
         //Get the lvl config from config.js object
-        let lvlCfg = getLevelConfigByName(current_map);
-        console.log(this.matter.world)
-        //console.log(map);
+        let lvlCfg = getLevelConfigByName(this,current_map);
         //Create Background - This will need to be custom based on the map.
         lvlCfg.backgrounds.forEach(e=>{
             world_backgrounds.push(this.add.tileSprite(512, 256, map.widthInPixels*2, map.heightInPixels*2, e));
@@ -171,6 +169,7 @@ var GameScene = new Phaser.Class({
             shapeObject.setVisible(false);
             shapeObject.setStatic(true);
             shapeObject.setCollisionCategory(CATEGORY.GROUND) 
+            shapeObject.setCollidesWith([~CATEGORY.GROUND]);
             shapeObject.body.label = 'GROUND'; 
             //Make the friction come from a property setter. Default to 0.01.
             
@@ -658,8 +657,14 @@ var GameScene = new Phaser.Class({
                 let conveyorprops = getTileProperties(tmxObjRef.properties); 
                 let sPoint = {x:tmxObjRef.x+tmxObjRef.polyline[0].x,y:tmxObjRef.y+tmxObjRef.polyline[0].y};
                 let ePoint = {x:tmxObjRef.x+tmxObjRef.polyline[1].x,y:tmxObjRef.y+tmxObjRef.polyline[1].y};
-                let conveyor = new Conveyor(this,sPoint,ePoint,conveyorprops.angvel);
-                
+                let conveyor = new Conveyor(this,sPoint,ePoint,conveyorprops.angvel);                
+            }else if(tmxObjRef.type == 'prop'){
+                let propprops = getTileProperties(tmxObjRef.properties);
+                if(propprops.subtype == 'bat'){
+                    let propBat = new PropBat(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                }else if(propprops.subtype == 'inchworm'){
+                    let propWorm = new PropInchworm(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                }
             }
         }
         //Spawn Triggers
@@ -669,6 +674,7 @@ var GameScene = new Phaser.Class({
             let tmxObjRef = triggerlayer.objects[e];
             let trig_x_offset = tmxObjRef.width/2;
             let trig_y_offset = tmxObjRef.height/2;
+            let trig_props = getTileProperties(tmxObjRef.properties)
             if(tmxObjRef.type == "lever"){  
                 triggerObj = new TMXLever(this,tmxObjRef.x,tmxObjRef.y);             
                 levers.add(triggerObj);
@@ -688,12 +694,12 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == "gear"){                
                 triggerObj = gears.get();
             }else if(tmxObjRef.type == "seesaw"){ 
-                let seesaw = new Seesaw(this,tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset);
+                let seesaw = new Seesaw(this,tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,trig_props.balanceOffset);
                 seesaw.setDisplaySize(tmxObjRef.width, tmxObjRef.height);
                 seesaw.setSize(tmxObjRef.width, tmxObjRef.height);
             }
             if(triggerObj){
-                triggerObj.setup(tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,getTileProperties(tmxObjRef.properties),tmxObjRef.name,tmxObjRef.width,tmxObjRef.height);
+                triggerObj.setup(tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,trig_props,tmxObjRef.name,tmxObjRef.width,tmxObjRef.height);
                 triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
             }
         }
@@ -2362,7 +2368,19 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'inchworm-crawl',
         frames: scene.anims.generateFrameNumbers('inchworm-1', { frames:[0,1,2,3] }),
-        frameRate: 12,
+        frameRate: 8,
+        repeat: -1
+    }); 
+    scene.anims.create({
+        key: 'bat-unfurl',
+        frames: scene.anims.generateFrameNumbers('bat-1', { frames:[3,2] }),
+        frameRate: 8,
+        repeat: 0
+    }); 
+    scene.anims.create({
+        key: 'bat-fly',
+        frames: scene.anims.generateFrameNumbers('bat-1', { frames:[0,1] }),
+        frameRate: 8,
         repeat: -1
     }); 
     

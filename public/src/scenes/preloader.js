@@ -168,6 +168,7 @@ var Preloader = new Phaser.Class({
 		this.load.tilemapTiledJSON('m2s1', 'assets/world/m2s1.json');
 		this.load.tilemapTiledJSON('m2s2', 'assets/world/m2s2.json');
 		this.load.tilemapTiledJSON('m2s3', 'assets/world/m2s3.json');
+		this.load.tilemapTiledJSON('m2s5', 'assets/world/m2s5.json');
 		this.load.tilemapTiledJSON('m6s1', 'assets/world/m6s1.json');
 		this.load.tilemapTiledJSON('m6s1a', 'assets/world/m6s1a.json');
 		//Map Tilesets
@@ -224,6 +225,9 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('PF_StrangeWorld1_0_mainlevbuildA', 'tmx/tilesets/PF_StrangeWorld1.0/mainlevbuildA.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('PF_StrangeWorld1_0_mainlevbuildB', 'tmx/tilesets/PF_StrangeWorld1.0/mainlevbuildB.png', {frameWidth: 32, frameHeight: 32});
 
+		//load level config data
+		this.load.json('levelconfigdata', 'src/utility/levelsconfig.json ');
+
 		//Entity Assets
         this.load.spritesheet('slime1', 'assets/characters/slimemonster2.png', {frameWidth: 64, frameHeight: 37});    
         this.load.spritesheet('bullet', 'assets/objects/projectiles.png', {frameWidth: 16, frameHeight: 16});
@@ -265,6 +269,7 @@ var Preloader = new Phaser.Class({
 		//Props
 		this.load.spritesheet('fan-1', 'assets/objects/fan-1.png', {frameWidth: 64, frameHeight: 32});
 		this.load.spritesheet('inchworm-1', 'assets/objects/props_inchworm.png', {frameWidth: 16, frameHeight: 16});
+		this.load.spritesheet('bat-1', 'assets/objects/props_bat.png', {frameWidth: 32, frameHeight: 16});
 		//SoulCrystals
 		this.load.spritesheet('soulcrystal_blue', 'assets/objects/crystal-qubodup-ccby3-32-blue.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('soulcrystal_grey', 'assets/objects/crystal-qubodup-ccby3-32-grey.png', {frameWidth: 32, frameHeight: 32});		

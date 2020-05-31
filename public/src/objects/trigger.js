@@ -1078,7 +1078,7 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
 }
 
 class Seesaw extends Phaser.Physics.Matter.Image {
-    constructor(scene,x,y) {
+    constructor(scene,x,y,offset) {
         super(scene.matter.world, x, y, 'seesaw');
         this.scene = scene;
         scene.matter.world.add(this);
@@ -1093,23 +1093,24 @@ class Seesaw extends Phaser.Physics.Matter.Image {
         const compoundBody = Body.create({
             parts: [mainBody],
             frictionStatic: 0,
-            frictionAir: 0.2,
+            frictionAir: 0.1,
             friction: 0.5,
             label: 'SEESAW'
         });
-
+        this.balanceOffset = offset != undefined ? offset:0;
         this
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.SOLID)
-        .setCollidesWith([CATEGORY.SOLANA,CATEGORY.DARK, CATEGORY.SOLID])
+        .setCollidesWith([CATEGORY.SOLANA,CATEGORY.DARK, CATEGORY.SOLID, CATEGORY.GROUND])
         .setPosition(x, y)
         .setIgnoreGravity(true)
         .setVisible(true);  
 
         this.pivotConstraint = Phaser.Physics.Matter.Matter.Constraint.create(
             {
-              pointA: { x: this.x, y: this.y },
+              pointA: { x: this.x+this.balanceOffset, y: this.y },
               bodyB: this.body,
+              pointB: { x: this.balanceOffset, y: 0 },
               length: 0,
               stiffness: 1
             }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="75" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="478">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="75" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="488">
  <editorsettings>
   <export target="../assets/world/m2s3.json" format="json"/>
  </editorsettings>
@@ -612,7 +612,7 @@
   <object id="450" name="blob1" type="blob" gid="9298" x="832" y="656" width="32" height="32"/>
   <object id="452" name="spiker1" type="spiker" gid="9298" x="1440" y="400" width="16" height="16"/>
   <object id="461" name="spiker2" type="spiker" gid="9298" x="1376" y="400" width="16" height="16"/>
-  <object id="465" name="shrieker4" type="shrieker" gid="9298" x="848" y="1184" width="32" height="32"/>
+  <object id="465" name="shrieker4" type="shrieker" gid="9298" x="928" y="1184" width="32" height="32"/>
   <object id="470" name="blob2" type="blob" gid="9298" x="1504" y="1024" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="13" name="spawns"/>
@@ -627,7 +627,7 @@
   <object id="473" name="east1" type="exit" x="1504" y="1104" width="80" height="80">
    <properties>
     <property name="targetExit" value="west1"/>
-    <property name="targetMap" value="m2s4"/>
+    <property name="targetMap" value="m2s5"/>
    </properties>
   </object>
   <object id="474" name="east1" type="entrance" x="1456" y="1136" width="32" height="32"/>
@@ -799,6 +799,56 @@
     <property name="subtype" value="grinder"/>
    </properties>
   </object>
+  <object id="478" name="prop_bat" type="prop" x="800" y="1088" width="32" height="16">
+   <properties>
+    <property name="subtype" value="bat"/>
+   </properties>
+  </object>
+  <object id="479" name="prop_inchworm" type="prop" x="496" y="480" width="16" height="16">
+   <properties>
+    <property name="subtype" value="inchworm"/>
+   </properties>
+  </object>
+  <object id="480" name="prop_bat" type="prop" x="747" y="1086" width="32" height="16">
+   <properties>
+    <property name="subtype" value="bat"/>
+   </properties>
+  </object>
+  <object id="481" name="prop_bat" type="prop" x="832" y="1088" width="32" height="16">
+   <properties>
+    <property name="subtype" value="bat"/>
+   </properties>
+  </object>
+  <object id="482" name="prop_bat" type="prop" x="864" y="1088" width="32" height="16">
+   <properties>
+    <property name="subtype" value="bat"/>
+   </properties>
+  </object>
+  <object id="483" name="prop_inchworm" type="prop" x="1152" y="288" width="16" height="16">
+   <properties>
+    <property name="subtype" value="inchworm"/>
+   </properties>
+  </object>
+  <object id="484" name="prop_inchworm" type="prop" x="736" y="1168" width="16" height="16">
+   <properties>
+    <property name="subtype" value="inchworm"/>
+   </properties>
+  </object>
+  <object id="485" name="prop_bat" type="prop" x="624" y="576" width="32" height="16">
+   <properties>
+    <property name="subtype" value="bat"/>
+   </properties>
+  </object>
+  <object id="486" name="prop_bat" type="prop" x="592" y="576" width="32" height="16">
+   <properties>
+    <property name="subtype" value="bat"/>
+   </properties>
+  </object>
+  <object id="487" name="prop_bat" type="prop" x="560" y="576" width="32" height="16">
+   <properties>
+    <property name="subtype" value="bat"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="16" name="triggers">
   <object id="266" name="platform1" type="platform" x="1056" y="1168" width="176" height="16">
@@ -815,7 +865,7 @@
     <property name="targetType" value="none"/>
    </properties>
   </object>
-  <object id="274" name="zone1" type="zone" x="720" y="1088" width="288" height="16">
+  <object id="274" name="zone1" type="zone" x="864" y="1088" width="192" height="16">
    <properties>
     <property name="allowReset" type="bool" value="false"/>
     <property name="resetDelay" type="int" value="1000"/>
@@ -1207,7 +1257,11 @@
     <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:128,&quot;t&quot;:3000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
    </properties>
   </object>
-  <object id="453" name="seesaw1" type="seesaw" x="544" y="704" width="96" height="16"/>
+  <object id="453" name="seesaw1" type="seesaw" x="544" y="704" width="96" height="16">
+   <properties>
+    <property name="balanceOffset" type="int" value="0"/>
+   </properties>
+  </object>
   <object id="454" name="zone8" type="zone" x="688" y="352" width="384" height="16">
    <properties>
     <property name="allowReset" type="bool" value="true"/>

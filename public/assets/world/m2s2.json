@@ -269,12 +269,12 @@
                         {
                          "name":"targetExit",
                          "type":"string",
-                         "value":"west1"
+                         "value":"east1"
                         }, 
                         {
                          "name":"targetMap",
                          "type":"string",
-                         "value":"m2s2"
+                         "value":"m2s3"
                         }],
                  "rotation":0,
                  "type":"exit",

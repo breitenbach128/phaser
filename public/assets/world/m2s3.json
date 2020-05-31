@@ -335,7 +335,7 @@
                  "type":"shrieker",
                  "visible":true,
                  "width":32,
-                 "x":848,
+                 "x":928,
                  "y":1184
                 }, 
                 {
@@ -418,7 +418,7 @@
                         {
                          "name":"targetMap",
                          "type":"string",
-                         "value":"m2s4"
+                         "value":"m2s5"
                         }],
                  "rotation":0,
                  "type":"exit",
@@ -1344,6 +1344,176 @@
                  "width":32,
                  "x":1552,
                  "y":784
+                }, 
+                {
+                 "height":16,
+                 "id":478,
+                 "name":"prop_bat",
+                 "properties":[
+                        {
+                         "name":"subtype",
+                         "type":"string",
+                         "value":"bat"
+                        }],
+                 "rotation":0,
+                 "type":"prop",
+                 "visible":true,
+                 "width":32,
+                 "x":800,
+                 "y":1088
+                }, 
+                {
+                 "height":16,
+                 "id":479,
+                 "name":"prop_inchworm",
+                 "properties":[
+                        {
+                         "name":"subtype",
+                         "type":"string",
+                         "value":"inchworm"
+                        }],
+                 "rotation":0,
+                 "type":"prop",
+                 "visible":true,
+                 "width":16,
+                 "x":496,
+                 "y":480
+                }, 
+                {
+                 "height":16,
+                 "id":480,
+                 "name":"prop_bat",
+                 "properties":[
+                        {
+                         "name":"subtype",
+                         "type":"string",
+                         "value":"bat"
+                        }],
+                 "rotation":0,
+                 "type":"prop",
+                 "visible":true,
+                 "width":32,
+                 "x":747,
+                 "y":1086
+                }, 
+                {
+                 "height":16,
+                 "id":481,
+                 "name":"prop_bat",
+                 "properties":[
+                        {
+                         "name":"subtype",
+                         "type":"string",
+                         "value":"bat"
+                        }],
+                 "rotation":0,
+                 "type":"prop",
+                 "visible":true,
+                 "width":32,
+                 "x":832,
+                 "y":1088
+                }, 
+                {
+                 "height":16,
+                 "id":482,
+                 "name":"prop_bat",
+                 "properties":[
+                        {
+                         "name":"subtype",
+                         "type":"string",
+                         "value":"bat"
+                        }],
+                 "rotation":0,
+                 "type":"prop",
+                 "visible":true,
+                 "width":32,
+                 "x":864,
+                 "y":1088
+                }, 
+                {
+                 "height":16,
+                 "id":483,
+                 "name":"prop_inchworm",
+                 "properties":[
+                        {
+                         "name":"subtype",
+                         "type":"string",
+                         "value":"inchworm"
+                        }],
+                 "rotation":0,
+                 "type":"prop",
+                 "visible":true,
+                 "width":16,
+                 "x":1152,
+                 "y":288
+                }, 
+                {
+                 "height":16,
+                 "id":484,
+                 "name":"prop_inchworm",
+                 "properties":[
+                        {
+                         "name":"subtype",
+                         "type":"string",
+                         "value":"inchworm"
+                        }],
+                 "rotation":0,
+                 "type":"prop",
+                 "visible":true,
+                 "width":16,
+                 "x":736,
+                 "y":1168
+                }, 
+                {
+                 "height":16,
+                 "id":485,
+                 "name":"prop_bat",
+                 "properties":[
+                        {
+                         "name":"subtype",
+                         "type":"string",
+                         "value":"bat"
+                        }],
+                 "rotation":0,
+                 "type":"prop",
+                 "visible":true,
+                 "width":32,
+                 "x":624,
+                 "y":576
+                }, 
+                {
+                 "height":16,
+                 "id":486,
+                 "name":"prop_bat",
+                 "properties":[
+                        {
+                         "name":"subtype",
+                         "type":"string",
+                         "value":"bat"
+                        }],
+                 "rotation":0,
+                 "type":"prop",
+                 "visible":true,
+                 "width":32,
+                 "x":592,
+                 "y":576
+                }, 
+                {
+                 "height":16,
+                 "id":487,
+                 "name":"prop_bat",
+                 "properties":[
+                        {
+                         "name":"subtype",
+                         "type":"string",
+                         "value":"bat"
+                        }],
+                 "rotation":0,
+                 "type":"prop",
+                 "visible":true,
+                 "width":32,
+                 "x":560,
+                 "y":576
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1448,8 +1618,8 @@
                  "rotation":0,
                  "type":"zone",
                  "visible":true,
-                 "width":288,
-                 "x":720,
+                 "width":192,
+                 "x":864,
                  "y":1088
                 }, 
                 {
@@ -2970,6 +3140,12 @@
                  "height":16,
                  "id":453,
                  "name":"seesaw1",
+                 "properties":[
+                        {
+                         "name":"balanceOffset",
+                         "type":"int",
+                         "value":0
+                        }],
                  "rotation":0,
                  "type":"seesaw",
                  "visible":true,
@@ -3995,7 +4171,7 @@
          "y":0
         }],
  "nextlayerid":19,
- "nextobjectid":478,
+ "nextobjectid":488,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.4",

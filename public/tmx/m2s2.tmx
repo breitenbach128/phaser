@@ -607,8 +607,8 @@
   <object id="261" name="west1" type="entrance" x="53" y="1124" width="32" height="32"/>
   <object id="496" name="north2" type="exit" x="1504" y="16" width="80" height="96">
    <properties>
-    <property name="targetExit" value="west1"/>
-    <property name="targetMap" value="m2s2"/>
+    <property name="targetExit" value="east1"/>
+    <property name="targetMap" value="m2s3"/>
    </properties>
   </object>
   <object id="497" name="north2" type="entrance" x="1456" y="32" width="32" height="32"/>
