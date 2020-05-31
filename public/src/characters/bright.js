@@ -42,7 +42,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
         //Sensors
         this.sensor = new BrightSensors(scene,x,y);
-
+        
 
         console.log("Brights's mass",this.body.mass);
         //Custom properties

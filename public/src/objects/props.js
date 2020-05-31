@@ -117,6 +117,7 @@ class PropBat extends Phaser.Physics.Matter.Sprite{
         }
     }
     death(){
+        this.isSpooked = true;
         this.destroy;
     }
     spook(){

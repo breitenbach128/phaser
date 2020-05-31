@@ -10,7 +10,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         
         const { width: w, height: h } = this.sprite;      
-        const mainBody = Bodies.rectangle(0, 0, w * 0.2, h*.50, { chamfer: { radius: 2 } });//WAs .65 for H
+        this.mainBody = Bodies.rectangle(0, 0, w * 0.2, h*.50, { chamfer: { radius: 2 } });//WAs .65 for H
         this.sensors = {
           top: Bodies.rectangle(0, -h*0.28, w * 0.15, 2, { isSensor: true, friction: 0.0 }), //Was .35 for H
           bottom: Bodies.rectangle(0, h*0.28, w * 0.15, 2, { isSensor: true, friction: 0.0 }),//Was .35 for H
@@ -24,7 +24,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.touching = {up:0,down:0,left:0,right:0};
         
         const compoundBody = Body.create({
-          parts: [mainBody, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
+          parts: [this.mainBody, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
           frictionStatic: 0.0,
           frictionAir: 0.08,
           friction: 0.35, //0.01
@@ -54,6 +54,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.max_mv_speed_baseY = 4.9;
         this.mv_speed = 0.007; //0.00214285
         this.jump_speed = 0.045;//0.01846
+        this.climbSpeed = 0.001;
         this.mv_direction = {x:0,y:0};
         this.prev_position = {x:0,y:0};
         this.control_lock = false;
@@ -73,6 +74,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.isStunned = false;
         this.isSlowed = false;
         this.isInWater = false;
+        this.isClimbing = false;
         //Create Light Shield
         this.isShielding = false;
         this.LightShieldRadius = 20;
@@ -126,6 +128,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             //Only control if currently the active control object
             let control_left = this.getControllerAction('left');
             let control_right = this.getControllerAction('right');
+            let control_up = this.getControllerAction('up');
             let control_down = this.getControllerAction('down');
             let control_shoot = this.getControllerAction('shoot');
             let control_shootRelease = this.getControllerAction('shootR');         
@@ -186,7 +189,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
 
                 //ANIMATION HANDLING
                 if (!this.onGround) { 
-                    if (!this.isAnimLocked) { this.sprite.anims.play('solana-jump', true); };
+                    if (!this.isAnimLocked && !this.isClimbing) { this.sprite.anims.play('solana-jump', true); };
+                    if (!this.isAnimLocked && this.isClimbing) { this.sprite.anims.play('solana-ladder', true); };                    
                 }else if (this.mv_direction.x == 0) {
                     if (!this.isAnimLocked) { this.sprite.anims.play('solana-idle', true); };
                 } else {
@@ -302,6 +306,13 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                             if(Phaser.Math.Distance.Between(this.x,this.y,soullight.transfer.x,soullight.transfer.y) < soullight.freePassDistance*2){
                                 soullight.transfer.setGrabbed(this);
                             }
+                        }
+                    }
+                    if(this.isClimbing){
+                        if(control_up){
+                            this.applyForce({x:0,y:-this.climbSpeed});
+                        }else if(control_down){
+                            this.applyForce({x:0,y:this.climbSpeed});
                         }
                     }
                 }

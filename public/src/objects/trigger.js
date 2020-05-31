@@ -467,7 +467,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         .setIgnoreGravity(true)
         .setCollisionCategory(CATEGORY.BARRIER);    
         this.setDepth(DEPTH_LAYERS.PLATFORMS);
-        this.debug = scene.add.text(this.x, this.y, 'Zone', { fontSize: '10px', fill: '#00FF00', resolution: 2 }).setOrigin(0.5).setDepth(this.depth+1);             
+        this.debug = scene.add.text(this.x, this.y, 'Zone', { fontSize: '10px', fill: '#00FF00', resolution: 2, align:"center"}).setOrigin(0.5).setDepth(this.depth+1);             
         
         //Add Matter collisionStart detector on all bodies.
         //When a new collisions starts, check the mass of all bodies in the zone that meet the body label filter. if the zone type is weight,
@@ -636,7 +636,38 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                 d.id = debug_drop_cout;
                 debug_drop_cout++;
             }, callbackScope: this, loop: true });
-       }
+       }else if(this.zonedata.type == 'climb'){
+        //Restrict collision types
+            this.setCollidesWith([CATEGORY.SOLANA]);
+        
+        //Add Collision Listener to track mass of all active collisions
+            this.scene.matterCollision.addOnCollideStart({
+                objectA: [this],
+                objectB: [solana.mainBody],
+                callback: eventData => {
+                    const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;                    
+                    if(gameObjectB !== undefined && gameObjectB instanceof Solana){
+                        gameObjectB.setIgnoreGravity(true);
+                        gameObjectB.isClimbing = true;                        
+                        if(gameObjectB.body.velocity.y != 0){gameObjectB.setVelocityY(0);}
+                        
+                    }
+                }
+            });
+            this.scene.matterCollision.addOnCollideEnd({
+                objectA: [this],
+                objectB: [solana.mainBody],
+                callback: eventData => {
+                    const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;                    
+                    if(gameObjectB !== undefined && gameObjectB instanceof Solana){
+                        gameObjectB.setIgnoreGravity(false);
+                        gameObjectB.isClimbing = false;
+                        
+                    }
+                }
+            });
+        }
+     
  
     }
     update(time, delta)
@@ -650,7 +681,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             }
         }
         this.debug.setPosition(this.x, this.y-16);
-        this.debug.setText("Zone name:"+String(this.name)+": rState :"+String(this.ready)+": Mass :"+String(tMass)+"/"+String(this.massThrehold));
+        this.debug.setText("Zone name:"+String(this.name)+"\n rState :"+String(this.ready));
     }
     setTarget(targetObject){
         this.target.object.push(targetObject);
@@ -673,10 +704,12 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         this.ready[playerid]  = true;
     }
     activateTrigger(playerid){
-        this.ready[playerid]  = true;
+        this.ready[playerid] = true;
         if(this.zonedata.type == "teleport"){
-            this.effect[0].setActive(true);
-            this.teleporterGradeient.setVisible(true);
+            this.effect[0].setActive(this.ready[playerid]);
+            this.teleporterGradeient.setVisible(this.ready[playerid]);
+        }else if(this.zonedata.type == "force"){
+
         }
     }
     useZone(playerid){

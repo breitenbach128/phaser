@@ -50,7 +50,8 @@ var GameScene = new Phaser.Class({
         
         var tilesetImages = [];
         lvlCfg.tsPairs.forEach(e=>{
-            tilesetImages.push(map.addTilesetImage(e.tsName,e.tsKey));
+            //console.log(e.tsName,e.tsKey,e.tw,e.th,e.tm,e.tspc)
+            tilesetImages.push(map.addTilesetImage(e.tsName,e.tsKey,e.tw,e.th,e.tm,e.tspc));
         });
 
     
@@ -2071,6 +2072,12 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'solana-webbed',
         frames: scene.anims.generateFrameNumbers('solana', { start: 22, end: 22 }),
+        frameRate: 6,
+        repeat: -1
+    });    
+    scene.anims.create({
+        key: 'solana-ladder',
+        frames: scene.anims.generateFrameNumbers('solana', { start: 24, end: 25 }),
         frameRate: 6,
         repeat: -1
     });
