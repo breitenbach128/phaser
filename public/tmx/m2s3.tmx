@@ -1289,8 +1289,16 @@
     <property name="targetType" value="none"/>
    </properties>
   </object>
-  <object id="469" name="seesaw1" type="seesaw" x="1344" y="352" width="144" height="16"/>
-  <object id="477" name="seesaw2" type="seesaw" x="1530" y="720" width="44" height="16"/>
+  <object id="469" name="seesaw3" type="seesaw" x="1344" y="352" width="144" height="16">
+   <properties>
+    <property name="balanceOffset" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="477" name="seesaw2" type="seesaw" x="1530" y="720" width="44" height="16">
+   <properties>
+    <property name="balanceOffset" type="int" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup color="#00ff00" id="17" name="hulls">
   <object id="260" type="hull" x="560" y="1184" width="1040" height="16">

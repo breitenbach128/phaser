@@ -3267,7 +3267,13 @@
                 {
                  "height":16,
                  "id":469,
-                 "name":"seesaw1",
+                 "name":"seesaw3",
+                 "properties":[
+                        {
+                         "name":"balanceOffset",
+                         "type":"int",
+                         "value":0
+                        }],
                  "rotation":0,
                  "type":"seesaw",
                  "visible":true,
@@ -3279,6 +3285,12 @@
                  "height":16,
                  "id":477,
                  "name":"seesaw2",
+                 "properties":[
+                        {
+                         "name":"balanceOffset",
+                         "type":"int",
+                         "value":0
+                        }],
                  "rotation":0,
                  "type":"seesaw",
                  "visible":true,

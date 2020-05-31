@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="280">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="282">
  <editorsettings>
   <export target="../assets/world/m2s5.json" format="json"/>
  </editorsettings>
@@ -238,6 +238,18 @@
   <object id="277" name="crate" type="crate" x="176" y="368" width="16" height="16"/>
   <object id="278" name="crate" type="crate" x="176" y="352" width="16" height="16"/>
   <object id="279" name="crate" type="crate" x="176" y="352" width="16" height="16"/>
+  <object id="280" name="soulcrystal0" type="soulcrystal" x="160" y="320" width="16" height="16">
+   <properties>
+    <property name="color" value="yellow"/>
+    <property name="scid" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="281" name="soulcrystal1" type="soulcrystal" x="192" y="320" width="16" height="16">
+   <properties>
+    <property name="color" value="orange"/>
+    <property name="scid" type="int" value="1"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="16" name="triggers">
   <object id="272" name="seesaw1" type="seesaw" x="112" y="288" width="368" height="16">
