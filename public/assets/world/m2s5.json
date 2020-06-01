@@ -520,6 +520,93 @@
                  "width":96,
                  "x":672,
                  "y":160
+                }, 
+                {
+                 "height":32,
+                 "id":291,
+                 "name":"lever1",
+                 "properties":[
+                        {
+                         "name":"targetName",
+                         "type":"string",
+                         "value":"zone4-force,platform1"
+                        }, 
+                        {
+                         "name":"targetType",
+                         "type":"string",
+                         "value":"zone"
+                        }],
+                 "rotation":0,
+                 "type":"lever",
+                 "visible":true,
+                 "width":32,
+                 "x":576,
+                 "y":176
+                }, 
+                {
+                 "height":16,
+                 "id":292,
+                 "name":"platform1",
+                 "properties":[
+                        {
+                         "name":"autostart",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"loop",
+                         "type":"int",
+                         "value":0
+                        }, 
+                        {
+                         "name":"path",
+                         "type":"string",
+                         "value":"[{\"x\":0,\"y\":0,\"t\":0,\"h\":500},{\"x\":64,\"y\":0,\"t\":3200,\"h\":0}]"
+                        }, 
+                        {
+                         "name":"togglepath",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":96,
+                 "x":544,
+                 "y":96
+                }, 
+                {
+                 "height":16,
+                 "id":293,
+                 "name":"platform2",
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":64,
+                 "x":784,
+                 "y":160
+                }, 
+                {
+                 "height":16,
+                 "id":294,
+                 "name":"platform3",
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":64,
+                 "x":896,
+                 "y":128
+                }, 
+                {
+                 "height":16,
+                 "id":295,
+                 "name":"platform4",
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":64,
+                 "x":1008,
+                 "y":160
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -759,7 +846,7 @@
          "y":0
         }],
  "nextlayerid":19,
- "nextobjectid":291,
+ "nextobjectid":296,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.4",

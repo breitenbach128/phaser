@@ -565,7 +565,8 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == "rockchute"){  
                 let rockchute = new RockChute(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);                
             }else if(tmxObjRef.type == "crate"){  
-                let newCrate = crates.get(tmxObjRef.x,tmxObjRef.y);
+                let newCrate = crates.get(tmxObjRef.x,tmxObjRef.y);                        
+                newCrate.setDensity(0.025);
             }else if(tmxObjRef.type == "telebeam"){
                 let tb = new Telebeam(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
                 let telebeamProps = getTileProperties(tmxObjRef.properties);
@@ -696,6 +697,7 @@ var GameScene = new Phaser.Class({
                 triggerObj = gears.get();
             }else if(tmxObjRef.type == "seesaw"){ 
                 let seesaw = new Seesaw(this,tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,trig_props.balanceOffset);
+                seesaw.setDensity(0.025);
                 seesaw.setDisplaySize(tmxObjRef.width, tmxObjRef.height);
                 seesaw.setSize(tmxObjRef.width, tmxObjRef.height);
             }

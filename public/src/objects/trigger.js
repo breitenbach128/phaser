@@ -491,6 +491,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
         this.zoneHeight = h;  
         this.totalBodies = [];
         this.massThrehold = 100;
+        this.enabled = true;
         //Zones can do certain things.
         //
         if(properties){
@@ -672,14 +673,35 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
     }
     update(time, delta)
     {       
-        let tMass = 0;
-        if(this.totalBodies.length > 0){
-            tMass = this.totalBodies.sum('mass');
-            if(tMass >= this.massThrehold && this.ready){
-                this.ready = false;
-                this.triggerTarget(0);//Player id does not matter sinze it is mass
+        //For Mass Calculations within  the zone.
+        if(this.zonedata.type == "mass"){
+            let tMass = 0;
+            if(this.totalBodies.length > 0){
+                tMass = this.totalBodies.sum('mass');
+                if(tMass >= this.massThrehold && this.ready){
+                    this.ready = false;
+                    this.triggerTarget(0);//Player id does not matter sinze it is mass
+                }
             }
+        }else  if(this.zonedata.type == "force"){
+        //For Zone force pushing ranges
+        //Raycast along vector of the zone. Use the full size of the zone.
+        //Check for blocking bodies. If a blocking body blocks the 50% of the width of the zone
+        //Stop the airflow and resize. use scale to retain original size information
+
+            // //Test bottom to top
+            // let rayTo = Phaser.Physics.Matter.Matter.Query.ray(this.scene.matter.world.localWorld.bodies,{x:this.x,y:this.y+this.height/2},{x:this.x,y:this.y-this.height/2});
+            // if(rayTo.length < 3){
+            //     //Not Blocked;
+            // }else{
+            //     //Blocked;
+            //     if(this.scaleY > 0.10){
+            //         this.scaleY-=0.10;
+            //     }
+            // }
         }
+
+
         this.debug.setPosition(this.x, this.y-16);
         this.debug.setText("Zone name:"+String(this.name)+"\n rState :"+String(this.ready));
     }
@@ -709,7 +731,12 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             this.effect[0].setActive(this.ready[playerid]);
             this.teleporterGradeient.setVisible(this.ready[playerid]);
         }else if(this.zonedata.type == "force"){
-
+            this.enabled = !this.enabled;
+            if(this.enabled){
+                this.wind1.start();
+            }else{
+                this.wind1.stop();
+            };
         }
     }
     useZone(playerid){
@@ -718,7 +745,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
     inZone(obj,id){
         //Do something base on zome type
 
-        if(this.ready[id] == true){
+        if(this.ready[id] == true && this.enabled){
             this.ready[id] = false;
             //Solana Specific Functions
             if(id == 0){
@@ -1126,8 +1153,9 @@ class Seesaw extends Phaser.Physics.Matter.Image {
         const compoundBody = Body.create({
             parts: [mainBody],
             frictionStatic: 0,
-            frictionAir: 0.1,
+            frictionAir: 0.07,
             friction: 0.5,
+            density: 0.5,
             label: 'SEESAW'
         });
         this.balanceOffset = offset != undefined ? offset:0;

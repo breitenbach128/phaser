@@ -114,6 +114,12 @@ class Crate extends Phaser.Physics.Matter.Sprite{
         if(this.body.velocity.x < -this.max_speed){this.setVelocityX(-this.max_speed)};
         if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed);};
         if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
+        //Body Impulse Limit
+        if(this.body.positionImpulse.x > this.max_speed){this.body.positionImpulse.x = this.max_speed};
+        if(this.body.positionImpulse.x < -this.max_speed){this.body.positionImpulse.x = -this.max_speed};
+        if(this.body.positionImpulse.y > this.max_speed){this.body.positionImpulse.y = this.max_speed};
+        if(this.body.positionImpulse.y < -this.max_speed){this.body.positionImpulse.y = -this.max_speed};
+
     }
     grabbed(){
         if(!this.isGrabbed){
