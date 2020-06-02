@@ -134,12 +134,14 @@ class Crate extends Phaser.Physics.Matter.Sprite{
             this.scene.matter.world.add(this.holdConstraint);   
 
             this.isGrabbed  = true;
+            this.setIgnoreGravity(true);
         }
     }
     released(){
         if(this.isGrabbed){
             this.scene.matter.world.remove(this.holdConstraint);
             this.isGrabbed  = false;
+            this.setIgnoreGravity(false);
         }
     }
     

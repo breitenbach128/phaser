@@ -923,11 +923,9 @@ var GameScene = new Phaser.Class({
                     }
                     if(bodyA.label == "SOLANA_RIGHT"){
                         solana.touching.right++;
-                        //solana.x--;
                     }
                     if(bodyA.label == "SOLANA_LEFT"){
                         solana.touching.left++;
-                        //solana.x++;
                     }
                 }                
               }
@@ -946,11 +944,22 @@ var GameScene = new Phaser.Class({
                     }
                     if(bodyA.label == "SOLANA_RIGHT"){
                         solana.touching.right++;
-                        //solana.x--;
+                        //Parkour
+                        if((solana.y-solana.height/2) <= bodyB.bounds.min.y){
+                            //Set parkkour data
+                            let diff = solana.height - (bodyB.bounds.min.y - (solana.y-solana.height/2));
+                            solana.ledgeGrab("r",diff);
+                        }
+                        
                     }
                     if(bodyA.label == "SOLANA_LEFT"){
                         solana.touching.left++;
-                        //solana.x++;
+                        //Parkour
+                        if((solana.y-solana.height/2) <= bodyB.bounds.min.y){
+                            //Set parkkour data
+                            let diff = solana.height - (bodyB.bounds.min.y - (solana.y-solana.height/2));
+                            solana.ledgeGrab("l",diff);
+                        }
                     }
                 }                
               }

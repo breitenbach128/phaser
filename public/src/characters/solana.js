@@ -97,6 +97,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.jumpLock = false;
         this.jumpLockTimer;
         this.kickOff = this.mv_speed;
+        this.jumpData = {left:false,right:false,down:false};
         //Controller
         this.controller;
         this.ctrlDevice;
@@ -186,7 +187,10 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         this.applyForce({x:0,y:-this.jump_speed*0.025});
                     }
                 }
-
+                //Update Jump Data for Wallkicks
+                if(this.jumpReady){
+                    this.jumpData = {left:(this.touching.left > 0),right:(this.touching.right > 0),down:this.onGround};
+                }
                 //ANIMATION HANDLING
                 if (!this.onGround) { 
                     if (!this.isAnimLocked && !this.isClimbing) { this.sprite.anims.play('solana-jump', true); };
@@ -442,6 +446,42 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.max_mv_speed.minY = -this.max_mv_speed_baseY+yMin;
         this.max_mv_speed.maxY = this.max_mv_speed_baseY+yMax;
     }
+    ledgeGrab(dir,yGain){
+        //Needs a check on the area above the hull she grabs to make sure there is a clear path and space for her. use the rectIntersect check and raycast
+        //That should fix buggy issues
+        if(!this.isledgeGrabbing){            
+            let control_left = this.getControllerAction('left');
+            let control_right = this.getControllerAction('right');
+            if(dir == 'l' && control_left){
+                console.log("LedgeGrab from Left",dir,yGain);
+                this.isledgeGrabbing = true;
+                this.setIgnoreGravity(true);
+                let twflyaway = this.scene.tweens.add({
+                    targets: this,
+                    x: this.x-24,
+                    y: this.y - yGain,               
+                    ease: 'Linear',       
+                    duration: 300,  
+                    onComplete: function(tween, targets, solanaObj){solanaObj.isledgeGrabbing = false;console.log("Ledge Grab Finished");solanaObj.setIgnoreGravity(false);},
+                    onCompleteParams: [this],
+                });
+            }else if(dir == 'r' && control_right){
+                console.log("LedgeGrab from Right",dir,yGain);
+                this.isledgeGrabbing = true;
+                this.setIgnoreGravity(true);
+                let twflyaway = this.scene.tweens.add({
+                    targets: this,
+                    x: this.x+24,
+                    y: this.y - yGain,               
+                    ease: 'Linear',       
+                    duration: 300,  
+                    onComplete: function(tween, targets, solanaObj){solanaObj.isledgeGrabbing = false;console.log("Ledge Grab Finished");solanaObj.setIgnoreGravity(false);},
+                    onCompleteParams: [this],
+                });
+            }
+
+        }
+    }
     jumpLockReset(){
         this.jumpLock = false;
         this.setMaxMoveSpeed(0,0,0,0);
@@ -474,28 +514,24 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.setVelocityY(0);
         }
                
-        if(this.touching.left > 0 && !this.onGround){
+        if(this.jumpData.left && !this.jumpData.down){
             this.setMaxMoveSpeed(-6,6,-6,6);
-            this.sprite.applyForce({x:mvVel*4,y:-0.003});
+            this.sprite.applyForce({x:mvVel*4.2,y:-0.003});
             this.jumpLock = true;
             this.kickOff = mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
         }
-        if(this.touching.right > 0 && !this.onGround){            
+        if(this.jumpData.right && !this.jumpData.down){            
             this.setMaxMoveSpeed(-6,6,-6,6);
-            this.sprite.applyForce({x:-mvVel*4,y:-0.003});
+            this.sprite.applyForce({x:-mvVel*4.2,y:-0.003});
             this.jumpLock = true;
             this.kickOff = -mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
             
         }
-        //Note that onWall requires pushing in the direction of the wall. Touching should just the sensor.   
+        
         if(this.onWall && this.onGround){
-            //this.sprite.applyForce({x:0,y:-jumpVel*1.40}); //BUG - THIS IS APPLYING TO PLATFORM SENSOR BARS AS WELL.
-            //I could fix by maybe lowing the sensor bar height on the platforms, or by making some custom checks.
-
-            //This was intended to fix being stuck in a corner when you jump, but it may not be needed.
-            this.sprite.applyForce({x:0,y:-jumpVel});
+             this.sprite.applyForce({x:0,y:-jumpVel});
         }else{
             this.sprite.applyForce({x:0,y:-jumpVel});
         }
@@ -893,12 +929,16 @@ class SolBomb extends Phaser.Physics.Matter.Sprite{
             this.scene.matter.world.add(this.holdConstraint);   
 
             this.isGrabbed  = true;
+            
+            this.setIgnoreGravity(true);
         }
     }
     released(){
         if(this.isGrabbed){
             this.scene.matter.world.remove(this.holdConstraint);
             this.isGrabbed  = false;
+            
+            this.setIgnoreGravity(false);
         }
     }
     enterWater(){
