@@ -18,12 +18,12 @@
         {
             "fileName": "m2s4.tmx",
             "x": 2400,
-            "y": 400
+            "y": 800
         }, 
         {
             "fileName": "m2s5.tmx",
             "x": 2400,
-            "y": 800
+            "y": 1200
         }
     ],
     "type": "world"

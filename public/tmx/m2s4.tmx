@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="270">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="275">
  <editorsettings>
   <export target="../assets/world/m2s4.json" format="json"/>
  </editorsettings>
@@ -224,8 +224,30 @@
  <objectgroup id="11" name="npcs"/>
  <objectgroup id="12" name="enemies"/>
  <objectgroup id="13" name="spawns"/>
- <objectgroup id="14" name="exit"/>
- <objectgroup id="15" name="objects"/>
+ <objectgroup id="14" name="exit">
+  <object id="270" name="west1" type="exit" x="16" y="304" width="80" height="80">
+   <properties>
+    <property name="targetExit" value="east1"/>
+    <property name="targetMap" value="m2s3"/>
+   </properties>
+  </object>
+  <object id="271" name="west1" type="entrance" x="112" y="336" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="15" name="objects">
+  <object id="272" name="conveyor1" type="conveyor" x="160" y="288">
+   <properties>
+    <property name="angvel" type="float" value="-0.2"/>
+   </properties>
+   <polyline points="0,0 144,0"/>
+  </object>
+  <object id="273" name="conveyor2" type="conveyor" x="320" y="240">
+   <properties>
+    <property name="angvel" type="float" value="-0.2"/>
+   </properties>
+   <polyline points="0,0 144,0"/>
+  </object>
+  <object id="274" name="rockchute1" type="rockchute" x="304" y="16" width="64" height="64"/>
+ </objectgroup>
  <objectgroup id="16" name="triggers"/>
  <objectgroup color="#00ff00" id="17" name="hulls">
   <object id="260" type="hull" x="0" y="384" width="400" height="16">

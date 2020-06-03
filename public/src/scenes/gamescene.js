@@ -944,22 +944,24 @@ var GameScene = new Phaser.Class({
                     }
                     if(bodyA.label == "SOLANA_RIGHT"){
                         solana.touching.right++;
-                        //Parkour
-                        if((solana.y-solana.height/2) <= bodyB.bounds.min.y){
-                            //Set parkkour data
-                            let diff = solana.height - (bodyB.bounds.min.y - (solana.y-solana.height/2));
-                            solana.ledgeGrab("r",diff);
-                        }
+                        // let solBodyHt = solana.getBodyHeight();
+                        // //Parkour - TESTING
+                        // if((solana.y-solBodyHt/2) <= bodyB.bounds.min.y){
+                        //     //Set parkkour data
+                        //     let diff = solBodyHt - (bodyB.bounds.min.y - (solana.y-solBodyHt/2));
+                        //     solana.ledgeGrab("r",diff);
+                        // }
                         
                     }
                     if(bodyA.label == "SOLANA_LEFT"){
                         solana.touching.left++;
-                        //Parkour
-                        if((solana.y-solana.height/2) <= bodyB.bounds.min.y){
-                            //Set parkkour data
-                            let diff = solana.height - (bodyB.bounds.min.y - (solana.y-solana.height/2));
-                            solana.ledgeGrab("l",diff);
-                        }
+                    //     let solBodyHt = solana.getBodyHeight();
+                    //     //Parkour - TESTING
+                    //     if((solana.y-solBodyHt/2) <= bodyB.bounds.min.y){
+                    //         //Set parkkour data
+                    //         let diff = solBodyHt - (bodyB.bounds.min.y - (solana.y-solBodyHt/2));
+                    //         solana.ledgeGrab("l",diff);
+                    //     }
                     }
                 }                
               }

@@ -131,7 +131,40 @@
          "draworder":"topdown",
          "id":14,
          "name":"exit",
-         "objects":[],
+         "objects":[
+                {
+                 "height":80,
+                 "id":270,
+                 "name":"west1",
+                 "properties":[
+                        {
+                         "name":"targetExit",
+                         "type":"string",
+                         "value":"east1"
+                        }, 
+                        {
+                         "name":"targetMap",
+                         "type":"string",
+                         "value":"m2s3"
+                        }],
+                 "rotation":0,
+                 "type":"exit",
+                 "visible":true,
+                 "width":80,
+                 "x":16,
+                 "y":304
+                }, 
+                {
+                 "height":32,
+                 "id":271,
+                 "name":"west1",
+                 "rotation":0,
+                 "type":"entrance",
+                 "visible":true,
+                 "width":32,
+                 "x":112,
+                 "y":336
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -142,7 +175,70 @@
          "draworder":"topdown",
          "id":15,
          "name":"objects",
-         "objects":[],
+         "objects":[
+                {
+                 "height":0,
+                 "id":272,
+                 "name":"conveyor1",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":144,
+                         "y":0
+                        }],
+                 "properties":[
+                        {
+                         "name":"angvel",
+                         "type":"float",
+                         "value":-0.2
+                        }],
+                 "rotation":0,
+                 "type":"conveyor",
+                 "visible":true,
+                 "width":0,
+                 "x":160,
+                 "y":288
+                }, 
+                {
+                 "height":0,
+                 "id":273,
+                 "name":"conveyor2",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":144,
+                         "y":0
+                        }],
+                 "properties":[
+                        {
+                         "name":"angvel",
+                         "type":"float",
+                         "value":-0.2
+                        }],
+                 "rotation":0,
+                 "type":"conveyor",
+                 "visible":true,
+                 "width":0,
+                 "x":320,
+                 "y":240
+                }, 
+                {
+                 "height":64,
+                 "id":274,
+                 "name":"rockchute1",
+                 "rotation":0,
+                 "type":"rockchute",
+                 "visible":true,
+                 "width":64,
+                 "x":304,
+                 "y":16
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -342,7 +438,7 @@
          "y":0
         }],
  "nextlayerid":19,
- "nextobjectid":270,
+ "nextobjectid":275,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.4",

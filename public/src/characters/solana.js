@@ -11,6 +11,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         
         const { width: w, height: h } = this.sprite;      
         this.mainBody = Bodies.rectangle(0, 0, w * 0.2, h*.50, { chamfer: { radius: 2 } });//WAs .65 for H
+        console.log("solana body wXh",w * 0.2, h*.50)
         this.sensors = {
           top: Bodies.rectangle(0, -h*0.28, w * 0.15, 2, { isSensor: true, friction: 0.0 }), //Was .35 for H
           bottom: Bodies.rectangle(0, h*0.28, w * 0.15, 2, { isSensor: true, friction: 0.0 }),//Was .35 for H
@@ -434,6 +435,12 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         //Sets the controller Source
         this.ctrlDeviceId = ctrlId;
     }
+    getBodyWidth(){
+        return solana.body.bounds.max.x - solana.body.bounds.min.x;
+    }
+    getBodyHeight(){
+        return solana.body.bounds.max.y - solana.body.bounds.min.y;
+    }
     kickDusk(n){
         let bVec = this.getBottomCenter();
         for(let i = 0;i < n;i++){
@@ -449,35 +456,42 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     ledgeGrab(dir,yGain){
         //Needs a check on the area above the hull she grabs to make sure there is a clear path and space for her. use the rectIntersect check and raycast
         //That should fix buggy issues
+        yGain = Math.floor(yGain);
         if(!this.isledgeGrabbing){            
             let control_left = this.getControllerAction('left');
             let control_right = this.getControllerAction('right');
+            let bdht = this.getBodyHeight();
+            let bdWd = this.getBodyWidth();
+            let ctrlCk = (control_left || control_right);
             if(dir == 'l' && control_left){
-                console.log("LedgeGrab from Left",dir,yGain);
-                this.isledgeGrabbing = true;
-                this.setIgnoreGravity(true);
-                let twflyaway = this.scene.tweens.add({
-                    targets: this,
-                    x: this.x-24,
-                    y: this.y - yGain,               
-                    ease: 'Linear',       
-                    duration: 300,  
-                    onComplete: function(tween, targets, solanaObj){solanaObj.isledgeGrabbing = false;console.log("Ledge Grab Finished");solanaObj.setIgnoreGravity(false);},
-                    onCompleteParams: [this],
-                });
+                bdWd = bdWd*-1;
             }else if(dir == 'r' && control_right){
-                console.log("LedgeGrab from Right",dir,yGain);
-                this.isledgeGrabbing = true;
-                this.setIgnoreGravity(true);
-                let twflyaway = this.scene.tweens.add({
-                    targets: this,
-                    x: this.x+24,
-                    y: this.y - yGain,               
-                    ease: 'Linear',       
-                    duration: 300,  
-                    onComplete: function(tween, targets, solanaObj){solanaObj.isledgeGrabbing = false;console.log("Ledge Grab Finished");solanaObj.setIgnoreGravity(false);},
-                    onCompleteParams: [this],
-                });
+                //NOrmal, just positive
+            }
+            if(ctrlCk){
+                let clearCheck = this.scene.matter.intersectRect(this.x+bdWd/2,this.y-yGain,bdWd,bdht,false,losBlockers);
+                this.grabrect = this.scene.add.rectangle(this.x+bdWd/2,this.y-yGain,bdWd,bdht,0xFF0000,1.0);            
+                //console.log("LedgeGrab from Left",dir,yGain,clearCheck,this.x+bdWd/2,this.y-yGain,bdWd,bdht);
+                if(clearCheck.length < 2){
+                    this.isledgeGrabbing = true;
+                    this.setIgnoreGravity(true);
+                    let twflyaway = this.scene.tweens.add({
+                        targets: this,
+                        x: this.x+bdWd/2,
+                        y: this.y - yGain,               
+                        ease: 'Linear',       
+                        duration: 300,  
+                        onComplete: function(tween, targets, solanaObj){
+                            solanaObj.isledgeGrabbing = false;
+                            console.log("Ledge Grab Finished");
+                            solanaObj.setIgnoreGravity(false);
+                            solanaObj.grabrect.destroy();
+                        },
+                        onCompleteParams: [this],
+                    });
+                }else{
+                    this.grabrect.destroy();
+                }
             }
 
         }
