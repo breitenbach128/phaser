@@ -308,6 +308,7 @@ var Preloader = new Phaser.Class({
 		this.load.image('triggerzone', 'assets/objects/triggerzone.png');
 		this.load.image('speechbubble', 'assets/hud/speechBubble.png');
 		this.load.image('tmxwindow', 'assets/objects/tmxwindow.png');
+		this.load.image('glasstile', 'assets/objects/glasstile.png');
 		this.load.image('mushroom1', 'assets/objects/mushroom_1.png');
 		this.load.image('grinder', 'assets/objects/grinder.png');
 		this.load.image('conveyor_wheel', 'assets/objects/conveyor_wheel.png');

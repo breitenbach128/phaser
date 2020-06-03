@@ -1162,7 +1162,7 @@ class Seesaw extends Phaser.Physics.Matter.Image {
         this
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.SOLID)
-        .setCollidesWith([CATEGORY.SOLANA,CATEGORY.DARK, CATEGORY.SOLID, CATEGORY.GROUND])
+        .setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT,CATEGORY.DARK, CATEGORY.SOLID, CATEGORY.GROUND, CATEGORY.BULLET])
         .setPosition(x, y)
         .setIgnoreGravity(true)
         .setVisible(true);  

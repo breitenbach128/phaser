@@ -1008,10 +1008,10 @@ class EnemyBlobC{
                     || gameObjectB instanceof Phaser.GameObjects.Polygon)) {
                     if (bodyB.label == 'GROUND'){
                         if(bodyA.label == "SENSOR_RIGHT"){
-                            gameObjectA.touching.right++;
+                            if(gameObjectA != undefined){gameObjectA.touching.right++;}
                         }
                         if(bodyA.label == "SENSOR_LEFT"){
-                            gameObjectA.touching.left++;
+                            if(gameObjectA != undefined){gameObjectA.touching.left++;}
                             
                         }
                     }                

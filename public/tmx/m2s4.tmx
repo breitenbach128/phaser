@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="275">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="318">
  <editorsettings>
   <export target="../assets/world/m2s4.json" format="json"/>
  </editorsettings>
@@ -15,8 +15,8 @@
  <tileset firstgid="6465" name="mainlevbuild3" tilewidth="16" tileheight="16" tilecount="2337" columns="41">
   <image source="tilesets/PF_SET3_v1.0/mainlevbuild3.png" width="656" height="912"/>
  </tileset>
- <tileset firstgid="8802" name="forest16" tilewidth="16" tileheight="16" spacing="1" tilecount="851" columns="37">
-  <image source="../assets/world/oldTileset.png" width="640" height="400"/>
+ <tileset firstgid="8802" name="tile_custom" tilewidth="16" tileheight="16" tilecount="4096" columns="64">
+  <image source="../assets/world/tile_custom.png" width="1024" height="1024"/>
  </tileset>
  <layer id="3" name="bg3" width="100" height="25">
   <data encoding="csv">
@@ -93,15 +93,15 @@
 696,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,761,
 744,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,809,
 792,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,761,
-648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,809,
-696,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,761,
-744,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,809,
-792,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,761,
-648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,761,
-696,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,809,
-744,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,761,
-792,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,809,
-840,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,761,
+648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8802,8803,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,809,
+696,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8866,8867,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,761,
+744,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8802,8803,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,809,
+792,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8866,8867,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,761,
+648,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8802,8803,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,761,
+696,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8866,8867,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,809,
+744,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8802,8803,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,761,
+792,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8866,8867,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,809,
+840,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8802,8803,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,761,
 744,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,761
 </data>
  </layer>
@@ -222,7 +222,10 @@
 </data>
  </layer>
  <objectgroup id="11" name="npcs"/>
- <objectgroup id="12" name="enemies"/>
+ <objectgroup id="12" name="enemies">
+  <object id="283" name="shrieker1" type="shrieker" x="832" y="48" width="32" height="32" rotation="-180"/>
+  <object id="317" name="blob1" type="blob" x="224" y="272" width="32" height="32" rotation="-180"/>
+ </objectgroup>
  <objectgroup id="13" name="spawns"/>
  <objectgroup id="14" name="exit">
   <object id="270" name="west1" type="exit" x="16" y="304" width="80" height="80">
@@ -232,23 +235,137 @@
    </properties>
   </object>
   <object id="271" name="west1" type="entrance" x="112" y="336" width="32" height="32"/>
+  <object id="277" name="south1" type="exit" x="1504" y="304" width="80" height="80">
+   <properties>
+    <property name="targetExit" value="north1"/>
+    <property name="targetMap" value="m2s5"/>
+   </properties>
+  </object>
+  <object id="278" name="south1" type="entrance" x="1440" y="320" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="15" name="objects">
-  <object id="272" name="conveyor1" type="conveyor" x="160" y="288">
+  <object id="272" name="conveyor1" type="conveyor" x="480" y="256">
    <properties>
     <property name="angvel" type="float" value="-0.2"/>
    </properties>
    <polyline points="0,0 144,0"/>
   </object>
-  <object id="273" name="conveyor2" type="conveyor" x="320" y="240">
+  <object id="273" name="conveyor2" type="conveyor" x="784" y="192">
    <properties>
     <property name="angvel" type="float" value="-0.2"/>
    </properties>
    <polyline points="0,0 144,0"/>
   </object>
-  <object id="274" name="rockchute1" type="rockchute" x="304" y="16" width="64" height="64"/>
+  <object id="274" name="rockchute1" type="rockchute" x="272" y="16" width="64" height="64"/>
+  <object id="275" name="grinder1" type="trap" x="416" y="224" width="32" height="32">
+   <properties>
+    <property name="angvel" type="float" value="-0.2"/>
+    <property name="subtype" value="grinder"/>
+   </properties>
+  </object>
+  <object id="296" name="soulcrystal0" type="soulcrystal" x="160" y="320" width="16" height="16">
+   <properties>
+    <property name="color" value="yellow"/>
+    <property name="scid" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="297" name="mirror1" type="mirror" x="656" y="304" width="32" height="32" rotation="90"/>
+  <object id="299" name="window" type="window" gid="8806" x="768" y="368" width="16" height="16"/>
+  <object id="300" name="window" type="window" gid="8806" x="768" y="384" width="16" height="16"/>
+  <object id="301" name="crate" type="crate" x="48" y="16" width="16" height="16"/>
+  <object id="302" name="crate" type="crate" x="64" y="16" width="16" height="16"/>
+  <object id="303" name="crate" type="crate" x="48" y="32" width="16" height="16"/>
+  <object id="304" name="crate" type="crate" x="64" y="32" width="16" height="16"/>
+  <object id="305" name="crate" type="crate" x="80" y="32" width="16" height="16"/>
+  <object id="306" name="crate" type="crate" x="80" y="16" width="16" height="16"/>
+  <object id="307" name="crate" type="crate" x="96" y="32" width="16" height="16"/>
+  <object id="308" name="crate" type="crate" x="96" y="16" width="16" height="16"/>
  </objectgroup>
- <objectgroup id="16" name="triggers"/>
+ <objectgroup id="16" name="triggers">
+  <object id="276" name="zone3-climb" type="zone" x="336" y="240" width="32" height="144">
+   <properties>
+    <property name="allowReset" type="bool" value="false"/>
+    <property name="resetDelay" type="int" value="300"/>
+    <property name="targetName" value=""/>
+    <property name="targetType" value=""/>
+    <property name="zoneType" value="climb"/>
+    <property name="zoneValue" value="0"/>
+   </properties>
+  </object>
+  <object id="280" name="platform1" type="platform" x="624" y="208" width="48" height="16">
+   <properties>
+    <property name="autostart" type="bool" value="false"/>
+    <property name="loop" type="int" value="-1"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:500},{&quot;x&quot;:64,&quot;y&quot;:0,&quot;t&quot;:3200,&quot;h&quot;:0},{&quot;x&quot;:64,&quot;y&quot;:64,&quot;t&quot;:3200,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3200,&quot;h&quot;:500}]"/>
+    <property name="togglepath" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="281" name="zone7" type="zone" x="480" y="368" width="272" height="16">
+   <properties>
+    <property name="allowReset" type="bool" value="true"/>
+    <property name="resetDelay" type="int" value="300"/>
+    <property name="targetName" value=""/>
+    <property name="targetType" value=""/>
+    <property name="zoneType" value="hurt"/>
+    <property name="zoneValue" value="{&quot;damage&quot;:1}"/>
+   </properties>
+  </object>
+  <object id="282" name="zone8" type="zone" x="400" y="16" width="400" height="16">
+   <properties>
+    <property name="allowReset" type="bool" value="true"/>
+    <property name="resetDelay" type="int" value="300"/>
+    <property name="targetName" value=""/>
+    <property name="targetType" value=""/>
+    <property name="zoneType" value="hurt"/>
+    <property name="zoneValue" value="{&quot;damage&quot;:1,&quot;gravY&quot;:80}"/>
+   </properties>
+  </object>
+  <object id="285" name="zone7" type="zone" x="775" y="256" width="308" height="16">
+   <properties>
+    <property name="allowReset" type="bool" value="true"/>
+    <property name="resetDelay" type="int" value="300"/>
+    <property name="targetName" value=""/>
+    <property name="targetType" value=""/>
+    <property name="zoneType" value="hurt"/>
+    <property name="zoneValue" value="{&quot;damage&quot;:1}"/>
+   </properties>
+  </object>
+  <object id="292" name="platform2" type="platform" x="752" y="304" width="16" height="16">
+   <properties>
+    <property name="autostart" type="bool" value="false"/>
+    <property name="loop" type="int" value="0"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:500},{&quot;x&quot;:0,&quot;y&quot;:16,&quot;t&quot;:2000,&quot;h&quot;:0}]"/>
+    <property name="togglepath" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="293" name="lever1" type="lever" x="496" y="80" width="32" height="32">
+   <properties>
+    <property name="targetName" value="platform2"/>
+    <property name="targetType" value="platform"/>
+   </properties>
+  </object>
+  <object id="295" name="plate1" type="plate" x="832" y="368" width="32" height="16">
+   <properties>
+    <property name="allowReset" type="bool" value="false"/>
+    <property name="state" type="int" value="0"/>
+    <property name="targetName" value="platform1"/>
+    <property name="targetType" value="platform"/>
+   </properties>
+  </object>
+  <object id="311" name="platform4" type="platform" x="16" y="48" width="128" height="16">
+   <properties>
+    <property name="autostart" type="bool" value="false"/>
+    <property name="frame" type="int" value="0"/>
+    <property name="loop" type="int" value="0"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:304,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+   </properties>
+  </object>
+  <object id="313" name="seesaw1" type="seesaw" x="160" y="128" width="288" height="16">
+   <properties>
+    <property name="balanceOffset" type="int" value="0"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup color="#00ff00" id="17" name="hulls">
   <object id="260" type="hull" x="0" y="384" width="400" height="16">
    <properties>
@@ -292,6 +409,36 @@
   </object>
   <object id="268" type="hull" x="1584" y="16" width="16" height="368"/>
   <object id="269" type="hull" x="0" y="16" width="16" height="368"/>
+  <object id="279" type="hull" x="16" y="272" width="320" height="32">
+   <properties>
+    <property name="friction" type="float" value="0.9"/>
+   </properties>
+  </object>
+  <object id="284" type="hull" x="768" y="272" width="320" height="32">
+   <properties>
+    <property name="friction" type="float" value="0.9"/>
+   </properties>
+  </object>
+  <object id="286" type="hull" x="768" y="320" width="272" height="32">
+   <properties>
+    <property name="friction" type="float" value="0.9"/>
+   </properties>
+  </object>
+  <object id="287" type="hull" x="1056" y="304" width="32" height="80">
+   <properties>
+    <property name="friction" type="float" value="0.9"/>
+   </properties>
+  </object>
+  <object id="294" type="hull" x="464" y="112" width="96" height="32">
+   <properties>
+    <property name="friction" type="float" value="0.9"/>
+   </properties>
+  </object>
+  <object id="315" type="hull" x="304" y="240" width="32" height="32">
+   <properties>
+    <property name="friction" type="float" value="0.9"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="18" name="pathing"/>
 </map>

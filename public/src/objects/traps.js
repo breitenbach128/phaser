@@ -134,7 +134,7 @@ class ConveyorWheel extends Phaser.Physics.Matter.Image{
         this
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.SOLID)
-        .setCollidesWith([ CATEGORY.BRIGHT, CATEGORY.SOLANA, CATEGORY.SOLID])
+        .setCollidesWith([ CATEGORY.DARK, CATEGORY.SOLANA, CATEGORY.SOLID])
         .setPosition(x, y)
         .setIgnoreGravity(true)
         .setDensity(0.8)

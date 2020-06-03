@@ -516,7 +516,7 @@ var GameScene = new Phaser.Class({
                 mir.setup(centerPoint.x,centerPoint.y,tmxObjRef.rotation,tmxObjRef.name);
                 losBlockAndReflect.push(mir.body);
             }else if(tmxObjRef.type == "window"){  
-                let bar = barriers.get(-1000,-1000,"tmxwindow",0,true);
+                let bar = barriers.get(-1000,-1000,"glasstile",0,true);
                 let tmxOrigin = {x:tmxObjRef.x,y:tmxObjRef.y};
                 let centerPoint = new Phaser.Geom.Point(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y-tmxObjRef.height/2);
                 let rotRad = Phaser.Math.DegToRad(tmxObjRef.rotation);
@@ -878,6 +878,7 @@ var GameScene = new Phaser.Class({
                       || gameObjectB instanceof BreakableTile 
                       || gameObjectB instanceof Crate 
                       || gameObjectB instanceof Seesaw 
+                      || gameObjectB instanceof ConveyorWheel 
                       || gameObjectB instanceof TMXGear
                       || gameObjectB instanceof BrightBeamBlock)) {   
                 
@@ -977,7 +978,8 @@ var GameScene = new Phaser.Class({
                 || gameObjectB instanceof PlatSwing
                 || gameObjectB instanceof BreakableTile 
                 || gameObjectB instanceof TMXGear
-                || gameObjectB instanceof Seesaw              
+                || gameObjectB instanceof Seesaw
+                || gameObjectB instanceof ConveyorWheel         
                 || gameObjectB instanceof BrightBeamBlock)) {  
 
                     //handle plaform jumping allowance             
