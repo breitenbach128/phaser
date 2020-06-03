@@ -984,7 +984,7 @@ class EnemyBlobC{
 
             this.subblobs.push(new BlobCBit(scene,x-w/2+(i*8),y, this));
         }
-        this.attractForce = 0.0010;
+        this.attractForce = 0.0008;
         this.spawnTracker  = {c:0,max:300};
         this.scene.events.on("update", this.update, this);        
         this.scene.events.on("shutdown", this.remove, this);
@@ -1024,6 +1024,9 @@ class EnemyBlobC{
             for(let i=0;i<this.subblobs.length;i++){
                 let bit = this.subblobs[i];
                 let attrMod = this.attractForce*(this.subblobs.length/12);
+                //let bitDis = distanceBetweenObjects(bit,this.blobObj);
+                //attrMod = attrMod*(Phaser.Math.Clamp(bitDis,0,this.blobObj.width*2) / (this.blobObj.width*2));
+
                 let targObj = this.blobObj;
                 if(bit.isClung){
                     targObj = bit.attachedTo;
@@ -1036,7 +1039,7 @@ class EnemyBlobC{
             if(this.spawnTracker.c >= this.spawnTracker.max){
                 this.spawnTracker.c = 0;
                 if(this.subblobs.length < 16){
-                    this.subblobs.push(new BlobCBit(this.scene,this.blobObj.x-this.blobObj.width/2,this.blobObj.y, this));
+                    this.subblobs.push(new BlobCBit(this.scene,this.blobObj.x,this.blobObj.y, this));
                 }
             }else{
                 this.spawnTracker.c++;
@@ -1111,7 +1114,7 @@ class BlobCBit extends Phaser.Physics.Matter.Sprite{
         const compoundBody = Body.create({
             parts: [mainBody],
             frictionStatic: 0.01,
-            frictionAir: 0.05,
+            frictionAir: 0.5,
             friction: 0.9,
             density: 0.01,
             restitution: 0.7,
@@ -1150,7 +1153,7 @@ class BlobCBit extends Phaser.Physics.Matter.Sprite{
     }
     update(time,delta){
         if(!this.isSplooshing && this.alive){
-            if(distanceBetweenObjects(this,this.attachedTo) > 256){
+            if(distanceBetweenObjects(this,this.attachedTo) > 96){
                 this.sploosh();
             }
         }
