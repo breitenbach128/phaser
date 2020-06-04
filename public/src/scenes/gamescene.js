@@ -1540,16 +1540,27 @@ var GameScene = new Phaser.Class({
         let lamps = crystallamps.getChildren()
         for(var x = 0;x < lamps.length;x++){
             var lamp = lamps[x];
-            this.shadow_graphic.fillCircle(lamp.x, lamp.y, lamp.brightness);
-            if(Phaser.Math.Distance.Between(lamp.x,lamp.y,solana.x,solana.y) <= lamp.brightness){solana_in_light = true;}
+            if(lamp.active){
+                this.shadow_graphic.fillCircle(lamp.x, lamp.y, lamp.brightness);
+                if(Phaser.Math.Distance.Between(lamp.x,lamp.y,solana.x,solana.y) <= lamp.brightness){solana_in_light = true;}
+            }
         }
         let sbs = solbombs.getChildren();
         for(let s=0;s<sbs.length;s++){
             let sb = sbs[s];
-            this.shadow_graphic.fillCircle(sb.x, sb.y, sb.light_radius);
-            if(Phaser.Math.Distance.Between(sb.x,sb.y,solana.x,solana.y) <= sb.light_radius){solana_in_light = true;}
+            if(sb.active){
+                this.shadow_graphic.fillCircle(sb.x, sb.y, sb.light_radius);
+                if(Phaser.Math.Distance.Between(sb.x,sb.y,solana.x,solana.y) <= sb.light_radius){solana_in_light = true;}
+            }
         }
-
+        let lbs = light_bursts.getChildren();
+        for(let l=0;l<lbs.length;l++){
+            let lb = lbs[l];
+            if(lb.active){
+                this.shadow_graphic.fillCircle(lb.x, lb.y, 32);
+                if(Phaser.Math.Distance.Between(lb.x,lb.y,solana.x,solana.y) <= lb.light_radius){solana_in_light = true;}
+            }
+        }
 
         //Instead of doing damage right away, do drain energy. IF totally drained, then take damage.
         solana.inLight = solana_in_light;

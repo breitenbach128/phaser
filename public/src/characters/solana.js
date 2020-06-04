@@ -292,11 +292,15 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                         this.LightShield.setCollidesWith([ CATEGORY.BULLET ]);  
                         //Toggles the collides with function to block bullets
                     }else if(control_shootRelease){
+                        this.activateBomb();
+
                         this.isShielding = false; 
                         this.LightShield.setPosition(this.x,this.y);
                         this.LightShield.setActive(false);
                         this.LightShield.setVisible(false);
                         this.LightShield.setCollidesWith([ 0 ]); 
+
+                        
                     }
 
                     if(this.isShielding){
@@ -917,13 +921,19 @@ class SolBomb extends Phaser.Physics.Matter.Sprite{
         this.lifespan = lifespan;
         this.isLit = true;
         this.orbitTween.remove();
-        this.setIgnoreGravity(false);
+        this.misslepower = 0.005;
+        //this.setIgnoreGravity(false);
+        this.applyForce({x:Math.cos(solana.LightShield.rotation)*this.misslepower,y:Math.sin(solana.LightShield.rotation)*this.misslepower});
         this.setCollidesWith([CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.DARK, CATEGORY.ENEMY]);
         this.lifeTimer = this.scene.time.addEvent({ delay: this.lifespan, callback: this.unready, callbackScope: this, loop: false });
         
     }
     unready(){
-        let jumpBurst = new JumpBurst(this.scene,this.x,this.y);
+        for(let b=0;b<Phaser.Math.Between(12, 16);b++){
+            let burst = light_bursts.get();
+            burst.burst(this.x+(Phaser.Math.Between(-32, 32)),this.y+(Phaser.Math.Between(-32, 32)));
+        }
+        
         if(this.holdConstraint){this.scene.matter.world.remove(this.holdConstraint);}
         //Detonate
         //Remove
@@ -989,10 +999,11 @@ class Heart extends Phaser.Physics.Matter.Sprite{
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.SOLID)
         .setCollidesWith([ CATEGORY.BRIGHT, CATEGORY.SOLANA, CATEGORY.GROUND, CATEGORY.SOLID])
+        .setFixedRotation()
         .setPosition(x, y+h*0.20) 
         this.isReady = false;
 
-        this.readyTimer = this.scene.time.addEvent({ delay: 1000, callback: function(){this.isReady = true;}, callbackScope: this, loop: false });
+        this.readyTimer = this.scene.time.addEvent({ delay: 300, callback: function(){this.isReady = true;}, callbackScope: this, loop: false });
 
         this.scene.matterCollision.addOnCollideActive({
             objectA: [this],
