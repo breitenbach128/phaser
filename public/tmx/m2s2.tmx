@@ -631,7 +631,7 @@
   <object id="303" name="rock" type="rock" x="304" y="1056" width="16" height="16"/>
   <object id="307" name="minecart1" type="minecart" x="704" y="736" width="96" height="48"/>
   <object id="308" name="water1" type="water" x="16" y="800" width="240" height="48"/>
-  <object id="309" name="platfall1" type="platfall" gid="9180" x="160" y="784" width="32" height="32">
+  <object id="309" name="platfall1" type="platfall" gid="9180" x="176" y="784" width="32" height="32">
    <properties>
     <property name="shakeCount" type="int" value="6"/>
     <property name="shakeTime" type="int" value="150"/>

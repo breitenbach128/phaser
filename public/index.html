@@ -2,6 +2,15 @@
 <html>
 <head>    	
     <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script>
+        //loader script
+        function loadScript (dir, file) {
+            var scr = document.createElement("script");
+            scr.src = dir + file;
+            document.body.appendChild(scr);
+        }
+
+    </script>
     <script src="phaser_3_23.js"></script>
     <script src="src/plugins/phaser-matter-collision-plugin.js"></script>
     <script src="src/plugins/phaser-plugin-water-body.js"></script>
@@ -21,6 +30,10 @@
     <script src="src/characters/bright.js"></script>
     <script src="src/characters/soullight.js"></script>
     <script src="src/characters/enemy.js"></script>
+    <script src="src/characters/enemies/enemy_shrieker.js"></script>
+    <script src="src/characters/enemies/enemy_blob.js"></script>
+    <script src="src/characters/enemies/enemy_spider.js"></script>
+    <script src="src/characters/enemies/enemy_spiker.js"></script>
     <script src="src/characters/npcs.js"></script>
     <script src="src/characters/boss.js"></script>
     <script src="src/effects/effects.js"></script>
@@ -33,6 +46,10 @@
     <script src="src/objects/traps.js"></script>
     <script src="src/objects/vehicles.js"></script>
     <script src="src/objects/props.js"></script>
+
+    <script>
+        //Load Enemies
+    </script>
 
     <style>
     @font-face {

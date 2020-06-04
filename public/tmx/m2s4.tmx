@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="318">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="323">
  <editorsettings>
   <export target="../assets/world/m2s4.json" format="json"/>
  </editorsettings>
@@ -17,6 +17,9 @@
  </tileset>
  <tileset firstgid="8802" name="tile_custom" tilewidth="16" tileheight="16" tilecount="4096" columns="64">
   <image source="../assets/world/tile_custom.png" width="1024" height="1024"/>
+ </tileset>
+ <tileset firstgid="12898" name="32Tileset" tilewidth="32" tileheight="32" spacing="2" tilecount="851" columns="37">
+  <image source="../assets/world/oldTileset32.png" width="1280" height="800"/>
  </tileset>
  <layer id="3" name="bg3" width="100" height="25">
   <data encoding="csv">
@@ -225,6 +228,17 @@
  <objectgroup id="12" name="enemies">
   <object id="283" name="shrieker1" type="shrieker" x="832" y="48" width="32" height="32" rotation="-180"/>
   <object id="317" name="blob1" type="blob" x="224" y="272" width="32" height="32" rotation="-180"/>
+  <object id="321" name="bat1" type="air" gid="13394" x="464" y="208" width="32" height="32">
+   <properties>
+    <property name="aBehav" value="attack"/>
+    <property name="enemyClass" value="air"/>
+    <property name="enemyType" value="bat"/>
+    <property name="pBehav" value="patrolWaypoints"/>
+    <property name="path" value="[{&quot;x&quot;:1072,&quot;y&quot;:768},{&quot;x&quot;:1200,&quot;y&quot;:768}]"/>
+    <property name="pathid" value="bat1"/>
+    <property name="weapon" type="int" value="5"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="13" name="spawns"/>
  <objectgroup id="14" name="exit">
@@ -280,6 +294,21 @@
   <object id="306" name="crate" type="crate" x="80" y="16" width="16" height="16"/>
   <object id="307" name="crate" type="crate" x="96" y="32" width="16" height="16"/>
   <object id="308" name="crate" type="crate" x="96" y="16" width="16" height="16"/>
+  <object id="318" name="telebeam1" type="telebeam" x="368" y="288" width="64" height="64">
+   <properties>
+    <property name="initAngle" type="int" value="90"/>
+   </properties>
+  </object>
+  <object id="319" name="telebeam1" type="telebeam" x="560" y="288" width="64" height="64">
+   <properties>
+    <property name="initAngle" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="320" name="telebeam1" type="telebeam" x="560" y="96" width="64" height="64">
+   <properties>
+    <property name="initAngle" type="int" value="90"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="16" name="triggers">
   <object id="276" name="zone3-climb" type="zone" x="336" y="240" width="32" height="144">
@@ -440,5 +469,9 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="18" name="pathing"/>
+ <objectgroup id="18" name="pathing">
+  <object id="322" name="bat1" type="ai" x="480" y="192">
+   <polyline points="0,0 144,0"/>
+  </object>
+ </objectgroup>
 </map>

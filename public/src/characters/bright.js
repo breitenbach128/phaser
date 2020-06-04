@@ -138,7 +138,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     this.sprite.anims.play('dark-idle', false);
                     if(this.falling){
                         //If I was falling, shake the camera.
-                        camera_main.shake(80,.005);
+                        //camera_main.shake(80,.005);
                         this.falling = false;
                         
                     }

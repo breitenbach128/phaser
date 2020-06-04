@@ -451,51 +451,51 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == "spiker"){
                 let spiker = new EnemySpiker(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,0)
             }else{
-                // let EnemyType = props.enemyType;
-                // let EnemyClass = props.enemyClass;
-                // let PassiveBehavior = props.pBehav;
-                // let AggressivBehavior = props.aBehav;
-                // let weapon = props.weapon;
-                // let new_enemy;
-                // let path = '[{"x":0,"y":0}]';
-                // //Standard Types            
-                // if(EnemyClass == 'ground'){
-                //     new_enemy = enemies.get(tmxObjRef.x,tmxObjRef.y,EnemyType);
-                // }else if(EnemyClass == 'air'){
-                //     new_enemy = enemiesFly.get(tmxObjRef.x,tmxObjRef.y,EnemyType);                
-                // }else{
-                //     new_enemy = enemies.get(tmxObjRef.x,tmxObjRef.y,EnemyType);
-                // }
-                // //Set manual path if available
-                // if(props.path){
-                //     path = JSON.parse(props.path);
-                // }
-                // //Accept Pathing Objects from TMX if available
-                // if(props.pathid){
-                //     let findPath = pathingNodes.find(e => {
-                //         return e.name === props.pathid;
-                //     })
-                //     if(findPath){
-                //         path = findPath.worldpoints;
-                //     }
-                // }
-                // if(props.tint){
-                //     let newTint =  (Phaser.Display.Color.HexStringToColor(props.tint))._color; //0x333333
-                //     new_enemy.setTint(newTint);
-                // }
-                // if(props.scale){
-                //     new_enemy.setScale(props.scale);
-                // }
+                let EnemyType = props.enemyType;
+                let EnemyClass = props.enemyClass;
+                let PassiveBehavior = props.pBehav;
+                let AggressivBehavior = props.aBehav;
+                let weapon = props.weapon;
+                let new_enemy;
+                let path = '[{"x":0,"y":0}]';
+                //Standard Types            
+                if(EnemyClass == 'ground'){
+                    new_enemy = enemies.get(tmxObjRef.x,tmxObjRef.y,EnemyType);
+                }else if(EnemyClass == 'air'){
+                    new_enemy = enemiesFly.get(tmxObjRef.x,tmxObjRef.y,EnemyType);                
+                }else{
+                    new_enemy = enemies.get(tmxObjRef.x,tmxObjRef.y,EnemyType);
+                }
+                //Set manual path if available
+                if(props.path){
+                    path = JSON.parse(props.path);
+                }
+                //Accept Pathing Objects from TMX if available
+                if(props.pathid){
+                    let findPath = pathingNodes.find(e => {
+                        return e.name === props.pathid;
+                    })
+                    if(findPath){
+                        path = findPath.worldpoints;
+                    }
+                }
+                if(props.tint){
+                    let newTint =  (Phaser.Display.Color.HexStringToColor(props.tint))._color; //0x333333
+                    new_enemy.setTint(newTint);
+                }
+                if(props.scale){
+                    new_enemy.setScale(props.scale);
+                }
 
-                // if(new_enemy){
-                //     //Setup Enemy
-                //     new_enemy.setActive(true);
-                //     new_enemy.setVisible(true);
-                //     new_enemy.setBehavior(PassiveBehavior,AggressivBehavior,weapon);
-                //     new_enemy.setPath(path);
+                if(new_enemy){
+                    //Setup Enemy
+                    new_enemy.setActive(true);
+                    new_enemy.setVisible(true);
+                    new_enemy.setBehavior(PassiveBehavior,AggressivBehavior,weapon);
+                    new_enemy.setPath(path);
                     
                     
-                // } 
+                } 
             }
         }
         //Spawn Objects
