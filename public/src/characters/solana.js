@@ -410,7 +410,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                 case 'bomb':
                     return (keyPad.checkKeyState('G') == 1);
                 case 'grab':
-                    return (keyPad.checkKeyState('T') == 1);
+                    return (keyPad.checkKeyState('F') == 1);
                 case 'shoot':
                     return (keyPad.checkMouseState('MB0') > 0);
                 case 'shootR':

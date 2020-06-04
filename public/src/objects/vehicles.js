@@ -49,7 +49,11 @@ class Vehicle extends Phaser.Physics.Matter.Sprite{
             length: 0.0,
             stiffness: 0.0
         })
-
+        this.drive_left = false;
+        this.drive_right = false;
+        this.path = -1;
+        this.pathRunning = false;
+        this.max_speed = 15;
 
         this.scene.matterCollision.addOnCollideActive({
             objectA: [this],
@@ -68,6 +72,15 @@ class Vehicle extends Phaser.Physics.Matter.Sprite{
                     let minY = bVelY < 0 ? bVelY : 0;
                     let maxY = bVelY > 0 ? bVelY : 0;
                     gameObjectB.setMaxMoveSpeed(minX,maxX,minY,maxY);
+
+                    gameObjectA.drive_left = gameObjectB.getControllerAction('left');
+                    gameObjectA.drive_right = gameObjectB.getControllerAction('right');
+
+                    if(gameObjectA.path != -1 && gameObjectA.pathRunning == false && (gameObjectA.drive_left || gameObjectA.drive_right)){
+                        //gameObjectA.runPath();
+                    }
+ 
+                    
                 }
                 if(gameObjectB instanceof BreakableTile){
                     //3 Speed seems to look good
@@ -87,9 +100,70 @@ class Vehicle extends Phaser.Physics.Matter.Sprite{
                 }
             }
         });
+        //Up to date queue
+        this.scene.events.on("update", this.update, this);
+        this.scene.events.on("shutdown", this.remove, this);
+        this.active = true;
     }
     update(time, delta)
     {       
+        if(this.active){
+            if(this.drive_left){
+                this.applyForce({x:-0.005,y:0});
+            }
+            if(this.drive_right){
+                this.applyForce({x:0.005,y:0});
+            }
+            //Velocity Limit
+            if(this.body.velocity.x > this.max_speed){this.setVelocityX(this.max_speed)};
+            if(this.body.velocity.x < -this.max_speed){this.setVelocityX(-this.max_speed)};
+            if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed);};
+            if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
+            //Body Impulse Limit
+            if(this.body.positionImpulse.x > this.max_speed){this.body.positionImpulse.x = this.max_speed};
+            if(this.body.positionImpulse.x < -this.max_speed){this.body.positionImpulse.x = -this.max_speed};
+            if(this.body.positionImpulse.y > this.max_speed){this.body.positionImpulse.y = this.max_speed};
+            if(this.body.positionImpulse.y < -this.max_speed){this.body.positionImpulse.y = -this.max_speed};
+        }
+    }
 
+    remove(){
+        this.active = false;
+    }
+    runPath(){  
+        this.solanaRider = true;      
+        this.pathRunning = true;
+        this.timeline = this.scene.tweens.createTimeline();
+        this.timeline.setCallback('onComplete',this.pathComplete,[this],this.timeline);       
+        this.path.forEach(function(e){
+            let dis = Phaser.Math.Distance.Between(this.x,this.y,e.x,e.y);
+            let t = (dis / 20)*100;
+            this.timeline.add({
+                targets: this,
+                x: e.x,
+                y: e.y,
+                ease: 'Linear',
+                duration: t,
+                hold: 0,
+                onUpdate: function(tween,targets, cart){
+                    if(cart.solanaRider){
+                        solana.setPosition(cart.x,cart.y);
+                        if(solana.getControllerAction('jump')){
+                            solana.jump(solana.jump_speed,0);
+                            this.solanaRider = false;
+                        }
+                    }
+                },
+                onUpdateParams: [this]
+            });
+        
+        },this);
+
+        this.timeline.play();
+        
+    }
+    pathComplete(cart){
+        console.log("Minecart Path Complete");        
+        //cart.pathRunning = false;
     }
 };

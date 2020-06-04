@@ -157,58 +157,7 @@ class SpiderHiveEgg extends Phaser.Physics.Matter.Sprite{
 
 //SLIME MONSTER PARTS
 
-//RockChute
-class RockChute extends Phaser.Physics.Matter.Sprite{
-    constructor(scene,x,y) {
-        super(scene.matter.world, x, y, 'rockchute', 0)
-        this.scene = scene;
-        scene.matter.world.add(this);
-        scene.add.existing(this); 
 
-        this.setActive(true);
-
-        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
-        const { width: w, height: h } = this;
-        //const mainBody =  Bodies.circle(0,0,w*.50);
-        const mainBody =  Bodies.rectangle(0,0,w,h);
-
-        const compoundBody = Body.create({
-            parts: [mainBody],
-            frictionStatic: 0.01,
-            frictionAir: 0.05,
-            friction: 1.0,
-            density: 0.5,
-            label: "CHUTE"
-        });
-
-        this
-        .setExistingBody(compoundBody)
-        .setCollisionCategory(CATEGORY.SOLID)
-        .setCollidesWith([0])//Nothing
-        .setPosition(x, y)
-        .setStatic(true) 
-        
-        this.rockTimer = this.scene.time.addEvent({ delay: 3000, callback: this.makeRocks, callbackScope: this, loop: true });        
-        //this.scene.events.on("update", this.update, this);
-    
-    }
-    setup(x,y){
-        this.setActive(true);
-        this.setPosition(x,y); 
-    }
-    update(time, delta)
-    {   
-        
-    }
-    makeRocks(){
-        if(rocks.getTotalUsed() < 5){ // NO more rocks than 5
-            let newRock = rocks.get(this.x,this.y);
-            newRock.setup(this.x,this.y, 1);
-            newRock.setVelocityY(0);
-            newRock.applyForce({x:Phaser.Math.FloatBetween(0.01,0.02),y:0});        
-        }
-    }
-};
 class BossSlime extends Phaser.Physics.Matter.Sprite{
     constructor(scene,x,y) {
         super(scene.matter.world, x, y, 'boss_slime_main', 0)

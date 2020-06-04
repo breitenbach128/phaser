@@ -534,17 +534,16 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == "platfall"){ 
                 x_offset = tmxObjRef.width/2;
                 y_offset = tmxObjRef.height/2;
-                //let newFallPlat = new Fallplat(this,tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-1);
-                let oG = -1;
-                map.tilesets.forEach(e=>{
-                    if(e.image.key == 'tiles32'){
-                        oG = e.firstgid;
-                    }
-                })
                 let platfallprops = getTileProperties(tmxObjRef.properties);
-                let pf = platfalls.get(tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,'tiles32',tmxObjRef.gid-oG);
-                pf.setDepth(DEPTH_LAYERS.PLATFORMS);
                 if(platfallprops != undefined){
+                    let oG = -1;
+                    map.tilesets.forEach(e=>{
+                        if(e.image.key == platfallprops.tsName){
+                            oG = e.firstgid;
+                        }
+                    })   
+                    let pf = platfalls.get(tmxObjRef.x+x_offset,tmxObjRef.y-y_offset,platfallprops.tsName,tmxObjRef.gid-oG);
+                    pf.setDepth(DEPTH_LAYERS.PLATFORMS);                
                     if(platfallprops.shakeTime != undefined && platfallprops.shakeCount != undefined){
                         pf.setShakeTime(platfallprops.shakeTime,platfallprops.shakeCount);
                     }
@@ -638,9 +637,20 @@ var GameScene = new Phaser.Class({
                 polySpline.draw(g_sp1);
                 g_sp1.setDepth(DEPTH_LAYERS.FG);
             }else if(tmxObjRef.type == 'minecart'){
+                let cartprops = getTileProperties(tmxObjRef.properties);
                 let cart = new Vehicle(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2).setDepth(DEPTH_LAYERS.FRONT);
                 cart.wA.setDepth(DEPTH_LAYERS.FRONT);
                 cart.wB.setDepth(DEPTH_LAYERS.FRONT);
+                if(cartprops != undefined){
+                    if(cartprops.pathid != undefined){
+                        let findPath = pathingNodes.find(e => {
+                            return e.name === cartprops.pathid;
+                        })
+                        if(findPath){
+                            cart.path = findPath.worldpoints;
+                        }
+                    }
+                }
             }else if(tmxObjRef.type == 'decal'){
                 let genprops = getTileProperties(tmxObjRef.properties);
                 if(genprops.srctype == 'sprite'){
@@ -1795,8 +1805,8 @@ var GameScene = new Phaser.Class({
     getGamepadVectors(gamePadID){
         if(gamePad[gamePadID]){
             //Raw Sticks Vectors
-            let stickRight = gamePad[gamePadID].getStickRight(.01);
-            let stickLeft = gamePad[gamePadID].getStickLeft(.01);
+            let stickRight = gamePad[gamePadID].getStickRight(.1);
+            let stickLeft = gamePad[gamePadID].getStickLeft(.1);
             return [stickLeft,stickRight];
         }
         

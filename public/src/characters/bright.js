@@ -86,7 +86,10 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.beamAbility = new BrightBeam(this.scene,this.x,this.y,this.rotation);
         this.beamReady = true;
         this.beamCoolDown = this.scene.time.addEvent({ delay: 1000, callback: this.resetBeam, callbackScope: this, loop: true });
-
+        //Light Dash
+        this.lightdashTimer = this.scene.time.addEvent({ delay: 200, callback: this.resetLightDask, callbackScope: this, loop: false });
+        this.lightdashReady = true;
+        //Dark Dask
         this.darkdashTimer = this.scene.time.addEvent({ delay: 200, callback: this.resetDarkDask, callbackScope: this, loop: false });
         this.darkdashReady = true;
         this.slamReady = true;
@@ -180,25 +183,37 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 }
                 if(this.light_status == brightMode){
                     this.angle = 0;
+                    let light_mv_speed = this.mv_speed;
                     //BRIGHT CONTROLS 
+                    if(control_dash && this.lightdashReady){
+                        if(hud.brightStatBar.getValue() > 100){
+                            this.lightdashTimer = this.scene.time.addEvent({ delay: 300, callback: this.resetLightDask, callbackScope: this, loop: false });
+                            this.lightdashReady = false; 
+                            this.addEnergy(-100);
+                        }
+                    }
+                    if(this.lightdashReady == false){
+                        //Is light dashing
+                        light_mv_speed = light_mv_speed*4;
+                    }
                     if(control_beam && this.beamReady ){
                         this.beamReady = false;
                         soullight.setAimer();
                         this.beamAbility.create(soullight.aimer.x,soullight.aimer.y,soullight.aimer.rotation);
                     }                    
                     if(control_left){
-                        this.sprite.setVelocityX(-this.mv_speed);
+                        this.sprite.setVelocityX(-light_mv_speed);
                         this.flipX= true; // flip the sprite to the left
                     }
                     if(control_right){
-                        this.sprite.setVelocityX(this.mv_speed);
+                        this.sprite.setVelocityX(light_mv_speed);
                         this.flipX= false; // flip the sprite to the right
                     }
                     if (control_up) {
-                        this.sprite.setVelocityY(-this.mv_speed);
+                        this.sprite.setVelocityY(-light_mv_speed);
                     }
                     if (control_down) {
-                        this.sprite.setVelocityY(this.mv_speed);
+                        this.sprite.setVelocityY(light_mv_speed);
                     }
                     if(!control_left && !control_right && !control_up && !control_down){
                         //this.sprite.anims.play('bright-idle', true);//Idle
@@ -245,6 +260,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                                 e.grabbed();                
                             }
                         });
+
                     }
                     if(control_pulseRelease){
                         if(this.abPulse.doCharge){
@@ -340,10 +356,15 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     }
                     //Singularity
                     if(control_pulsePress){
-                        let solAngle = Phaser.Math.Angle.Between(this.x,this.y,solana.x,solana.y);
-                        let solForce = 0.02;
-                        let solPullVec = {x:-Math.cos(solAngle)*solForce,y:-Math.sin(solAngle)*solForce};
-                        solana.applyForce(solPullVec);
+                        // let solAngle = Phaser.Math.Angle.Between(this.x,this.y,solana.x,solana.y);
+                        // let solForce = 0.02;
+                        // let solPullVec = {x:-Math.cos(solAngle)*solForce,y:-Math.sin(solAngle)*solForce};
+                        // solana.applyForce(solPullVec);
+                        if(soullight.transfer != -1 && soullight.transfer != undefined){
+                            if(Phaser.Math.Distance.Between(this.x,this.y,soullight.transfer.x,soullight.transfer.y) < soullight.freePassDistance*2){
+                                soullight.transfer.setGrabbed(this);
+                            }
+                        }
                     }
 
                     //Fake Angular Velocity friction
@@ -470,6 +491,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     }
     resetDarkDask(){
         this.darkdashReady = true;
+    }
+    resetLightDask(){
+        this.lightdashReady = true;
     }
     toDark(){
         this.light_status = 1;

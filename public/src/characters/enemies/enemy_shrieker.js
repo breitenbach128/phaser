@@ -82,7 +82,8 @@ class EnemyShrieker extends Phaser.Physics.Matter.Sprite{
                             let adeg = Phaser.Math.RadToDeg(a);
                             let pow = shroom.screamPower;
                             if(adeg > -135 && adeg < -45){pow = pow*5;}
-                            solana.applyForce({x:Math.cos(a)*pow,y:Math.sin(a)*pow});
+                            //solana.applyForce({x:Math.cos(a)*pow,y:Math.sin(a)*pow});
+                            solana.readyThrown(Math.cos(a)*pow,Math.sin(a)*pow,100);
                         }
                     },
                     onUpdateParams: [this],

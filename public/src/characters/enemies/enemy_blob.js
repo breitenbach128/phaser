@@ -91,7 +91,7 @@ class EnemyBlobC{
 
         this.blobObj = this.scene.matter.add.gameObject(shapeObject, compoundBody);        
         this.blobObj.setCollisionCategory(CATEGORY.ENEMY);
-        this.blobObj.setCollidesWith([CATEGORY.GROUND]);
+        this.blobObj.setCollidesWith([CATEGORY.GROUND,CATEGORY.SOLID]);
         this.blobObj.setPosition(x,y);
 
         this.subblobs = [];
@@ -237,7 +237,7 @@ class BlobCBit extends Phaser.Physics.Matter.Sprite{
         });
         this
         .setExistingBody(compoundBody)
-        .setCollisionCategory(CATEGORY.SOLID)
+        .setCollisionCategory(CATEGORY.ENEMY)
         .setFixedRotation()
         .setPosition(x, y) 
         .setDensity(0.01)
