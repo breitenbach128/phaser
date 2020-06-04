@@ -97,6 +97,8 @@ class Vehicle extends Phaser.Physics.Matter.Sprite{
                 
                 if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
                     gameObjectB.setMaxMoveSpeed(0,0,0,0);
+                    this.drive_left = false;
+                    this.drive_right = false;
                 }
             }
         });
