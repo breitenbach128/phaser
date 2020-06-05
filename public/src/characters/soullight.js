@@ -578,7 +578,7 @@ class Solbit{
         }
         this.aquired = true;
 
-        hud.storySpeech.createSpeech('hud_solana_head','hud_bright_head',false);
+        hud.storySpeech.createSpeech('hud_solana_head','hud_bright_head',false);        
         hud.storySpeech.addToSpeech('center',this.description,3000);
         hud.storySpeech.startSpeech();
     }

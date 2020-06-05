@@ -736,6 +736,28 @@
                  "width":32,
                  "x":1440,
                  "y":176
+                }, 
+                {
+                 "height":16,
+                 "id":357,
+                 "name":"soulcrystal1",
+                 "properties":[
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"orange"
+                        }, 
+                        {
+                         "name":"scid",
+                         "type":"int",
+                         "value":1
+                        }],
+                 "rotation":0,
+                 "type":"soulcrystal",
+                 "visible":true,
+                 "width":16,
+                 "x":208,
+                 "y":320
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1478,7 +1500,7 @@
                  "rotation":0,
                  "type":"hull",
                  "visible":true,
-                 "width":400,
+                 "width":320,
                  "x":0,
                  "y":384
                 }, 
@@ -1495,8 +1517,8 @@
                  "rotation":0,
                  "type":"hull",
                  "visible":true,
-                 "width":400,
-                 "x":400,
+                 "width":480,
+                 "x":320,
                  "y":384
                 }, 
                 {
@@ -1866,7 +1888,7 @@
          "y":0
         }],
  "nextlayerid":19,
- "nextobjectid":357,
+ "nextobjectid":359,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.4",

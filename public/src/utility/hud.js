@@ -301,13 +301,19 @@ class HudScene extends Phaser.Scene {
     }
 }
 
+//need set Position funciton for hudspeech. Make centerpoint a class variable
+//make a function to update all components.
+
 class HudSpeech{
     constructor(scene){
         this.scene = scene;
         let centerPoint = {x:this.scene.cameras.main.width/2,y:this.scene.cameras.main.height-124};
         let w = this.scene.cameras.main.width;
         let h = this.scene.cameras.main.height;
-
+        //create local variables for easy reference.
+        this.w = w;
+        this.h = h;
+        this.centerPoint = centerPoint;
         //Text Holder
         this.speaktext = this.scene.add.text(centerPoint.x, centerPoint.y, 'Well, Im glad we are going on this adventure together.', { 
             fontFamily: 'visitorTT1',
@@ -355,6 +361,36 @@ class HudSpeech{
 
 
     }
+    moveTop(){
+        this.centerPoint.x = this.w/2;
+        this.centerPoint.y = 124;
+        let x = this.centerPoint.x;
+        let y = this.centerPoint.y;
+        this.speaktext.setPosition(x,y);
+        this.spAreaObj[0].setPosition(x,y);
+        this.spAreaObj[1].setPosition(x,y);
+        this.pLeftObj[0].setPosition(16,y);
+        this.pLeftObj[1].setPosition(24,y+8);
+        this.pLeftObj[2].setPosition(24,y+8);
+        this.pRightObj[0].setPosition(this.w - 16,y);
+        this.pRightObj[1].setPosition(this.w - 24,y+8);
+        this.pRightObj[2].setPosition(this.w - 24,y+8);
+    }
+    moveBottom(){
+        this.centerPoint.x = this.w/2;
+        this.centerPoint.y = this.h - 124;
+        let x = this.centerPoint.x;
+        let y = this.centerPoint.y;
+        this.speaktext.setPosition(x,y);
+        this.spAreaObj[0].setPosition(x,y);
+        this.spAreaObj[1].setPosition(x,y);
+        this.pLeftObj[0].setPosition(16,y);
+        this.pLeftObj[1].setPosition(24,y-8);
+        this.pLeftObj[2].setPosition(24,y-8);
+        this.pRightObj[0].setPosition(this.w - 16,y);
+        this.pRightObj[1].setPosition(this.w - 24,y-8);
+        this.pRightObj[2].setPosition(this.w - 24,y-8);
+    }
     createSpeech(leftImage,rightImage,doPause){
         if(this.ready){
             //Adds a new sequence to play to the HUD.
@@ -369,6 +405,13 @@ class HudSpeech{
             this.timeline = this.scene.tweens.createTimeline();
 
             this.timeline.setCallback('onComplete',this.endSpeech,[this],this.timeline);
+
+            //Adjust position to better display sprites
+            if((solana.y - camera_main.y) > camera_main.centerY){
+                hud.storySpeech.moveTop();
+            }else{
+                hud.storySpeech.moveBottom();
+            }
         }else{
             console.log("HUDSPEECH Timeline running");
         }

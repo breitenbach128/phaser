@@ -388,7 +388,12 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     if(this.body.velocity.y > this.max_speed.ground ){this.setVelocityY(this.max_speed.ground);};
                     if(this.body.velocity.y < -this.max_speed.ground ){this.setVelocityY(-this.max_speed.ground );};
                 }
-
+                //Body Impulse Limit
+                if(this.body.positionImpulse.x > this.max_speed.ground){this.body.positionImpulse.x = this.max_speed.ground};
+                if(this.body.positionImpulse.x < -this.max_speed.ground){this.body.positionImpulse.x = -this.max_speed.ground};
+                if(this.body.positionImpulse.y > this.max_speed.ground){this.body.positionImpulse.y = this.max_speed.ground};
+                if(this.body.positionImpulse.y < -this.max_speed.ground){this.body.positionImpulse.y = -this.max_speed.ground};
+                
                 // this.debug.setPosition(this.sprite.x, this.sprite.y-64);
                 // this.debug.setText("JumpCount:"+String(this.jumpCount)+":"+String(this.touching.down));
             }else if(curr_player==players.SOLANA && playerMode == 0){

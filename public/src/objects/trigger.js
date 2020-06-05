@@ -775,7 +775,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                     hud.storySpeech.createSpeech(textParse.spkImageLeft,textParse.spkImageRight,textParse.doPause);
                     textParse.speechdata.forEach(e=>{
                         hud.storySpeech.addToSpeech(e.p,e.txt,e.dur);
-                    });   
+                    });
                     hud.storySpeech.startSpeech();
                }
             }
