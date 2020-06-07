@@ -1837,6 +1837,31 @@ var GameScene = new Phaser.Class({
     },
     clearKeypad(){
         this.doKPClear = true;
+    },
+    tweenAlongSpline(spline,opt,object){
+        //Tweens with a 0 to 1 progression alone a spline
+        if(objectA){
+            let tracker = {t:0};
+            let tw = this.add.tween({
+                targets: tracker,
+                ease: 'Linear',
+                t: 1,
+                repeat: 0,
+                duration: opt.duration,
+                onUpdate: function(tween,target,spline,object){
+                    let p = spline.getPoint(target.t);
+                    object.setPosition(p.x,p.y);
+                },
+                onUpdateParams: [spline,object],
+                onComplete: function(tween, targets, scene){
+                    //On repeat, never completes
+                },
+                onCompleteParams: [this],
+                onCompleteScope: this
+            });
+        }else{
+            console.log("No Object for Tween Alone Spline call.");
+        }
     }
     
 });
