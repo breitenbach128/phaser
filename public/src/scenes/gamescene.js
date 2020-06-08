@@ -1264,6 +1264,14 @@ var GameScene = new Phaser.Class({
                         gObjs[1].addEnergy(50);
                     }  
                 }
+                let SolBombBurnList = ['SOLID','GROUND','ROCK','BREAKABLE'];
+                if((bodyA.label == 'SOLBOMB' && SolBombBurnList.includes(bodyB.label)) || (bodyB.label == 'SOLBOMB' && SolBombBurnList.includes(bodyA.label)) ){
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOLBOMB');
+                    if (gObjs[0].active){
+                        gObjs[0].unready();
+                    }  
+                }
+
                 //Between SoulTransfer and Solana
                 if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'SOULTRANSFER')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
