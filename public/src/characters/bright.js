@@ -93,6 +93,15 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.darkdashTimer = this.scene.time.addEvent({ delay: 200, callback: this.resetDarkDask, callbackScope: this, loop: false });
         this.darkdashReady = true;
         this.slamReady = true;
+        //Shield Mode - Form a shield lock onto Solana and protect her by blocking bullets and attacks.
+        this.shieldMode = false;
+        //A Constraint might work best here.
+        // this.scene.matter.add.constraint(bright, solana, 64, 1.0, {
+        //     pointA: { x: 0, y: 0},
+        //     pointB: { x: 0, y: 0},
+        //     length: 64.0,
+        //     stiffness: 1.0
+        // })
 
         //Controller
         this.controller;
@@ -174,6 +183,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                 let control_change = this.getControllerAction('changeplayer');
                 let control_dash = this.getControllerAction('dash');  
                 let control_jumphold = this.getControllerAction('jumphold');
+                let control_brake = this.getControllerAction('brake');
                 
                 //Change Player in Single Mode
                 if(playerMode == 0){
@@ -321,7 +331,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
 
                     }
                     //Dark Stop
-                    if (control_down && this.airTime == 0) {
+                    if (control_brake && this.airTime == 0) {
                         let angVel = this.body.angularVelocity;
                         // if(angVel > 0){this.setAngularVelocity(angVel-.05)};
                         // if(angVel < 0){this.setAngularVelocity(angVel+.05)};
@@ -441,6 +451,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     return (gamePad[this.ctrlDeviceId].checkButtonState('rightTrigger') == 1);
                 case 'pulseR':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('rightTrigger') == -1);
+                case 'brake':
+                    return (gamePad[this.ctrlDeviceId].checkButtonState('rightShoulder') > 0);
                 case 'changeplayer':
                     return (gamePad[this.ctrlDeviceId].checkButtonState('Y') == 1);
                 case 'dash':
@@ -474,6 +486,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     return (keyPad.checkKeyState('F') == 1);
                 case 'pulseR':
                     return (keyPad.checkKeyState('F') == -1);
+                case 'brake':
+                    return (keyPad.checkKeyState('S') > 0);
                 case 'changeplayer':
                     return (keyPad.checkKeyState('Q') == 1);
                 case 'dash':
