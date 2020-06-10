@@ -340,6 +340,8 @@ var Preloader = new Phaser.Class({
 		this.load.image('droplet', 'assets/effects/water/droplet.png');
 		this.load.image('water', 'assets/effects/water/water.jpg');
 		this.load.image('liquiddroplet', 'assets/objects/droplet.png');
+		this.load.spritesheet('lightblock', 'assets/objects/lightblock.png',{frameWidth: 2, frameHeight: 2});
+		this.load.spritesheet('lightblockdeath', 'assets/objects/lightblockdeath.png',{frameWidth: 16, frameHeight: 16});
 
 		// font
 		this.load.bitmapFont('fontwhite', 'img/fontwhite.png', 'img/fontwhite.xml');

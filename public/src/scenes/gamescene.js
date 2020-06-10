@@ -890,7 +890,8 @@ var GameScene = new Phaser.Class({
                       || gameObjectB instanceof Seesaw 
                       || gameObjectB instanceof ConveyorWheel 
                       || gameObjectB instanceof TMXGear
-                      || gameObjectB instanceof BrightBeamBlock)) {   
+                      || gameObjectB instanceof BrightBeamBlock
+                      || gameObjectB instanceof Lightblock)) {   
                 
                 //handle plaform jumping allowance             
                 if(bodyA.label == "BRIGHT_BOTTOM"){
@@ -990,7 +991,8 @@ var GameScene = new Phaser.Class({
                 || gameObjectB instanceof TMXGear
                 || gameObjectB instanceof Seesaw
                 || gameObjectB instanceof ConveyorWheel         
-                || gameObjectB instanceof BrightBeamBlock)) {  
+                || gameObjectB instanceof BrightBeamBlock
+                || gameObjectB instanceof Lightblock)) {  
 
                     //handle plaform jumping allowance             
                     if(bodyA.label == "SOLANA_TOP"){
@@ -2458,6 +2460,12 @@ function createAnimations(scene){
         frames: scene.anims.generateFrameNumbers('bat-1', { frames:[0,1] }),
         frameRate: 8,
         repeat: -1
+    }); 
+    scene.anims.create({
+        key: 'lightblock-death',
+        frames: scene.anims.generateFrameNumbers('lightblockdeath', { frames:[0,1,2,3,4] }),
+        frameRate: 24,
+        repeat: 0
     }); 
     
 }

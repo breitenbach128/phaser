@@ -184,7 +184,73 @@ class BrightBeamBlock extends Phaser.Physics.Matter.Image{
     }
 
 }
+//Updated Lightblock
+class Lightblock extends Phaser.Physics.Matter.Image{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'lightblock',0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this);
+        //Bodies
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; 
+        const { width: w, height: h } = this;
+        //const mainBody =  Bodies.rectangle(0,0,w,h);
+        const mainBody =  Bodies.circle(0,0,w*0.5);
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.00,
+            friction: 0.9,
+            restitution : 0.0,
+            label: "LIGHTBLOCK"
+        });
+        this
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.BULLET)
+        .setCollidesWith([ CATEGORY.SOLANA, CATEGORY.DARK, CATEGORY.SOLID])
+        .setPosition(x,y)
+        .setStatic(true)
+        .setAlpha(0.9); 
 
+        this.scene.time.addEvent({ delay: 10000, callback: this.death, callbackScope: this, loop: false });
+        //Collision
+        this.scene.matterCollision.addOnCollideStart({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    this.setFrame(1)
+                }
+            }
+        });
+        this.scene.matterCollision.addOnCollideEnd({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    this.setFrame(0)
+                }
+            }
+        });
+        this.deathSprite = this.scene.add.sprite(this.x,this.y,'lightblockdeath').setAlpha(0.6);
+        this.deathSprite.setVisible(false);
+ 
+    }
+    death(){
+        this.setVisible(false);
+        this.deathSprite.setVisible(true);
+        //ligthblock-death
+        this.deathSprite.anims.play('lightblock-death',true);
+        //Handle death animation
+        this.deathSprite.on('animationcomplete', this.remove, this); 
+    }
+    remove(){
+        this.deathSprite.destroy();
+        this.destroy();
+    }
+}
 //SolarBlast
 
 class SolarBlast extends Phaser.Physics.Matter.Sprite{

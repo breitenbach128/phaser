@@ -86,6 +86,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.beamAbility = new BrightBeam(this.scene,this.x,this.y,this.rotation);
         this.beamReady = true;
         this.beamCoolDown = this.scene.time.addEvent({ delay: 1000, callback: this.resetBeam, callbackScope: this, loop: true });
+        this.beamPrevVec2 = {x:0,y:0};
         //Light Dash
         this.lightdashTimer = this.scene.time.addEvent({ delay: 200, callback: this.resetLightDask, callbackScope: this, loop: false });
         this.lightdashReady = true;
@@ -206,11 +207,22 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                         //Is light dashing
                         light_mv_speed = light_mv_speed*4;
                     }
-                    if(control_beam && this.beamReady ){
-                        this.beamReady = false;
-                        soullight.setAimer();
-                        this.beamAbility.create(soullight.aimer.x,soullight.aimer.y,soullight.aimer.rotation);
-                    }                    
+                    //Old Beam
+                    // if(control_beam && this.beamReady ){
+                    //     this.beamReady = false;
+                    //     soullight.setAimer();
+                    //     this.beamAbility.create(soullight.aimer.x,soullight.aimer.y,soullight.aimer.rotation);
+                    // }      
+                    //New Beam  
+                    if(control_beam){                
+                        if(Phaser.Math.Distance.Between(this.beamPrevVec2.x,this.beamPrevVec2.y,this.x,this.y) > 2){        
+                            let lb = new Lightblock(this.scene,this.x,this.y);
+                            this.beamPrevVec2.x = this.x;
+                            this.beamPrevVec2.y = this.y;
+                            this.addEnergy(-50);
+                        }
+                    }
+                              
                     if(control_left){
                         this.sprite.setVelocityX(-light_mv_speed);
                         this.flipX= true; // flip the sprite to the left
