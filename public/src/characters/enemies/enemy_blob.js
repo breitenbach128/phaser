@@ -96,10 +96,13 @@ class EnemyBlobC{
 
         this.subblobs = [];
         for(let i=0;i<16;i++){
-
-            this.subblobs.push(new BlobCBit(scene,x-w/2+(i*8),y, this));
+            let nB = new BlobCBit(this.scene,this.blobObj.x,this.blobObj.y, this);
+            if(this.subblobs.length > 14){
+                nB.setFrame(1);
+            }
+            this.subblobs.push(nB);
         }
-        this.attractForce = 0.0008;
+        this.attractForce = 0.0010;
         this.spawnTracker  = {c:0,max:300};
         this.scene.events.on("update", this.update, this);        
         this.scene.events.on("shutdown", this.remove, this);
@@ -154,7 +157,11 @@ class EnemyBlobC{
             if(this.spawnTracker.c >= this.spawnTracker.max){
                 this.spawnTracker.c = 0;
                 if(this.subblobs.length < 16){
-                    this.subblobs.push(new BlobCBit(this.scene,this.blobObj.x,this.blobObj.y, this));
+                    let nB = new BlobCBit(this.scene,this.blobObj.x,this.blobObj.y, this);
+                    if(this.subblobs.length < 2){
+                        nB.setFrame(1);
+                    }
+                    this.subblobs.push(nB);
                 }
             }else{
                 this.spawnTracker.c++;

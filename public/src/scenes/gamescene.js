@@ -1200,6 +1200,16 @@ var GameScene = new Phaser.Class({
                     emitter0.explode(5,bulletObj.x,bulletObj.y);
                     bulletObj.hit();
                 }
+                //Between Bullets and Bright
+                if ((bodyA.label === 'BULLET' && bodyB.label === 'BRIGHT') || (bodyA.label === 'BRIGHT' && bodyB.label === 'BULLET')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'BULLET');
+                    if (gObjs[0].active){
+                        gObjs[0].hit();
+                        let burst = light_bursts.get(gObjs[0].x,gObjs[0].y);
+                        burst.burst(gObjs[0].x,gObjs[0].y);
+                        gObjs[1].blockShot();
+                    }  
+                }
                 //Between Bullets and Solana
                 if ((bodyA.label === 'BULLET' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'BULLET')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'BULLET');

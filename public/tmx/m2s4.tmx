@@ -224,7 +224,7 @@
  <objectgroup id="11" name="npcs"/>
  <objectgroup id="12" name="enemies">
   <object id="283" name="shrieker1" type="shrieker" x="960" y="240" width="32" height="32"/>
-  <object id="317" name="blob1" type="blob" x="1184" y="352" width="32" height="32"/>
+  <object id="317" name="blob1" type="blob" x="448" y="352" width="32" height="32"/>
   <object id="330" name="bat1" type="air" x="464" y="176" width="32" height="32">
    <properties>
     <property name="aBehav" value="attack"/>

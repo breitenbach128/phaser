@@ -186,7 +186,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite{
         {
             this.anims.play(this.texture.key+'-shoot', true);            
             
-            bullet.setCollidesWith([ CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.SOLANA, CATEGORY.MIRROR, CATEGORY.SHIELD ]);
+            bullet.setCollidesWith([ CATEGORY.GROUND, CATEGORY.SOLID, CATEGORY.SOLANA, CATEGORY.MIRROR, CATEGORY.SHIELD, CATEGORY.BRIGHT ]);
             bullet.setBounce(0.95);
             if(this.behavior.weapon.aimmed){
                 let aimVec = this.aim(solana); //Just use X value for now. Probably want to have adjustable weapon speed later.

@@ -606,6 +606,28 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             }
         }
     }
+    blockShot(){
+        let block_effect = this.scene.add.ellipse(this.x,this.y,this.width,this.height,0x440e52,0.3);
+        block_effect.blendMode = Phaser.BlendModes.ADD;
+        block_effect.isStroked = true;
+        block_effect.strokeColor = 0x000000;
+        block_effect.strokeAlpha = 0.5;
+        block_effect.lineWidth = 1;
+
+        let tween = this.scene.tweens.add({
+            targets: block_effect,
+            scale: 2.0,               
+            ease: 'Linear',       
+            duration: 100,  
+            onUpdate: function(tween,targets){
+
+            },
+            onComplete: function(tween, targets, c){
+                c.destroy();
+            }, 
+            onCompleteParams: [block_effect],
+        });
+    }
     receiveHealth(health){
         this.hp+=health;
         if(this.hp > this.max_hp){
