@@ -164,8 +164,15 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             //Drain Energy since not bright
             if(this.light_status == darkMode){
                 this.addEnergy(-1);
-                if(hud.brightStatBar.getValue() <= 0){this.receiveDamage(1);};
-            };
+                if(hud.brightStatBar.getValue() <= 0){
+                    this.receiveDamage(1);
+                };
+            }else{
+                if(hud.brightStatBar.getValue() <= 0){
+                    this.toDark();
+                    soullight.lose();
+                }
+            }
             //This creates a wobble of contention for add and remove values on different update loops.
             //I should calc all the values and then apply the final result one time.
 

@@ -37,7 +37,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 
         this.ownerid = 0;
         this.claimed = false; // No one owns it at the begining of the game. This prevents passing it around.
-
+        this.isLost = false;
         this.debug = this.scene.add.text(this.x, this.y-16, 'SoulLight', { resolution:2, fontSize: '10px', fill: '#00FF00' }).setOrigin(0.5);              
         this.passing = false;  
         this.threshhold_distance = 64;  
@@ -145,12 +145,16 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
                 }
 
             }else{
-                this.setPosition(this.owner.x,this.owner.y);            
+                if(this.ownerid != -1){
+                    this.setPosition(this.owner.x,this.owner.y);            
+                }
             }
         }else{
             //Home in on target
-            let target = this.ownerid == 0 ? bright : solana;
-            this.homeLight(target);
+            if(this.ownerid != -1){
+                let target = this.ownerid == 0 ? bright : solana;
+                this.homeLight(target);
+            }
 
         }
         
@@ -372,6 +376,12 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         soullightClaimed = true; //Global Tracking
         this.scene.particle_soulight.setActive(true);
         this.setVisible(true);
+    }
+    lose(){
+        //Light is lost and needs to be reclaimed
+        this.isLost = true;
+        this.ownerid = -1;
+        this.passing = true;
     }
 
 }

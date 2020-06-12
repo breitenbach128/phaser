@@ -1256,14 +1256,14 @@ var GameScene = new Phaser.Class({
                 //Between Soulight and Solana
                 if ((bodyA.label === 'SOULLIGHT' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'SOULLIGHT')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULLIGHT');
-                    if (gObjs[0].active && gObjs[0].ownerid != 0){
+                    if (gObjs[0].active && gObjs[0].ownerid == 1 || gObjs[0].active && gObjs[0].ownerid == -1){
                         gObjs[0].lockLight(gObjs[1],0);
-                    }  
+                    }
                 }
                 //Between Soulight and Bright
                 if ((bodyA.label === 'SOULLIGHT' && bodyB.label === 'BRIGHT') || (bodyA.label === 'BRIGHT' && bodyB.label === 'SOULLIGHT')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULLIGHT');
-                    if (gObjs[0].active && gObjs[0].ownerid != 1){
+                    if (gObjs[0].active && gObjs[0].ownerid == 0 || gObjs[0].active && gObjs[0].ownerid == -1){
                         gObjs[0].lockLight(gObjs[1],1);
                     }  
                 }
@@ -1544,25 +1544,26 @@ var GameScene = new Phaser.Class({
         };
         //Draw lighting
         var solana_in_light = false;
+        var dark_in_light = false;
         this.shadow_graphic.clear();
         this.cutGraphicRaycastPolygon(soullight.x << 0,soullight.y << 0,720);//1440
         //CENTER ON CAMERA AND CALC FOR ANY APPLICABLE OFFSETS        
         this.shadow_graphic.fillCircle(bright.x, bright.y, bright.light_radius);
 
         //Solana in Soullight Range?
-        if(Phaser.Math.Distance.Between(soullight.x,soullight.y,solana.x,solana.y) <= soullight.protection_radius.value){
+        if(distanceBetweenObjects(soullight,solana) <= soullight.protection_radius.value){
             //Can the light reach her without being blocked?
             let losRc = Phaser.Physics.Matter.Matter.Query.ray(losBlockers,{x:solana.x,y:solana.y},{x:soullight.x,y:soullight.y});
             if(losRc.length == 0){solana_in_light = true;};
         }
-        if(Phaser.Math.Distance.Between(bright.x,bright.y,solana.x,solana.y) <= bright.light_radius){solana_in_light = true;}
+        if(distanceBetweenObjects(bright,solana) <= bright.light_radius){solana_in_light = true;}
 
         let lamps = crystallamps.getChildren()
         for(var x = 0;x < lamps.length;x++){
             var lamp = lamps[x];
             if(lamp.active){
-                this.shadow_graphic.fillCircle(lamp.x, lamp.y, lamp.brightness);
-                if(Phaser.Math.Distance.Between(lamp.x,lamp.y,solana.x,solana.y) <= lamp.brightness){solana_in_light = true;}
+                this.shadow_graphic.fillCircle(lamp.x, lamp.y, lamp.brightness);                
+                if(distanceBetweenObjects(lamp,solana) <= lamp.brightness){solana_in_light = true;}
             }
         }
         let sbs = solbombs.getChildren();
@@ -1570,7 +1571,7 @@ var GameScene = new Phaser.Class({
             let sb = sbs[s];
             if(sb.active){
                 this.shadow_graphic.fillCircle(sb.x, sb.y, sb.light_radius);
-                if(Phaser.Math.Distance.Between(sb.x,sb.y,solana.x,solana.y) <= sb.light_radius){solana_in_light = true;}
+                if(distanceBetweenObjects(sb,solana) <= sb.light_radius){solana_in_light = true;}
             }
         }
         let lbs = light_bursts.getChildren();
@@ -1578,7 +1579,7 @@ var GameScene = new Phaser.Class({
             let lb = lbs[l];
             if(lb.active){
                 this.shadow_graphic.fillCircle(lb.x, lb.y, 32);
-                if(Phaser.Math.Distance.Between(lb.x,lb.y,solana.x,solana.y) <= lb.light_radius){solana_in_light = true;}
+                if(distanceBetweenObjects(lb,solana) <= lb.light_radius){solana_in_light = true;}
             }
         }
 

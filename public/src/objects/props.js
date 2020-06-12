@@ -9,11 +9,11 @@ class PropInchworm extends Phaser.Physics.Matter.Sprite{
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this;
-        const mainBody =  Bodies.rectangle(0, 0, w*0.80, h*0.50);
+        const mainBody =  Bodies.rectangle(0, 0, w*0.80, h*0.50,{chamfer: {radius: 2}});
         
         this.sensors = {
-            left: Bodies.rectangle(-w*0.60, 0, 3, h*0.50 , { isSensor: true, friction: 0.0,density: 0.0001,label:"SENSOR_LEFT"}),
-            right: Bodies.rectangle(w*0.60, 0, 3, h*0.50 , { isSensor: true, friction: 0.0,density: 0.0001,label:"SENSOR_RIGHT"})
+            left: Bodies.rectangle(-w*0.60, 0, 3, h*0.50 , {chamfer: {radius: 1}, isSensor: true, friction: 0.0,density: 0.0001,label:"SENSOR_LEFT"}),
+            right: Bodies.rectangle(w*0.60, 0, 3, h*0.50 , {chamfer: {radius: 1}, isSensor: true, friction: 0.0,density: 0.0001,label:"SENSOR_RIGHT"})
           };
         const compoundBody = Body.create({
             parts: [mainBody,this.sensors.left,this.sensors.right],
