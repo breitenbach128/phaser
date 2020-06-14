@@ -439,7 +439,7 @@ var GameScene = new Phaser.Class({
                 spider.setPosition(tmxObjRef.x,tmxObjRef.y);
             }else if(tmxObjRef.type == "shrieker"){
                 let tmxOrigin = {x:tmxObjRef.x,y:tmxObjRef.y};
-                let centerPoint = new Phaser.Geom.Point(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y-tmxObjRef.height/2);
+                let centerPoint = new Phaser.Geom.Point(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
                 let rotRad = Phaser.Math.DegToRad(tmxObjRef.rotation);
                 if(tmxObjRef.rotation != 0){      
                     Phaser.Math.RotateAround(centerPoint,tmxOrigin.x,tmxOrigin.y,rotRad);
@@ -508,7 +508,8 @@ var GameScene = new Phaser.Class({
             if(tmxObjRef.type == "mirror"){  
                 let mir = mirrors.get();
                 let tmxOrigin = {x:tmxObjRef.x,y:tmxObjRef.y};
-                let centerPoint = new Phaser.Geom.Point(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y-tmxObjRef.height/2);
+                //Was for texture:  let centerPoint = new Phaser.Geom.Point(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y-tmxObjRef.height/2);
+                let centerPoint = new Phaser.Geom.Point(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
                 let rotRad = Phaser.Math.DegToRad(tmxObjRef.rotation);
                 if(tmxObjRef.rotation != 0){      
                     Phaser.Math.RotateAround(centerPoint,tmxOrigin.x,tmxOrigin.y,rotRad);
@@ -706,10 +707,20 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == "gear"){                
                 triggerObj = gears.get();
             }else if(tmxObjRef.type == "seesaw"){ 
-                let seesaw = new Seesaw(this,tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,trig_props.balanceOffset);
+                //Handle Rotation Data. // Might want to turn this into a function since I use it a lot.
+                let tmxOrigin = {x:tmxObjRef.x,y:tmxObjRef.y};
+                let centerPoint = new Phaser.Geom.Point(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                let rotRad = Phaser.Math.DegToRad(tmxObjRef.rotation);
+                if(tmxObjRef.rotation != 0){      
+                    Phaser.Math.RotateAround(centerPoint,tmxOrigin.x,tmxOrigin.y,rotRad);
+                }  
+                //End Rotation Data
+                let seesaw = new Seesaw(this,centerPoint.x,centerPoint.y,trig_props.balanceOffset);                
                 seesaw.setDensity(0.025);
+                if(trig_props.frictionAir != undefined){seesaw.setFrictionAir(trig_props.frictionAir);};
                 seesaw.setDisplaySize(tmxObjRef.width, tmxObjRef.height);
                 seesaw.setSize(tmxObjRef.width, tmxObjRef.height);
+                seesaw.setRotation(rotRad);
             }
             if(triggerObj){
                 triggerObj.setup(tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,trig_props,tmxObjRef.name,tmxObjRef.width,tmxObjRef.height);

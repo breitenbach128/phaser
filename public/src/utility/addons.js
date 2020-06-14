@@ -45,7 +45,8 @@ class SpeechBubble extends Phaser.GameObjects.Sprite {
 		this.speechtext.setOrigin(0.5);
 		this.speechtext.setX(this.width / 2);
 		this.speechtext.setY(this.height / 2);
-		
+		this.setDepth(DEPTH_LAYERS.FG);
+		this.speechtext.setDepth(DEPTH_LAYERS.FG);
 	}
 		
 	update()
