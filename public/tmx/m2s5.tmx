@@ -317,13 +317,13 @@
     <property name="tsName" value="PF_SET3_v1_0_mainlevbuild1"/>
    </properties>
   </object>
-  <object id="338" name="grinder1" type="trap" x="912" y="272" width="32" height="32">
+  <object id="338" name="grinder2" type="trap" x="912" y="272" width="32" height="32">
    <properties>
     <property name="angvel" type="float" value="-0.2"/>
     <property name="subtype" value="grinder"/>
    </properties>
   </object>
-  <object id="339" name="grinder1" type="trap" x="960" y="208" width="32" height="32">
+  <object id="339" name="grinder3" type="trap" x="960" y="208" width="32" height="32">
    <properties>
     <property name="angvel" type="float" value="-0.2"/>
     <property name="subtype" value="grinder"/>
@@ -335,7 +335,7 @@
    </properties>
   </object>
   <object id="341" name="rockchute1" type="rockchute" x="800" y="16" width="64" height="64"/>
-  <object id="342" name="conveyor1" type="conveyor" x="816" y="128">
+  <object id="342" name="conveyor2" type="conveyor" x="816" y="128">
    <properties>
     <property name="angvel" type="float" value="0.2"/>
    </properties>

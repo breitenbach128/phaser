@@ -538,7 +538,7 @@
                 {
                  "height":32,
                  "id":338,
-                 "name":"grinder1",
+                 "name":"grinder2",
                  "properties":[
                         {
                          "name":"angvel",
@@ -560,7 +560,7 @@
                 {
                  "height":32,
                  "id":339,
-                 "name":"grinder1",
+                 "name":"grinder3",
                  "properties":[
                         {
                          "name":"angvel",
@@ -611,7 +611,7 @@
                 {
                  "height":0,
                  "id":342,
-                 "name":"conveyor1",
+                 "name":"conveyor2",
                  "polyline":[
                         {
                          "x":0,
