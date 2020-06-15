@@ -531,29 +531,34 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         if(this.body.velocity.y != 0){ // Was >
             this.setVelocityY(0);
         }
-               
+        let jXv = 0;
+        let jYv = 0;       
         if(this.jumpData.left && !this.jumpData.down){
             this.setMaxMoveSpeed(-6,6,-6,6);
-            this.sprite.applyForce({x:mvVel*4.2,y:-0.003});
+            jXv = mvVel*4.2;
+            jYv = -jumpVel*0.5;
             this.jumpLock = true;
             this.kickOff = mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
         }
         if(this.jumpData.right && !this.jumpData.down){            
             this.setMaxMoveSpeed(-6,6,-6,6);
-            this.sprite.applyForce({x:-mvVel*4.2,y:-0.003});
+            jXv = -mvVel*4.2;
+            jYv = -jumpVel*0.5;
             this.jumpLock = true;
             this.kickOff = -mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
             
-        }
-        
-        if(this.onWall && this.onGround){
-             this.sprite.applyForce({x:0,y:-jumpVel});
+        }else if(this.onWall && this.onGround){
+            jYv = -jumpVel*1.65;//1.2 works at 0.1 friction on hull
         }else{
-            this.sprite.applyForce({x:0,y:-jumpVel});
+            jYv = -jumpVel;
         }
-        
+
+        this.applyForce({x:jXv,y:jYv});
+        //DEBUG//
+        //console.log("jump force",jXv,jYv);
+
         this.soundJump.play("",{volume:.025});
         if(this.jumpCount > 0){
             let jumpBurst = new JumpBurst(this.scene,this.x,this.y);

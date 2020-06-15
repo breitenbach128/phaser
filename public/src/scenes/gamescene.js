@@ -2484,6 +2484,12 @@ function createAnimations(scene){
         repeat: -1
     }); 
     scene.anims.create({
+        key: 'spiderweb-flee',
+        frames: scene.anims.generateFrameNumbers('spiderweb-1', { frames:[0,1,2,3,4,5,6,7,8] }),
+        frameRate: 12,
+        repeat: 0
+    });
+    scene.anims.create({
         key: 'lightblock-death',
         frames: scene.anims.generateFrameNumbers('lightblockdeath', { frames:[0,1,2,3,4] }),
         frameRate: 24,
