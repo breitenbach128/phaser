@@ -2498,6 +2498,12 @@ function createAnimations(scene){
         repeat: -1
     });
     scene.anims.create({
+        key: 'puddle-wave',
+        frames: scene.anims.generateFrameNumbers('puddle-1', { frames:[0,1,2,3,4,5,6,0] }),
+        frameRate: 8,
+        repeat: 0
+    });
+    scene.anims.create({
         key: 'lightblock-death',
         frames: scene.anims.generateFrameNumbers('lightblockdeath', { frames:[0,1,2,3,4] }),
         frameRate: 24,

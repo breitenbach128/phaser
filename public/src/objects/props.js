@@ -204,3 +204,70 @@ class PropWeb extends Phaser.Physics.Matter.Sprite{
         this.notSpooked = false;
     }
 };
+class PropPuddle extends Phaser.Physics.Matter.Sprite{    
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'puddle-1', 0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+
+        this.setActive(true);
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.rectangle(0, 0, w, h);       
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.02,
+            friction: 0.01,
+            label: "PROPPUDDLE"
+        });
+
+        this
+        .setExistingBody(compoundBody)
+        .setCollidesWith([0])
+        .setPosition(x, y)
+        .setIgnoreGravity(true)
+        .setDepth(DEPTH_LAYERS.FG);
+
+        //this.on('animationcomplete', this.animComplete, this);        
+        this.scene.events.on("update", this.update, this);        
+        this.scene.events.on("shutdown", this.death, this); 
+        this.active = true;
+
+        //Splash Particles
+        this.particles = this.scene.add.particles('shapes');
+        this.emitter = this.particles.createEmitter({
+            active:true,
+            x: this.x,
+            y: this.y,
+            frame: {
+                frames: [
+                    "circle_05"
+                ],
+                cycle: false,
+                quantity: 1
+            },
+            gravityY: 600,
+            scale: 0.1,
+            tint: 792701,
+            lifespan: 250,
+            frequency: -1,
+            speed: { start: 200, end: 50 },
+            angle: { min: 135, max: 315 }
+        });
+
+    }
+    update(time, delta)
+    {
+
+    }
+    death(){
+
+    }
+    splash(){
+        this.emitter.emitParticleAt(this.x,this.y,10);
+    }
+};

@@ -273,6 +273,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('inchworm-1', 'assets/objects/props_inchworm.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('bat-1', 'assets/objects/props_bat.png', {frameWidth: 32, frameHeight: 16});
 		this.load.spritesheet('spiderweb-1', 'assets/objects/prop_spiderweb.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('puddle-1', 'assets/objects/prop_puddle1.png', {frameWidth: 32, frameHeight: 16});
 		//SoulCrystals
 		this.load.spritesheet('soulcrystal_blue', 'assets/objects/crystal-qubodup-ccby3-32-blue.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('soulcrystal_grey', 'assets/objects/crystal-qubodup-ccby3-32-grey.png', {frameWidth: 32, frameHeight: 32});		
