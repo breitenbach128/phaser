@@ -677,6 +677,8 @@ var GameScene = new Phaser.Class({
                     let propBat = new PropBat(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
                 }else if(propprops.subtype == 'inchworm'){
                     let propWorm = new PropInchworm(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                }else if(propprops.subtype == 'web'){
+                    let propWeb = new PropWeb(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
                 }
             }
         }
@@ -2486,8 +2488,14 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'spiderweb-flee',
         frames: scene.anims.generateFrameNumbers('spiderweb-1', { frames:[0,1,2,3,4,5,6,7,8] }),
-        frameRate: 12,
+        frameRate: 8,
         repeat: 0
+    }); 
+    scene.anims.create({
+        key: 'spiderweb-wind',
+        frames: scene.anims.generateFrameNumbers('spiderweb-1', { frames:[0,1,2,2,2,2,2,1,0] }),
+        frameRate: 8,
+        repeat: -1
     });
     scene.anims.create({
         key: 'lightblock-death',

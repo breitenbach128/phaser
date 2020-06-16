@@ -9,24 +9,25 @@ class PropInchworm extends Phaser.Physics.Matter.Sprite{
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this;
-        const mainBody =  Bodies.rectangle(0, 0, w*0.80, h*0.50,{chamfer: {radius: 2}});
+        const mainBody =  Bodies.rectangle(0, 0, w*0.80, h*0.25,{chamfer: {radius: 2}});
         
         this.sensors = {
-            left: Bodies.rectangle(-w*0.60, 0, 3, h*0.50 , {chamfer: {radius: 1}, isSensor: true, friction: 0.0,density: 0.0001,label:"SENSOR_LEFT"}),
-            right: Bodies.rectangle(w*0.60, 0, 3, h*0.50 , {chamfer: {radius: 1}, isSensor: true, friction: 0.0,density: 0.0001,label:"SENSOR_RIGHT"})
+            left: Bodies.rectangle(-w*0.60, 0, 3, h*0.25 , {chamfer: {radius: 1}, isSensor: true, friction: 0.0,density: 0.0001,label:"SENSOR_LEFT"}),
+            right: Bodies.rectangle(w*0.60, 0, 3, h*0.25 , {chamfer: {radius: 1}, isSensor: true, friction: 0.0,density: 0.0001,label:"SENSOR_RIGHT"})
           };
         const compoundBody = Body.create({
             parts: [mainBody,this.sensors.left,this.sensors.right],
             frictionStatic: 0,
-            frictionAir: 0.02,
+            frictionAir: 0.2,
             friction: 0.3,
-            label: "INCHWORM"
+            label: "PROPINCHWORM"
         });
 
         this
         .setExistingBody(compoundBody)
         .setCollidesWith([CATEGORY.GROUND])
-        .setPosition(x, y)  
+        .setPosition(x, y)
+        .setFixedRotation();  
 
         this.anims.play('inchworm-crawl',true);
         this.setDepth(DEPTH_LAYERS.FG);
@@ -52,10 +53,19 @@ class PropInchworm extends Phaser.Physics.Matter.Sprite{
                 }
             }
         });
+        this.max_speed = 5;
     }
     update(time, delta)
     {
-
+        if(this.body.velocity.x > this.max_speed){this.setVelocityX(this.max_speed)};
+        if(this.body.velocity.x < -this.max_speed){this.setVelocityX(-this.max_speed)};
+        if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed);};
+        if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
+        //Body Impulse Limit
+        if(this.body.positionImpulse.x > this.max_speed){this.body.positionImpulse.x = this.max_speed};
+        if(this.body.positionImpulse.x < -this.max_speed){this.body.positionImpulse.x = -this.max_speed};
+        if(this.body.positionImpulse.y > this.max_speed){this.body.positionImpulse.y = this.max_speed};
+        if(this.body.positionImpulse.y < -this.max_speed){this.body.positionImpulse.y = -this.max_speed};
     }
     crawl(){
         this.setVelocityX(this.wanderdirection);
@@ -89,7 +99,7 @@ class PropBat extends Phaser.Physics.Matter.Sprite{
             frictionStatic: 0,
             frictionAir: 0.02,
             friction: 0.01,
-            label: "BAT"
+            label: "PROPBAT"
         });
 
         this
@@ -142,5 +152,55 @@ class PropBat extends Phaser.Physics.Matter.Sprite{
                 onCompleteParams: [this],
             });
         }
+    }
+};
+class PropWeb extends Phaser.Physics.Matter.Sprite{    
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'spiderweb-1', 0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+
+        this.setActive(true);
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.rectangle(0, 0, w, h);       
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.02,
+            friction: 0.01,
+            label: "PROPWEB"
+        });
+
+        this
+        .setExistingBody(compoundBody)
+        .setCollidesWith([0])
+        .setPosition(x, y)
+        .setIgnoreGravity(true)
+        .setDepth(DEPTH_LAYERS.FG);
+
+        //this.on('animationcomplete', this.animComplete, this);        
+        this.scene.events.on("update", this.update, this);        
+        this.scene.events.on("shutdown", this.death, this); 
+        this.anims.play('spiderweb-wind',true);
+        this.active = true;
+        this.notSpooked = true;
+    }
+    update(time, delta)
+    {
+        if(this.notSpooked){
+            let disSolana = distanceBetweenObjects(solana,this);
+            let disBright = distanceBetweenObjects(bright,this);
+            if(disSolana < 128 ||  disBright< 128){
+                this.anims.play('spiderweb-flee',true);
+                this.notSpooked = false;
+            }
+        }
+    }
+    death(){
+        this.notSpooked = false;
     }
 };
