@@ -679,6 +679,8 @@ var GameScene = new Phaser.Class({
                     let propWorm = new PropInchworm(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
                 }else if(propprops.subtype == 'web'){
                     let propWeb = new PropWeb(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                }else if(propprops.subtype == 'puddle'){
+                    let proppuddle = new PropPuddle(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
                 }
             }
         }

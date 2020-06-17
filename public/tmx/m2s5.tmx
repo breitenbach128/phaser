@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="383">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="385">
  <editorsettings>
   <export target="../assets/world/m2s5.json" format="json"/>
  </editorsettings>
@@ -357,6 +357,11 @@
     <property name="subtype" value="bat"/>
    </properties>
   </object>
+  <object id="383" name="prop_puddle" type="prop" x="191" y="378" width="32" height="16">
+   <properties>
+    <property name="subtype" value="puddle"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="16" name="triggers">
   <object id="307" name="lamp1" type="crystallamp" x="176" y="16" width="16" height="16">
@@ -550,6 +555,16 @@
     <property name="targetType" value=""/>
     <property name="zoneType" value="hurt"/>
     <property name="zoneValue" value="{&quot;damage&quot;:1,&quot;gravX&quot;:80}"/>
+   </properties>
+  </object>
+  <object id="384" name="zone16" type="zone" x="144" y="256" width="32" height="16">
+   <properties>
+    <property name="allowReset" type="bool" value="false"/>
+    <property name="resetDelay" type="int" value="3000"/>
+    <property name="targetName" value="none"/>
+    <property name="targetType" value="none"/>
+    <property name="zoneType" value="liquid"/>
+    <property name="zoneValue" value="0"/>
    </properties>
   </object>
  </objectgroup>

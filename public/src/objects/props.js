@@ -215,7 +215,7 @@ class PropPuddle extends Phaser.Physics.Matter.Sprite{
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this;
-        const mainBody =  Bodies.rectangle(0, 0, w, h);       
+        const mainBody =  Bodies.rectangle(0, 0, w, h,{isSensor:true});       
 
         const compoundBody = Body.create({
             parts: [mainBody],
@@ -227,9 +227,9 @@ class PropPuddle extends Phaser.Physics.Matter.Sprite{
 
         this
         .setExistingBody(compoundBody)
-        .setCollidesWith([0])
+        .setCollidesWith([CATEGORY.SOLANA])
         .setPosition(x, y)
-        .setIgnoreGravity(true)
+        .setStatic(true)
         .setDepth(DEPTH_LAYERS.FG);
 
         //this.on('animationcomplete', this.animComplete, this);        
@@ -239,6 +239,7 @@ class PropPuddle extends Phaser.Physics.Matter.Sprite{
 
         //Splash Particles
         this.particles = this.scene.add.particles('shapes');
+        this.particles.setDepth(this.depth-1);
         this.emitter = this.particles.createEmitter({
             active:true,
             x: this.x,
@@ -258,6 +259,19 @@ class PropPuddle extends Phaser.Physics.Matter.Sprite{
             speed: { start: 200, end: 50 },
             angle: { min: 135, max: 315 }
         });
+        //Collision to splash
+        this.scene.matterCollision.addOnCollideActive({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                if (gameObjectB !== undefined && 
+                    (gameObjectB instanceof Solana)) {
+                        if(gameObjectB.body.velocity.x != 0){
+                            gameObjectA.splash();
+                        }
+                }
+            }
+        });
 
     }
     update(time, delta)
@@ -268,6 +282,6 @@ class PropPuddle extends Phaser.Physics.Matter.Sprite{
 
     }
     splash(){
-        this.emitter.emitParticleAt(this.x,this.y,10);
+        this.emitter.emitParticleAt(this.x,this.y,1);
     }
 };

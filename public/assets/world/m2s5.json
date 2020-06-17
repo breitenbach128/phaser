@@ -696,6 +696,23 @@
                  "width":32,
                  "x":240,
                  "y":96
+                }, 
+                {
+                 "height":16,
+                 "id":383,
+                 "name":"prop_puddle",
+                 "properties":[
+                        {
+                         "name":"subtype",
+                         "type":"string",
+                         "value":"puddle"
+                        }],
+                 "rotation":0,
+                 "type":"prop",
+                 "visible":true,
+                 "width":32,
+                 "x":191,
+                 "y":378
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1484,6 +1501,48 @@
                  "width":16,
                  "x":1504,
                  "y":240
+                }, 
+                {
+                 "height":16,
+                 "id":384,
+                 "name":"zone16",
+                 "properties":[
+                        {
+                         "name":"allowReset",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"resetDelay",
+                         "type":"int",
+                         "value":3000
+                        }, 
+                        {
+                         "name":"targetName",
+                         "type":"string",
+                         "value":"none"
+                        }, 
+                        {
+                         "name":"targetType",
+                         "type":"string",
+                         "value":"none"
+                        }, 
+                        {
+                         "name":"zoneType",
+                         "type":"string",
+                         "value":"liquid"
+                        }, 
+                        {
+                         "name":"zoneValue",
+                         "type":"string",
+                         "value":"0"
+                        }],
+                 "rotation":0,
+                 "type":"zone",
+                 "visible":true,
+                 "width":32,
+                 "x":144,
+                 "y":256
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -2050,7 +2109,7 @@
          "y":0
         }],
  "nextlayerid":19,
- "nextobjectid":383,
+ "nextobjectid":385,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.4",
