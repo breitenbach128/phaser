@@ -52,7 +52,7 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.energyChange = 0;
         this.mv_speed = 3;
         this.roll_speed = 0.400;
-        this.jump_speed = 0.016;
+        this.jump_speed = 0.014;
         this.max_speed = {air:10,ground:10};
         this.alive = true;
         this.invuln = false;

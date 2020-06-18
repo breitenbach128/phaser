@@ -10,7 +10,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         
         const { width: w, height: h } = this.sprite;      
-        this.mainBody = Bodies.rectangle(0, 0, w * 0.2, h*.50, { chamfer: { radius: 2 } });//WAs .65 for H
+        this.mainBody = Bodies.rectangle(0, 0, w * 0.2, h*.50, { chamfer: { radius: 2 }, friction: 0.0 });//WAs .65 for H
         console.log("solana body wXh",w * 0.2, h*.50)
         this.sensors = {
           top: Bodies.rectangle(0, -h*0.28, w * 0.15, 2, { isSensor: true, friction: 0.0 }), //Was .35 for H
@@ -28,7 +28,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
           parts: [this.mainBody, this.sensors.top, this.sensors.bottom, this.sensors.left, this.sensors.right],
           frictionStatic: 0.0,
           frictionAir: 0.08,
-          friction: 0.35, //0.01
+          friction: 0.01, //0.01
           restitution: 0.0,
           density: 0.01 //0.01
         });
@@ -550,7 +550,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
             
         }else if(this.onWall && this.onGround){
-            jYv = -jumpVel*1.65;//1.2 works at 0.1 friction on hull
+            jYv = -jumpVel;//*1.65;//1.2 works at 0.1 friction on hull
         }else{
             jYv = -jumpVel;
         }

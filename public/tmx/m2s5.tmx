@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="385">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="387">
  <editorsettings>
   <export target="../assets/world/m2s5.json" format="json"/>
  </editorsettings>
@@ -252,7 +252,7 @@
   <object id="277" name="crate" type="crate" x="304" y="208" width="16" height="16"/>
   <object id="278" name="crate" type="crate" x="320" y="208" width="16" height="16"/>
   <object id="279" name="crate" type="crate" x="288" y="208" width="16" height="16"/>
-  <object id="280" name="soulcrystal0" type="soulcrystal" x="160" y="336" width="16" height="16">
+  <object id="280" name="soulcrystal0" type="soulcrystal" x="144" y="336" width="16" height="16">
    <properties>
     <property name="color" value="yellow"/>
     <property name="scid" type="int" value="0"/>
@@ -571,7 +571,7 @@
  <objectgroup color="#00ff00" id="17" name="hulls">
   <object id="260" type="hull" x="0" y="384" width="400" height="16">
    <properties>
-    <property name="friction" type="float" value="0.9"/>
+    <property name="friction" type="float" value="0.1"/>
    </properties>
   </object>
   <object id="261" type="hull" x="400" y="384" width="400" height="16">
@@ -618,12 +618,12 @@
   </object>
   <object id="302" type="hull" x="240" y="192" width="32" height="64">
    <properties>
-    <property name="friction" type="float" value="0.9"/>
+    <property name="friction" type="float" value="0.1"/>
    </properties>
   </object>
   <object id="303" type="hull" x="144" y="176" width="32" height="64">
    <properties>
-    <property name="friction" type="float" value="0.9"/>
+    <property name="friction" type="float" value="0.1"/>
    </properties>
   </object>
   <object id="306" type="hull" x="80" y="80" width="256" height="16">
@@ -643,7 +643,7 @@
   </object>
   <object id="313" type="hull" x="80" y="240" width="96" height="16">
    <properties>
-    <property name="friction" type="float" value="0.9"/>
+    <property name="friction" type="float" value="0.1"/>
    </properties>
   </object>
   <object id="314" type="hull" x="16" y="288" width="80" height="16">
