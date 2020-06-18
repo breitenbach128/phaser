@@ -45,7 +45,7 @@ var GameScene = new Phaser.Class({
         let lvlCfg = getLevelConfigByName(this,current_map);
         //Create Background - This will need to be custom based on the map.
         lvlCfg.backgrounds.forEach(e=>{
-            world_backgrounds.push(this.add.tileSprite(512, 256, map.widthInPixels*2, map.heightInPixels*2, e));
+            world_backgrounds.push(this.add.tileSprite(map.widthInPixels/2, map.heightInPixels/2, map.widthInPixels*2, map.heightInPixels, e));
         });
         
         var tilesetImages = [];
@@ -207,7 +207,7 @@ var GameScene = new Phaser.Class({
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);  
         this.cameras.main.setBackgroundColor('#000000'); 
         this.cameras.main.roundPixels = true;
-        this.cameras.main.setZoom(2);
+        this.cameras.main.setZoom(1.75);
         camera_main = this.cameras.main;
         this.camMovement = {x:camera_main.worldView.x,y:camera_main.worldView.y};
 
@@ -1688,7 +1688,7 @@ var GameScene = new Phaser.Class({
             let paraMove = camMvdiff < 0 ? -1 : 1;
             for(let i=0;i < world_backgrounds.length;i++){
                 let mvVal = (0.10+(0.10*i))*paraMove;
-                world_backgrounds[i].tilePositionX += mvVal;
+                world_backgrounds[i].tilePositionX -= mvVal;
             }
            
         }   
