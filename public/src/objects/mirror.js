@@ -9,10 +9,11 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
-        const mainBody =  Bodies.rectangle(0, 0, w, h*0.5);
-        
+        const mainBody =  Bodies.rectangle(0, 0, w, h*0.25);
+        const backBody =  Bodies.rectangle(0, h*0.20, w, h*0.10, {label: "MIRRORBACK"});
+
         const compoundBody = Body.create({
-            parts: [mainBody],
+            parts: [mainBody,backBody],
             frictionStatic: 1,//0.0
             frictionAir: 1,//0.08
             friction: 0,//0.1
@@ -20,6 +21,9 @@ class Mirror extends Phaser.Physics.Matter.Sprite{
             density: 1.0,//0.009
             label: "MIRROR"
         });
+
+        compoundBody.render.sprite.xOffset = 0.50;
+        compoundBody.render.sprite.yOffset = 0.50;
 
         this.sprite
         .setExistingBody(compoundBody)

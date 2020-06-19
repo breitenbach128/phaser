@@ -1344,6 +1344,12 @@ var GameScene = new Phaser.Class({
                         //console.log("Mirror/ST Evt Data:",event.pairs[i]);
                     }  
                 }
+                if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'MIRRORBACK') || (bodyA.label === 'MIRRORBACK' && bodyB.label === 'SOULTRANSFER')) {
+                    let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
+                    if (gObjs[0].active){
+                        gObjs[0].burn();
+                    }  
+                }
                 //Solana and Fireflies
                 if ((bodyA.label === 'FIREFLY' && bodyB.label === 'SOLANA') || (bodyA.label === 'SOLANA' && bodyB.label === 'FIREFLY')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'FIREFLY');

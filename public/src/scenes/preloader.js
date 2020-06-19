@@ -162,6 +162,9 @@ var Preloader = new Phaser.Class({
 		this.load.tilemapTiledJSON('map6', 'assets/world/map6_32ts.json');
 		this.load.tilemapTiledJSON('map7', 'assets/world/map7_32ts.json');
 		this.load.tilemapTiledJSON('map8', 'assets/world/map8_32ts.json');
+		//Map Assets - Intro levels
+		this.load.tilemapTiledJSON('i1s1', 'assets/world/i1s1.json');
+		this.load.tilemapTiledJSON('i1s2', 'assets/world/i1s2.json');
 		//Map Assets - Game		
 		this.load.tilemapTiledJSON('m1s1', 'assets/world/m1s1.json');
 		this.load.tilemapTiledJSON('m1s1a', 'assets/world/m1s1a.json');
