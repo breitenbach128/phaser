@@ -165,6 +165,7 @@ var Preloader = new Phaser.Class({
 		//Map Assets - Intro levels
 		this.load.tilemapTiledJSON('i1s1', 'assets/world/i1s1.json');
 		this.load.tilemapTiledJSON('i1s2', 'assets/world/i1s2.json');
+		this.load.tilemapTiledJSON('i1s3', 'assets/world/i1s3.json');
 		//Map Assets - Game		
 		this.load.tilemapTiledJSON('m1s1', 'assets/world/m1s1.json');
 		this.load.tilemapTiledJSON('m1s1a', 'assets/world/m1s1a.json');
@@ -365,6 +366,10 @@ var Preloader = new Phaser.Class({
 		this.load.audio('hitting_wall',  ['snd/Hitting_Wall.wav']);
 		this.load.audio('wavingtorch',  ['snd/WavingTorch.wav']);
 		this.load.audio('shard1',  ['snd/shard1.wav']);
+		//Bright
+		this.load.audio('block1',  ['snd/bright/blockProjectile1.wav']);
+		
+		//Music
 		this.load.audio('theme1',  ['snd/theme1.wav']);
 		this.load.audio('intro1',  ['snd/intro1.ogg']);
 		this.load.audio('forestTheme1',  ['snd/safe_room_theme.ogg']);

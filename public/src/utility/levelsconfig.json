@@ -86,6 +86,49 @@
         ]
     },
     {
+        "name": "i1s3",
+        "title": "Cogs in the Machine",
+        "tsPairs": [
+            {
+                "tsName": "decorative",
+                "tsKey": "PF_Caslte_1_0_decorative",
+                "tw": 16,
+                "th": 16,
+                "tm": 0,
+                "tspc": 0
+            },
+            {
+                "tsName": "mainlevbuild_A",
+                "tsKey": "PF_Caslte_1_0_mainlevbuild_A",
+                "tw": 16,
+                "th": 16,
+                "tm": 0,
+                "tspc": 0
+            },
+            {
+                "tsName": "mainlevbuild_B",
+                "tsKey": "PF_Caslte_1_0_mainlevbuild_B",
+                "tw": 16,
+                "th": 16,
+                "tm": 0,
+                "tspc": 0
+            },
+            {
+                "tsName": "tile_custom",
+                "tsKey": "tiles_custom",
+                "tw": 16,
+                "th": 16,
+                "tm": 0,
+                "tspc": 0
+            }
+        ],
+        "backgrounds": [
+            "PF_Caslte_1_0_background_day1",
+            "PF_Caslte_1_0_background_day2",
+            "PF_Caslte_1_0_background_day3"
+        ]
+    },
+    {
         "name": "m1s1",
         "title": "A Title",
         "tsPairs": [

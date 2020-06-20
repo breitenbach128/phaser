@@ -102,7 +102,7 @@ var GameScene = new Phaser.Class({
         //Clear Light Polygons
         lightPolygons = [];
         //Generate shadow canvas
-        this.shadow_background =  this.add.rectangle(0,0,map.widthInPixels*2, map.heightInPixels*2,0x000000,0.7).setDepth(DEPTH_LAYERS.PLAYERS);
+        this.shadow_background =  this.add.rectangle(0,0,map.widthInPixels*2, map.heightInPixels*2,0x000000,0.4).setDepth(DEPTH_LAYERS.PLAYERS);
         this.shadow_graphic = this.make.graphics();    
         this.shadow_graphic.setPosition(0,0);        
         this.shadow_mask = this.shadow_graphic.createGeometryMask();
@@ -1341,16 +1341,17 @@ var GameScene = new Phaser.Class({
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'MIRROR');
                     if (gObjs[0].active){
                         gObjs[0].hit();
-                        let angB2 = Phaser.Math.Angle.Between(gObjs[0].x,gObjs[0].y,gObjs[1].x,gObjs[1].y);
-                        let angB2_norm = Phaser.Math.Angle.Normalize(angB2);
-                        let mirRot_norm = Phaser.Math.Angle.Normalize(gObjs[0].rotation);
-                        let normDiff = Math.abs(mirRot_norm - angB2_norm);
-                        let normDiffDeg = Phaser.Math.RadToDeg(normDiff);
-                        //console.log("Impact Angle to Center of Mirror",Phaser.Math.RadToDeg(angB2_norm),Phaser.Math.RadToDeg(mirRot_norm),normDiffDeg);
-                        if(normDiffDeg > 0 && normDiffDeg < 180){
-                            //console.log("BURN");
-                            gObjs[1].burn();
-                        }
+                        //Not working yet.
+                        // let angB2 = Phaser.Math.Angle.Between(gObjs[0].x,gObjs[0].y,gObjs[1].x,gObjs[1].y);
+                        // let angB2_norm = Phaser.Math.Angle.Normalize(angB2);
+                        // let mirRot_norm = Phaser.Math.Angle.Normalize(gObjs[0].rotation);
+                        // let normDiff = Math.abs(mirRot_norm - angB2_norm);
+                        // let normDiffDeg = Phaser.Math.RadToDeg(normDiff);
+                        // //console.log("Impact Angle to Center of Mirror",Phaser.Math.RadToDeg(angB2_norm),Phaser.Math.RadToDeg(mirRot_norm),normDiffDeg);
+                        // if(normDiffDeg > 0 && normDiffDeg < 180){
+                        //     //console.log("BURN");
+                        //     gObjs[1].burn();
+                        // }
                     }  
                 }
                 //Solana and Fireflies

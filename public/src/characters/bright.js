@@ -109,6 +109,9 @@ class Bright extends Phaser.Physics.Matter.Sprite{
         this.ctrlDevice;
         this.ctrlDeviceId = -1;
 
+        //Sounds
+        this.blockSnd = this.scene.sound.add('block1');
+
     }
 
     update()
@@ -634,6 +637,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
             }, 
             onCompleteParams: [block_effect],
         });
+        this.blockSnd.play();
+        
     }
     receiveHealth(health){
         this.hp+=health;
