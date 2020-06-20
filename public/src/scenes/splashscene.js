@@ -18,6 +18,8 @@ var SplashScene = new Phaser.Class({
 
     create: function ()
     {
+        //Disable debug
+        this.matter.world.drawDebug = false;
         //Sounds
         this.soundTheme = game.sound.add('intro1');
         this.soundTheme.play({loop: true, volume: 0.20});
@@ -88,17 +90,16 @@ var SplashScene = new Phaser.Class({
             fireflies.get(rX,rY);
         }
 
-        this.controls_guide = this.add.text(this.x, game.canvas.height-192, 'Controls', { fontSize: '12px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
-       
-        this.controls_guide.setText("Controls"
-        +"\n - Keyboard/Mouse:"
-        +"\n - Move(WASD), Switch Character(Q), Pass Light(R), Jump(SPCBAR), Shoot blast(MB1)"
-        +"\n"
-        +"\n - Gamepad (XBOX 360)"
-        +"\n - LeftStk: Move/Aim, Shoot: A, Jump:X, Pass:Y, Switch: leftTrigger, DPAD-Up/Down: Interact with objects"
-        +"\n"
-        +"\n - Testing Controls: X - Switch Scene test(map2-map3 toggle), P - Self hurt for testing death, O for DEBUG draws"
-        +"\n - Testing Controls: (KB-F) (GP-B) - Bright Pulse, B - Beam Bridge, Dark - Hold down to hit the brakes").setDepth(15);;
+        // this.controls_guide = this.add.text(this.x, game.canvas.height-192, 'Controls', { fontSize: '12px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });       
+        // this.controls_guide.setText("Controls"
+        // +"\n - Keyboard/Mouse:"
+        // +"\n - Move(WASD), Switch Character(Q), Pass Light(R), Jump(SPCBAR), Shoot blast(MB1)"
+        // +"\n"
+        // +"\n - Gamepad (XBOX 360)"
+        // +"\n - LeftStk: Move/Aim, Shoot: A, Jump:X, Pass:Y, Switch: leftTrigger, DPAD-Up/Down: Interact with objects"
+        // +"\n"
+        // +"\n - Testing Controls: X - Switch Scene test(map2-map3 toggle), P - Self hurt for testing death, O for DEBUG draws"
+        // +"\n - Testing Controls: (KB-F) (GP-B) - Bright Pulse, B - Beam Bridge, Dark - Hold down to hit the brakes").setDepth(15);;
 
         this.particle_flame_fall = this.add.particles('shapes',  this.cache.json.get('effect-flame-fall'));          
         this.particle_flame_fall.createEmitter((this.cache.json.get('effect-flame-fall'))[0]);
