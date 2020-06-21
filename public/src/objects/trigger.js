@@ -870,6 +870,16 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
                 }
             }
         });
+        this.scene.matterCollision.addOnCollideStart({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana && !gameObjectA.immobile) {
+                    gameObjectB.setFriction(0.5);
+                }
+            }
+        });
         this.scene.matterCollision.addOnCollideEnd({
             objectA: [this],
             callback: eventData => {
@@ -877,6 +887,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
                 
                 if (gameObjectB !== undefined && gameObjectB instanceof Solana && !gameObjectA.immobile) {
                     gameObjectB.setMaxMoveSpeed(0,0,0,0);
+                    gameObjectB.setFriction(0.01);
                 }
             }
         });
@@ -984,6 +995,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         },this);
 
         this.timeline.play();
+        this.immobile = false;
     }
     usePlatform(){
         if(this.ready == true){
@@ -1002,6 +1014,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         plat.ready = true;
         plat.platformPosition = 1 - plat.platformPosition;
         console.log("Platform tween complete",plat.name,plat.platformPosition,plat.togglePath);
+        this.immobile = true;
     }
     trackOneWay(){
         let targetObjTop = this.onWayTracker.obj.getTopCenter();

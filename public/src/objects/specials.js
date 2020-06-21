@@ -88,6 +88,7 @@ class Crate extends Phaser.Physics.Matter.Sprite{
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.SOLID)
         .setPosition(x, y) 
+        .setDepth(DEPTH_LAYERS.OBJECTS);
 
         this.isGrabbed  = false;
         this.max_speed = 5;
