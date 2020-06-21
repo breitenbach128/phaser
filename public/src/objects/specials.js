@@ -18,7 +18,7 @@ class Barrier extends Phaser.Physics.Matter.Sprite{
 
         const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
         const { width: w, height: h } = this.sprite;
-        const mainBody =  Bodies.rectangle(0, 0, w*0.33, h, {chamfer : {radius: 2}});
+        const mainBody =  Bodies.rectangle(0, 0, w, h);
 
         const compoundBody = Body.create({
             parts: [mainBody],
@@ -34,6 +34,7 @@ class Barrier extends Phaser.Physics.Matter.Sprite{
         .setPosition(x, y)
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
         .setStatic(true)
+        .setDepth(DEPTH_LAYERS.OBJECTS)
         .setIgnoreGravity(true);    
 
         this.debug = scene.add.text(this.x, this.y-16, 'Zone', { fontSize: '10px', fill: '#00FF00' });   

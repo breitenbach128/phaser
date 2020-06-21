@@ -115,6 +115,7 @@ var GameScene = new Phaser.Class({
         this.matter.world.drawDebug = true;        
         this.worldGrid = this.add.grid(0,0,map.widthInPixels*2,map.heightInPixels*2,16,16,0x333333,0.1,0x000000,0.8).setOrigin(0);
         this.worldGrid.setVisible(false);
+        this.worldGrid.setDepth(DEPTH_LAYERS.FG);
         //Add Labels for tile bodies for easier collision management
         this.collisionLayer.forEachTile(function (tile) {
             // In Tiled, the platform tiles have been given a "type" property which is a string
@@ -1456,14 +1457,14 @@ var GameScene = new Phaser.Class({
         this.debugPointer.lineStyle(thickness, color, alpha);
         //this.pointerDraw.strokeRect(pointer.worldX-16, pointer.worldX-16, 32, 32);
         this.debugPointer.strokeRect(0,0,16,16);
-
+        this.debugPointer.setDepth(DEPTH_LAYERS.FG);
         //Probably need a statemachine like I have for gamePad for the keyboard and mouse controls to have them update in the game scene. Mouse2 is sticking on jump
 
         //Debug Properties
         this.debugAimLine = this.add.graphics(0, 0);
         //Need to push all debug graphics into a single debug array for easy enable
         this.cameraLevel = 1;
-
+        this.debugAimLine.setDepth(DEPTH_LAYERS.FG);
         //Lights2d
         // solana.setPipeline('Light2D');
         // let light  = this.lights.addLight(0, 0, 200).setScrollFactor(0.0).setIntensity(2);
