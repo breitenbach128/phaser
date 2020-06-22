@@ -1863,8 +1863,8 @@ var GameScene = new Phaser.Class({
     getGamepadVectors(gamePadID){
         if(gamePad[gamePadID]){
             //Raw Sticks Vectors
-            let stickRight = gamePad[gamePadID].getStickRight(.1);
-            let stickLeft = gamePad[gamePadID].getStickLeft(.1);
+            let stickRight = gamePad[gamePadID].getStickRight(0.05);
+            let stickLeft = gamePad[gamePadID].getStickLeft(0.05);
             return [stickLeft,stickRight];
         }
         
