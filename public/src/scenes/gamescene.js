@@ -907,7 +907,7 @@ var GameScene = new Phaser.Class({
                       || gameObjectB instanceof ConveyorWheel 
                       || gameObjectB instanceof TMXGear
                       || gameObjectB instanceof BrightBeamBlock
-                      || gameObjectB instanceof Lightblock)) {   
+                      || gameObjectB instanceof LightblockLarge)) {   
                 
                 //handle plaform jumping allowance             
                 if(bodyA.label == "BRIGHT_BOTTOM"){
@@ -1008,7 +1008,7 @@ var GameScene = new Phaser.Class({
                 || gameObjectB instanceof Seesaw
                 || gameObjectB instanceof ConveyorWheel         
                 || gameObjectB instanceof BrightBeamBlock
-                || gameObjectB instanceof Lightblock)) {  
+                || gameObjectB instanceof LightblockLarge)) {  
 
                     //handle plaform jumping allowance             
                     if(bodyA.label == "SOLANA_TOP"){

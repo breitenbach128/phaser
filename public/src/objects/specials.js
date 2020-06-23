@@ -1162,3 +1162,29 @@ class Chest extends Phaser.Physics.Matter.Sprite{
         }
     }
 };
+//PowerCable
+class PowerCable{
+    constructor(x,y,polyline,scene){
+        let g_sp1 = scene.add.graphics();
+        g_sp1.setPosition(x,y);
+        g_sp1.lineStyle(4, 0x000000, 1.0);
+        let polyPath =  new Phaser.Curves.Path();
+        let polySpline =  new Phaser.Curves.Spline(polyline);
+        polyline.forEach((e,i)=>{
+            if(i==0){
+                polyPath.moveTo(e);
+            }else{
+                polyPath.lineTo(e);
+            };
+        });
+
+
+        //polyPath.draw(g_sp1);
+        polySpline.draw(g_sp1);
+        g_sp1.lineStyle(2, 0x444444, 0.8);
+        polySpline.draw(g_sp1);
+        g_sp1.setDepth(DEPTH_LAYERS.FG);
+
+        //Tween Graphics flasher along the spline. Should look cool when line is "active"
+    }
+}

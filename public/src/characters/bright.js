@@ -229,6 +229,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                             let lb = new Lightblock(this.scene,this.x,this.y);
                             this.beamPrevVec2.x = this.x;
                             this.beamPrevVec2.y = this.y;
+                            
+                            lb.setStatic(true);        
                             this.addEnergy(-50);
                         }
                     }

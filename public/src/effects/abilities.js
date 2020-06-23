@@ -209,10 +209,10 @@ class Lightblock extends Phaser.Physics.Matter.Image{
         .setCollisionCategory(CATEGORY.BULLET)
         .setCollidesWith([ CATEGORY.SOLANA, CATEGORY.DARK, CATEGORY.SOLID])
         .setPosition(x,y)
-        .setStatic(true)
+        .setDepth(DEPTH_LAYERS.OBJECTS)
         .setAlpha(0.9); 
 
-        this.scene.time.addEvent({ delay: 10000, callback: this.death, callbackScope: this, loop: false });
+        this.scene.time.addEvent({ delay: 1000000, callback: this.death, callbackScope: this, loop: false });
         //Collision
         this.scene.matterCollision.addOnCollideStart({
             objectA: [this],
@@ -234,7 +234,7 @@ class Lightblock extends Phaser.Physics.Matter.Image{
                 }
             }
         });
-        this.deathSprite = this.scene.add.sprite(this.x,this.y,'lightblockdeath').setAlpha(0.6);
+        this.deathSprite = this.scene.add.sprite(this.x,this.y,'lightblockdeath').setAlpha(0.6).setDepth(DEPTH_LAYERS.OBJECTS);
         this.deathSprite.setVisible(false);
  
     }
@@ -251,6 +251,118 @@ class Lightblock extends Phaser.Physics.Matter.Image{
         this.destroy();
     }
 }
+class LightblockLarge extends Phaser.Physics.Matter.Image{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'lightblock2',0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this);
+        //Bodies
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; 
+        const { width: w, height: h } = this;
+        //const mainBody =  Bodies.rectangle(0,0,w,h);
+        const mainBody =  Bodies.rectangle(0,0,w,h*0.75,{chamfer: {radius: 2}});
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.3,
+            friction: 0.9,
+            restitution : 0.0,
+            label: "LIGHTBLOCK"
+        });
+        this
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.BULLET)
+        .setCollidesWith([ CATEGORY.SOLANA, CATEGORY.DARK, CATEGORY.SOLID])
+        .setPosition(x,y)
+        .setDepth(DEPTH_LAYERS.OBJECTS)
+        .setAlpha(0.9); 
+
+        //Collision
+        this.scene.matterCollision.addOnCollideStart({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    this.setFrame(1)
+                }
+            }
+        });
+        this.scene.matterCollision.addOnCollideEnd({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    this.setFrame(0)
+                }
+            }
+        });    
+ 
+    }
+}
+//Lightrope
+class Lightrope {
+    constructor(scene,owner){
+        this.nodes = []; 
+        this.links = [];
+        this.scene = scene;
+        this.anchored = false;
+        this.owner =  owner;    
+        this.max_length = 10;
+             
+        this.scene.events.on("update", this.update, this);  
+    }
+    anchorBase(x,y){
+        this.nodes[0].setStatic(true);
+        this.nodes[0].setPosition(x,y);
+        this.anchored = true;
+    }
+    attachFirst(obj){
+        if(this.headConstraint != undefined){
+            this.scene.matter.world.remove(this.headConstraint);
+        }
+        let n = this.nodes[this.nodes.length-1];
+        this.headConstraint = this.scene.matter.add.constraint(n, obj, 0, 0.9, {
+            length: 0.0,
+            stiffness: 0.9
+        })
+
+    }
+    addNode(x,y){
+        let lb = new LightblockLarge(this.scene,x,y);
+        
+        if(this.nodes.length > 0){
+            let lbPrev = this.nodes[this.nodes.length-1];
+            //Add Connection / Contraint
+            let link = this.scene.matter.add.constraint(lb, lbPrev, 0, 0.9, {
+                pointA: { x: -lb.width*0.5+1, y: 0 },
+                pointB: { x: lb.width*0.5-1, y: 0 },
+                length: 0.0,
+                stiffness: 0.9
+            })
+            this.links.push(link);
+
+        }
+        this.nodes.push(lb);
+        //this.attachFirst(this.owner);
+    }
+    removeNode(i){
+        this.nodes.splice(i,1);
+    }
+    update(){
+        if(this.nodes.length > 0){
+            let frontBlock = this.nodes[this.nodes.length-1];
+            let a2b = Phaser.Math.Angle.Between(frontBlock.x,frontBlock.y,this.owner.x,this.owner.y);
+            frontBlock.applyForce({x:Math.cos(a2b)*0.001,y:Math.sin(a2b)*0.001});
+        }
+    }
+    destroy(){
+        this.nodes.forEach(e=>{e.destroy()});
+    }
+}
+
 //SolarBlast
 
 class SolarBlast extends Phaser.Physics.Matter.Sprite{
