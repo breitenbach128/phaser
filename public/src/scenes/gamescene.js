@@ -616,28 +616,7 @@ var GameScene = new Phaser.Class({
                 let chestProps = getTileProperties(tmxObjRef.properties);
                 let chest = new Chest(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
             }else if(tmxObjRef.type == 'line'){
-                
-                let g_sp1 = this.add.graphics();
-                g_sp1.setPosition(tmxObjRef.x,tmxObjRef.y);
-                g_sp1.lineStyle(4, 0x000000, 1.0);
-                // let spl = new Phaser.Curves.Spline(tmxObjRef.polyline);
-                // spl.draw(g_sp1);
-                let polyPath =  new Phaser.Curves.Path();
-                let polySpline =  new Phaser.Curves.Spline(tmxObjRef.polyline);
-                tmxObjRef.polyline.forEach((e,i)=>{
-                    if(i==0){
-                        polyPath.moveTo(e);
-                    }else{
-                        polyPath.lineTo(e);
-                    };
-                });
-
-
-                //polyPath.draw(g_sp1);
-                polySpline.draw(g_sp1);
-                g_sp1.lineStyle(2, 0x444444, 0.8);
-                polySpline.draw(g_sp1);
-                g_sp1.setDepth(DEPTH_LAYERS.FG);
+                let pc = new PowerCable(tmxObjRef.x,tmxObjRef.y,tmxObjRef.polyline,this);
             }else if(tmxObjRef.type == 'minecart'){
                 let cartprops = getTileProperties(tmxObjRef.properties);
                 let cart = new Vehicle(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2).setDepth(DEPTH_LAYERS.FRONT);
@@ -2521,6 +2500,12 @@ function createAnimations(scene){
         frames: scene.anims.generateFrameNumbers('lightblockdeath', { frames:[0,1,2,3,4] }),
         frameRate: 24,
         repeat: 0
+    });     
+    scene.anims.create({
+        key: 'sollink-active',
+        frames: scene.anims.generateFrameNumbers('sollink', { frames:[0,1,2,3,4] }),
+        frameRate: 24,
+        repeat: -1
     }); 
     
 }

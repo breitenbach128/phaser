@@ -273,7 +273,11 @@ var Preloader = new Phaser.Class({
         this.load.spritesheet('gear', 'assets/objects/gear.png', {frameWidth: 16, frameHeight: 16});
         this.load.spritesheet('minecart', 'assets/objects/minecart.png', {frameWidth: 96, frameHeight: 48});
 		this.load.spritesheet('minecart_wheel', 'assets/objects/minecart_wheel.png', {frameWidth: 13, frameHeight: 13});
-        this.load.image('seesaw', 'assets/objects/seesaw.png');
+		this.load.image('seesaw', 'assets/objects/seesaw.png');
+		//Interactive Objects
+		//Light Bridge / Sollink		
+        this.load.spritesheet('sollink', 'assets/objects/sollink.png', {frameWidth: 32, frameHeight: 32});
+        this.load.spritesheet('solanchor', 'assets/objects/solanchor.png', {frameWidth: 32, frameHeight: 32});
 		//Props
 		this.load.spritesheet('fan-1', 'assets/objects/fan-1.png', {frameWidth: 64, frameHeight: 32});
 		this.load.spritesheet('inchworm-1', 'assets/objects/props_inchworm.png', {frameWidth: 16, frameHeight: 16});

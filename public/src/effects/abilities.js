@@ -252,7 +252,7 @@ class Lightblock extends Phaser.Physics.Matter.Image{
     }
 }
 class LightblockLarge extends Phaser.Physics.Matter.Image{
-    constructor(scene,x,y) {
+    constructor(scene,x,y,lightparent) {
         super(scene.matter.world, x, y, 'lightblock2',0)
         this.scene = scene;
         scene.matter.world.add(this);
@@ -273,7 +273,7 @@ class LightblockLarge extends Phaser.Physics.Matter.Image{
         this
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.BULLET)
-        .setCollidesWith([ CATEGORY.SOLANA, CATEGORY.DARK, CATEGORY.SOLID])
+        .setCollidesWith([ CATEGORY.SOLANA, CATEGORY.DARK, CATEGORY.SOLID, CATEGORY.INTERACTIVE])
         .setPosition(x,y)
         .setDepth(DEPTH_LAYERS.OBJECTS)
         .setAlpha(0.9); 
@@ -287,6 +287,9 @@ class LightblockLarge extends Phaser.Physics.Matter.Image{
                 if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
                     this.setFrame(1)
                 }
+                if (gameObjectB !== undefined && gameObjectB instanceof Solanchor) {
+                    this.lightparent.attachFirst(gameObjectB);
+                }
             }
         });
         this.scene.matterCollision.addOnCollideEnd({
@@ -299,6 +302,7 @@ class LightblockLarge extends Phaser.Physics.Matter.Image{
                 }
             }
         });    
+        this.lightparent = lightparent;
  
     }
 }
@@ -310,9 +314,11 @@ class Lightrope {
         this.scene = scene;
         this.anchored = false;
         this.owner =  owner;    
-        this.max_length = 10;
-             
+        this.max_length = 20;
+        this.isAttached = false;
+        this.active = true;
         this.scene.events.on("update", this.update, this);  
+        this.scene.events.on("shutdown", this.remove, this);
     }
     anchorBase(x,y){
         this.nodes[0].setStatic(true);
@@ -328,10 +334,11 @@ class Lightrope {
             length: 0.0,
             stiffness: 0.9
         })
+        this.isAttached = true;
 
     }
     addNode(x,y){
-        let lb = new LightblockLarge(this.scene,x,y);
+        let lb = new LightblockLarge(this.scene,x,y,this);
         
         if(this.nodes.length > 0){
             let lbPrev = this.nodes[this.nodes.length-1];
@@ -352,11 +359,31 @@ class Lightrope {
         this.nodes.splice(i,1);
     }
     update(){
-        if(this.nodes.length > 0){
-            let frontBlock = this.nodes[this.nodes.length-1];
-            let a2b = Phaser.Math.Angle.Between(frontBlock.x,frontBlock.y,this.owner.x,this.owner.y);
-            frontBlock.applyForce({x:Math.cos(a2b)*0.001,y:Math.sin(a2b)*0.001});
+        if(this.active){
+            if(this.nodes.length > 0){
+                let frontBlock = this.nodes[this.nodes.length-1];
+                if(this.isAttached == false){
+                    let a2b = Phaser.Math.Angle.Between(frontBlock.x,frontBlock.y,this.owner.x,this.owner.y);
+                    frontBlock.applyForce({x:Math.cos(a2b)*0.001,y:Math.sin(a2b)*0.001});
+                }
+                // 8 is light block width.
+                if(this.owner != undefined){
+                    if(distanceBetweenObjects(frontBlock,this.owner) > 8 && this.isAttached == false){
+                        if(this.nodes.length < this.max_length){
+                            //Spawn new nodes
+                            frontBlock.setRotation(0);
+                            this.addNode(this.owner.x,this.owner.y);
+                        }else{
+                            this.attachFirst(this.owner);
+                        }
+                    }
+                }
+            }
         }
+
+    }
+    remove(){
+        this.active = false;
     }
     destroy(){
         this.nodes.forEach(e=>{e.destroy()});

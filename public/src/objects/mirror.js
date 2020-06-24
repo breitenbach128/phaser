@@ -163,7 +163,7 @@ class TMXGear extends Phaser.Physics.Matter.Image{
                 if (gameObjectB !== undefined && gameObjectB instanceof Bright) {
                     if(gameObjectB.light_status == 1){
                         //Dark Mode only
-                        let control_interact = (gamePad[bright.ctrlDeviceId].checkButtonState('up') == 1);
+                        let control_interact = bright.ctrlDeviceId >= 0? gamePad[bright.ctrlDeviceId].checkButtonState('up') == 1 : keyPad.checkKeyState('W') == 1;
                         if(control_interact){
                             if(!gameObjectA.darkAttached){
                                 console.log("dark attach to gear");

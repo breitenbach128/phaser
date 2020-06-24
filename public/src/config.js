@@ -150,8 +150,8 @@
         SHIELD: 2048,
         BOSS: 4096,
         VEHICLE: 8192,
-        LIQUID: 16384
-
+        LIQUID: 16384,
+        INTERACTIVE: 32768
     }
     const DEPTH_LAYERS = {
         BG: 10,
