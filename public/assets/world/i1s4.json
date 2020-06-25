@@ -194,7 +194,7 @@
                         {
                          "name":"targetMap",
                          "type":"string",
-                         "value":"i1s2"
+                         "value":"i1s5"
                         }],
                  "rotation":0,
                  "type":"exit",
@@ -507,28 +507,6 @@
                 }, 
                 {
                  "height":16,
-                 "id":146,
-                 "name":"crate",
-                 "rotation":0,
-                 "type":"crate",
-                 "visible":true,
-                 "width":16,
-                 "x":384,
-                 "y":304
-                }, 
-                {
-                 "height":16,
-                 "id":147,
-                 "name":"crate",
-                 "rotation":0,
-                 "type":"crate",
-                 "visible":true,
-                 "width":16,
-                 "x":384,
-                 "y":288
-                }, 
-                {
-                 "height":16,
                  "id":148,
                  "name":"crate",
                  "rotation":0,
@@ -537,39 +515,6 @@
                  "width":16,
                  "x":368,
                  "y":272
-                }, 
-                {
-                 "height":16,
-                 "id":149,
-                 "name":"crate",
-                 "rotation":0,
-                 "type":"crate",
-                 "visible":true,
-                 "width":16,
-                 "x":384,
-                 "y":272
-                }, 
-                {
-                 "height":16,
-                 "id":150,
-                 "name":"crate",
-                 "rotation":0,
-                 "type":"crate",
-                 "visible":true,
-                 "width":16,
-                 "x":400,
-                 "y":304
-                }, 
-                {
-                 "height":16,
-                 "id":151,
-                 "name":"crate",
-                 "rotation":0,
-                 "type":"crate",
-                 "visible":true,
-                 "width":16,
-                 "x":400,
-                 "y":288
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -775,7 +720,7 @@
                  "y":240
                 }, 
                 {
-                 "height":16,
+                 "height":8,
                  "id":152,
                  "name":"zone2",
                  "properties":[
@@ -814,7 +759,7 @@
                  "visible":true,
                  "width":208,
                  "x":384,
-                 "y":320
+                 "y":328
                 }],
          "opacity":1,
          "type":"objectgroup",

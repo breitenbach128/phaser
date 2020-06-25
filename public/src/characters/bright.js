@@ -222,18 +222,19 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     //     this.beamReady = false;
                     //     soullight.setAimer();
                     //     this.beamAbility.create(soullight.aimer.x,soullight.aimer.y,soullight.aimer.rotation);
-                    // }      
+                    // }    
+
                     //New Beam  
-                    if(control_beam){                
-                        if(Phaser.Math.Distance.Between(this.beamPrevVec2.x,this.beamPrevVec2.y,this.x,this.y) > 2){        
-                            let lb = new Lightblock(this.scene,this.x,this.y);
-                            this.beamPrevVec2.x = this.x;
-                            this.beamPrevVec2.y = this.y;
+                    // if(control_beam){                
+                    //     if(Phaser.Math.Distance.Between(this.beamPrevVec2.x,this.beamPrevVec2.y,this.x,this.y) > 2){        
+                    //         let lb = new Lightblock(this.scene,this.x,this.y);
+                    //         this.beamPrevVec2.x = this.x;
+                    //         this.beamPrevVec2.y = this.y;
                             
-                            lb.setStatic(true);        
-                            this.addEnergy(-50);
-                        }
-                    }
+                    //         lb.setStatic(true);        
+                    //         this.addEnergy(-50);
+                    //     }
+                    // }
                               
                     if(control_left){
                         this.sprite.setVelocityX(-light_mv_speed);

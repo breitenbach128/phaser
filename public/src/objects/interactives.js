@@ -34,31 +34,53 @@ class Sollink extends Phaser.Physics.Matter.Sprite{
                 
                 if (gameObjectB !== undefined && gameObjectB instanceof Bright) {
 
-                    if(gameObjectB.light_status == 0 && this.ropeActive == false){
-                        gameObjectA.createRope(gameObjectB);
+                    if(gameObjectB.light_status == 0 && this.ropeActive == false && this.ready){
+                        let control_interact = gameObjectB.ctrlDeviceId >= 0? gamePad[gameObjectB.ctrlDeviceId].checkButtonState('X') > 0 : keyPad.checkMouseState('MB0') > 0;
+                        if(control_interact) {
+                            gameObjectA.createRope(gameObjectB);
+                        }
                     }
-                    // let control_up = solana.ctrlDeviceId >= 0? gamePad[solana.ctrlDeviceId].checkButtonState('up') > 0 : keyPad.checkKeyState('W') > 0;
-                    // if(control_up) {
-                    //     //Interact
-                    //     gameObjectA.open();
-                    // }
+ 
                 }
             }
         });
         //Up to date queue
-        //this.scene.events.on("update", this.update, this);
+        this.scene.events.on("update", this.update, this);
         //Animate
         this.anims.play('sollink-active',true);
 
         this.ropeActive = false;
+        this.ready = true;
     }
     createRope(owner){
-        this.ropeActive = true;
+        this.ropeActive = true;        
+        this.ready = false;
         this.rope = new Lightrope(this.scene,owner);
         this.rope.addNode(this.x,this.y)
         this.rope.anchorBase(this.x,this.y)
         this.rope.nodes[0].setRotation(0);
         this.rope.nodes[0].setVisible(false);
+    }
+    makeReady(){
+        this.ready = true;
+    }
+    update(){
+        if(this.ropeActive){
+            let control_interact = this.rope.owner.ctrlDeviceId >= 0? gamePad[this.rope.owner.ctrlDeviceId].checkButtonState('X') == -1 : keyPad.checkMouseState('MB0') == -1;
+            if(control_interact) {
+                //Check to see if last node is anchored. If it is not, destroy the rope.
+                if(this.rope.attachedTo instanceof Solanchor == false){
+                    //Button released. Detach rope, block up sections, and then set the sollink to recharge over time.
+                    this.ropeActive = false; //This will need a cooldown reset before bright can use it again
+                    this.scene.time.addEvent({ delay: 1000, callback: this.makeReady, callbackScope: this, loop: false });
+                    this.removeRope();
+                }
+            }
+        }
+    }
+    removeRope(){
+        //Blows up each link in rapid order, create a new timer to destroy for each node on the rope.
+        this.rope.destroy();
     }
 };
 class Solanchor extends Phaser.Physics.Matter.Sprite{

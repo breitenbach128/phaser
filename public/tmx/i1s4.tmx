@@ -381,7 +381,7 @@
    <properties>
     <property name="manualTrigger" type="bool" value="true"/>
     <property name="targetExit" value="west1"/>
-    <property name="targetMap" value="i1s2"/>
+    <property name="targetMap" value="i1s5"/>
    </properties>
   </object>
  </objectgroup>
@@ -435,12 +435,7 @@
   <object id="143" name="crate" type="crate" x="352" y="272" width="16" height="16"/>
   <object id="144" name="crate" type="crate" x="368" y="288" width="16" height="16"/>
   <object id="145" name="crate" type="crate" x="336" y="288" width="16" height="16"/>
-  <object id="146" name="crate" type="crate" x="384" y="304" width="16" height="16"/>
-  <object id="147" name="crate" type="crate" x="384" y="288" width="16" height="16"/>
   <object id="148" name="crate" type="crate" x="368" y="272" width="16" height="16"/>
-  <object id="149" name="crate" type="crate" x="384" y="272" width="16" height="16"/>
-  <object id="150" name="crate" type="crate" x="400" y="304" width="16" height="16"/>
-  <object id="151" name="crate" type="crate" x="400" y="288" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="10" name="triggers">
   <object id="108" name="zone1" type="zone" x="384" y="208" width="208" height="16">
@@ -491,7 +486,7 @@
     <property name="source" value="lamp2"/>
    </properties>
   </object>
-  <object id="152" name="zone2" type="zone" x="384" y="320" width="208" height="16">
+  <object id="152" name="zone2" type="zone" x="384" y="328" width="208" height="8">
    <properties>
     <property name="allowReset" type="bool" value="true"/>
     <property name="resetDelay" type="int" value="300"/>

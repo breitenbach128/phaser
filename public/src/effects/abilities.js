@@ -316,6 +316,7 @@ class Lightrope {
         this.owner =  owner;    
         this.max_length = 20;
         this.isAttached = false;
+        this.attachedTo = -1;
         this.active = true;
         this.scene.events.on("update", this.update, this);  
         this.scene.events.on("shutdown", this.remove, this);
@@ -334,6 +335,7 @@ class Lightrope {
             length: 0.0,
             stiffness: 0.9
         })
+        this.attachedTo = obj;
         this.isAttached = true;
 
     }
@@ -384,9 +386,21 @@ class Lightrope {
     }
     remove(){
         this.active = false;
+        //Turn off Event listeners
+        this.scene.events.off("update", this.update, this);  
+        this.scene.events.off("shutdown", this.remove, this);
     }
     destroy(){
-        this.nodes.forEach(e=>{e.destroy()});
+        this.remove(); 
+        this.links.forEach(e=>{
+            this.scene.matter.world.remove(e);
+        },this);
+        this.nodes.forEach((e,i)=>{
+            e.setCollidesWith([0]);
+            let max_time = this.nodes.length*100;
+            let node_death_delay = (max_time - (i*100))+50;
+            this.scene.time.addEvent({ delay: node_death_delay, callback: e.destroy, callbackScope: e, loop: false });
+        },this);
     }
 }
 
