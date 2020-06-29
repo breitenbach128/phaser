@@ -451,6 +451,8 @@ var GameScene = new Phaser.Class({
                 let blobC = new EnemyBlobC(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y-tmxObjRef.height/2,tmxObjRef.width,tmxObjRef.height);
             }else if(tmxObjRef.type == "spiker"){
                 let spiker = new EnemySpiker(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,0)
+            }else if(tmxObjRef.type == "statue"){
+                let statue = new EnemyStatue(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,0)
             }else{
                 let EnemyType = props.enemyType;
                 let EnemyClass = props.enemyClass;
@@ -662,6 +664,10 @@ var GameScene = new Phaser.Class({
                 }else if(propprops.subtype == 'puddle'){
                     let proppuddle = new PropPuddle(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
                 }
+            }else if(tmxObjRef.type == 'sollink'){
+                let sl = new Sollink(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2)
+            }else if(tmxObjRef.type == 'solanchor'){
+                let sa = new Solanchor(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2)
             }
         }
         //Spawn Triggers
@@ -2506,6 +2512,12 @@ function createAnimations(scene){
         frames: scene.anims.generateFrameNumbers('sollink', { frames:[0,1,2,3,4] }),
         frameRate: 24,
         repeat: -1
-    }); 
+    });     
+    scene.anims.create({
+        key: 'status-blink',
+        frames: scene.anims.generateFrameNumbers('statue', { frames:[0,1,2,3] }),
+        frameRate: 4,
+        repeat: -1
+    });
     
 }
