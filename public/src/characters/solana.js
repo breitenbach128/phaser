@@ -727,6 +727,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     }
     resetEnergy(){
         hud.alterEnergySolana(this.energyChange);
+        //soullight.drain(this.energyChange);
         this.energyChange = 0;
     }
     disableInvuln(){

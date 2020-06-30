@@ -121,6 +121,10 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
                 this.protection_circle.dirty = false;
             }
         }
+        //Raise value of circle up to max
+        if(this.protection_radius.value < this.protection_radius.max){
+            this.protection_radius.value+=0.10;
+        }
         
         //Particle Emit        
         let strTarg = this.ownerid == 0 ? bright : solana;
@@ -331,6 +335,12 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
             this.move_speed = this.max_speed;
         }
 
+    }
+    drain(en){
+        if(this.protection_radius.value > 0){
+            let nVal = this.protection_radius.value - en;
+            this.protection_radius.value = nVal > 0 ? nVal : 0;            
+        }
     }
     readyPass(){  
         //Shrink the light circle down and then pass it. 
