@@ -1747,7 +1747,7 @@ var GameScene = new Phaser.Class({
     cutGraphicRaycastPolygon(x,y,range){
         //Only Run the create light polygon if there is an position update, otherwise use the old polygon.
         //This should save resources
-        if(this.visiblityPolygon.x != x || this.visiblityPolygon.y != y){
+        if(this.visiblityPolygon.x != x || this.visiblityPolygon.y != y || soullight.isShrinking || soullight.protection_circle.dirty){
             let shapes = [];
             lightPolygons.forEach(function(e){
                 let d = Phaser.Math.Distance.Between(x,y,e[0][0],e[0][1]);

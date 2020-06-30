@@ -46,10 +46,10 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.max_speed = 50;//25 
         this.accel = 1;
         this.projectile_speed = 8;//14
-        this.protection_radius = {value:200, max: 200, original: 250};//How much does the light protect;
+        this.protection_radius = {value:250, max: 250, original: 250, dirty: false};//How much does the light protect;
         this.protection_circle = new Phaser.Geom.Circle(config.x, config.y, 250);
         this.throw = {x:0,y:0};
-        this.readyThrow = false;
+        this.isShrinking = false;
         this.transfer = -1
         this.aimer = this.scene.add.sprite(this.x,this.y,'soullightblast').setScale(.5).setOrigin(0.5).setDepth(this.depth);
         this.aimer.setVisible(false);
@@ -101,16 +101,26 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         //Circle Radius Debug
         this.radDebug = [];
         for(let c=0;c < 24;c++){
-            this.radDebug.push(this.scene.add.circle(this.x,this.y,2, 0x00FF00, 1.0));
+            this.radDebug.push(this.scene.add.circle(this.x,this.y,2, 0x00FF00, 1.0).setDepth(DEPTH_LAYERS.OBJECTS));
         }
 
     }
 
     update(time,delta)
     {    
+        
         //For Light raycast border
         this.protection_circle.x = this.x;
         this.protection_circle.y = this.y;
+        //Only update property if not doing the shrink visual effect.
+        if(this.isShrinking == false){
+            if(this.protection_radius.value != this.protection_circle.radius){
+                this.protection_circle.radius = this.protection_radius.value;
+                this.protection_circle.dirty = true;
+            }else{
+                this.protection_circle.dirty = false;
+            }
+        }
         
         //Particle Emit        
         let strTarg = this.ownerid == 0 ? bright : solana;
@@ -156,18 +166,8 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
                 this.homeLight(target);
             }
 
-        }
-        
-        if(this.readyThrow){
-            if(this.protection_radius.value >  (this.protection_radius.max/10)){
-                this.protection_radius.value-=(this.protection_radius.max/10);
-            }else{
-                //Ready to launch
-                this.passLight();
-            };
-        }else{
-            if(this.protection_radius.value <  this.protection_radius.max){this.protection_radius.value+=25;};
-        }
+        }        
+
         if(this.aimer.started){      
             //Update Aimer
             this.setAimer();
@@ -332,15 +332,38 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         }
 
     }
-    readyPass(){
-        this.readyThrow = true;
+    readyPass(){  
+        //Shrink the light circle down and then pass it. 
+        this.isShrinking = true;    
+        let tween = this.scene.tweens.add({
+            targets: this.protection_circle,
+            radius: 16,               
+            ease: 'Linear',       
+            duration: 300, 
+            onComplete: function(tween, targets, sl){
+                sl.passLight();
+            }, 
+            onCompleteParams: [this],
+        });
+    }
+    readyReceive(){
+        let tween = this.scene.tweens.add({
+            targets: this.protection_circle,
+            radius: this.protection_radius.value,               
+            ease: 'Linear',       
+            duration: 300,
+            onComplete: function(tween, targets, sl){
+                sl.isShrinking = false;
+            }, 
+            onCompleteParams: [this],
+        });
     }
     readyAimer(){
         this.aimer.ready = true;
     }
     lockLight(target,id){
         if(id != this.ownerid && this.passing){
-            this.readyThrow = false;
+            this.readyReceive();
             this.passing = false;
             this.ownerid = id;
             this.owner = target;
