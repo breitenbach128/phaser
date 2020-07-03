@@ -427,7 +427,7 @@
     <property name="targetType" value="gate"/>
    </properties>
   </object>
-  <object id="172" name="lamp1" type="crystallamp" x="704" y="96" width="16" height="16">
+  <object id="172" name="lamp1" type="crystallamp" x="688" y="112" width="16" height="16">
    <properties>
     <property name="alwaysOn" type="bool" value="false"/>
     <property name="brightness_max" type="int" value="128"/>

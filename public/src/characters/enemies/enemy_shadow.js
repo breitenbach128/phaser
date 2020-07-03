@@ -14,20 +14,21 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
 
         const compoundBody = Body.create({
             parts: [mainBody],
-            frictionStatic: 0.01,
-            frictionAir: 0.05,
-            friction: 0.9,
+            frictionStatic: 0.10,
+            frictionAir: 0.30,
+            friction: 0.90,
             density: 0.01,
-            restitution: 0.7,
+            restitution: 0.70,
             label: "SHADOW"
         });
         this
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.ENEMY)
+        .setCollidesWith([CATEGORY.SOLANA])
         .setPosition(x, y) 
         .setDensity(0.01)
         .setDepth(DEPTH_LAYERS.OBJECTS)
-        .setStatic(true);
+        .setIgnoreGravity(true);
 
         //this.anims.play('status-blink',true);
         //Collision
@@ -41,12 +42,29 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
         //Event Hook in
         this.scene.events.on("update", this.update, this);
         this.scene.events.on("shutdown", this.remove, this);
-
+        //Variables
+        this.alpha = 0.50;
+        this.mv = 0.01;
     }
     update(){
- 
+       
+        
+        if(distanceBetweenObjects(soullight,this) < soullight.protection_radius.value){
+            let dir = this.aim(soullight);
+            this.applyForce({x:-dir.x*this.mv,y:-dir.y*this.mv});
+        }else{
+            let dir = this.aim(solana);
+            this.applyForce({x:dir.x*this.mv,y:dir.y*this.mv});
+        }
     }
     remove(){
         
+    }
+    aim(target){
+        //Aimed shot with weapon.
+        let angle = Phaser.Math.Angle.Between(this.x,this.y,target.x,target.y);
+        let vecX = Math.cos(angle);
+        let vecY = Math.sin(angle); 
+        return {x:vecX,y:vecY};
     }
 }
