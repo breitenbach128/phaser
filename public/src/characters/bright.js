@@ -652,10 +652,10 @@ class Bright extends Phaser.Physics.Matter.Sprite{
     }
     addEnergy(e){
         this.energyChange+=e;
+        //if(e<0){soullight.alterProtectionRadius(e);}
     }
     resetEnergy(){
         hud.alterEnergyBright(this.energyChange);
-        //soullight.drain(this.energyChange);
         this.energyChange = 0;
     }
     pulseCharge(object){

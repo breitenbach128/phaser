@@ -46,7 +46,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.max_speed = 50;//25 
         this.accel = 1;
         this.projectile_speed = 8;//14
-        this.protection_radius = {value:250, max: 250, original: 250, dirty: false};//How much does the light protect;
+        this.protection_radius = {value:250, max: 250, original: 250, dirty: false, change: 0};//How much does the light protect;
         this.protection_circle = new Phaser.Geom.Circle(config.x, config.y, 250);
         this.throw = {x:0,y:0};
         this.isShrinking = false;
@@ -101,7 +101,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         //Circle Radius Debug
         this.radDebug = [];
         for(let c=0;c < 24;c++){
-            this.radDebug.push(this.scene.add.circle(this.x,this.y,2, 0x00FF00, 1.0).setDepth(DEPTH_LAYERS.OBJECTS));
+            this.radDebug.push(this.scene.add.circle(this.x,this.y,2, 0xe8e413, 0.5).setDepth(DEPTH_LAYERS.OBJECTS));
         }
 
     }
@@ -123,7 +123,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         }
         //Raise value of circle up to max
         if(this.protection_radius.value < this.protection_radius.max){
-            this.protection_radius.value+=0.10;
+            this.alterProtectionRadius(0.1);
         }
         
         //Particle Emit        
@@ -181,6 +181,8 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         if(this.body.velocity.x < -this.max_speed){this.setVelocityX(-this.max_speed)};
         if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed)};
         if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
+        //Final Updates and Clear functions
+        this.updateProtectionRadius();
     }
     setProxPartStream(target){
         
@@ -312,6 +314,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.transfer.setDepth(DEPTH_LAYERS.FRONT);
         //Cost Energy to fire
         this.owner.addEnergy(-powerlevel*50);
+        this.alterProtectionRadius(-powerlevel*25)
     }
     homeLight(target){        
         let angle = Phaser.Math.Angle.Between(this.x,this.y,target.x,target.y);
@@ -336,11 +339,39 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         }
 
     }
-    drain(en){
-        if(this.protection_radius.value > 0){
-            let nVal = this.protection_radius.value - en;
-            this.protection_radius.value = nVal > 0 ? nVal : 0;            
-        }
+    createProtectionRadiusChangeEffect(){
+        let cEffobj = this.scene.add.ellipse(this.x,this.y,this.protection_radius.value*2,this.protection_radius.value*2,0x000000,0.0);
+        cEffobj.strokeAlpha = 0.3;
+        cEffobj.strokeColor = 0xe8e413;
+        cEffobj.isStroked = true;
+        cEffobj.lineWidth = 15;
+        cEffobj.blendMode = Phaser.BlendModes.ADD;
+        cEffobj.setDepth(DEPTH_LAYERS.OBJECTS);
+        this.scene.tweens.add({
+            targets: cEffobj,
+            scale: 0,  
+            strokeAlpha: 1,
+            ease: 'Linear',       
+            duration: 300,  
+            onUpdate: function(tween,targets){
+                cEffobj.setPosition(soullight.x,soullight.y);
+            },
+            onComplete: function(tween, targets, c){
+                c.destroy();
+            }, 
+            onCompleteParams: [cEffobj],
+        });
+    }
+    updateProtectionRadius(){ 
+        if(this.protection_radius.change < 0){this.createProtectionRadiusChangeEffect()};
+        this.protection_radius.value = this.protection_radius.value + this.protection_radius.change;
+        let max = this.protection_radius.max;
+        if(this.protection_radius.value > max){this.protection_radius.value = max;};  
+        if(this.protection_radius.value < 0){this.protection_radius.value = 0;};       
+        this.protection_radius.change = 0;
+    }
+    alterProtectionRadius(en){
+        this.protection_radius.change+=en;
     }
     readyPass(){  
         //Shrink the light circle down and then pass it. 

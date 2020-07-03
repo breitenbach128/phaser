@@ -305,6 +305,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('spiker', 'assets/objects/spiker_1.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('oilblob2', 'assets/objects/oil_blob2.png',{frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('statue', 'assets/characters/statue3.png',{frameWidth: 32, frameHeight: 48});
+		this.load.spritesheet('shadow1', 'assets/characters/enemy_shadow1.png',{frameWidth: 48, frameHeight: 64});
 		//Controller
 		this.load.image('icon_kb_spcbar', 'assets/UI/Keyboard_Mouse/Dark/Keyboard_Black_Space.png');
 		
