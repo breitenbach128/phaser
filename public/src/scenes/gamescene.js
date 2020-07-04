@@ -1913,6 +1913,28 @@ function distanceBetweenObjects(a,b){
     //returns distance between two game objects
     return Phaser.Math.Distance.Between(a.x,a.y,b.x,b.y);
 }
+/**
+ * A raycast looking function using the matter query raycast to check for line of sight.
+ * @param {*} source  A game object with an x and y property who is looking
+ * @param {*} target  A game object with an x and y property who is being looked at
+ * @param {*} blockers  An arrayb of game objects that block line of sight. Has to be pushed into in the game scene builder
+ */
+function canSee(source,target,blockers){
+    let rayTo = Phaser.Physics.Matter.Matter.Query.ray(blockers,{x:source.x,y:source.y},{x:target.x,y:target.y});
+    if(rayTo.length < 1){
+        return true;
+    }else{
+        return false;
+    }
+    
+}
+function checkWithinMap(x,y){
+    if((x > 0 && x < map.widthInPixels) && (y > 0 && y < map.heightInPixels)){
+        return true;
+    }else{
+        return false;
+    }
+}
 function getObjectTilePosition(x,y,ts){
     return {x: Math.floor(x/ts),y: Math.floor(y/ts)};
 }
@@ -1979,6 +2001,28 @@ function setupTriggerTargets(triggerGroup,triggerGroupName,scene){
 
         }
     }, this);
+}
+/**
+ * Using Tween, causes a game object to shake. This can break physics, so be careful with high intensity. This will not take other tweens into account
+ * @param {*} scene The game scene
+ * @param {*} object The game object to shake.
+ * @param {*} intensity How many pixels to shake by, more pixels makes it more violent
+ * @param {*} dur How long to shake for each count
+ * @param {*} count How many times to shake
+ * @param {*} callback on Complete Callback, refernces the game object (tween,targets,object)
+ */
+function shakeGameObject(scene,object,intensity,dur,count,callback){
+    let tween = scene.tweens.add({
+        targets: object,
+        x: object.x+intensity,               // '+=100'
+        y: object.y+intensity,               // '+=100'
+        ease: 'Bounce.InOut',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
+        duration: dur,
+        repeat: count,            // -1: infinity
+        yoyo: true,
+        onComplete:callback,
+        onCompleteParams: [object],
+    });
 }
 function damageEnemy(enemy, bullet) {  
     // only if both enemy and bullet are alive
@@ -2518,6 +2562,12 @@ function createAnimations(scene){
         frames: scene.anims.generateFrameNumbers('statue', { frames:[0,1,2,3] }),
         frameRate: 4,
         repeat: -1
+    });    
+    scene.anims.create({
+        key: 'shadow-death',
+        frames: scene.anims.generateFrameNumbers('shadow1', { frames:[6,7,8,9,10] }),
+        frameRate: 8,
+        repeat: 0
     });
     
 }

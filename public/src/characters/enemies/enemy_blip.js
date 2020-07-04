@@ -50,7 +50,7 @@ class EnemyBlip extends Phaser.Physics.Matter.Sprite{
                     || gameObjectB instanceof Phaser.GameObjects.Ellipse
                     || gameObjectB instanceof Phaser.GameObjects.Polygon)) {
                     if (bodyB.label == 'GROUND' && bodyA.label == "BLIP_BOTTOM"){ 
-                        this.splat();
+                        if(this.active){this.splat();}
                     }
 
                 }
@@ -63,6 +63,13 @@ class EnemyBlip extends Phaser.Physics.Matter.Sprite{
                         this.wanderDirection = 1;
                     }
                 }
+                if (gameObjectB !== undefined && (gameObjectB instanceof Solana)){
+                    if(this.active){
+                        this.remove();
+                        gameObjectB.receiveDamage(1);
+                    }
+                }
+
 
             }
         });
@@ -75,7 +82,7 @@ class EnemyBlip extends Phaser.Physics.Matter.Sprite{
                     || gameObjectB instanceof Phaser.GameObjects.Ellipse
                     || gameObjectB instanceof Phaser.GameObjects.Polygon)) {
                     if (bodyB.label == 'GROUND' && bodyA.label == "BLIP_BOTTOM"){ 
-                        this.spring();
+                        if(this.active){this.spring();}
                     }
                 }
 
@@ -145,7 +152,7 @@ class EnemyBlip extends Phaser.Physics.Matter.Sprite{
         
     }
     update(){
-        this.rotation = 0;
+        if(this.active){this.rotation = 0;}
     }
     hunt(){
         this.applyForce({x:this.wanderDirection*this.movement.xf,y:this.movement.yf});
@@ -162,6 +169,10 @@ class EnemyBlip extends Phaser.Physics.Matter.Sprite{
         
     }
     remove(){
-        
+        this.active = false;
+        this.moveTimer.remove();
+        this.springTw.remove();
+        this.splatTw.remove();
+        this.destroy();
     }
 }

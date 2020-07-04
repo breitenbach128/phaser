@@ -24,7 +24,7 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
         this
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.ENEMY)
-        .setCollidesWith([CATEGORY.SOLANA])
+        .setCollidesWith([CATEGORY.SOLANA, CATEGORY.BULLET])
         .setPosition(x, y) 
         .setDensity(0.01)
         .setDepth(DEPTH_LAYERS.OBJECTS)
@@ -36,7 +36,16 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
             objectA: [this],
             callback: eventData => {
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
-
+                if(gameObjectB != undefined && gameObjectB instanceof Solana){
+                    gameObjectB.receiveDamage(1);
+                    this.remove();
+                }
+                if(gameObjectB != undefined && gameObjectB instanceof SoulTransfer){
+                    let angleVec = this.aim(gameObjectB);
+                    gameObjectB.burn();
+                    let rRange = 32//Phaser.Math.Between(32,256);
+                    this.teleport(this.x+(angleVec.x*-1*rRange),this.y+(angleVec.y*-1*rRange));
+                }
             }
         });
         //Event Hook in
@@ -45,20 +54,62 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
         //Variables
         this.alpha = 0.50;
         this.mv = 0.01;
+        this.isFleeing = false;
+        this.isCharging = false;
+        //Timers
+        this.fleeTimer = this.scene.time.addEvent({ delay: 0, callback: function(){this.isFleeing = false;}, callbackScope: this, loop: false });
     }
     update(){
        
-        
-        if(distanceBetweenObjects(soullight,this) < soullight.protection_radius.value){
-            let dir = this.aim(soullight);
-            this.applyForce({x:-dir.x*this.mv,y:-dir.y*this.mv});
-        }else{
-            let dir = this.aim(solana);
-            this.applyForce({x:dir.x*this.mv,y:dir.y*this.mv});
+        if(this.active){
+            let slDis = distanceBetweenObjects(soullight,this);
+            let solDis = distanceBetweenObjects(solana,this);
+            if(this.isFleeing){
+                let dir = this.aim(soullight);
+                this.applyForce({x:-dir.x*this.mv,y:-dir.y*this.mv});
+
+            }else{
+
+                if(slDis < soullight.protection_radius.value && canSee(this,soullight,losBlockers)){                    
+                    this.isFleeing = true;
+                    this.fleeTimer = this.scene.time.addEvent({ delay: 3000, callback: function(){this.isFleeing = false;}, callbackScope: this, loop: false });                   
+                }else{
+                    if(canSee(this,solana,losBlockers) || solDis < 256){
+                        let dir = this.aim(solana);
+                        let mvsp = this.mv;                        
+                        if(solDis < 96){                            
+                            if(this.isCharging){
+                                mvsp = this.mv*3;
+                            }else{
+                                shakeGameObject(this.scene,this,1,100,3,function(tw,tgs,obj){obj.isCharging = true;})
+                                mvsp = 0;
+                            }
+                        }
+                        this.applyForce({x:dir.x*mvsp,y:dir.y*mvsp});
+                    }else{
+                        //Random Wander?
+                    }
+                }
+            }
+            if(this.body.velocity.x > 0){this.flipX = true};
+            if(this.body.velocity.x < 0){this.flipX = false};
         }
     }
+    teleport(x,y){
+        this.setPosition(x,y);
+        if(checkWithinMap(this.x,this.y) == false){
+            
+        }
+        console.log("teleport shadow to:",x,y);
+        //Currently can end up off the level, which blocks los. That's a problem. I need to pick better locations to drop them.
+    }
+    death(){        
+        this.on('animationcomplete',this.remove,this); 
+        this.anims.play('shadow-death',true);
+    }
     remove(){
-        
+        this.active = false;
+        this.destroy();
     }
     aim(target){
         //Aimed shot with weapon.
