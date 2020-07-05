@@ -98,6 +98,28 @@ class EnemyBlip extends Phaser.Physics.Matter.Sprite{
         this.movement = {xf: 0.008,yf:-0.035};
         this.isSplatting = false;
         this.isSpringing = false;
+        //particles
+        this.particles = this.scene.add.particles('shapes');
+        this.particles.setDepth(this.depth-1);
+        this.emitter_corruption = this.particles.createEmitter({
+            active:true,
+            x: this.x,
+            y: this.y,
+            frequency: 1,
+            frame: {
+                frames: [
+                    "circle_05"
+                ],
+                cycle: false,
+                quantity: 1
+            },
+            scale: { start: 0.5, end: 0.0 },
+            alpha: { start: 1, end: 0 },
+            blendMode: 'NORMAL',
+            tint: [
+                4263489
+            ]
+        });
     }
     splat(){
         //Splats onto the ground, flattens
@@ -119,7 +141,7 @@ class EnemyBlip extends Phaser.Physics.Matter.Sprite{
 
     }
     reRound(){
-        if(this.isSplatting || this.isSpringing ){
+        if((this.isSplatting || this.isSpringing) && this.active ){
             this.isSplatting = false;
             this.isSpringing = false;
             this.scene.tweens.add({
@@ -152,7 +174,10 @@ class EnemyBlip extends Phaser.Physics.Matter.Sprite{
         
     }
     update(){
-        if(this.active){this.rotation = 0;}
+        if(this.active){
+            this.rotation = 0;
+            this.emitter_corruption.setPosition(this.x,this.y);
+        }
     }
     hunt(){
         this.applyForce({x:this.wanderDirection*this.movement.xf,y:this.movement.yf});
@@ -170,6 +195,7 @@ class EnemyBlip extends Phaser.Physics.Matter.Sprite{
     }
     remove(){
         this.active = false;
+        this.particles.destroy();
         this.moveTimer.remove();
         this.springTw.remove();
         this.splatTw.remove();

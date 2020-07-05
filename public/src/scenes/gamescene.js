@@ -2023,6 +2023,7 @@ function shakeGameObject(scene,object,intensity,dur,count,callback){
         onComplete:callback,
         onCompleteParams: [object],
     });
+    return tween;
 }
 function damageEnemy(enemy, bullet) {  
     // only if both enemy and bullet are alive

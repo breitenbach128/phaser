@@ -56,12 +56,36 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
         this.mv = 0.01;
         this.isFleeing = false;
         this.isCharging = false;
+        this.shakeTween = null;
         //Timers
         this.fleeTimer = this.scene.time.addEvent({ delay: 0, callback: function(){this.isFleeing = false;}, callbackScope: this, loop: false });
+        //particles
+        this.particles = this.scene.add.particles('shapes');
+        this.particles.setDepth(this.depth-1);
+        this.emitter_corruption = this.particles.createEmitter({
+            active:false, //Set to false for new to test
+            x: this.x,
+            y: this.y,
+            frequency: 0,
+            frame: {
+                frames: [
+                    "circle_05"
+                ],
+                cycle: false,
+                quantity: 1
+            },
+            scale: { start: 0.5, end: 0.0 },
+            alpha: { start: 1, end: 0 },
+            blendMode: 'NORMAL',
+            tint: [
+                4263489
+            ]
+        });
     }
     update(){
        
         if(this.active){
+            //this.emitter_corruption.setPosition(this.x,this.y);            
             let slDis = distanceBetweenObjects(soullight,this);
             let solDis = distanceBetweenObjects(solana,this);
             if(this.isFleeing){
@@ -81,7 +105,7 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
                             if(this.isCharging){
                                 mvsp = this.mv*3;
                             }else{
-                                shakeGameObject(this.scene,this,1,100,3,function(tw,tgs,obj){obj.isCharging = true;})
+                                this.shakeTween = shakeGameObject(this.scene,this,1,100,3,function(tw,tgs,obj){obj.isCharging = true;})
                                 mvsp = 0;
                             }
                         }
@@ -98,7 +122,7 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
     teleport(x,y){
         this.setPosition(x,y);
         if(checkWithinMap(this.x,this.y) == false){
-            
+
         }
         console.log("teleport shadow to:",x,y);
         //Currently can end up off the level, which blocks los. That's a problem. I need to pick better locations to drop them.
@@ -108,7 +132,10 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
         this.anims.play('shadow-death',true);
     }
     remove(){
-        this.active = false;
+        this.active = false;        
+        this.particles.destroy();
+        this.fleeTimer.remove();
+        if(this.shakeTween != null){this.shakeTween.remove();}
         this.destroy();
     }
     aim(target){
