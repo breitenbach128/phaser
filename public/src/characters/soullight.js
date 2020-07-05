@@ -611,7 +611,8 @@ class SoulCrystal extends Phaser.Physics.Matter.Sprite{
         .setPosition(x, y)
         .setIgnoreGravity(true)
         .setCollisionCategory(CATEGORY.SOLID)
-        .setCollidesWith([ CATEGORY.SOLANA]);   
+        .setCollidesWith([ CATEGORY.SOLANA])
+        .setDepth(DEPTH_LAYERS.OBJECTS);   
 
         //Add to game update
         this.scene.events.on("update", this.update, this);

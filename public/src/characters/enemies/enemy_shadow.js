@@ -46,6 +46,10 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
                     let rRange = 32//Phaser.Math.Between(32,256);
                     this.teleport(this.x+(angleVec.x*-1*rRange),this.y+(angleVec.y*-1*rRange));
                 }
+                if(gameObjectB != undefined && gameObjectB instanceof SolBomb){                   
+                    this.death();
+                    gameObjectB.unready();
+                }
             }
         });
         //Event Hook in
@@ -56,9 +60,13 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
         this.mv = 0.01;
         this.isFleeing = false;
         this.isCharging = false;
+        this.isWandering = false;
+        this.wanderDirection = 1;
         this.shakeTween = null;
+        this.dead = false;
         //Timers
         this.fleeTimer = this.scene.time.addEvent({ delay: 0, callback: function(){this.isFleeing = false;}, callbackScope: this, loop: false });
+        this.wanderTimer = null;
         //particles
         this.particles = this.scene.add.particles('shapes');
         this.particles.setDepth(this.depth-1);
@@ -98,12 +106,12 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
                     this.isFleeing = true;
                     this.fleeTimer = this.scene.time.addEvent({ delay: 3000, callback: function(){this.isFleeing = false;}, callbackScope: this, loop: false });                   
                 }else{
-                    if(canSee(this,solana,losBlockers) || solDis < 256){
+                    if(canSee(this,solana,losBlockers) || solDis < 256 || solDis > 1024){
                         let dir = this.aim(solana);
                         let mvsp = this.mv;                        
                         if(solDis < 96){                            
                             if(this.isCharging){
-                                mvsp = this.mv*3;
+                                mvsp = this.mv*10;
                             }else{
                                 this.shakeTween = shakeGameObject(this.scene,this,1,100,3,function(tw,tgs,obj){obj.isCharging = true;})
                                 mvsp = 0;
@@ -112,18 +120,32 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
                         this.applyForce({x:dir.x*mvsp,y:dir.y*mvsp});
                     }else{
                         //Random Wander?
+                        let boundsVector = checkWithinMap(this.x,this.y);
+                        let mvsp = this.mv; 
+                        if(boundsVector.x != 0 || boundsVector.y !=0){                            
+                            this.applyForce({x:boundsVector.x*mvsp*-1,y:boundsVector.y*mvsp*-1});
+                        }else{
+                            if(this.isWandering == false){
+                                this.isWandering = true;
+                                this.wanderTimer =  this.scene.time.addEvent({ delay: Phaser.Math.Between(1500,3000), callback: function(){this.isWandering = false;}, callbackScope: this, loop: false });
+                                this.wanderDirection = Phaser.Math.RND.pick([-1,1]);
+                            }else{
+                                this.applyForce({x:this.wanderDirection*mvsp,y:0});
+                            }
+                        }
                     }
                 }
             }
             if(this.body.velocity.x > 0){this.flipX = true};
             if(this.body.velocity.x < 0){this.flipX = false};
+        }else{
+            if(this.dead){
+                this.destroy();
+            }
         }
     }
     teleport(x,y){
         this.setPosition(x,y);
-        if(checkWithinMap(this.x,this.y) == false){
-
-        }
         console.log("teleport shadow to:",x,y);
         //Currently can end up off the level, which blocks los. That's a problem. I need to pick better locations to drop them.
     }
@@ -132,11 +154,12 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
         this.anims.play('shadow-death',true);
     }
     remove(){
+        this.dead = true;
         this.active = false;        
         this.particles.destroy();
         this.fleeTimer.remove();
-        if(this.shakeTween != null){this.shakeTween.remove();}
-        this.destroy();
+        this.scene.tweens.killTweensOf(this);
+        this.scene.events.off("shutdown", this.remove, this);
     }
     aim(target){
         //Aimed shot with weapon.

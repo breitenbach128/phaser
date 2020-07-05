@@ -450,9 +450,13 @@ var GameScene = new Phaser.Class({
             }else if(tmxObjRef.type == "blob"){
                 let blobC = new EnemyBlobC(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y-tmxObjRef.height/2,tmxObjRef.width,tmxObjRef.height);
             }else if(tmxObjRef.type == "spiker"){
-                let spiker = new EnemySpiker(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,0)
+                let spiker = new EnemySpiker(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,0);
             }else if(tmxObjRef.type == "statue"){
-                let statue = new EnemyStatue(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,0)
+                let statue = new EnemyStatue(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,0);
+            }else if(tmxObjRef.type == "blip"){
+                let blip = new EnemyBlip(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,0);
+            }else if(tmxObjRef.type == "shadow"){
+                let shadow = new EnemyShadow(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,0);
             }else{
                 let EnemyType = props.enemyType;
                 let EnemyClass = props.enemyClass;
@@ -1277,12 +1281,15 @@ var GameScene = new Phaser.Class({
                         gObjs[1].addEnergy(50);
                     }  
                 }
+                //Doing a lot of double checking here. I need to move a lot of these checks into the object classes.
                 let SolBombBurnList = ['SOLID','GROUND','ROCK','BREAKABLE'];
                 if((bodyA.label == 'SOLBOMB' && SolBombBurnList.includes(bodyB.label)) || (bodyB.label == 'SOLBOMB' && SolBombBurnList.includes(bodyA.label)) ){
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOLBOMB');
-                    if (gObjs[0].active){
-                        gObjs[0].unready();
-                    }  
+                    if(gObjs[0] != undefined){
+                        if (gObjs[0].active){
+                            gObjs[0].unready();
+                        }  
+                    }
                 }
 
                 //Between SoulTransfer and Solana
@@ -1929,11 +1936,13 @@ function canSee(source,target,blockers){
     
 }
 function checkWithinMap(x,y){
-    if((x > 0 && x < map.widthInPixels) && (y > 0 && y < map.heightInPixels)){
-        return true;
-    }else{
-        return false;
-    }
+    let outzone = {x:0,y:0}
+    if(x < 0){outzone.x = -1;}//Left
+    if(x > map.widthInPixels){outzone.x = 1;}//Right
+    if(y < 0){outzone.y = -1;}//Top
+    if(y > map.heightInPixels){outzone.y = 1;}//Bottom
+
+    return outzone;
 }
 function getObjectTilePosition(x,y,ts){
     return {x: Math.floor(x/ts),y: Math.floor(y/ts)};

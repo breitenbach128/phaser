@@ -50,7 +50,11 @@ class EnemyStatue extends Phaser.Physics.Matter.Sprite{
     }
     update(){
         if(this.active){
-            this.barrage();
+            let solDis = distanceBetweenObjects(solana,this);
+            let solSee = canSee(this,solana,losBlockers);
+            if(solDis < 512 && solSee){
+                this.barrage();
+            }
         }
     }
     barrage(){

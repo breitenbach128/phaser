@@ -52,16 +52,19 @@ class EnemyBlip extends Phaser.Physics.Matter.Sprite{
                     if (bodyB.label == 'GROUND' && bodyA.label == "BLIP_BOTTOM"){ 
                         if(this.active){this.splat();}
                     }
-
-                }
-                if (gameObjectB !== undefined && !(gameObjectB instanceof Solana)){
-
                     if (bodyB.label == 'GROUND' && bodyA.label == "BLIP_RIGHT"){ 
                         this.wanderDirection = -1;
                     }
                     if (bodyB.label == 'GROUND' && bodyA.label == "BLIP_LEFT"){ 
                         this.wanderDirection = 1;
                     }
+
+                }
+                if (gameObjectB !== undefined && (gameObjectB instanceof SoulTransfer)){
+                    if(this.active){
+                        this.remove();
+                    }
+  
                 }
                 if (gameObjectB !== undefined && (gameObjectB instanceof Solana)){
                     if(this.active){
