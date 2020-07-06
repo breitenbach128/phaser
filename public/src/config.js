@@ -61,7 +61,7 @@
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-6-28-2020";
+    var buildVersion = "a-7-05-2020";
     var game;
     var hud;
     var playScene;
@@ -71,8 +71,8 @@
     //Tiles
     var map; 
     var mapTileSize = {tw:16,th:16};
-    var current_map = "i1s5";
-    var current_exit = {solana: "west1", bright: "west1"};
+    var current_map = "i1s1";
+    var current_exit = {solana: "west1a", bright: "west1b"};
     var world_backgrounds = [];
         
     //Game Objects
