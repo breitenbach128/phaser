@@ -428,7 +428,7 @@ class HudSpeech{
             onStart: this.blurbStart,
             onStartParams: [this,Portait,Text],
             onUpdate: this.blurbUpdate,
-            onUpdateParams: [this]
+            onUpdateParams: [this,Text]
 ,           onComplete: this.blurbComplete,
             onCompleteParams: [this,Portait],
         });
@@ -459,8 +459,14 @@ class HudSpeech{
             hs.showPortraitRight(true);
         }
         hs.speaktext.setText(text);
+        console.log("start", (tween.elapsed/tween.duration).toFixed(2) , hs.timeline.progress)
     }
-    blurbUpdate(tween,targets,hs){
+    blurbUpdate(tween,targets,hs,text){
+        let cStr = "";
+        for(let t =0;t< (text.length * tween.progress);t++){
+            cStr+= text[t];
+        }
+        //console.log("SpeakingHud:",cStr, tween.progress);
         //Allow the speach item to be skipped if a button is pressed.
         if(hs.scene.skipSpeech.isDown && tween.progress < 0.90){
             //console.log("skip attempted");
@@ -471,6 +477,7 @@ class HudSpeech{
         }
     }
     blurbComplete(tween,targets,hs,p){
+        console.log("complete", (tween.elapsed/tween.duration).toFixed(2) , hs.timeline.progress)
         if(p == 'left'){
             hs.showPortraitLeft(false);
         }else if(p == 'right'){

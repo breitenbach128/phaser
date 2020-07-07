@@ -1,0 +1,312 @@
+{
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "exportAsImage.drawTileGrid": true,
+    "exportAsImage.includeBackgroundColor": true,
+    "exportAsImage.useCurrentScale": false,
+    "exportAsImage.visibleLayersOnly": true,
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "C:/Users/breit/Documents/Phaser/Platformer1/public/assets/Test.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 720,
+                "y": 452
+            }
+        },
+        "C:/Users/breit/Documents/Phaser/Platformer1/public/assets/map1.json": {
+            "scale": 1,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1008,
+                "y": 254
+            }
+        },
+        "C:/Users/breit/Documents/Phaser/Platformer1/tmx/map1.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 609.0909090909091,
+                "y": 151.5151515151515
+            }
+        },
+        "C:/Users/breit/Downloads/soulbits_b_28May2014-2200/soulbits/tmx/level1.json": {
+            "scale": 1,
+            "selectedLayer": 11,
+            "viewCenter": {
+                "x": 3206,
+                "y": 380
+            }
+        },
+        "C:/Users/breit/Downloads/soulbits_b_28May2014-2200/soulbits/tmx/levelTest16x16.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": -262,
+                "y": 249
+            }
+        },
+        "Test.tmx": {
+            "scale": 0.53734375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 785.344576911893,
+                "y": 800.2326257633033
+            }
+        },
+        "derp.tmx": {
+            "scale": 1,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 436.5,
+                "y": 291
+            }
+        },
+        "i1s1.tmx": {
+            "scale": 2,
+            "selectedLayer": 13,
+            "viewCenter": {
+                "x": 457.75,
+                "y": 147.5
+            }
+        },
+        "i1s1a.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 13,
+            "viewCenter": {
+                "x": 514.3333333333334,
+                "y": 158
+            }
+        },
+        "i1s2.tmx": {
+            "scale": 1.2877561475409836,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 472.52735012133513,
+                "y": 176.2756096590683
+            }
+        },
+        "i1s3.tmx": {
+            "scale": 1.2877561475409836,
+            "selectedLayer": 12,
+            "viewCenter": {
+                "x": 472.52735012133513,
+                "y": 176.2756096590683
+            }
+        },
+        "i1s4.tmx": {
+            "scale": 2,
+            "selectedLayer": 11,
+            "viewCenter": {
+                "x": 537.25,
+                "y": 163.5
+            }
+        },
+        "i1s5.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 331,
+                "y": 132.66666666666669
+            }
+        },
+        "m1s1.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 11,
+            "viewCenter": {
+                "x": 515,
+                "y": 341.66666666666663
+            }
+        },
+        "m1s1a.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 13,
+            "viewCenter": {
+                "x": 469.3333333333333,
+                "y": 467.3333333333333
+            }
+        },
+        "m2s1.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 12,
+            "viewCenter": {
+                "x": 4629,
+                "y": 1862
+            }
+        },
+        "m2s2.tmx": {
+            "scale": 1,
+            "selectedLayer": 12,
+            "viewCenter": {
+                "x": 2413.5,
+                "y": 202.5
+            }
+        },
+        "m2s3.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 12,
+            "viewCenter": {
+                "x": 4001.5151515151515,
+                "y": 1937.878787878788
+            }
+        },
+        "m2s4.tmx": {
+            "scale": 1,
+            "selectedLayer": 11,
+            "viewCenter": {
+                "x": 798.5,
+                "y": 548.5
+            }
+        },
+        "m2s5.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 12,
+            "viewCenter": {
+                "x": 2229,
+                "y": 662
+            }
+        },
+        "m6s1.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 12,
+            "viewCenter": {
+                "x": 760.6666666666667,
+                "y": 201.33333333333337
+            }
+        },
+        "m6s1a.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 11,
+            "viewCenter": {
+                "x": 1013,
+                "y": 346
+            }
+        },
+        "map1.tmx": {
+            "scale": 1,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 539,
+                "y": 468
+            }
+        },
+        "map1_32ts.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 11,
+            "viewCenter": {
+                "x": 1740.6666666666665,
+                "y": 825.9999999999999
+            }
+        },
+        "map1a_32ts.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 2398,
+                "y": 1098
+            }
+        },
+        "map2_16ts.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 411.3333333333333,
+                "y": 248.66666666666666
+            }
+        },
+        "map2_32ts.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 10,
+            "viewCenter": {
+                "x": 1468.3333333333333,
+                "y": 209.33333333333334
+            }
+        },
+        "map3_32ts.tmx": {
+            "scale": 1,
+            "selectedLayer": 10,
+            "viewCenter": {
+                "x": 939.5,
+                "y": 101
+            }
+        },
+        "map4_32ts.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 1142,
+                "y": 1662
+            }
+        },
+        "map5_32ts.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 7,
+            "viewCenter": {
+                "x": 2710,
+                "y": 146
+            }
+        },
+        "map6_32ts.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 118,
+                "y": 1662
+            }
+        },
+        "map7_32ts.tmx": {
+            "scale": 2,
+            "selectedLayer": 9,
+            "viewCenter": {
+                "x": 450.75,
+                "y": 540.5
+            }
+        },
+        "map8_32ts.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 8,
+            "viewCenter": {
+                "x": 46,
+                "y": 588
+            }
+        },
+        "storyboard_forest1.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 3133.333333333333,
+                "y": 1416
+            }
+        }
+    },
+    "loadedWorlds": [
+        "C:/Users/breit/Documents/Phaser/Platformer1/public/tmx/m2world.world",
+        "C:/Users/breit/Documents/Phaser/Platformer1/public/tmx/worldmap.world"
+    ],
+    "map.fixedSize": true,
+    "map.height": 50,
+    "map.lastUsedExportFilter": "JSON map files (*.json)",
+    "map.orientation": 1,
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 50,
+    "openFiles": [
+    ],
+    "project": "shattersold_prj.tiled-project",
+    "property.type": "float",
+    "recentFiles": [
+    ],
+    "resizeMap.removeObjects": false,
+    "tileset.embedInMap": true,
+    "tileset.margin": 0,
+    "tileset.spacing": 0,
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    },
+    "tileset.transparentColor": "#ff00ff",
+    "tileset.type": 0,
+    "tileset.useTransparentColor": false
+}
