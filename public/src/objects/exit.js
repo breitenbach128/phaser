@@ -157,8 +157,9 @@ class Exit extends Phaser.Physics.Matter.Sprite{
         if(this.touchedBy[1]){current_exit.bright = this.targetExit;};
 
         if(this.partnerExitName != 'none'){
-            if(this.partnerExit.touchedBy[0]){current_exit.solana = this.targetExit;};
-            if(this.partnerExit.touchedBy[1]){current_exit.bright = this.targetExit;};
+            if(this.partnerExit.touchedBy[0]){current_exit.solana = this.partnerExit.targetExit;};
+            if(this.partnerExit.touchedBy[1]){current_exit.bright = this.partnerExit.targetExit;};
+            
         }
     }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="91">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="93">
  <editorsettings>
   <export target="../assets/world/i1s1.json" format="json"/>
  </editorsettings>
@@ -374,11 +374,21 @@
   <object id="12" name="door1" type="exit" x="656" y="112" width="64" height="96">
    <properties>
     <property name="manualTrigger" type="bool" value="true"/>
-    <property name="targetExit" value="west1"/>
-    <property name="targetMap" value="i1s2"/>
+    <property name="partner" value="door2"/>
+    <property name="targetExit" value="west1a"/>
+    <property name="targetMap" value="i1s1"/>
    </properties>
   </object>
   <object id="50" name="west1b" type="entrance" x="192" y="288" width="32" height="32"/>
+  <object id="91" name="door2" type="entrance" x="672" y="288" width="32" height="32"/>
+  <object id="92" name="door2" type="exit" x="656" y="240" width="64" height="96">
+   <properties>
+    <property name="manualTrigger" type="bool" value="true"/>
+    <property name="partner" value="door1"/>
+    <property name="targetExit" value="west1b"/>
+    <property name="targetMap" value="i1s1"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="9" name="objects">
   <object id="3" name="hive1" type="hive" x="192" y="208" width="32" height="32">

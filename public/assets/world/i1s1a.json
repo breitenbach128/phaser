@@ -3,7 +3,8 @@
     {
      "export":
         {
-         "format":"json"
+         "format":"json",
+         "target":"i1s1a.json"
         }
     },
  "height":22,
@@ -134,7 +135,7 @@
                 {
                  "height":32,
                  "id":2,
-                 "name":"west1a",
+                 "name":"west1",
                  "rotation":0,
                  "type":"entrance",
                  "visible":true,

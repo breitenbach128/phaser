@@ -204,7 +204,7 @@ class TMXGear extends Phaser.Physics.Matter.Image{
         this.ready = true;
         this.target = {name: -1,type: -1, object: []};
 
-        let rotation_constraint = Phaser.Physics.Matter.Matter.Constraint.create(
+        this.rotation_constraint = Phaser.Physics.Matter.Matter.Constraint.create(
             {
               pointA: { x: this.x, y: this.y },
               bodyB: this.body,
@@ -212,7 +212,7 @@ class TMXGear extends Phaser.Physics.Matter.Image{
               stiffness: 1
             }
           );
-        this.scene.matter.world.add(rotation_constraint);
+        this.scene.matter.world.add(this.rotation_constraint);
         if(properties){
             this.target.name = properties.targetName;
         }

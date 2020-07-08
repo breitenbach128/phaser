@@ -165,14 +165,19 @@
                          "value":true
                         }, 
                         {
+                         "name":"partner",
+                         "type":"string",
+                         "value":"door2"
+                        }, 
+                        {
                          "name":"targetExit",
                          "type":"string",
-                         "value":"west1"
+                         "value":"west1a"
                         }, 
                         {
                          "name":"targetMap",
                          "type":"string",
-                         "value":"i1s2"
+                         "value":"i1s1"
                         }],
                  "rotation":0,
                  "type":"exit",
@@ -191,6 +196,49 @@
                  "width":32,
                  "x":192,
                  "y":288
+                }, 
+                {
+                 "height":32,
+                 "id":91,
+                 "name":"door2",
+                 "rotation":0,
+                 "type":"entrance",
+                 "visible":true,
+                 "width":32,
+                 "x":672,
+                 "y":288
+                }, 
+                {
+                 "height":96,
+                 "id":92,
+                 "name":"door2",
+                 "properties":[
+                        {
+                         "name":"manualTrigger",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"partner",
+                         "type":"string",
+                         "value":"door1"
+                        }, 
+                        {
+                         "name":"targetExit",
+                         "type":"string",
+                         "value":"west1b"
+                        }, 
+                        {
+                         "name":"targetMap",
+                         "type":"string",
+                         "value":"i1s1"
+                        }],
+                 "rotation":0,
+                 "type":"exit",
+                 "visible":true,
+                 "width":64,
+                 "x":656,
+                 "y":240
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -621,10 +669,10 @@
          "y":0
         }],
  "nextlayerid":17,
- "nextobjectid":91,
+ "nextobjectid":93,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.4.1",
+ "tiledversion":"1.3.4",
  "tileheight":16,
  "tilesets":[
         {
@@ -1444,6 +1492,6 @@
         }],
  "tilewidth":16,
  "type":"map",
- "version":1.4,
+ "version":1.2,
  "width":60
 }
