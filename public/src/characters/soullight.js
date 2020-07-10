@@ -46,7 +46,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.max_speed = 50;//25 
         this.accel = 1;
         this.projectile_speed = 8;//14
-        this.protection_radius = {value:250, max: 250, original: 250, dirty: false, change: 0};//How much does the light protect;
+        this.protection_radius = {value:16, max: 16, original: 250, dirty: false, change: 0};//How much does the light protect;
         this.protection_circle = new Phaser.Geom.Circle(config.x, config.y, 250);
         this.throw = {x:0,y:0};
         this.isShrinking = false;
@@ -439,6 +439,8 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
         this.claimed = true;
         soullightClaimed = true; //Global Tracking
         this.scene.particle_soulight.setActive(true);
+        this.protection_radius.max = 250;
+        this.protection_radius.value = 250;
         this.setVisible(true);
     }
     lose(){

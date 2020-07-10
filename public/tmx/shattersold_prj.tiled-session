@@ -65,28 +65,96 @@
             }
         },
         "i1s1.tmx": {
-            "scale": 2,
-            "selectedLayer": 13,
+            "scale": 1.5,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 457.75,
-                "y": 147.5
+                "x": 489.66666666666663,
+                "y": 111.33333333333334
             }
+        },
+        "i1s1.tmx#collision": {
+            "scaleInDock": 1
+        },
+        "i1s1.tmx#decorative": {
+            "scaleInDock": 0.5
+        },
+        "i1s1.tmx#mainlevbuild_A": {
+            "scaleInDock": 3
+        },
+        "i1s1.tmx#mainlevbuild_B": {
+            "scaleInDock": 1
+        },
+        "i1s1.tmx#tile_custom": {
+            "scaleInDock": 1
         },
         "i1s1a.tmx": {
-            "scale": 1.5,
-            "selectedLayer": 13,
+            "scale": 2,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 514.3333333333334,
-                "y": 158
+                "x": 676.25,
+                "y": 189.5
             }
         },
-        "i1s2.tmx": {
-            "scale": 1.2877561475409836,
-            "selectedLayer": 0,
+        "i1s1a.tmx#collision": {
+            "scaleInDock": 1
+        },
+        "i1s1a.tmx#decorative": {
+            "scaleInDock": 1
+        },
+        "i1s1a.tmx#mainlevbuild_A": {
+            "scaleInDock": 1
+        },
+        "i1s1a.tmx#mainlevbuild_B": {
+            "scaleInDock": 1
+        },
+        "i1s1a.tmx#tile_custom": {
+            "scaleInDock": 1
+        },
+        "i1s1b.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 472.52735012133513,
-                "y": 176.2756096590683
+                "x": 479.66666666666663,
+                "y": 126.66666666666669
             }
+        },
+        "i1s1b.tmx#collision": {
+            "scaleInDock": 1
+        },
+        "i1s1b.tmx#decorative": {
+            "scaleInDock": 1
+        },
+        "i1s1b.tmx#mainlevbuild_A": {
+            "scaleInDock": 1
+        },
+        "i1s1b.tmx#mainlevbuild_B": {
+            "scaleInDock": 1
+        },
+        "i1s1b.tmx#tile_custom": {
+            "scaleInDock": 1
+        },
+        "i1s2.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 11,
+            "viewCenter": {
+                "x": 489.66666666666663,
+                "y": 62
+            }
+        },
+        "i1s2.tmx#collision": {
+            "scaleInDock": 1
+        },
+        "i1s2.tmx#decorative": {
+            "scaleInDock": 1
+        },
+        "i1s2.tmx#mainlevbuild_A": {
+            "scaleInDock": 1.5
+        },
+        "i1s2.tmx#mainlevbuild_B": {
+            "scaleInDock": 1
+        },
+        "i1s2.tmx#tile_custom": {
+            "scaleInDock": 1
         },
         "i1s3.tmx": {
             "scale": 1.2877561475409836,
@@ -116,25 +184,64 @@
             "scale": 1.5,
             "selectedLayer": 11,
             "viewCenter": {
-                "x": 515,
-                "y": 341.66666666666663
+                "x": 1453.6666666666665,
+                "y": 454
             }
+        },
+        "m1s1.tmx#collision": {
+            "scaleInDock": 1
+        },
+        "m1s1.tmx#decorative": {
+            "scaleInDock": 1
+        },
+        "m1s1.tmx#mainlevbuild_A": {
+            "scaleInDock": 1
+        },
+        "m1s1.tmx#mainlevbuild_B": {
+            "scaleInDock": 1
         },
         "m1s1a.tmx": {
             "scale": 1.5,
             "selectedLayer": 13,
             "viewCenter": {
-                "x": 469.3333333333333,
+                "x": 468.99999999999994,
                 "y": 467.3333333333333
             }
         },
+        "m1s1a.tmx#collision": {
+            "scaleInDock": 1
+        },
+        "m1s1a.tmx#decorative": {
+            "scaleInDock": 1
+        },
+        "m1s1a.tmx#mainlevbuild_A": {
+            "scaleInDock": 1
+        },
+        "m1s1a.tmx#mainlevbuild_B": {
+            "scaleInDock": 1
+        },
         "m2s1.tmx": {
-            "scale": 0.5,
-            "selectedLayer": 12,
+            "scale": 2,
+            "selectedLayer": 10,
             "viewCenter": {
-                "x": 4629,
-                "y": 1862
+                "x": 603.25,
+                "y": 127.5
             }
+        },
+        "m2s1.tmx#32Tileset": {
+            "scaleInDock": 1
+        },
+        "m2s1.tmx#collision": {
+            "scaleInDock": 1
+        },
+        "m2s1.tmx#mainlevbuild1": {
+            "scaleInDock": 1
+        },
+        "m2s1.tmx#mainlevbuild2": {
+            "scaleInDock": 0.75
+        },
+        "m2s1.tmx#mainlevbuild3": {
+            "scaleInDock": 1
         },
         "m2s2.tmx": {
             "scale": 1,
@@ -252,33 +359,72 @@
             "scale": 0.25,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 118,
-                "y": 1662
+                "x": -904,
+                "y": 436
             }
+        },
+        "map6_32ts.tmx#32Tileset": {
+            "scaleInDock": 1
+        },
+        "map6_32ts.tmx#collision": {
+            "scaleInDock": 1
         },
         "map7_32ts.tmx": {
             "scale": 2,
             "selectedLayer": 9,
             "viewCenter": {
-                "x": 450.75,
+                "x": 450.5,
                 "y": 540.5
             }
+        },
+        "map7_32ts.tmx#32Castle": {
+            "scaleInDock": 1
+        },
+        "map7_32ts.tmx#32Corruption": {
+            "scaleInDock": 1
+        },
+        "map7_32ts.tmx#32Tileset": {
+            "scaleInDock": 1
+        },
+        "map7_32ts.tmx#collision": {
+            "scaleInDock": 1
         },
         "map8_32ts.tmx": {
             "scale": 0.25,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 46,
+                "x": 48,
                 "y": 588
             }
         },
+        "map8_32ts.tmx#32Castle": {
+            "scaleInDock": 1
+        },
+        "map8_32ts.tmx#32Corruption": {
+            "scaleInDock": 1
+        },
+        "map8_32ts.tmx#32Tileset": {
+            "scaleInDock": 1
+        },
+        "map8_32ts.tmx#collision": {
+            "scaleInDock": 1
+        },
         "storyboard_forest1.tmx": {
-            "scale": 0.75,
+            "scale": 0.33,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 3133.333333333333,
-                "y": 1416
+                "x": 1503.0303030303032,
+                "y": 330.30303030303037
             }
+        },
+        "storyboard_forest1.tmx#32Castle": {
+            "scaleInDock": 1
+        },
+        "storyboard_forest1.tmx#32Tileset": {
+            "scaleInDock": 1
+        },
+        "storyboard_forest1.tmx#collision": {
+            "scaleInDock": 1
         }
     },
     "loadedWorlds": [
@@ -288,6 +434,7 @@
     "map.fixedSize": true,
     "map.height": 50,
     "map.lastUsedExportFilter": "JSON map files (*.json)",
+    "map.lastUsedFormat": "tmx",
     "map.orientation": 1,
     "map.tileHeight": 16,
     "map.tileWidth": 16,
@@ -297,6 +444,14 @@
     "project": "shattersold_prj.tiled-project",
     "property.type": "float",
     "recentFiles": [
+        "m1s1.tmx",
+        "m1s1a.tmx",
+        "m2s1.tmx",
+        "storyboard_forest1.tmx",
+        "map8_32ts.tmx",
+        "map7_32ts.tmx",
+        "map6_32ts.tmx",
+        "i1s1.tmx"
     ],
     "resizeMap.removeObjects": false,
     "tileset.embedInMap": true,

@@ -165,6 +165,7 @@ var Preloader = new Phaser.Class({
 		//Map Assets - Intro levels
 		this.load.tilemapTiledJSON('i1s1', 'assets/world/i1s1.json');
 		this.load.tilemapTiledJSON('i1s1a', 'assets/world/i1s1a.json');
+		this.load.tilemapTiledJSON('i1s1b', 'assets/world/i1s1b.json');
 		this.load.tilemapTiledJSON('i1s2', 'assets/world/i1s2.json');
 		this.load.tilemapTiledJSON('i1s3', 'assets/world/i1s3.json');
 		this.load.tilemapTiledJSON('i1s4', 'assets/world/i1s4.json');
@@ -367,6 +368,11 @@ var Preloader = new Phaser.Class({
 		this.load.audio('coin', ['snd/coin.mp3', 'snd/coin.ogg']);
 		this.load.audio('bomb', ['snd/expl.mp3', 'snd/expl.ogg']);
 		this.load.audio('btn',  ['snd/btn.mp3', 'snd/btn.ogg']);
+		//HUD		
+		this.load.audio('spblip_1',  ['snd/hud/speech_blip_1.wav']);
+		this.load.audio('spblip_2',  ['snd/hud/speech_blip_2.wav']);
+		this.load.audio('spblip_3',  ['snd/hud/speech_blip_3.wav']);
+		this.load.audio('spblip_4',  ['snd/hud/speech_blip_4.wav']);
 		//this.load.audio('jumpSolana',  ['snd/jump1.mp3']);
 		this.load.audio('grabbedLight',  ['snd/grabbed.wav']);
 		this.load.audio('jumpSolana',  ['snd/jumpland.wav']);
