@@ -66,10 +66,10 @@
         },
         "i1s1.tmx": {
             "scale": 1.5,
-            "selectedLayer": 2,
+            "selectedLayer": 12,
             "viewCenter": {
-                "x": 489.66666666666663,
-                "y": 111.33333333333334
+                "x": 468.33333333333326,
+                "y": 110.66666666666669
             }
         },
         "i1s1.tmx#collision": {
@@ -112,10 +112,10 @@
         },
         "i1s1b.tmx": {
             "scale": 1.5,
-            "selectedLayer": 2,
+            "selectedLayer": 10,
             "viewCenter": {
-                "x": 479.66666666666663,
-                "y": 126.66666666666669
+                "x": 525.6666666666666,
+                "y": 159.33333333333334
             }
         },
         "i1s1b.tmx#collision": {
@@ -125,7 +125,7 @@
             "scaleInDock": 1
         },
         "i1s1b.tmx#mainlevbuild_A": {
-            "scaleInDock": 1
+            "scaleInDock": 2
         },
         "i1s1b.tmx#mainlevbuild_B": {
             "scaleInDock": 1
@@ -133,12 +133,58 @@
         "i1s1b.tmx#tile_custom": {
             "scaleInDock": 1
         },
+        "i1s1c.tmx": {
+            "scale": 2,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 538.75,
+                "y": 135.5
+            }
+        },
+        "i1s1c.tmx#collision": {
+            "scaleInDock": 0.75
+        },
+        "i1s1c.tmx#decorative": {
+            "scaleInDock": 1
+        },
+        "i1s1c.tmx#mainlevbuild_A": {
+            "scaleInDock": 0.75
+        },
+        "i1s1c.tmx#mainlevbuild_B": {
+            "scaleInDock": 1.5
+        },
+        "i1s1c.tmx#tile_custom": {
+            "scaleInDock": 1
+        },
+        "i1s1d.tmx": {
+            "scale": 1,
+            "selectedLayer": 13,
+            "viewCenter": {
+                "x": 506.5,
+                "y": 106
+            }
+        },
+        "i1s1d.tmx#collision": {
+            "scaleInDock": 0.75
+        },
+        "i1s1d.tmx#decorative": {
+            "scaleInDock": 1
+        },
+        "i1s1d.tmx#mainlevbuild_A": {
+            "scaleInDock": 1
+        },
+        "i1s1d.tmx#mainlevbuild_B": {
+            "scaleInDock": 1.5
+        },
+        "i1s1d.tmx#tile_custom": {
+            "scaleInDock": 1
+        },
         "i1s2.tmx": {
             "scale": 1.5,
             "selectedLayer": 11,
             "viewCenter": {
-                "x": 489.66666666666663,
-                "y": 62
+                "x": 468.33333333333326,
+                "y": 61.33333333333334
             }
         },
         "i1s2.tmx#collision": {
@@ -221,11 +267,11 @@
             "scaleInDock": 1
         },
         "m2s1.tmx": {
-            "scale": 2,
-            "selectedLayer": 10,
+            "scale": 1,
+            "selectedLayer": 12,
             "viewCenter": {
-                "x": 603.25,
-                "y": 127.5
+                "x": 626.5,
+                "y": 1761
             }
         },
         "m2s1.tmx#32Tileset": {
@@ -304,16 +350,34 @@
             "selectedLayer": 11,
             "viewCenter": {
                 "x": 1740.6666666666665,
-                "y": 825.9999999999999
+                "y": 825.3333333333333
             }
+        },
+        "map1_32ts.tmx#32Castle": {
+            "scaleInDock": 1
+        },
+        "map1_32ts.tmx#32Tileset": {
+            "scaleInDock": 1
+        },
+        "map1_32ts.tmx#collision": {
+            "scaleInDock": 1
         },
         "map1a_32ts.tmx": {
             "scale": 0.5,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 2398,
-                "y": 1098
+                "x": 2395,
+                "y": 1096
             }
+        },
+        "map1a_32ts.tmx#32Castle": {
+            "scaleInDock": 1
+        },
+        "map1a_32ts.tmx#32Tileset": {
+            "scaleInDock": 1
+        },
+        "map1a_32ts.tmx#collision": {
+            "scaleInDock": 1
         },
         "map2_16ts.tmx": {
             "scale": 1.5,
@@ -327,9 +391,21 @@
             "scale": 1.5,
             "selectedLayer": 10,
             "viewCenter": {
-                "x": 1468.3333333333333,
-                "y": 209.33333333333334
+                "x": 595.6666666666666,
+                "y": 239.3333333333333
             }
+        },
+        "map2_32ts.tmx#32Castle": {
+            "scaleInDock": 1
+        },
+        "map2_32ts.tmx#32Corruption": {
+            "scaleInDock": 1
+        },
+        "map2_32ts.tmx#32Tileset": {
+            "scaleInDock": 1
+        },
+        "map2_32ts.tmx#collision": {
+            "scaleInDock": 1
         },
         "map3_32ts.tmx": {
             "scale": 1,
@@ -444,9 +520,12 @@
     "project": "shattersold_prj.tiled-project",
     "property.type": "float",
     "recentFiles": [
+        "m2s1.tmx",
+        "map1_32ts.tmx",
+        "map1a_32ts.tmx",
+        "map2_32ts.tmx",
         "m1s1.tmx",
         "m1s1a.tmx",
-        "m2s1.tmx",
         "storyboard_forest1.tmx",
         "map8_32ts.tmx",
         "map7_32ts.tmx",

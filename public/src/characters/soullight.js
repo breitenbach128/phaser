@@ -455,7 +455,7 @@ class SoulLight extends Phaser.Physics.Matter.Sprite{
 class SoulTransfer extends Phaser.Physics.Matter.Sprite{
     constructor(scene, x, y, sprite, frame, parent) {
         super(scene.matter.world, x, y, sprite, frame)
-        this.setScale(.10);
+        this.setScale(.40);
         this.scene = scene;
         scene.matter.world.add(this);
         scene.add.existing(this); 

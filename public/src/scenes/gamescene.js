@@ -208,7 +208,7 @@ var GameScene = new Phaser.Class({
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);  
         this.cameras.main.setBackgroundColor('#000000'); 
         this.cameras.main.roundPixels = true;
-        this.cameras.main.setZoom(1.75);
+        this.cameras.main.setZoom(2.00);
         camera_main = this.cameras.main;
         this.camMovement = {x:camera_main.worldView.x,y:camera_main.worldView.y};
 

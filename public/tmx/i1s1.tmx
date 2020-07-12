@@ -471,7 +471,7 @@
     <property name="targetType" value="none"/>
    </properties>
   </object>
-  <object id="71" name="gate3" type="gate" x="272" y="160" width="48" height="16">
+  <object id="71" name="gate1" type="gate" x="272" y="160" width="48" height="16">
    <properties>
     <property name="autoclose" type="bool" value="false"/>
     <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:0}"/>
