@@ -935,6 +935,22 @@
                  "width":16,
                  "x":784,
                  "y":16
+                }, 
+                {
+                 "height":212,
+                 "id":104,
+                 "name":"",
+                 "rotation":0,
+                 "text":
+                    {
+                     "text":"This level tests out light and lamp activation. Short dialogue about a lamp being out of energy. Bright mentions that the Soullight can charge a light temporarily or permanantly, depending on the purity of the crystal.\nSolana will have to pass the light to bright right when the level begins, and then bright will activate a lamp to power a platform to allow her to move across.",
+                     "wrap":true
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":653,
+                 "x":153,
+                 "y":-304
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -954,7 +970,7 @@
          "y":0
         }],
  "nextlayerid":17,
- "nextobjectid":104,
+ "nextobjectid":105,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.1",

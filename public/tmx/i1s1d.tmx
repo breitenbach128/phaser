@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="104">
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="105">
  <editorsettings>
   <export target="../assets/world/i1s1d.json" format="json"/>
  </editorsettings>
@@ -519,6 +519,10 @@
   <object id="100" type="hulls" x="817" y="266" width="80" height="48"/>
   <object id="101" type="hulls" x="784" y="160" width="16" height="176"/>
   <object id="102" type="hulls" x="784" y="16" width="16" height="144"/>
+  <object id="104" x="153" y="-304" width="653" height="212">
+   <text wrap="1">This level tests out light and lamp activation. Short dialogue about a lamp being out of energy. Bright mentions that the Soullight can charge a light temporarily or permanantly, depending on the purity of the crystal.
+Solana will have to pass the light to bright right when the level begins, and then bright will activate a lamp to power a platform to allow her to move across.</text>
+  </object>
  </objectgroup>
  <objectgroup id="16" name="pathing"/>
 </map>
