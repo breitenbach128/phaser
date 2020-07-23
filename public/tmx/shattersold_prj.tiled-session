@@ -137,8 +137,8 @@
             "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 538.75,
-                "y": 135.5
+                "x": 417.25,
+                "y": 132
             }
         },
         "i1s1c.tmx#collision": {
@@ -267,11 +267,11 @@
             "scaleInDock": 1
         },
         "m2s1.tmx": {
-            "scale": 1,
+            "scale": 1.5,
             "selectedLayer": 12,
             "viewCenter": {
-                "x": 626.5,
-                "y": 1761
+                "x": 211.99999999999994,
+                "y": 1662
             }
         },
         "m2s1.tmx#32Tileset": {
@@ -485,6 +485,29 @@
         "map8_32ts.tmx#collision": {
             "scaleInDock": 1
         },
+        "panic1.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 11,
+            "viewCenter": {
+                "x": 572,
+                "y": 425.33333333333337
+            }
+        },
+        "panic1.tmx#collision": {
+            "scaleInDock": 1
+        },
+        "panic1.tmx#decorative": {
+            "scaleInDock": 1
+        },
+        "panic1.tmx#mainlevbuild_A": {
+            "scaleInDock": 1
+        },
+        "panic1.tmx#mainlevbuild_B": {
+            "scaleInDock": 1
+        },
+        "panic1.tmx#tile_custom": {
+            "scaleInDock": 1
+        },
         "storyboard_forest1.tmx": {
             "scale": 0.33,
             "selectedLayer": 4,
@@ -520,6 +543,7 @@
     "project": "shattersold_prj.tiled-project",
     "property.type": "float",
     "recentFiles": [
+        "i1s1c.tmx",
         "m2s1.tmx",
         "map1_32ts.tmx",
         "map1a_32ts.tmx",
