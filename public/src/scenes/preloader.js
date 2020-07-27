@@ -261,7 +261,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('pressure_plate', 'assets/objects/pressure_plate.png', {frameWidth: 32, frameHeight: 16});
 		this.load.spritesheet('tmxbutton', 'assets/objects/tmxbutton.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('platform_160x16', 'assets/objects/platform_160x16.png', {frameWidth: 160, frameHeight: 16});
-		this.load.spritesheet('light_crystal', 'assets/objects/light_crystal.png', {frameWidth: 16, frameHeight: 16});
+		this.load.spritesheet('light_crystal', 'assets/objects/light_crystal2.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('fireflies', 'assets/objects/fireflies.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('bat', 'assets/characters/bat_32.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('shard_light', 'assets/objects/light_shard.png', {frameWidth: 16, frameHeight: 16});
@@ -278,7 +278,7 @@ var Preloader = new Phaser.Class({
         this.load.spritesheet('gear', 'assets/objects/gear.png', {frameWidth: 16, frameHeight: 16});
         this.load.spritesheet('minecart', 'assets/objects/minecart.png', {frameWidth: 96, frameHeight: 48});
 		this.load.spritesheet('minecart_wheel', 'assets/objects/minecart_wheel.png', {frameWidth: 13, frameHeight: 13});
-		this.load.image('seesaw', 'assets/objects/seesaw.png');
+		this.load.image('seesaw', 'assets/objects/seesaw2.png');
 		//Interactive Objects
 		//Light Bridge / Sollink		
         this.load.spritesheet('sollink', 'assets/objects/sollink.png', {frameWidth: 32, frameHeight: 32});
@@ -309,7 +309,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('shrieker', 'assets/objects/mushroom_2.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('spiker', 'assets/objects/spiker_1.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('oilblob2', 'assets/objects/oil_blob2.png',{frameWidth: 16, frameHeight: 16});
-		this.load.spritesheet('statue', 'assets/characters/statue3.png',{frameWidth: 32, frameHeight: 48});
+		this.load.spritesheet('statue', 'assets/characters/statue2.png',{frameWidth: 32, frameHeight: 48});
 		this.load.spritesheet('shadow1', 'assets/characters/enemy_shadow2.png',{frameWidth: 48, frameHeight: 64});
 		//Controller
 		this.load.image('icon_kb_spcbar', 'assets/UI/Keyboard_Mouse/Dark/Keyboard_Black_Space.png');

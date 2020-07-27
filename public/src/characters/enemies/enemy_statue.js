@@ -22,7 +22,7 @@ class EnemyStatue extends Phaser.Physics.Matter.Sprite{
             friction: 0.9,
             density: 0.01,
             restitution: 0.7,
-            label: "STATUE"
+            label: "ENEMY"
         });
         this
         .setExistingBody(compoundBody)
@@ -47,6 +47,9 @@ class EnemyStatue extends Phaser.Physics.Matter.Sprite{
 
         //Status Weapon
         this.gun = new Gun(120,3,240);//ROF,MAGSIZE,RELOADTIME
+
+        //Status Conditions
+        this.isStunned = false;
     }
     update(){
         if(this.active){
@@ -85,5 +88,14 @@ class EnemyStatue extends Phaser.Physics.Matter.Sprite{
     }
     remove(){
         this.active = false;
+    }
+    receiveDamage(damage){
+        this.setTint(0x000000);
+        this.active = false;
+        this.stunTimer = this.scene.time.addEvent({ delay: damage*5000, callback: this.awake, callbackScope: this, loop: false });
+    }
+    awake(){
+        this.active = true;
+        this.clearTint();
     }
 }

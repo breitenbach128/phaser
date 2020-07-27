@@ -828,8 +828,8 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         const { width: w, height: h } = this.sprite;
         const mainBody =  Bodies.rectangle(0, 0, w, h);
         this.sensors = {
-            top: Bodies.rectangle(0, -h*0.70, w*1.40 , h*0.80, { isSensor: true }),
-            bottom: Bodies.rectangle(0, h*0.70, w*1.40 , h*0.80, { isSensor: true })
+            top: Bodies.rectangle(0, -h*0.70, w , 8, { isSensor: true }),
+            bottom: Bodies.rectangle(0, h*0.70, w , 8, { isSensor: true })
           };
         this.sensors.top.label = "PLAT_TOP";
         this.sensors.bottom.label = "PLAT_BOTTOM";
@@ -877,6 +877,16 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
                 
                 if (gameObjectB !== undefined && gameObjectB instanceof Solana && !gameObjectA.immobile) {
                     gameObjectB.setFriction(0.5);
+                    if(gameObjectA.damage > 0){
+                        //Does the platform hurt the player?
+                        gameObjectB.receiveDamage(gameObjectA.damage);
+                    }
+                }
+                if (gameObjectB !== undefined && gameObjectB instanceof Bright){
+                    if(gameObjectA.damage > 0 && gameObjectB.light_status == 1){
+                        //Does the platform hurt the player?
+                        gameObjectB.receiveDamage(gameObjectA.damage);
+                    }
                 }
             }
         });
@@ -914,6 +924,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
             this.tmloop = properties.loop;
             this.autostart = properties.autostart;
             this.togglePath = properties.togglepath != undefined ? properties.togglepath : false;
+            this.damage = properties.hurt;
             if(properties.frame != undefined){this.setFrame(properties.frame)};
         }
        if(this.autostart && (this.path != undefined && this.path != -1)){ 
@@ -987,7 +998,8 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
                 targets: this,
                 x: this.x+dX,
                 y: this.y+dY,
-                ease: 'Cubic.easeInOut',
+                //ease: 'Cubic.easeInOut',
+                ease: 'linear',
                 duration: e.t,
                 hold: e.h
             });
@@ -1181,7 +1193,8 @@ class Seesaw extends Phaser.Physics.Matter.Image {
         .setCollidesWith([CATEGORY.SOLANA,CATEGORY.BRIGHT,CATEGORY.DARK, CATEGORY.SOLID, CATEGORY.GROUND, CATEGORY.BULLET])
         .setPosition(x, y)
         .setIgnoreGravity(true)
-        .setVisible(true);  
+        .setVisible(true)
+        .setDepth(DEPTH_LAYERS.OBJECTS);
 
         this.pivotConstraint = Phaser.Physics.Matter.Matter.Constraint.create(
             {
