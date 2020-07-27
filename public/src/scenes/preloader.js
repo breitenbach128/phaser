@@ -163,10 +163,11 @@ var Preloader = new Phaser.Class({
 		this.load.tilemapTiledJSON('map7', 'assets/world/map7_32ts.json');
 		this.load.tilemapTiledJSON('map8', 'assets/world/map8_32ts.json');
 		//Map Assets - Intro levels
-		this.load.tilemapTiledJSON('i1s1', 'assets/world/i1s1.json');
 		this.load.tilemapTiledJSON('i1s1a', 'assets/world/i1s1a.json');
 		this.load.tilemapTiledJSON('i1s1b', 'assets/world/i1s1b.json');
 		this.load.tilemapTiledJSON('i1s1c', 'assets/world/i1s1c.json');
+		this.load.tilemapTiledJSON('i1s1d', 'assets/world/i1s1d.json');
+		this.load.tilemapTiledJSON('i1s1e', 'assets/world/i1s1e.json');
 		this.load.tilemapTiledJSON('i1s2', 'assets/world/i1s2.json');
 		this.load.tilemapTiledJSON('i1s3', 'assets/world/i1s3.json');
 		this.load.tilemapTiledJSON('i1s4', 'assets/world/i1s4.json');
@@ -325,6 +326,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('exit_marker', 'assets/objects/exit_marker.png', {frameWidth: 64, frameHeight: 64});
 		this.load.image('entrance', 'assets/objects/entrance.png');
 		this.load.image('gate', 'assets/objects/gate.png');
+		this.load.image('gate_wide', 'assets/objects/gate_wide.png');
 		this.load.image('triggerzone', 'assets/objects/triggerzone.png');
 		this.load.image('speechbubble', 'assets/hud/speechBubble.png');
 		this.load.image('tmxwindow', 'assets/objects/tmxwindow.png');

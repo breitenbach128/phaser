@@ -154,10 +154,20 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
 
     }
     setup(x,y,properties,name,w,h){
+        
+        // if(w > h){this.setTexture('gate_wide')};
+        
         this.setActive(true);        
         this.setPosition(x,y);        
-        this.setSize(w,h);
-        this.setDisplaySize(w,h);
+
+        if(w > h){
+            this.setSize(h,w);
+            this.setDisplaySize(h,w);
+            this.setAngle(90);
+        }else{
+            this.setSize(w,h);
+            this.setDisplaySize(w,h);
+        }
         this.name = name;        
         this.ready = true;
         this.prevVel = {x:0,y:0};       
@@ -546,18 +556,18 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             this.effect[0].emitters.list[0].setPosition({ min: -this.zoneWidth/2, max: this.zoneWidth/2 },this.y-this.zoneHeight*(3/4));
             this.effect[0].setActive(false);
             //Teleporter Gradient
-            if(this.scene.textures.get("teleporter").key != "__MISSING"){  
-                let oldTexture = this.scene.textures.get("teleporter");
+            if(this.scene.textures.get("teleporter"+this.name).key != "__MISSING"){  
+                let oldTexture = this.scene.textures.get("teleporter"+this.name);
                 oldTexture.destroy();
             }
-            this.texture = this.scene.textures.createCanvas('teleporter', this.zoneWidth , this.zoneHeight);
+            this.texture = this.scene.textures.createCanvas('teleporter'+this.name, this.zoneWidth , this.zoneHeight);
            
             //  We can access the underlying Canvas context like this:
             let grd = this.texture.context.createLinearGradient(0, 0, this.zoneWidth, this.zoneHeight);
             //let grd = this.texture.context.createRadialGradient(this.zoneWidth/2,this.zoneHeight/2,this.zoneWidth/4,this.zoneWidth/2,this.zoneHeight/2,this.zoneWidth+20);
             //this.texture.context.globalCompositeOperation = "destination-out";
-            grd.addColorStop(0, "rgba(255, 255, 255, 0.0)");
-            grd.addColorStop(1, "rgba(255, 255, 255, 0.2)");
+            grd.addColorStop(0, "rgba(255, 255, 255, 0.2)");
+            grd.addColorStop(1, "rgba(255, 255, 255, 0.8)");
         
             this.texture.context.fillStyle = grd;
             this.texture.context.fillRect(0, 0, this.zoneWidth, this.zoneHeight);
@@ -565,10 +575,38 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             //  Call this if running under WebGL, or you'll see nothing change
             this.texture.refresh();
             //this.setTexture('teleporter');
-            this.teleporterGradeient = this.scene.add.image(this.x, this.y, 'teleporter');
-            this.teleporterGradeient.setVisible(false);
-            //this.teleporterGradeient.setAlpha(0.2);
-
+            this.teleporterGradeient = this.scene.add.image(this.x, this.y, 'teleporter'+this.name);
+            this.teleporterGradeient.setDepth(DEPTH_LAYERS.OBJECTS);
+            this.teleporterGradeient.setVisible((this.ready[0] && this.ready[1]));
+            this.teleporterGradeient.setAlpha(0.2);
+            //Create Particles
+            let spark1 = this.scene.add.particles('shapes');
+            spark1.setDepth(DEPTH_LAYERS.FRONT);
+            this.sparker = spark1.createEmitter({
+                active:true,
+                x: this.x,
+                y: this.y,
+                frequency: 80,
+                frame: {
+                    frames: [
+                        "star_06"
+                    ],
+                    cycle: false,
+                    quantity: 1
+                },
+                speed: 10,
+                scale: { start: 0.5, end: 0.0 },
+                alpha: { start: 1, end: 0 },
+                blendMode: 'NORMAL',
+                lifespan: 3000,
+                tint: [
+                    0xffd92a
+                ],
+                emitZone: {
+                    source: new Phaser.Geom.Rectangle(-w/2,-h/2,w,h),
+                    type: "random"
+                }
+            });
         }else if(this.zonedata.type == 'mass'){
            //Restrict collision types
             this.setCollidesWith([CATEGORY.SOLANA,CATEGORY.DARK,CATEGORY.SOLID])
@@ -782,7 +820,9 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
 
             if(this.zonedata.type == "teleport"){
                 let positionParse = JSON.parse(this.zonedata.value)
-
+                if(Array.isArray(positionParse)){
+                    positionParse = positionParse[id];
+                }
                 this.scene.time.addEvent({ 
                     delay: 300, 
                     callback: function(){
