@@ -227,7 +227,7 @@ class PropPuddle extends Phaser.Physics.Matter.Sprite{
 
         this
         .setExistingBody(compoundBody)
-        .setCollidesWith([CATEGORY.SOLANA])
+        .setCollidesWith([CATEGORY.SOLANA, CATEGORY.DARK])
         .setPosition(x, y)
         .setStatic(true)
         .setDepth(DEPTH_LAYERS.FG);
@@ -265,8 +265,8 @@ class PropPuddle extends Phaser.Physics.Matter.Sprite{
             callback: eventData => {
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 if (gameObjectB !== undefined && 
-                    (gameObjectB instanceof Solana)) {
-                        if(gameObjectB.body.velocity.x != 0){
+                    (gameObjectB instanceof Solana || gameObjectB instanceof Bright)) {
+                        if(gameObjectB.body.velocity.x != 0 || gameObjectB.body.angularVelocity != 0){
                             gameObjectA.splash();
                         }
                 }
@@ -283,5 +283,95 @@ class PropPuddle extends Phaser.Physics.Matter.Sprite{
     }
     splash(){
         this.emitter.emitParticleAt(this.x,this.y,1);
+    }
+};
+//RAT
+class PropRat extends Phaser.Physics.Matter.Sprite{    
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'rat-1', 0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+
+        this.setActive(true);
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.rectangle(0, 0, w*0.80, h*0.75,{chamfer: {radius: 2}});
+        
+        this.sensors = {
+            left: Bodies.rectangle(-w*0.60, 0, 3, h*0.25 , {chamfer: {radius: 1}, isSensor: true, friction: 0.0,density: 0.0001,label:"SENSOR_LEFT"}),
+            right: Bodies.rectangle(w*0.60, 0, 3, h*0.25 , {chamfer: {radius: 1}, isSensor: true, friction: 0.0,density: 0.0001,label:"SENSOR_RIGHT"})
+          };
+        const compoundBody = Body.create({
+            parts: [mainBody,this.sensors.left,this.sensors.right],
+            frictionStatic: 0,
+            frictionAir: 0.2,
+            friction: 0.3,
+            label: "PROPRAT"
+        });
+
+        this
+        .setExistingBody(compoundBody)
+        .setCollidesWith([CATEGORY.GROUND])
+        .setPosition(x, y)
+        .setFixedRotation();  
+        //Bind Events
+        this.scene.events.on("update", this.update, this);        
+        this.scene.events.on("shutdown", this.death, this); 
+        this.active = true;
+
+        this.anims.play('rat-run',true);
+        this.setDepth(DEPTH_LAYERS.FG);
+        this.crawlTimer = this.scene.time.addEvent({ delay: 500, callback: this.crawl, callbackScope: this, loop: true });        
+        this.touching = {top:0,left:0,bottom:0,right:0};
+        this.wanderdirection = Phaser.Math.RND.pick([-1,1]);
+        this.scene.matterCollision.addOnCollideStart({
+            objectA: [this.sensors.left,this.sensors.right],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                if (gameObjectB !== undefined && 
+                    (gameObjectB instanceof Phaser.GameObjects.Rectangle
+                    || gameObjectB instanceof Phaser.GameObjects.Ellipse
+                    || gameObjectB instanceof Phaser.GameObjects.Polygon)) {
+                        if (bodyB.label == 'GROUND'){
+                            if(bodyA.label == "SENSOR_RIGHT"){
+                                this.wanderdirection = -1;
+                            }
+                            if(bodyA.label == "SENSOR_LEFT"){
+                                this.wanderdirection = 1;
+                            }
+                        }                
+                }
+            }
+        });
+        this.max_speed = 5;
+
+    }
+    update(time, delta)
+    {
+        if(this.active){
+            if(this.body.velocity.x > this.max_speed){this.setVelocityX(this.max_speed)};
+            if(this.body.velocity.x < -this.max_speed){this.setVelocityX(-this.max_speed)};
+            if(this.body.velocity.y > this.max_speed){this.setVelocityY(this.max_speed);};
+            if(this.body.velocity.y < -this.max_speed){this.setVelocityY(-this.max_speed)};
+            //Body Impulse Limit
+            if(this.body.positionImpulse.x > this.max_speed){this.body.positionImpulse.x = this.max_speed};
+            if(this.body.positionImpulse.x < -this.max_speed){this.body.positionImpulse.x = -this.max_speed};
+            if(this.body.positionImpulse.y > this.max_speed){this.body.positionImpulse.y = this.max_speed};
+            if(this.body.positionImpulse.y < -this.max_speed){this.body.positionImpulse.y = -this.max_speed};
+            this.setVelocityX(this.wanderdirection);
+        }
+    }
+    death(){
+        this.active = false;
+    }
+    crawl(){
+        this.setFlipX((this.wanderdirection == -1));        
+        let d1 = distanceBetweenObjects(this,solana);
+        let d2 = distanceBetweenObjects(this,bright);
+        if(d1 < 32 || d2 < 32 && this.wanderdirection == 0){
+            this.wanderdirection = Phaser.Math.RND.pick([-1,1]);
+        }
     }
 };

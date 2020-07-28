@@ -532,6 +532,8 @@ var GameScene = new Phaser.Class({
                     Phaser.Math.RotateAround(centerPoint,tmxOrigin.x,tmxOrigin.y,rotRad);
                 }                
                 bar.setup(centerPoint.x,centerPoint.y,rotRad);
+                bar.alpha = 0.5;
+                bar.setFrame((Phaser.Math.RND.between(0,3)));;
             }else if(tmxObjRef.type == "hive"){
                 let hiveProps = getTileProperties(tmxObjRef.properties);
                 for(let b=0;b<hiveProps.bugsMax;b++){
@@ -667,6 +669,8 @@ var GameScene = new Phaser.Class({
                     let propWeb = new PropWeb(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
                 }else if(propprops.subtype == 'puddle'){
                     let proppuddle = new PropPuddle(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                }else if(propprops.subtype == 'rat'){
+                    let proprat = new PropRat(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
                 }
             }else if(tmxObjRef.type == 'sollink'){
                 let sl = new Sollink(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2)
@@ -683,23 +687,31 @@ var GameScene = new Phaser.Class({
             let trig_y_offset = tmxObjRef.height/2;
             let trig_props = getTileProperties(tmxObjRef.properties)
             if(tmxObjRef.type == "lever"){  
-                triggerObj = new TMXLever(this,tmxObjRef.x,tmxObjRef.y);             
+                triggerObj = new TMXLever(this,tmxObjRef.x,tmxObjRef.y);  
+                triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);           
                 levers.add(triggerObj);
             }else if(tmxObjRef.type == "gate"){
                 triggerObj = gates.get();
+                triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
             }else if(tmxObjRef.type == "plate"){
                 triggerObj = plates.get();
+                triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
             }else if(tmxObjRef.type == "platform"){
                 triggerObj = platforms.get();
+                triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
             }else if(tmxObjRef.type == "button"){
                 triggerObj = buttons.get();
+                triggerObj.setDepth(DEPTH_LAYERS.BGOBJECTS);
             }else if(tmxObjRef.type == "crystallamp"){
                 triggerObj = crystallamps.get();
+                triggerObj.setDepth(DEPTH_LAYERS.BGOBJECTS);
             }else if(tmxObjRef.type == "zone"){
                 triggerObj = triggerzones.get();
                 triggerObj.setDisplaySize(tmxObjRef.width, tmxObjRef.height);
+                triggerObj.setDepth(DEPTH_LAYERS.BGOBJECTS);
             }else if(tmxObjRef.type == "gear"){                
                 triggerObj = gears.get();
+                triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
             }else if(tmxObjRef.type == "seesaw"){ 
                 //Handle Rotation Data. // Might want to turn this into a function since I use it a lot.
                 let tmxOrigin = {x:tmxObjRef.x,y:tmxObjRef.y};
@@ -715,10 +727,10 @@ var GameScene = new Phaser.Class({
                 seesaw.setDisplaySize(tmxObjRef.width, tmxObjRef.height);
                 seesaw.setSize(tmxObjRef.width, tmxObjRef.height);
                 seesaw.setRotation(rotRad);
+                triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
             }
             if(triggerObj){
-                triggerObj.setup(tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,trig_props,tmxObjRef.name,tmxObjRef.width,tmxObjRef.height);
-                triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
+                triggerObj.setup(tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,trig_props,tmxObjRef.name,tmxObjRef.width,tmxObjRef.height);                
             }
         }
           
@@ -2534,6 +2546,12 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'bat-fly',
         frames: scene.anims.generateFrameNumbers('bat-1', { frames:[0,1] }),
+        frameRate: 8,
+        repeat: -1
+    });  
+    scene.anims.create({
+        key: 'rat-run',
+        frames: scene.anims.generateFrameNumbers('rat-1', { frames:[0,1,2,3] }),
         frameRate: 8,
         repeat: -1
     }); 

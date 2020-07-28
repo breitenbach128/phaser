@@ -391,7 +391,7 @@
    </properties>
   </object>
   <object id="69" name="mirror1" type="mirror" x="416" y="80" width="32" height="32"/>
-  <object id="83" name="mirror1" type="mirror" x="230" y="307" width="32" height="32" rotation="45"/>
+  <object id="83" name="mirror1" type="mirror" x="234" y="302" width="32" height="32" rotation="45"/>
   <object id="86" name="line1" type="line" x="640" y="144">
    <polyline points="31,63 -17,75 -111,64 -128,72"/>
   </object>

@@ -290,6 +290,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('bat-1', 'assets/objects/props_bat.png', {frameWidth: 32, frameHeight: 16});
 		this.load.spritesheet('spiderweb-1', 'assets/objects/prop_spiderweb.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('puddle-1', 'assets/objects/prop_puddle1.png', {frameWidth: 32, frameHeight: 16});
+		this.load.spritesheet('rat-1', 'assets/objects/props_rat2.png', {frameWidth: 24, frameHeight: 16});
 		//SoulCrystals
 		this.load.spritesheet('soulcrystal_blue', 'assets/objects/crystal-qubodup-ccby3-32-blue.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('soulcrystal_grey', 'assets/objects/crystal-qubodup-ccby3-32-grey.png', {frameWidth: 32, frameHeight: 32});		
@@ -330,7 +331,7 @@ var Preloader = new Phaser.Class({
 		this.load.image('triggerzone', 'assets/objects/triggerzone.png');
 		this.load.image('speechbubble', 'assets/hud/speechBubble.png');
 		this.load.image('tmxwindow', 'assets/objects/tmxwindow.png');
-		this.load.image('glasstile', 'assets/objects/glasstile.png');
+		this.load.spritesheet('glasstile', 'assets/objects/glasstile.png', {frameWidth: 16, frameHeight: 16});
 		this.load.image('mushroom1', 'assets/objects/mushroom_1.png');
 		this.load.image('grinder', 'assets/objects/grinder.png');
 		this.load.image('conveyor_wheel', 'assets/objects/conveyor_wheel.png');
