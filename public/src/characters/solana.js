@@ -527,13 +527,16 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         return this.body.velocity;
     }
     jump(jumpVel,mvVel){
+        let sb_2_owned = checkSolbitOwned(1); //Allow Wall kick
+
         //Reduce Downwards force to zero, if it exists. Keeps platforms from stealing the jump
         if(this.body.velocity.y != 0){ // Was >
             this.setVelocityY(0);
         }
         let jXv = 0;
         let jYv = 0;       
-        if(this.jumpData.left && !this.jumpData.down){
+        if(this.jumpData.left && !this.jumpData.down && sb_2_owned){
+            //console.log("c1");
             this.setMaxMoveSpeed(-6,6,-6,6);
             jXv = mvVel*4.2;
             jYv = -jumpVel*0.5;
@@ -541,7 +544,8 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.kickOff = mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
         }
-        if(this.jumpData.right && !this.jumpData.down){            
+        if(this.jumpData.right && !this.jumpData.down && sb_2_owned){  
+            //console.log("c2");          
             this.setMaxMoveSpeed(-6,6,-6,6);
             jXv = -mvVel*4.2;
             jYv = -jumpVel*0.5;
@@ -549,9 +553,14 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             this.kickOff = -mvVel;
             this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
             
-        }else if(this.onWall && this.onGround){
+        }else if((this.jumpData.right || this.jumpData.left) && !this.jumpData.down && !sb_2_owned){
+            //console.log("c3");
+            jYv = 0;
+        }else if((this.jumpData.right || this.jumpData.left) && !this.jumpData.down && sb_2_owned){
+            //console.log("c4");
             jYv = -jumpVel;//*1.65;//1.2 works at 0.1 friction on hull
-        }else{
+        }else if(this.jumpData.down){
+            //console.log("c5");
             jYv = -jumpVel;
         }
 
@@ -667,7 +676,12 @@ class Solana extends Phaser.Physics.Matter.Sprite{
             //For debugging, reset to last entrance used
             //this.scene.gameOver();
 
-            this.scene.time.addEvent({ delay: 2000, callback: this.resurrect, callbackScope: this, loop: false });
+            //Instead of Timer, Use Tween
+            //this.scene.time.addEvent({ delay: 2000, callback: this.resurrect, callbackScope: this, loop: false });  
+            
+            camera_main.fadeOut(2000,0,0,0,function(){},this);
+
+            camera_main.on('camerafadeoutcomplete', this.resurrect,this)
         }
         
     }
@@ -675,15 +689,15 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.lastEntrance = entrance;
     }
     resurrect(){        
-        this.sprite.anims.play('solana-idle', true);
+        //this.sprite.anims.play('solana-idle', true);
         this.hp = this.max_hp;
         this.setActive(true);
         this.setVisible(true);
         this.debug.setVisible(true);
         this.alive = true; 
-        this.scene.scene.restart();
-        hud.setHealth(this.hp);
+        hud.setHealth(this.hp,0);
         this.addEnergy(1500);
+        this.scene.scene.restart();
     }
     receiveDamage(damage) {
                 

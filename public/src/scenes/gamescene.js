@@ -211,6 +211,7 @@ var GameScene = new Phaser.Class({
         this.cameras.main.setZoom(2.00);
         camera_main = this.cameras.main;
         this.camMovement = {x:camera_main.worldView.x,y:camera_main.worldView.y};
+        camera_main.fadeIn(2000,0,0,0,function(){},this);
 
         //camera_main.setRenderToTexture(glowPipeline);
         //Controls
@@ -2195,7 +2196,7 @@ function createAnimations(scene){
     scene.anims.create({
         key: 'solana-death',
         frames: scene.anims.generateFrameNumbers('solana', { frames:[8,9,10,11,12,13] }),
-        frameRate: 4,
+        frameRate: 8,
         repeat: 0
     });
     scene.anims.create({

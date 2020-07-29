@@ -93,26 +93,26 @@ class HudScene extends Phaser.Scene {
             this.setBossVisible(false);
 
             //Statbar Solana
-            this.solanaStatBar = new Statbar(this,this.cameras.main.width/4, 36, 'hud_energybar3',0,1,2,1500,1500,true,
+            this.solanaStatBar = new Statbar(this,this.cameras.main.width/10, 36, 'hud_energybar3',0,1,2,1500,1500,true,
             { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 },
             {dir: 'LR',tintPercent: 0.20, tintColor: 0xFFB6B6})
-            this.solanaStatBarHead = this.add.image(this.cameras.main.width/4-96, 36, 'hud_energybar3_solana_head',0).setScale(2).setOrigin(0.5);
+            this.solanaStatBarHead = this.add.image(this.cameras.main.width/10-96, 36, 'hud_energybar3_solana_head',0).setScale(2).setOrigin(0.5);
 
-            this.brightStatBar = new Statbar(this,this.cameras.main.width*(3/4), 36, 'hud_energybar3',0,1,2,5000,5000,true,
+            this.brightStatBar = new Statbar(this,this.cameras.main.width*(9/10), 36, 'hud_energybar3',0,1,2,5000,5000,true,
             { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 },
             {dir: 'RL',tintPercent: 0.20, tintColor: 0xFFB6B6})
-            this.brightStatBarHead = this.add.image(this.cameras.main.width*(3/4)+96, 36, 'hud_energybar3_bright_head',0).setScale(2).setOrigin(0.5);
+            this.brightStatBarHead = this.add.image(this.cameras.main.width*(9/10)+96, 36, 'hud_energybar3_bright_head',0).setScale(2).setOrigin(0.5);
 
             for(var h = 0;h < 5;h++){
-                this.hp_blips.push(this.add.sprite(this.cameras.main.width/4-52+(h*24),10, 'health_blip',0));  
-                this.bp_blips.push(this.add.sprite(this.cameras.main.width*(3/4)+52-(h*24),10, 'health_blip',1));  
+                this.hp_blips.push(this.add.sprite(this.cameras.main.width/10-52+(h*24),10, 'health_blip',0));  
+                this.bp_blips.push(this.add.sprite(this.cameras.main.width*(9/10)+52-(h*24),10, 'health_blip',1));  
             }
 
             //Add Shard Counts
-            this.shards_light = this.add.image(this.cameras.main.width-32, 12, 'shard_light',0);
-            this.shards_dark = this.add.image(this.cameras.main.width-32, 32, 'shard_dark',0);        
-            this.shard_data_l = this.add.text(this.cameras.main.width-60, 12, '0 x', { fontFamily: 'visitorTT1', fontSize: '16px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 1 }).setOrigin(.5);
-            this.shard_data_d = this.add.text(this.cameras.main.width-60, 32, '0 x', { fontFamily: 'visitorTT1', fontSize: '16px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 1 }).setOrigin(.5);
+            this.shards_light = this.add.image(this.cameras.main.width-32, 64, 'shard_light',0);
+            this.shards_dark = this.add.image(this.cameras.main.width-32, 84, 'shard_dark',0);        
+            this.shard_data_l = this.add.text(this.cameras.main.width-60, 64, '0 x', { fontFamily: 'visitorTT1', fontSize: '16px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 1 }).setOrigin(.5);
+            this.shard_data_d = this.add.text(this.cameras.main.width-60, 84, '0 x', { fontFamily: 'visitorTT1', fontSize: '16px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 1 }).setOrigin(.5);
 
             //DEBUG
             this.debug = this.add.text(8, this.cameras.main.height-128, 'DEBUG-HUD', { fontSize: '22px', fill: '#FFFFFF', stroke: '#000000', strokeThickness: 4 });
@@ -274,7 +274,7 @@ class HudScene extends Phaser.Scene {
             errorCode="ERROR: No Player ID for Health blips"  ;
         }
 
-        if(errorCode != 0){console.log(errorCode);}
+        if(errorCode != 0){console.log("HUD:SETHEALTH:ERROR:",errorCode,playerid,hp);}
     }
     handleEvents ()
     {
@@ -314,6 +314,8 @@ class HudSpeech{
         this.w = w;
         this.h = h;
         this.centerPoint = centerPoint;
+        
+        this.shadeZone = this.scene.add.rectangle(0,-224,this.scene.cameras.main.width,224,0x000000,0.8).setOrigin(0,0).setDepth(100).setVisible(false);
         //Text Holder
         this.speaktext = this.scene.add.text(centerPoint.x, centerPoint.y, 'Well, Im glad we are going on this adventure together.', { 
             fontFamily: 'visitorTT1',
@@ -348,6 +350,7 @@ class HudSpeech{
             this.scene.add.image(w-24,h-132,'hud_bright_head').setOrigin(1,1).setDepth(100)
         ];
 
+
         this.ready = true;
         this.pauseGame = false;  
 
@@ -359,10 +362,10 @@ class HudSpeech{
         this.showPortraitLeft(false);
         this.showPortraitRight(false);
         //create sounds
-        this.sndblip1 = game.sound.add('spblip_1',{volume: 0.15});
-        this.sndblip2 = game.sound.add('spblip_2',{volume: 0.15});
-        this.sndblip3 = game.sound.add('spblip_3',{volume: 0.15});
-        this.sndblip4 = game.sound.add('spblip_4',{volume: 0.15});
+        this.sndblip1 = game.sound.add('spblip_1',{volume: 0.10});
+        this.sndblip2 = game.sound.add('spblip_2',{volume: 0.10});
+        this.sndblip3 = game.sound.add('spblip_3',{volume: 0.10});
+        this.sndblip4 = game.sound.add('spblip_4',{volume: 0.10});
 
 
     }
@@ -411,12 +414,6 @@ class HudSpeech{
 
             this.timeline.setCallback('onComplete',this.endSpeech,[this],this.timeline);
 
-            //Adjust position to better display sprites
-            if((solana.y - camera_main.y) > camera_main.centerY){
-                hud.storySpeech.moveTop();
-            }else{
-                hud.storySpeech.moveBottom();
-            }
         }else{
             console.log("HUDSPEECH Timeline running");
         }
@@ -442,9 +439,27 @@ class HudSpeech{
         });
     }
     startSpeech(){
-        //Play the current speech
-        this.timeline.play();
-        this.showSpeechArea(true);
+        //Bring Down Shade Zone
+        this.scene.tweens.add({
+            targets: this.shadeZone,
+            y: 0,              
+            ease: 'Linear',    
+            duration: 2000,
+            onComplete: function(tw,targets,hs){
+                //Play the current speech
+                hs.timeline.play();
+                hs.showSpeechArea(true);
+            },
+            onCompleteParams: [this]
+        });
+
+        console.log("createSpeech",(solana.y*playScene.cameras.main.zoom),playScene.cameras.main.height/2);
+        //Adjust position to better display sprites
+        if((solana.y*playScene.cameras.main.zoom) > playScene.cameras.main.height/2){
+            hud.storySpeech.moveTop();
+        }else{
+            hud.storySpeech.moveBottom();
+        }
     }
     endSpeech(param){
         //Stop the current speech and run actions
@@ -453,7 +468,8 @@ class HudSpeech{
         param.showPortraitRight(false);
         param.ready = true;
         param.timeline.destroy();
- 
+        param.shadeZone.setPosition(0,-224);
+
         if(param.pauseGame){
             playScene.scene.resume();
             param.pauseGame = false;
@@ -480,9 +496,11 @@ class HudSpeech{
             hs.speaktext.setText(cStr);
             let rSnd = hs.sndblip1;
             if(p == 'left'){
-                rSnd = Phaser.Math.RND.pick([hs.sndblip1,hs.sndblip2]);
+                //rSnd = Phaser.Math.RND.pick([hs.sndblip1,hs.sndblip2]);
+                rSnd = hs.sndblip2;
             }else{
-                rSnd = Phaser.Math.RND.pick([hs.sndblip3,hs.sndblip4]);
+                //rSnd = Phaser.Math.RND.pick([hs.sndblip3,hs.sndblip4]);
+                rSnd = hs.sndblip3;
             };            
             rSnd.play();
         }

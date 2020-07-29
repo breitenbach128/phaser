@@ -163,15 +163,17 @@ var Preloader = new Phaser.Class({
 		this.load.tilemapTiledJSON('map7', 'assets/world/map7_32ts.json');
 		this.load.tilemapTiledJSON('map8', 'assets/world/map8_32ts.json');
 		//Map Assets - Intro levels
-		this.load.tilemapTiledJSON('i1s1a', 'assets/world/i1s1a.json');
-		this.load.tilemapTiledJSON('i1s1b', 'assets/world/i1s1b.json');
-		this.load.tilemapTiledJSON('i1s1c', 'assets/world/i1s1c.json');
-		this.load.tilemapTiledJSON('i1s1d', 'assets/world/i1s1d.json');
-		this.load.tilemapTiledJSON('i1s1e', 'assets/world/i1s1e.json');
-		this.load.tilemapTiledJSON('i1s2', 'assets/world/i1s2.json');
-		this.load.tilemapTiledJSON('i1s3', 'assets/world/i1s3.json');
-		this.load.tilemapTiledJSON('i1s4', 'assets/world/i1s4.json');
-		this.load.tilemapTiledJSON('i1s5', 'assets/world/i1s5.json');
+		//i1s1/
+		this.load.tilemapTiledJSON('i1s1a', 'assets/world/i1s1/i1s1a.json');
+		this.load.tilemapTiledJSON('i1s1b', 'assets/world/i1s1/i1s1b.json');
+		this.load.tilemapTiledJSON('i1s1c', 'assets/world/i1s1/i1s1c.json');
+		this.load.tilemapTiledJSON('i1s1d', 'assets/world/i1s1/i1s1d.json');
+		this.load.tilemapTiledJSON('i1s1e', 'assets/world/i1s1/i1s1e.json');
+		this.load.tilemapTiledJSON('i1s2a', 'assets/world/i1s2/i1s2a.json');
+		this.load.tilemapTiledJSON('i1s2b', 'assets/world/i1s2/i1s2b.json');
+		this.load.tilemapTiledJSON('i1s3', 'assets/world/i1s3/i1s3.json');
+		this.load.tilemapTiledJSON('i1s4', 'assets/world/i1s4/i1s4.json');
+		this.load.tilemapTiledJSON('i1s5', 'assets/world/i1s5/i1s5.json');
 		//Panic Maps
 		this.load.tilemapTiledJSON('panic1', 'assets/world/panic1.json');
 		//Map Assets - Game		
@@ -240,7 +242,9 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('PF_StrangeWorld1_0_mainlevbuildB', 'tmx/tilesets/PF_StrangeWorld1.0/mainlevbuildB.png', {frameWidth: 32, frameHeight: 32});
 
 		//load level config data
-		this.load.json('levelconfigdata', 'src/utility/levelsconfig.json ');
+		this.load.json('levelconfigdata', 'src/utility/levelsconfig.json');
+		this.load.json('lvlcfg_i1s1', 'src/utility/leveldata/lvlcfg_i1s1.json');
+		this.load.json('lvlcfg_i1s2', 'src/utility/leveldata/lvlcfg_i1s2.json');
 
 		//Entity Assets
         this.load.spritesheet('slime1', 'assets/characters/slimemonster2.png', {frameWidth: 64, frameHeight: 37});    
@@ -343,6 +347,8 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('hud_energybar3_solana_head','assets/hud/hud_energybar3_solana_head.png',{frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('hud_energybar3_bright_head','assets/hud/hud_energybar3_bright_head.png',{frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('hud_corruptionbar1','assets/hud/hud_corruptionbar1.png',{frameWidth: 16, frameHeight: 96});
+		this.load.spritesheet('nineslice_1','assets/ui/nineslice_1.png',{frameWidth: 16, frameHeight: 16});
+		
 		//Make these talking animations later		
 		this.load.image('hud_solana_head', 'assets/hud/hud_Solana_head.png');
 		this.load.image('hud_bright_head', 'assets/hud/hud_Bright_head.png');

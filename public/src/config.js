@@ -71,7 +71,7 @@
     //Tiles
     var map; 
     var mapTileSize = {tw:16,th:16};
-    var current_map = "i1s3";
+    var current_map = "i1s2b";
     var current_exit = {solana: "west1", bright: "west1"};
     var world_backgrounds = [];
         
@@ -402,12 +402,23 @@
     }
     //Get Level Config by name
     function getLevelConfigByName(scene,name){
-        var level_configs = scene.cache.json.get('levelconfigdata');
-        for(let i=0;i<level_configs.length;i++){
-            if(level_configs[i].name == name){
-                return level_configs[i];
+        let unsorted_cfgs = scene.cache.json.get('levelconfigdata');
+        let lvlcfgs_i1s1 = scene.cache.json.get('lvlcfg_i1s1');
+        let lvlcfgs_i1s2 = scene.cache.json.get('lvlcfg_i1s2');
+
+        let allConfigs = [unsorted_cfgs,
+                          lvlcfgs_i1s1,
+                          lvlcfgs_i1s2];
+
+        for(let c=0;c<allConfigs.length;c++){
+            let configs = allConfigs[c];
+            for(let i=0;i<configs.length;i++){
+                if(configs[i].name == name){
+                    return configs[i];
+                }
             }
         }
+        
         return -1;
     }
 
