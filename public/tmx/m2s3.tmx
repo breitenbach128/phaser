@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="75" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="488">
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="75" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="488">
  <editorsettings>
   <export target="../assets/world/m2s3.json" format="json"/>
  </editorsettings>
@@ -834,7 +834,7 @@
     <property name="subtype" value="inchworm"/>
    </properties>
   </object>
-  <object id="485" name="prop_bat" type="prop" x="624" y="576" width="32" height="16">
+  <object id="485" name="prop_bat" type="prop" x="1072" y="224" width="32" height="16">
    <properties>
     <property name="subtype" value="bat"/>
    </properties>
