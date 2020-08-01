@@ -71,8 +71,8 @@
     //Tiles
     var map; 
     var mapTileSize = {tw:16,th:16};
-    var current_map = "i1s2b";
-    var current_exit = {solana: "west1", bright: "west1"};
+    var current_map = "i1s2c";
+    var current_exit = {solana: "west1a", bright: "west1b"};
     var world_backgrounds = [];
         
     //Game Objects

@@ -185,7 +185,7 @@ class TMXGate extends Phaser.Physics.Matter.Sprite{
             this.setDisplaySize(newScale.x,newScale.y);
            //console.log("Gate Props",newScale);
         }
-
+        if(this.autoClose){this.setTint(0xee0000)};
         //console.log("Gate Props",this.mvdir);
     }
     update(time, delta)
@@ -545,6 +545,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                     type: "random"
                 }
             });
+            wind1.setDepth(this.depth);
 
        }else if(this.zonedata.type == "teleport"){
             this.effect=[
@@ -851,8 +852,8 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
     }
 };
 class TMXPlatform extends Phaser.Physics.Matter.Sprite{
-    constructor(scene,x,y) {
-        super(scene.matter.world, x, y, 'platform_160x16', 0)
+    constructor(scene,x,y,texture,frame) {
+        super(scene.matter.world, x, y, texture, frame)
         this.scene = scene;
         // Create the physics-based sprite that we will move around and animate
         scene.matter.world.add(this);
@@ -946,8 +947,15 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
     setup(x,y,properties,name,w,h){
         this.setActive(true); 
         this.setPosition(x,y);
+        
+        console.log("platform body width/height",this.body,this.width,this.height,w,h)
+        // let scaleFactorX = w/this.width;
+        // let scaleFactorY = h/this.height;
+        // console.log(scaleFactorX,scaleFactorY)
+        //Phaser.Physics.Matter.Matter.Body.scale(this.body,scaleFactorX,scaleFactorY)
         this.setSize(w,h);
         this.setDisplaySize(w,h);
+
         this.name = name;
         this.platformPosition = 0; //0 to 1
         this.target = {name: -1,type: -1, object: []};
@@ -957,6 +965,7 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         this.tmloop = -1;
         this.autostart = false;
         this.togglePath = false;
+        this.allowJumpThru = true;
         if(properties != undefined && Object.keys(properties).length > 0){
             this.target.name = properties.targetName;
             this.target.type = properties.targetType;
@@ -964,8 +973,15 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
             this.tmloop = properties.loop;
             this.autostart = properties.autostart;
             this.togglePath = properties.togglepath != undefined ? properties.togglepath : false;
-            this.damage = properties.hurt;
-            if(properties.frame != undefined){this.setFrame(properties.frame)};
+            this.damage = properties.hurt;    
+            this.allowJumpThru  = properties.allowJumpThru != undefined ? properties.allowJumpThru : true;
+            //Custom Body Scaling
+            if(properties.bodyScaleX || properties.bodyScaleY){
+                let bdScaleX = properties.bodyScaleX != undefined ? properties.bodyScaleX : 1;
+                let bdScaleY = properties.bodyScaleY != undefined ? properties.bodyScaleY : 1;
+                Phaser.Physics.Matter.Matter.Body.scale(this.body,bdScaleX,bdScaleY)
+            }
+            
         }
        if(this.autostart && (this.path != undefined && this.path != -1)){ 
             this.setPath(this.path) // test tween
@@ -1088,9 +1104,11 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         }
     }
     oneWayStart(player,d){
-        this.setCollidesWith([~CATEGORY.SOLANA]);
-        this.onWayTracker = {obj: player,  direction: d};
-        this.setTint(0x004400);
+        if(this.allowJumpThru){
+            this.setCollidesWith([~CATEGORY.SOLANA]);
+            this.onWayTracker = {obj: player,  direction: d};
+            this.setTint(0x004400);
+        }
 
     }
     oneWayEnd(){        

@@ -171,6 +171,7 @@ var Preloader = new Phaser.Class({
 		this.load.tilemapTiledJSON('i1s1e', 'assets/world/i1s1/i1s1e.json');
 		this.load.tilemapTiledJSON('i1s2a', 'assets/world/i1s2/i1s2a.json');
 		this.load.tilemapTiledJSON('i1s2b', 'assets/world/i1s2/i1s2b.json');
+		this.load.tilemapTiledJSON('i1s2c', 'assets/world/i1s2/i1s2c.json');
 		this.load.tilemapTiledJSON('i1s3', 'assets/world/i1s3/i1s3.json');
 		this.load.tilemapTiledJSON('i1s4', 'assets/world/i1s4/i1s4.json');
 		this.load.tilemapTiledJSON('i1s5', 'assets/world/i1s5/i1s5.json');
@@ -266,6 +267,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('pressure_plate', 'assets/objects/pressure_plate.png', {frameWidth: 32, frameHeight: 16});
 		this.load.spritesheet('tmxbutton', 'assets/objects/tmxbutton.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('platform_160x16', 'assets/objects/platform_160x16.png', {frameWidth: 160, frameHeight: 16});
+		this.load.spritesheet('platform_16x16', 'assets/objects/platform_16x16.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('light_crystal', 'assets/objects/light_crystal2.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('fireflies', 'assets/objects/fireflies.png', {frameWidth: 16, frameHeight: 16});
 		this.load.spritesheet('bat', 'assets/characters/bat_32.png', {frameWidth: 32, frameHeight: 32});

@@ -698,7 +698,9 @@ var GameScene = new Phaser.Class({
                 triggerObj = plates.get();
                 triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
             }else if(tmxObjRef.type == "platform"){
-                triggerObj = platforms.get();
+                let platform_texture = trig_props.key != undefined ? trig_props.key: 'platform_160x16';
+                //triggerObj = platforms.get(tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,platform_texture);
+                triggerObj = new TMXPlatform(this,tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,platform_texture,0);
                 triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
             }else if(tmxObjRef.type == "button"){
                 triggerObj = buttons.get();
@@ -728,7 +730,7 @@ var GameScene = new Phaser.Class({
                 seesaw.setDisplaySize(tmxObjRef.width, tmxObjRef.height);
                 seesaw.setSize(tmxObjRef.width, tmxObjRef.height);
                 seesaw.setRotation(rotRad);
-                triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
+                seesaw.setDepth(DEPTH_LAYERS.PLATFORMS);
             }
             if(triggerObj){
                 triggerObj.setup(tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,trig_props,tmxObjRef.name,tmxObjRef.width,tmxObjRef.height);                
