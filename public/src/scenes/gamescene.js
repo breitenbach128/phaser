@@ -646,8 +646,10 @@ var GameScene = new Phaser.Class({
                 if(genprops.srctype == 'sprite'){
                     let decal = this.add.sprite(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,genprops.texture);
                     decal.anims.play(genprops.anim, true);
+                    decal.setDepth(DEPTH_LAYERS.OBJECTS);
                 }else if(genprops.srctype == 'image'){
                     let decal = this.add.image(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,genprops.texture);
+                    decal.setDepth(DEPTH_LAYERS.OBJECTS);
                 }
                 
             }else if(tmxObjRef.type == 'trap'){
@@ -702,6 +704,7 @@ var GameScene = new Phaser.Class({
                 //triggerObj = platforms.get(tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,platform_texture);
                 triggerObj = new TMXPlatform(this,tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,platform_texture,0);
                 triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
+                platforms.add(triggerObj);
             }else if(tmxObjRef.type == "button"){
                 triggerObj = buttons.get();
                 triggerObj.setDepth(DEPTH_LAYERS.BGOBJECTS);

@@ -513,6 +513,7 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             this.resetDelay =properties.resetDelay;
             this.ready = properties.ready != undefined ? [properties.ready,properties.ready] : [true,true];
             this.massThrehold = properties.massThrehold != undefined ? properties.massThrehold : 100;
+            this.enabled = properties.enabled != undefined ? properties.enabled : true;
             
         }
         //Types:
@@ -546,6 +547,11 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                 }
             });
             wind1.setDepth(this.depth);
+            if(this.enabled){
+                this.wind1.start();
+            }else{
+                this.wind1.stop();
+            };
 
        }else if(this.zonedata.type == "teleport"){
             this.effect=[
@@ -791,9 +797,6 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
             this.ready[id] = false;
             //Solana Specific Functions
             if(id == 0){
-                if(this.zonedata.type == "target"){
-                    this.triggerTarget(id);
-                }
                 if(this.zonedata.type == "hurt"){
                     let hurtParse = JSON.parse(this.zonedata.value);
                     if(id == 1){
@@ -818,7 +821,9 @@ class TMXZone extends Phaser.Physics.Matter.Sprite{
                     hud.storySpeech.startSpeech();
                }
             }
-
+            if(this.zonedata.type == "target"){
+                this.triggerTarget(id);
+            }
             if(this.zonedata.type == "teleport"){
                 let positionParse = JSON.parse(this.zonedata.value)
                 if(Array.isArray(positionParse)){
@@ -1208,6 +1213,7 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
     turnOff(){
         this.anims.play('lamp-turn-off', true); 
         this.brightness = 0;
+        this.triggerTarget();        
     }
     decay(){
         this.brightness = (this.brightness - this.decayRate );
