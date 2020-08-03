@@ -1148,6 +1148,7 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
         this
         .setExistingBody(compoundBody)
         .setCollisionCategory(CATEGORY.SOLID)
+        .setCollidesWith([CATEGORY.BRIGHT, CATEGORY.BULLET])
         .setPosition(x, y)
         .setStatic(true)
         .setFixedRotation() // Sets inertia to infinity so the player can't rotate
@@ -1205,10 +1206,14 @@ class CrystalLamp extends Phaser.Physics.Matter.Sprite {
         }
         this.destroy();
     }
-    turnOn(){
-        if(this.brightness == 0){this.anims.play('lamp-turn-on', true); }
+    turnOn(){        
+        if(this.brightness == 0){
+            this.triggerTarget();
+        }
+        //Can only trigger on if it is off.
+        this.anims.play('lamp-turn-on', true); 
         this.brightness = this.max_brightness;
-        this.triggerTarget();
+
     }
     turnOff(){
         this.anims.play('lamp-turn-off', true); 

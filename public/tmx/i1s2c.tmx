@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="193">
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="194">
  <editorsettings>
   <export target="../assets/world/i1s2/i1s2c.json" format="json"/>
  </editorsettings>
@@ -237,18 +237,18 @@
  </layer>
  <layer id="6" name="bg" width="60" height="22">
   <data encoding="csv">
-1424,1424,1424,1424,1424,1424,1486,1739,1740,1741,1742,1743,1739,1740,1741,1742,1743,1745,1746,1747,1748,1494,1424,1486,1739,1740,1741,1739,1740,1741,1742,1743,1745,1746,1747,1748,1749,1494,1424,1484,1739,1740,1739,1740,1741,1742,1743,1745,1746,1747,1748,1749,1750,1492,1424,1424,1424,1424,1424,1424,
+1424,1424,1424,1424,1424,1424,1486,1739,1740,1741,1742,1743,1739,1740,1741,1742,1743,1745,1746,1747,1748,1739,1740,1741,1742,1740,1741,1739,1740,1741,1742,1743,1745,1746,1747,1748,1749,1739,1740,1741,1742,1740,1739,1740,1741,1742,1743,1745,1746,1747,1748,1749,1750,1492,1424,1424,1424,1424,1424,1424,
 1424,1424,1424,1424,1424,1424,1496,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1418,1424,1424,1424,1424,1424,1424,
 1424,1424,1424,1424,1424,1424,1560,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1418,1424,1424,1424,1424,1424,1424,
 1424,1424,1424,1424,1424,1424,1624,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1482,1424,1424,1424,1424,1424,1424,
-1424,1424,1424,1424,1424,1424,1432,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1418,1424,1424,1424,1424,1424,1424,
-1424,1424,1424,1424,1424,1424,1496,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1418,1424,1424,1424,1424,1424,1424,
-1424,1424,1424,1424,1424,1424,1560,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1418,1424,1424,1424,1424,1424,1424,
-1424,1424,1424,1424,1424,1424,1356,1237,1238,1228,1229,1230,1231,1232,1233,1237,1238,1368,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1354,1232,1232,1233,1238,1228,1228,1228,1361,1424,1424,1424,1424,1424,1424,
-1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1486,1743,1745,1746,1752,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1362,1363,1364,1366,0,0,0,0,0,0,0,1418,1423,1423,1423,1423,1423,1423,1423,1423,1424,1424,1424,1424,1424,1424,
-1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1560,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1418,1423,1423,1423,1423,1423,1423,1423,1423,1424,1424,1424,1424,1424,1424,
-1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1624,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1482,1423,1423,1423,1423,1423,1423,1423,1423,1424,1424,1424,1424,1424,1424,
-1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1432,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1418,1423,1423,1423,1423,1423,1423,1423,1423,1424,1424,1424,1424,1424,1424,
+1424,1424,1424,1424,1424,1424,1432,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2807,2808,0,0,0,0,0,0,1418,1424,1424,1424,1424,1424,1424,
+1424,1424,1424,1424,1424,1424,1496,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1354,1368,0,0,0,0,0,0,1418,1424,1424,1424,1424,1424,1424,
+1424,1424,1424,1424,1424,1424,1560,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1674,1496,0,0,0,0,0,0,1418,1424,1424,1424,1424,1424,1424,
+1424,1424,1424,1424,1424,1424,1356,1237,1238,1228,1229,1230,1231,1232,1233,1237,1238,1368,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1674,1356,1232,1233,1238,1228,1228,1228,1361,1424,1424,1424,1424,1424,1424,
+1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1486,1743,1745,1746,1752,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1418,1423,1423,1423,1423,1423,1423,1423,1423,1424,1424,1424,1424,1424,1424,
+1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1560,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1362,1363,1363,1364,1363,1363,1364,1363,1363,1364,1363,1364,1418,1423,1423,1423,1423,1423,1423,1423,1423,1424,1424,1424,1424,1424,1424,
+1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1624,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1870,1871,1482,1423,1423,1423,1423,1423,1423,1423,1423,1424,1424,1424,1424,1424,1424,
+1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1432,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1934,1935,1418,1423,1423,1423,1423,1423,1423,1423,1423,1424,1424,1424,1424,1424,1424,
 1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1496,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1418,1423,1423,1423,1423,1423,1423,1423,1423,1424,1424,1424,1424,1424,1424,
 1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1432,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1418,1423,1423,1423,1423,1423,1423,1423,1423,1424,1424,1424,1424,1424,1424,
 1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1424,1356,1231,1232,1233,1368,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1418,1423,1423,1423,1423,1423,1423,1423,1423,1424,1424,1424,1424,1424,1424,
@@ -371,11 +371,11 @@
  <objectgroup id="12" name="exit">
   <object id="159" name="west1a" type="entrance" x="128" y="80" width="32" height="32"/>
   <object id="161" name="west1b" type="entrance" x="240" y="176" width="32" height="32"/>
-  <object id="191" name="east1" type="entrance" x="736" y="48" width="32" height="32"/>
+  <object id="191" name="east1" type="entrance" x="784" y="48" width="32" height="32"/>
   <object id="192" name="east1" type="exit" x="816" y="32" width="32" height="80">
    <properties>
     <property name="targetExit" value="west1"/>
-    <property name="targetMap" value="i1s2d"/>
+    <property name="targetMap" value="i1s3"/>
    </properties>
   </object>
  </objectgroup>
@@ -400,7 +400,7 @@
     <property name="texture" value="fan-1"/>
    </properties>
   </object>
-  <object id="168" name="fan1_decal" type="decal" x="544" y="96" width="64" height="32">
+  <object id="168" name="fan1_decal" type="decal" x="688" y="144" width="64" height="32" rotation="-90">
    <properties>
     <property name="anim" value="fan-running"/>
     <property name="srctype" value="sprite"/>
@@ -447,26 +447,15 @@
     <property name="zoneValue" value="{&quot;x&quot;: 0.0000 ,&quot;y&quot;: -0.0035, &quot;time&quot;: 60}"/>
    </properties>
   </object>
-  <object id="169" name="zone3-force" type="zone" x="544" y="64" width="64" height="64">
+  <object id="169" name="zone3-force" type="zone" x="528" y="80" width="192" height="64">
    <properties>
     <property name="allowReset" type="bool" value="true"/>
-    <property name="enabled" type="bool" value="false"/>
+    <property name="enabled" type="bool" value="true"/>
     <property name="resetDelay" type="int" value="1"/>
     <property name="targetName" value="none"/>
     <property name="targetType" value="none"/>
     <property name="zoneType" value="force"/>
-    <property name="zoneValue" value="{&quot;x&quot;: 0.0000 ,&quot;y&quot;: -0.0035, &quot;time&quot;: 60}"/>
-   </properties>
-  </object>
-  <object id="170" name="platform1" type="platform" x="688" y="128" width="32" height="32">
-   <properties>
-    <property name="allowJumpThru" type="bool" value="false"/>
-    <property name="autostart" type="bool" value="true"/>
-    <property name="bodyScaleX" type="float" value="0.5"/>
-    <property name="bodyScaleY" type="float" value="0.5"/>
-    <property name="key" value="platform_16x16"/>
-    <property name="loop" type="int" value="-1"/>
-    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:-64,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+    <property name="zoneValue" value="{&quot;x&quot;: -0.0085 ,&quot;y&quot;: -0.0015, &quot;time&quot;: 60}"/>
    </properties>
   </object>
   <object id="177" name="platform2" type="platform" x="624" y="240" width="32" height="16">
@@ -474,7 +463,7 @@
     <property name="allowJumpThru" type="bool" value="true"/>
     <property name="autostart" type="bool" value="false"/>
     <property name="loop" type="int" value="0"/>
-    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:-16,&quot;t&quot;:6000,&quot;h&quot;:0}]"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:-32,&quot;t&quot;:2000,&quot;h&quot;:0},{&quot;x&quot;:32,&quot;y&quot;:-32,&quot;t&quot;:2000,&quot;h&quot;:0}]"/>
     <property name="togglepath" type="bool" value="true"/>
    </properties>
   </object>
@@ -504,7 +493,7 @@
     <property name="targetType" value="platform"/>
    </properties>
   </object>
-  <object id="186" name="lever2" type="lever" x="768" y="80" width="32" height="32">
+  <object id="186" name="lever2" type="lever" x="720" y="48" width="33.5738" height="33.5738">
    <properties>
     <property name="targetName" value="platform2"/>
     <property name="targetType" value="platform"/>
@@ -521,9 +510,9 @@
     <property name="zoneValue" value="0"/>
    </properties>
   </object>
-  <object id="190" name="gate1" type="gate" x="240" y="240" width="48" height="16">
+  <object id="190" name="gate1" type="gate" x="336" y="272" width="16" height="32">
    <properties>
-    <property name="mvdir" value="{&quot;x&quot;:48,&quot;y&quot;:0}"/>
+    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:32}"/>
     <property name="source" value="lever4"/>
    </properties>
   </object>
@@ -545,7 +534,8 @@
   <object id="154" type="hulls" x="112" y="224" width="176" height="32"/>
   <object id="176" type="hulls" x="336" y="240" width="288" height="64"/>
   <object id="184" type="hulls" x="656" y="240" width="64" height="97"/>
-  <object id="185" type="hulls" x="544" y="128" width="64" height="16"/>
+  <object id="185" type="hulls" x="528" y="144" width="192" height="16"/>
+  <object id="193" type="hulls" x="719.607" y="81.5738" width="33.5738" height="30.4262"/>
  </objectgroup>
  <objectgroup id="16" name="pathing"/>
 </map>

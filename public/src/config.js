@@ -61,7 +61,7 @@
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-7-10-2020";
+    var buildVersion = "a-8-2-2020";
     var game;
     var hud;
     var playScene;

@@ -643,13 +643,21 @@ var GameScene = new Phaser.Class({
                 }
             }else if(tmxObjRef.type == 'decal'){
                 let genprops = getTileProperties(tmxObjRef.properties);
+                let tmxOrigin = {x:tmxObjRef.x,y:tmxObjRef.y};
+                let centerPoint = new Phaser.Geom.Point(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                let rotRad = Phaser.Math.DegToRad(tmxObjRef.rotation);
+                if(tmxObjRef.rotation != 0){      
+                    Phaser.Math.RotateAround(centerPoint,tmxOrigin.x,tmxOrigin.y,rotRad);
+                }  
                 if(genprops.srctype == 'sprite'){
-                    let decal = this.add.sprite(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,genprops.texture);
+                    let decal = this.add.sprite(centerPoint.x,centerPoint.y,genprops.texture);
                     decal.anims.play(genprops.anim, true);
                     decal.setDepth(DEPTH_LAYERS.OBJECTS);
+                    decal.rotation = tmxObjRef.rotation != 0? rotRad : 0;
                 }else if(genprops.srctype == 'image'){
-                    let decal = this.add.image(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,genprops.texture);
+                    let decal = this.add.image(centerPoint.x,centerPoint.y,genprops.texture);
                     decal.setDepth(DEPTH_LAYERS.OBJECTS);
+                    decal.rotation = tmxObjRef.rotation != 0? rotRad : 0;
                 }
                 
             }else if(tmxObjRef.type == 'trap'){
