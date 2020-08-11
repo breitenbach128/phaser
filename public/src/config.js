@@ -61,7 +61,7 @@
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-8-2-2020";
+    var buildVersion = "a-8-5-2020";
     var game;
     var hud;
     var playScene;
@@ -71,8 +71,8 @@
     //Tiles
     var map; 
     var mapTileSize = {tw:16,th:16};
-    var current_map = "i1s2c";
-    var current_exit = {solana: "west1a", bright: "west1b"};
+    var current_map = "i1s3b";
+    var current_exit = {solana: "west1", bright: "west1"};
     var world_backgrounds = [];
         
     //Game Objects
@@ -405,10 +405,12 @@
         let unsorted_cfgs = scene.cache.json.get('levelconfigdata');
         let lvlcfgs_i1s1 = scene.cache.json.get('lvlcfg_i1s1');
         let lvlcfgs_i1s2 = scene.cache.json.get('lvlcfg_i1s2');
+        let lvlcfgs_i1s3 = scene.cache.json.get('lvlcfg_i1s3');
 
         let allConfigs = [unsorted_cfgs,
                           lvlcfgs_i1s1,
-                          lvlcfgs_i1s2];
+                          lvlcfgs_i1s2,
+                          lvlcfgs_i1s3];
 
         for(let c=0;c<allConfigs.length;c++){
             let configs = allConfigs[c];

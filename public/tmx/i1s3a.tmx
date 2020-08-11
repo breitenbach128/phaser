@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="108">
  <editorsettings>
-  <export target="../assets/world/i1s3.json" format="json"/>
+  <export target="../assets/world/i1s3/i1s3a.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="decorative" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="tilesets/PF_Caslte_1.0/decorative.png" width="512" height="512"/>
