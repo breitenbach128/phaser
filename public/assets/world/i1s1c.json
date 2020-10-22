@@ -4,7 +4,7 @@
      "export":
         {
          "format":"json",
-         "target":"..\/i1s1c.json"
+         "target":"i1s1c.json"
         }
     },
  "height":22,
@@ -963,7 +963,7 @@
         {
          "columns":32,
          "firstgid":1,
-         "image":"..\/..\/..\/tmx\/tilesets\/PF_Caslte_1.0\/decorative.png",
+         "image":"..\/..\/tmx\/tilesets\/PF_Caslte_1.0\/decorative.png",
          "imageheight":512,
          "imagewidth":512,
          "margin":0,
@@ -976,7 +976,7 @@
         {
          "columns":64,
          "firstgid":1025,
-         "image":"..\/..\/..\/tmx\/tilesets\/PF_Caslte_1.0\/mainlevbuild_A.png",
+         "image":"..\/..\/tmx\/tilesets\/PF_Caslte_1.0\/mainlevbuild_A.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
@@ -989,7 +989,7 @@
         {
          "columns":64,
          "firstgid":5121,
-         "image":"..\/..\/..\/tmx\/tilesets\/PF_Caslte_1.0\/mainlevbuild_B.png",
+         "image":"..\/..\/tmx\/tilesets\/PF_Caslte_1.0\/mainlevbuild_B.png",
          "imageheight":640,
          "imagewidth":1024,
          "margin":0,
@@ -1002,7 +1002,7 @@
         {
          "columns":8,
          "firstgid":7681,
-         "image":"..\/..\/..\/tmx\/collision.png",
+         "image":"..\/..\/tmx\/collision.png",
          "imageheight":128,
          "imagewidth":128,
          "margin":0,
@@ -1765,7 +1765,7 @@
         {
          "columns":64,
          "firstgid":7745,
-         "image":"..\/tile_custom.png",
+         "image":"tile_custom.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,

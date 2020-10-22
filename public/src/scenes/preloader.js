@@ -63,9 +63,13 @@ var Preloader = new Phaser.Class({
 		this.setPreloadSprite(this.loadingbar_fill);
 
 		
-        //Setup Shader
+        //Setup Shaders
         glowPipeline = game.renderer.addPipeline('GlowShader', new ShaderGlow(game));
-        glowPipeline.setFloat1('alpha', 1.0);
+		glowPipeline.setFloat1('alpha', 1.0);
+		
+		glow2Pipeline = game.renderer.addPipeline('GlowShader2', new ShaderGlow2(game));
+		glow2Pipeline.setFloat2('uResolution', game.config.width, game.config.height);
+		
 
 		// now load images, audio etc.
 		//Background
@@ -299,6 +303,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('spiderweb-1', 'assets/objects/prop_spiderweb.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('puddle-1', 'assets/objects/prop_puddle1.png', {frameWidth: 32, frameHeight: 16});
 		this.load.spritesheet('rat-1', 'assets/objects/props_rat2.png', {frameWidth: 24, frameHeight: 16});
+		this.load.spritesheet('candle-1', 'assets/objects/candle1.png', {frameWidth: 32, frameHeight: 32});
 		//SoulCrystals
 		this.load.spritesheet('soulcrystal_blue', 'assets/objects/crystal-qubodup-ccby3-32-blue.png', {frameWidth: 32, frameHeight: 32});
 		this.load.spritesheet('soulcrystal_grey', 'assets/objects/crystal-qubodup-ccby3-32-grey.png', {frameWidth: 32, frameHeight: 32});		

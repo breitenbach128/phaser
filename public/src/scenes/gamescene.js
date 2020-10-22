@@ -31,7 +31,11 @@ var GameScene = new Phaser.Class({
         this.events.on('resume', playResume);
         
         //Play Theme Music
-        this.soundTheme = game.sound.add('forestTheme1');
+        if(this.sound.get('forestTheme1')){
+            this.soundTheme = this.sound.get('forestTheme1');
+        }else{
+            this.soundTheme = this.sound.add('forestTheme1');
+        }
         // this.soundTheme.addMarker({name:'themepart1',start:0,duration:6.0});  
         // this.soundTheme.play('themepart1',{loop: true, volume: 0.20});
         this.soundTheme.play({loop: true, volume: 0.20});   
@@ -124,7 +128,7 @@ var GameScene = new Phaser.Class({
                 if(tile.physics.matterBody){
                     tile.physics.matterBody.body.label = 'GROUND';
                     tile.physics.matterBody.setCollisionCategory(CATEGORY.GROUND);
-                    tile.physics.matterBody.setFriction(.9,0);
+                    tile.physics.matterBody.setFriction(0.9,0);
 
                     //Fix "Gaps between tiles small bodies can squeeze thru" //TESTED 1.1 DOES NOT WORK
                     //Phaser.Physics.Matter.Matter.Body.scale(tile.physics.matterBody.body, 1.1, 1.0)

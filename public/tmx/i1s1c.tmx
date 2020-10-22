@@ -375,7 +375,7 @@
    <properties>
     <property name="partner" value="east2"/>
     <property name="targetExit" value="west1"/>
-    <property name="targetMap" value="i1s2"/>
+    <property name="targetMap" value="i1s1d"/>
    </properties>
   </object>
   <object id="83" name="west1b" type="entrance" x="192" y="272" width="32" height="32"/>
@@ -384,7 +384,7 @@
    <properties>
     <property name="partner" value="east1"/>
     <property name="targetExit" value="west1"/>
-    <property name="targetMap" value="i1s2"/>
+    <property name="targetMap" value="i1s1d"/>
    </properties>
   </object>
  </objectgroup>
@@ -465,7 +465,7 @@
     <property name="source" value=""/>
    </properties>
   </object>
-  <object id="94" name="platform2b" type="platform" x="288" y="64" width="48" height="16">
+  <object id="94" name="platform2b" type="platform" x="288" y="64" width="48" height="8">
    <properties>
     <property name="autostart" type="bool" value="true"/>
     <property name="loop" type="int" value="-1"/>
@@ -479,11 +479,11 @@
     <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:-48,&quot;t&quot;:3000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
    </properties>
   </object>
-  <object id="96" name="platform2c" type="platform" x="400" y="112" width="48" height="16">
+  <object id="96" name="platform2c" type="platform" x="400" y="112" width="48" height="8">
    <properties>
     <property name="autostart" type="bool" value="true"/>
     <property name="loop" type="int" value="-1"/>
-    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:-64,&quot;t&quot;:3000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:-32,&quot;t&quot;:3000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
    </properties>
   </object>
   <object id="103" name="zone3" type="zone" x="656" y="176" width="96" height="32">

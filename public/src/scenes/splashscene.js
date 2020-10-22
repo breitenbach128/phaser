@@ -37,6 +37,13 @@ var SplashScene = new Phaser.Class({
             frameRate: 16,
             repeat: 0
         });  
+
+        this.anims.create({
+            key: 'candle-1-flicker',
+            frames: this.anims.generateFrameNumbers('candle-1', { frames:[0,1,2,3] }),
+            frameRate: 16,
+            repeat: -1
+        }); 
         //Version
         this.add.text(12, 12, "Verison: "+buildVersion, { fontSize: '12px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
 
@@ -54,6 +61,10 @@ var SplashScene = new Phaser.Class({
 
         this.btn_spc = this.add.image(game.canvas.width/2,game.canvas.height-250,'icon_kb_spcbar');
         this.btn_spc.setPipeline('GlowShader');
+
+        this.candle = this.add.sprite(120,game.canvas.height-250,'candle-1').setScale(3);
+        //this.candle.setPipeline('GlowShader');
+        this.candle.anims.play('candle-1-flicker',true);
 
         var timeline = this.tweens.createTimeline();
         // 100s  should be changed to 1000 later. Right now, just speeds up testing
@@ -116,7 +127,7 @@ var SplashScene = new Phaser.Class({
     },
     update: function(){
         glowPipeline.setFloat1('time', this.glowTime);
-        this.glowTime += 0.03;
+        this.glowTime += 0.015;
         updateGamePads();
 
         if(gamePad[0].checkButtonState('start') > 0 || gamePad[1].checkButtonState('start') > 0){
