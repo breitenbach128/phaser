@@ -72,6 +72,8 @@ var Preloader = new Phaser.Class({
 		
 
 		// now load images, audio etc.
+		//Splashscreen
+
 		//Background
 		this.load.image('forest_background', 'assets/world/forest_bg.png');
 		this.load.image('PF_2DCastle1_1_background', 'tmx/tilesets/PF_2DCastle1.1/background.png');
@@ -178,7 +180,8 @@ var Preloader = new Phaser.Class({
 		this.load.tilemapTiledJSON('i1s2c', 'assets/world/i1s2/i1s2c.json');
 		this.load.tilemapTiledJSON('i1s3a', 'assets/world/i1s3/i1s3a.json');
 		this.load.tilemapTiledJSON('i1s3b', 'assets/world/i1s3/i1s3b.json');
-		this.load.tilemapTiledJSON('i1s4', 'assets/world/i1s4/i1s4.json');
+		this.load.tilemapTiledJSON('i1s4a', 'assets/world/i1s4/i1s4a.json');
+		this.load.tilemapTiledJSON('i1s4b', 'assets/world/i1s4/i1s4b.json');
 		this.load.tilemapTiledJSON('i1s5', 'assets/world/i1s5/i1s5.json');
 		//Panic Maps
 		this.load.tilemapTiledJSON('panic1', 'assets/world/panic1.json');

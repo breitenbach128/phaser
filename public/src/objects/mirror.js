@@ -118,7 +118,8 @@ class MirrorSensor extends Phaser.Physics.Matter.Image{
         .setStatic(true)
         .setFixedRotation() 
         .setIgnoreGravity(true)  
-        .setVisible(false);
+        .setVisible(false)
+        .setCollidesWith([ CATEGORY.BULLET, CATEGORY.DARK, CATEGORY.SOLANA ])
     }
     update(time, delta)
     {       

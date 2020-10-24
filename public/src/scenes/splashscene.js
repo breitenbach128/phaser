@@ -14,6 +14,8 @@ var SplashScene = new Phaser.Class({
     preload: function ()
     {
         initGamePads(this,function(){});
+        
+		this.load.image('cover1', 'assets/ASE_templates/cover_1.png');
     },
 
     create: function ()
@@ -38,12 +40,8 @@ var SplashScene = new Phaser.Class({
             repeat: 0
         });  
 
-        this.anims.create({
-            key: 'candle-1-flicker',
-            frames: this.anims.generateFrameNumbers('candle-1', { frames:[0,1,2,3] }),
-            frameRate: 16,
-            repeat: -1
-        }); 
+
+        this.add.image(0,0,'cover1').setOrigin(0,0).setDisplaySize(game.canvas.width,game.canvas.height);
         //Version
         this.add.text(12, 12, "Verison: "+buildVersion, { fontSize: '12px', fill: '#00FF00', stroke: '#000000', strokeThickness: 4 });
 
@@ -54,17 +52,13 @@ var SplashScene = new Phaser.Class({
 
         let studio = this.add.sprite(-1000, -1000, '128games');
 
-        let title = this.add.sprite(-1000, -1000, 'Title1').setDepth(5);;
+        let title = this.add.sprite(-1000, -1000, 'Title1').setDepth(5).setVisible(false);;
 
         this.btnstart = this.addButton(-1000, -1000, 'button_sun', this.doStart, this, 0, 0, 0, 0);
         this.btnstart.setPipeline('GlowShader');
 
         this.btn_spc = this.add.image(game.canvas.width/2,game.canvas.height-250,'icon_kb_spcbar');
         this.btn_spc.setPipeline('GlowShader');
-
-        this.candle = this.add.sprite(120,game.canvas.height-250,'candle-1').setScale(3);
-        //this.candle.setPipeline('GlowShader');
-        this.candle.anims.play('candle-1-flicker',true);
 
         var timeline = this.tweens.createTimeline();
         // 100s  should be changed to 1000 later. Right now, just speeds up testing

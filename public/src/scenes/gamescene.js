@@ -15,6 +15,7 @@ var GameScene = new Phaser.Class({
     preload: function ()
     {
         //this.load.scenePlugin('Slopes', 'src/plugins/phaser-slopes.min.js');
+        this.load.plugin('rexglowfilterpipelineplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexglowfilterpipelineplugin.min.js', true);
     },
 
     create: function ()
@@ -22,6 +23,9 @@ var GameScene = new Phaser.Class({
         //Setup Global
         playScene = this;
         game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
+        //Create Shaders
+        var pipelineInstance = this.plugins.get('rexglowfilterpipelineplugin').add(this, 'rexGlowFilterPipeline', {intensity: 0.02});
+        game.renderer.addPipeline('glowPipe', pipelineInstance);
         //Refresh/Setup HUD
         hud = this.scene.get('UIScene');;
         hud.handleEvents();
@@ -208,16 +212,18 @@ var GameScene = new Phaser.Class({
 
         bright.toDark(); //Bright Starts the game off as dark
 
-        //Create Camera        
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);  
-        this.cameras.main.setBackgroundColor('#000000'); 
-        this.cameras.main.roundPixels = true;
-        this.cameras.main.setZoom(2.00);
-        camera_main = this.cameras.main;
+        //Create Camera   
+        camera_main = this.cameras.main;     
+        camera_main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);  
+        camera_main.setBackgroundColor('#000000'); 
+        camera_main.roundPixels = true;      
+       
+        //camera_main.setRenderToTexture('GlowShader'); //Pipeline does not scurrently scale properly. I need to figure out the shader.
+        camera_main.setZoom(2.00);
         this.camMovement = {x:camera_main.worldView.x,y:camera_main.worldView.y};
         camera_main.fadeIn(2000,0,0,0,function(){},this);
 
-        //camera_main.setRenderToTexture(glowPipeline);
+        
         //Controls
         createControls(this);
 
@@ -686,6 +692,10 @@ var GameScene = new Phaser.Class({
                     let proppuddle = new PropPuddle(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
                 }else if(propprops.subtype == 'rat'){
                     let proprat = new PropRat(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                }else if(propprops.subtype == 'candle'){
+                    let candle = this.add.sprite(tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2,'candle-1').setDepth(DEPTH_LAYERS.FRONT).setScale(0.5);
+                    candle.anims.play('candle-1-flicker',true);
+                    console.log("candle made");
                 }
             }else if(tmxObjRef.type == 'sollink'){
                 let sl = new Sollink(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2)
@@ -2615,5 +2625,11 @@ function createAnimations(scene){
         frameRate: 8,
         repeat: 0
     });
+    scene.anims.create({
+        key: 'candle-1-flicker',
+        frames: scene.anims.generateFrameNumbers('candle-1', { frames:[0,1,2,3] }),
+        frameRate: 16,
+        repeat: -1
+    }); 
     
 }
