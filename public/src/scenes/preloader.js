@@ -255,6 +255,7 @@ var Preloader = new Phaser.Class({
 		this.load.json('lvlcfg_i1s1', 'src/utility/leveldata/lvlcfg_i1s1.json');
 		this.load.json('lvlcfg_i1s2', 'src/utility/leveldata/lvlcfg_i1s2.json');
 		this.load.json('lvlcfg_i1s3', 'src/utility/leveldata/lvlcfg_i1s3.json');
+		this.load.json('lvlcfg_i1s4', 'src/utility/leveldata/lvlcfg_i1s4.json');
 
 		//Entity Assets
         this.load.spritesheet('slime1', 'assets/characters/slimemonster2.png', {frameWidth: 64, frameHeight: 37});    

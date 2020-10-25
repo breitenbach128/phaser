@@ -696,6 +696,7 @@ class Solana extends Phaser.Physics.Matter.Sprite{
         this.debug.setVisible(true);
         this.alive = true; 
         hud.setHealth(this.hp,0);
+        hud.unReady();
         this.addEnergy(1500);
         this.scene.scene.restart();
     }

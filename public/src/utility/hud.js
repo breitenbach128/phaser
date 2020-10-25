@@ -14,7 +14,7 @@ class HudScene extends Phaser.Scene {
     update()
     {
         if(this.ready){  
-            let disPlayers = Math.round(Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y));
+            let disPlayers = solana.alive ? Math.round(Phaser.Math.Distance.Between(solana.x,solana.y,bright.x,bright.y)) : 0;
             let disPlayersX = Math.abs(solana.x - bright.x);
             let disPlayersY = Math.abs(solana.y - bright.y);
 
@@ -37,6 +37,9 @@ class HudScene extends Phaser.Scene {
             this.brightStatBar.updateBar();
             this.solanaStatBar.updateBar()
         }
+    }
+    unReady(){
+        this.ready = false;
     }
     setReady(){
         if(!this.ready){            

@@ -52,6 +52,7 @@ var GameScene = new Phaser.Class({
         //Get the lvl config from config.js object
         let lvlCfg = getLevelConfigByName(this,current_map);
         //Create Background - This will need to be custom based on the map.
+        console.log(current_map,lvlCfg)
         lvlCfg.backgrounds.forEach(e=>{
             world_backgrounds.push(this.add.tileSprite(map.widthInPixels/2, map.heightInPixels/2, map.widthInPixels*2, map.heightInPixels, e));
         });
@@ -723,8 +724,9 @@ var GameScene = new Phaser.Class({
                 triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
             }else if(tmxObjRef.type == "platform"){
                 let platform_texture = trig_props.key != undefined ? trig_props.key: 'platform_160x16';
+                let platform_frame = trig_props.frame != undefined ? trig_props.frame: 0;
                 //triggerObj = platforms.get(tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,platform_texture);
-                triggerObj = new TMXPlatform(this,tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,platform_texture,0);
+                triggerObj = new TMXPlatform(this,tmxObjRef.x+trig_x_offset,tmxObjRef.y+trig_y_offset,platform_texture,platform_frame);
                 triggerObj.setDepth(DEPTH_LAYERS.PLATFORMS);
                 platforms.add(triggerObj);
             }else if(tmxObjRef.type == "button"){
