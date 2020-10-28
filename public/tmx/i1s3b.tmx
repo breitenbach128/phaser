@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="151">
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="152">
  <editorsettings>
   <export target="../assets/world/i1s3/i1s3b.json" format="json"/>
  </editorsettings>
@@ -416,7 +416,7 @@
    </properties>
   </object>
   <object id="139" name="mirror3" type="mirror" x="512" y="16" width="32" height="32" rotation="90"/>
-  <object id="140" name="prop_candle" type="prop" x="400" y="320" width="16" height="16">
+  <object id="140" name="prop_candle" type="prop" x="352" y="80" width="16" height="16">
    <properties>
     <property name="subtype" value="candle"/>
    </properties>
@@ -425,6 +425,11 @@
   <object id="144" name="crate" type="crate" x="656" y="112" width="16" height="16"/>
   <object id="145" name="crate" type="crate" x="640" y="96" width="16" height="16"/>
   <object id="146" name="crate" type="crate" x="672" y="112" width="16" height="16"/>
+  <object id="151" name="prop_candle" type="prop" x="608" y="320" width="16" height="16">
+   <properties>
+    <property name="subtype" value="candle"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="10" name="triggers">
   <object id="110" name="zone-mass" type="zone" x="368" y="192" width="64" height="16">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="201">
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="60" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="202">
  <editorsettings>
-  <export target="../assets/world/i1s4/i1s4b.json" format="json"/>
+  <export target="../assets/world/i1s4/i1s4c.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="decorative" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
   <image source="tilesets/PF_Caslte_1.0/decorative.png" width="512" height="512"/>
@@ -369,15 +369,15 @@
  <objectgroup id="14" name="enemies"/>
  <objectgroup id="13" name="spawns"/>
  <objectgroup id="12" name="exit">
-  <object id="2" name="west1" type="entrance" x="48" y="176" width="32" height="32"/>
+  <object id="2" name="west1" type="entrance" x="144" y="-344" width="32" height="32"/>
   <object id="105" name="west1" type="exit" x="-48" y="128" width="48" height="96">
    <properties>
     <property name="targetExit" value="door1"/>
     <property name="targetMap" value="i1s4a"/>
    </properties>
   </object>
-  <object id="137" name="door1" type="entrance" x="895" y="112" width="32" height="32"/>
-  <object id="138" name="door1" type="exit" x="878" y="80" width="64" height="96">
+  <object id="137" name="door1" type="entrance" x="784" y="476" width="32" height="32"/>
+  <object id="138" name="door1" type="exit" x="767" y="444" width="64" height="96">
    <properties>
     <property name="manualTrigger" type="bool" value="true"/>
     <property name="targetExit" value="west1"/>
@@ -386,105 +386,100 @@
   </object>
  </objectgroup>
  <objectgroup id="9" name="objects">
-  <object id="89" name="soulcrystal0" type="soulcrystal" x="176" y="192" width="16" height="16">
+  <object id="89" name="soulcrystal0" type="soulcrystal" x="272" y="-328" width="16" height="16">
    <properties>
     <property name="color" value="yellow"/>
     <property name="scid" type="int" value="0"/>
    </properties>
   </object>
-  <object id="122" name="line2" type="line" x="326" y="-8">
+  <object id="122" name="line2" type="line" x="125" y="-111">
    <polyline points="-47,-220 -22,-62 -48,4"/>
   </object>
-  <object id="128" name="mirror2" type="mirror" x="608" y="240" width="32" height="32"/>
+  <object id="128" name="mirror2" type="mirror" x="497" y="604" width="32" height="32"/>
   <object id="132" name="line2" type="line" x="432" y="-206">
    <polyline points="-72,-2 102,-9 135,110 128,160 96,176"/>
   </object>
-  <object id="133" name="mirror1" type="mirror" x="432" y="240" width="32" height="32" rotation="90"/>
+  <object id="133" name="mirror1" type="mirror" x="321" y="604" width="32" height="32" rotation="90"/>
   <object id="135" name="line3" type="line" x="444" y="-65">
    <polyline points="0,0 -38,27 -39,55"/>
   </object>
-  <object id="139" name="crate" type="crate" x="816" y="160" width="16" height="16"/>
-  <object id="140" name="crate" type="crate" x="848" y="160" width="16" height="16"/>
-  <object id="141" name="crate" type="crate" x="833" y="112" width="16" height="16"/>
-  <object id="142" name="crate" type="crate" x="841" y="144" width="16" height="16"/>
-  <object id="143" name="crate" type="crate" x="832" y="160" width="16" height="16"/>
-  <object id="144" name="crate" type="crate" x="825" y="128" width="16" height="16"/>
-  <object id="145" name="crate" type="crate" x="825" y="144" width="16" height="16"/>
-  <object id="148" name="crate" type="crate" x="841" y="128" width="16" height="16"/>
-  <object id="168" name="mirror3" type="mirror" x="640" y="32" width="32" height="32" rotation="90"/>
-  <object id="183" name="platfall1" type="platfall" gid="1092" x="352" y="304" width="16" height="16">
+  <object id="139" name="crate" type="crate" x="705" y="524" width="16" height="16"/>
+  <object id="140" name="crate" type="crate" x="737" y="524" width="16" height="16"/>
+  <object id="141" name="crate" type="crate" x="722" y="476" width="16" height="16"/>
+  <object id="142" name="crate" type="crate" x="730" y="508" width="16" height="16"/>
+  <object id="143" name="crate" type="crate" x="721" y="524" width="16" height="16"/>
+  <object id="144" name="crate" type="crate" x="714" y="492" width="16" height="16"/>
+  <object id="145" name="crate" type="crate" x="714" y="508" width="16" height="16"/>
+  <object id="148" name="crate" type="crate" x="730" y="492" width="16" height="16"/>
+  <object id="168" name="mirror3" type="mirror" x="529" y="396" width="32" height="32" rotation="90"/>
+  <object id="183" name="platfall1" type="platfall" gid="1092" x="241" y="668" width="16" height="16">
    <properties>
     <property name="tsName" value="PF_Caslte_1_0_mainlevbuild_A"/>
    </properties>
   </object>
-  <object id="184" name="platfall1" type="platfall" gid="1092" x="304" y="240" width="16" height="16">
+  <object id="184" name="platfall1" type="platfall" gid="1092" x="975" y="-108" width="16" height="16">
    <properties>
     <property name="tsName" value="PF_Caslte_1_0_mainlevbuild_A"/>
    </properties>
   </object>
-  <object id="185" name="platfall1" type="platfall" gid="1092" x="256" y="192" width="16" height="16">
+  <object id="185" name="platfall1" type="platfall" gid="1092" x="927" y="-156" width="16" height="16">
    <properties>
     <property name="tsName" value="PF_Caslte_1_0_mainlevbuild_A"/>
    </properties>
   </object>
-  <object id="186" name="platfall1" type="platfall" gid="1092" x="304" y="144" width="16" height="16">
+  <object id="186" name="platfall1" type="platfall" gid="1092" x="975" y="-204" width="16" height="16">
    <properties>
     <property name="tsName" value="PF_Caslte_1_0_mainlevbuild_A"/>
    </properties>
   </object>
-  <object id="187" name="platfall1" type="platfall" gid="1092" x="688" y="192" width="16" height="16">
+  <object id="187" name="platfall1" type="platfall" gid="1092" x="577" y="556" width="16" height="16">
    <properties>
     <property name="tsName" value="PF_Caslte_1_0_mainlevbuild_A"/>
    </properties>
   </object>
-  <object id="188" name="platfall1" type="platfall" gid="1092" x="768" y="240" width="16" height="16">
+  <object id="188" name="platfall1" type="platfall" gid="1092" x="657" y="604" width="16" height="16">
    <properties>
     <property name="tsName" value="PF_Caslte_1_0_mainlevbuild_A"/>
    </properties>
   </object>
-  <object id="191" name="prop_candle" type="prop" x="320" y="176" width="16" height="16">
+  <object id="191" name="prop_candle" type="prop" x="991" y="-172" width="16" height="16">
    <properties>
     <property name="subtype" value="candle"/>
    </properties>
   </object>
-  <object id="192" name="prop_candle" type="prop" x="208" y="176" width="16" height="16">
+  <object id="192" name="prop_candle" type="prop" x="304" y="-344" width="16" height="16">
    <properties>
     <property name="subtype" value="candle"/>
    </properties>
   </object>
-  <object id="193" name="prop_candle" type="prop" x="128" y="176" width="16" height="16">
+  <object id="193" name="prop_candle" type="prop" x="224" y="-344" width="16" height="16">
    <properties>
     <property name="subtype" value="candle"/>
    </properties>
   </object>
-  <object id="194" name="prop_candle" type="prop" x="48" y="176" width="16" height="16">
+  <object id="194" name="prop_candle" type="prop" x="144" y="-344" width="16" height="16">
    <properties>
     <property name="subtype" value="candle"/>
    </properties>
   </object>
-  <object id="197" name="prop_rat" type="prop" x="128" y="320" width="24" height="16">
+  <object id="197" name="prop_rat" type="prop" x="224" y="-200" width="24" height="16">
    <properties>
     <property name="subtype" value="rat"/>
    </properties>
   </object>
-  <object id="198" name="prop_bat" type="prop" x="544" y="192" width="32" height="16">
+  <object id="198" name="prop_bat" type="prop" x="433" y="556" width="32" height="16">
    <properties>
     <property name="subtype" value="bat"/>
    </properties>
   </object>
-  <object id="199" name="prop_bat" type="prop" x="192" y="272" width="32" height="16">
+  <object id="199" name="prop_bat" type="prop" x="288" y="-248" width="32" height="16">
    <properties>
     <property name="subtype" value="bat"/>
-   </properties>
-  </object>
-  <object id="200" name="hive1" type="hive" x="512" y="48" width="32" height="32">
-   <properties>
-    <property name="bugsMax" type="int" value="3"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="10" name="triggers">
-  <object id="108" name="zone1" type="zone" x="176" y="304" width="192" height="32">
+  <object id="108" name="zone1" type="zone" x="650" y="-172" width="192" height="32">
    <properties>
     <property name="allowReset" type="bool" value="true"/>
     <property name="resetDelay" type="int" value="300"/>
@@ -494,13 +489,13 @@
     <property name="zoneValue" value="{&quot;damage&quot;:1}"/>
    </properties>
   </object>
-  <object id="120" name="gate3" type="gate" x="128" y="224" width="32" height="48">
+  <object id="120" name="gate3" type="gate" x="224" y="-296" width="32" height="48">
    <properties>
     <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:0}"/>
     <property name="source" value="none"/>
    </properties>
   </object>
-  <object id="121" name="lamp1" type="crystallamp" x="160" y="288" width="16" height="16">
+  <object id="121" name="lamp1" type="crystallamp" x="256" y="-232" width="16" height="16">
    <properties>
     <property name="alwaysOn" type="bool" value="false"/>
     <property name="brightness_max" type="int" value="128"/>
@@ -509,7 +504,7 @@
     <property name="targetType" value="gate"/>
    </properties>
   </object>
-  <object id="130" name="lamp2" type="crystallamp" x="664" y="48" width="16" height="16">
+  <object id="130" name="lamp2" type="crystallamp" x="553" y="412" width="16" height="16">
    <properties>
     <property name="alwaysOn" type="bool" value="false"/>
     <property name="brightness_max" type="int" value="128"/>
@@ -518,7 +513,7 @@
     <property name="targetType" value="platform"/>
    </properties>
   </object>
-  <object id="155" name="platform-death1" type="platform" x="496" y="320" width="48" height="16">
+  <object id="155" name="platform-death1" type="platform" x="385" y="684" width="48" height="16">
    <properties>
     <property name="autostart" type="bool" value="true"/>
     <property name="frame" type="int" value="10"/>
@@ -536,20 +531,20 @@
     <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:80,&quot;t&quot;:3000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
    </properties>
   </object>
-  <object id="158" name="platform1" type="platform" x="704" y="288" width="48" height="16">
+  <object id="158" name="platform1" type="platform" x="593" y="652" width="48" height="16">
    <properties>
     <property name="autostart" type="bool" value="false"/>
     <property name="loop" type="int" value="0"/>
     <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:-208,&quot;y&quot;:0,&quot;t&quot;:8000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:8000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0}]"/>
    </properties>
   </object>
-  <object id="159" name="gear2" type="gear" x="73" y="297" width="16" height="16">
+  <object id="159" name="gear2" type="gear" x="169" y="-223" width="16" height="16">
    <properties>
     <property name="targetName" value="mirror1,mirror2,mirror3"/>
    </properties>
    <ellipse/>
   </object>
-  <object id="162" name="zone1" type="zone" x="496" y="304" width="288" height="32">
+  <object id="162" name="zone1" type="zone" x="385" y="668" width="288" height="32">
    <properties>
     <property name="allowReset" type="bool" value="true"/>
     <property name="resetDelay" type="int" value="300"/>
@@ -559,46 +554,57 @@
     <property name="zoneValue" value="{&quot;damage&quot;:1}"/>
    </properties>
   </object>
-  <object id="165" name="gate1" type="gate" x="496" y="112" width="48" height="16">
+  <object id="165" name="gate1" type="gate" x="385" y="476" width="48" height="16">
    <properties>
     <property name="autoclose" type="bool" value="true"/>
     <property name="mvdir" value="{&quot;x&quot;:48,&quot;y&quot;:0}"/>
     <property name="source" value="none"/>
    </properties>
   </object>
-  <object id="172" name="gate2" type="gate" x="400" y="112" width="48" height="16">
+  <object id="172" name="gate2" type="gate" x="289" y="476" width="48" height="16">
    <properties>
     <property name="autoclose" type="bool" value="true"/>
     <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:0}"/>
     <property name="source" value="none"/>
    </properties>
   </object>
-  <object id="174" name="gate4" type="gate" x="448" y="224" width="48" height="64">
+  <object id="174" name="gate4" type="gate" x="337" y="588" width="48" height="64">
    <properties>
     <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:0}"/>
     <property name="source" value="none"/>
    </properties>
   </object>
+  <object id="200" name="lever1" type="lever" x="697" y="-71" width="32" height="32">
+   <properties>
+    <property name="targetName" value="platform1"/>
+    <property name="targetType" value="platform"/>
+   </properties>
+  </object>
+  <object id="201" name="telebeam1" type="telebeam" x="1024" y="32" width="64" height="64">
+   <properties>
+    <property name="initAngle" type="int" value="-90"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup color="#00ff00" id="8" name="hulls">
   <object id="5" type="hulls" x="0" y="160" width="16" height="176"/>
-  <object id="47" type="hulls" x="16" y="224" width="112" height="48"/>
+  <object id="47" type="hulls" x="112" y="-296" width="112" height="48"/>
   <object id="49" type="hulls" x="944" y="16" width="16" height="144"/>
   <object id="53" type="hulls" x="0" y="0" width="16" height="160"/>
   <object id="54" type="hulls" x="16" y="0" width="432" height="16"/>
   <object id="73" type="hulls" x="448" y="0" width="512" height="16"/>
   <object id="74" type="hulls" x="944" y="160" width="16" height="176"/>
-  <object id="107" type="hulls" x="368" y="112" width="32" height="224"/>
+  <object id="107" type="hulls" x="257" y="476" width="32" height="224"/>
   <object id="109" type="hulls" x="0" y="336" width="432" height="16"/>
-  <object id="112" type="hulls" x="784" y="176" width="160" height="160"/>
-  <object id="153" type="hulls" x="160" y="304" width="16" height="32"/>
+  <object id="112" type="hulls" x="673" y="540" width="160" height="160"/>
+  <object id="153" type="hulls" x="256" y="-216" width="16" height="32"/>
   <object id="160" type="hulls" x="432" y="336" width="528" height="16"/>
-  <object id="161" type="hulls" x="544" y="16" width="48" height="96"/>
-  <object id="163" type="hulls" x="160" y="224" width="64" height="48"/>
-  <object id="166" type="hulls" x="544" y="128" width="48" height="64"/>
-  <object id="167" type="hulls" x="656" y="64" width="32" height="128"/>
-  <object id="171" type="hulls" x="448" y="112" width="48" height="112"/>
-  <object id="173" type="hulls" x="448" y="288" width="48" height="48"/>
+  <object id="161" type="hulls" x="433" y="380" width="48" height="96"/>
+  <object id="163" type="hulls" x="256" y="-296" width="64" height="48"/>
+  <object id="166" type="hulls" x="433" y="492" width="48" height="64"/>
+  <object id="167" type="hulls" x="545" y="428" width="32" height="128"/>
+  <object id="171" type="hulls" x="337" y="476" width="48" height="112"/>
+  <object id="173" type="hulls" x="337" y="652" width="48" height="48"/>
  </objectgroup>
  <objectgroup id="16" name="pathing"/>
 </map>
