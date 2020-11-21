@@ -40,6 +40,10 @@ class HudScene extends Phaser.Scene {
     }
     unReady(){
         this.ready = false;
+        for(var h = 0;h < this.hp_blips.length;h++){
+            this.hp_blips[h].destroy();
+            this.bp_blips[h].destroy();
+        }
     }
     setReady(){
         if(!this.ready){            
@@ -278,6 +282,7 @@ class HudScene extends Phaser.Scene {
         }
 
         if(errorCode != 0){console.log("HUD:SETHEALTH:ERROR:",errorCode,playerid,hp);}
+        console.log("hurt player",playerid,hp);
     }
     handleEvents ()
     {

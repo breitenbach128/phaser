@@ -858,6 +858,7 @@ class Telebeam extends Phaser.Physics.Matter.Sprite{
         .setCollisionCategory(CATEGORY.SOLID)
         .setCollidesWith([ CATEGORY.BRIGHT, CATEGORY.SOLANA, CATEGORY.BULLET])
         .setPosition(x, y)
+        .setDepth(DEPTH_LAYERS.OBJECTS)
         .setStatic(true);   
         
         this.rotateReady = true;
@@ -868,10 +869,12 @@ class Telebeam extends Phaser.Physics.Matter.Sprite{
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 
                 if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
-                    let control_up = solana.ctrlDeviceId >= 0? gamePad[solana.ctrlDeviceId].checkButtonState('up') > 0 : keyPad.checkKeyState('W') > 0;
-                    let control_down = solana.ctrlDeviceId >= 0? gamePad[solana.ctrlDeviceId].checkButtonState('down') > 0 : keyPad.checkKeyState('S') > 0;
-                    if(control_up && this.rotateReady) {
-                        this.doRotate();
+                    if(curr_player == players.SOLANA || playerMode > 0 ){
+                        let control_up = solana.ctrlDeviceId >= 0? gamePad[solana.ctrlDeviceId].checkButtonState('up') > 0 : keyPad.checkKeyState('W') > 0;
+                        let control_down = solana.ctrlDeviceId >= 0? gamePad[solana.ctrlDeviceId].checkButtonState('down') > 0 : keyPad.checkKeyState('S') > 0;
+                        if(control_up && this.rotateReady) {
+                            this.doRotate();
+                        }
                     }
                 }
             }
@@ -1131,10 +1134,12 @@ class Chest extends Phaser.Physics.Matter.Sprite{
                 const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
                 
                 if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
-                    let control_up = solana.ctrlDeviceId >= 0? gamePad[solana.ctrlDeviceId].checkButtonState('up') > 0 : keyPad.checkKeyState('W') > 0;
-                    if(control_up) {
-                        //Interact
-                        gameObjectA.open();
+                    if(curr_player == players.SOLANA || playerMode > 0 ){
+                        let control_up = solana.ctrlDeviceId >= 0? gamePad[solana.ctrlDeviceId].checkButtonState('up') > 0 : keyPad.checkKeyState('W') > 0;
+                        if(control_up) {
+                            //Interact
+                            gameObjectA.open();
+                        }
                     }
                 }
             }

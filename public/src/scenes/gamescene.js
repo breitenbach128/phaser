@@ -1368,6 +1368,7 @@ var GameScene = new Phaser.Class({
                 if ((bodyA.label === 'SOULTRANSFER' && bodyB.label === 'TELEBEAM') || (bodyA.label === 'TELEBEAM' && bodyB.label === 'SOULTRANSFER')) {
                     let gObjs = getGameObjectBylabel(bodyA,bodyB,'SOULTRANSFER');
                     if (gObjs[0].active){;
+                        gObjs[0].setPosition(gObjs[1].x,gObjs[1].y);
                         gObjs[0].chain(gObjs[1].rotation-(Math.PI/2),soullight.projectile_speed,gObjs[1]);
                     }  
                 }
