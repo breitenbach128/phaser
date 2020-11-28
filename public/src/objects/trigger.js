@@ -953,7 +953,6 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         this.setActive(true); 
         this.setPosition(x,y);
         
-        console.log("platform body width/height",this.body,this.width,this.height,w,h)
         // let scaleFactorX = w/this.width;
         // let scaleFactorY = h/this.height;
         // console.log(scaleFactorX,scaleFactorY)
@@ -974,7 +973,31 @@ class TMXPlatform extends Phaser.Physics.Matter.Sprite{
         if(properties != undefined && Object.keys(properties).length > 0){
             this.target.name = properties.targetName;
             this.target.type = properties.targetType;
-            this.path = properties.path != undefined ? JSON.parse(properties.path) : -1;
+            //Handle Path Setup
+            if(properties.pathid){                
+                let findPath = pathingNodes.find(e => {
+                    return e.name === properties.pathid;
+                })
+                if(findPath){
+                    //Adjust the worldpoints to relative position
+                    findPath.worldpoints.forEach(e=>{
+                        e.x = e.x-this.x;
+                        e.y = e.y-this.y;
+                        e.h = 0;
+                        e.t = 3000
+                    },this);
+                    //Overwrite with found path waypoints                    
+                    this.path = findPath.worldpoints;
+                    console.log(findPath.worldpoints);
+                    
+                }else{
+                    this.path = properties.path != undefined ? JSON.parse(properties.path) : -1; 
+                }                
+            }else{
+                this.path = properties.path != undefined ? JSON.parse(properties.path) : -1;  
+            }
+
+            
             this.tmloop = properties.loop;
             this.autostart = properties.autostart;
             this.togglePath = properties.togglepath != undefined ? properties.togglepath : false;

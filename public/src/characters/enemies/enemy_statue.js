@@ -32,7 +32,7 @@ class EnemyStatue extends Phaser.Physics.Matter.Sprite{
         .setDepth(DEPTH_LAYERS.OBJECTS)
         .setStatic(true);
 
-        this.anims.play('status-blink',true);
+        
         //Collision
         this.scene.matterCollision.addOnCollideStart({
             objectA: [this],
@@ -46,17 +46,30 @@ class EnemyStatue extends Phaser.Physics.Matter.Sprite{
         this.scene.events.on("shutdown", this.remove, this);
 
         //Status Weapon
-        this.gun = new Gun(120,3,240);//ROF,MAGSIZE,RELOADTIME
+        this.gun = new Gun(1,1,1);//ROF,MAGSIZE,RELOADTIME
 
         //Status Conditions
         this.isStunned = false;
+        //Register Animation Event
+        this.on('animationcomplete', function (anim, frame) {
+            //this.emit('animationcomplete_' + anim.key, anim, frame);
+            if(anim.key == 'statue-attack'){
+                this.barrage();
+            }
+        }, this);
+        this.canSeeSolana = false;
+        this.canSeeSolanaDistance = 9999;
     }
     update(){
         if(this.active){
-            let solDis = distanceBetweenObjects(solana,this);
-            let solSee = canSee(this,solana,losBlockers);
-            if(solDis < 512 && solSee){
-                this.barrage();
+            this.canSeeSolanaDistance = distanceBetweenObjects(solana,this);
+            this.canSeeSolana = canSee(this,solana,losBlockers); 
+            if(this.canSeeSolanaDistance < 512 && this.canSeeSolana){
+                this.anims.play('statue-attack',true);
+            }
+            //Update Gun
+            if(this.gun){
+                this.gun.update();
             }
         }
     }
@@ -72,12 +85,11 @@ class EnemyStatue extends Phaser.Physics.Matter.Sprite{
             bullet.setFrictionAir(0.0);     
             bullet.setFixedRotation(true); 
             let aimVec = this.aim(solana); 
-            bullet.fire(this.x, this.y, aimVec.x*3, aimVec.y*3, 1000);
-            this.gun.shoot();//Decrease mag size. Can leave this out for a constant ROF.
+            let bulletSpeed = 1.75;
+            bullet.fire(this.x, this.y, aimVec.x*bulletSpeed, aimVec.y*bulletSpeed, 1000);
+            //this.gun.shoot();//Decrease mag size. Can leave this out for a constant ROF.
         }
-        if(this.gun){
-            this.gun.update();
-        }
+
     }
     aim(target){
         //Aimed shot with weapon.

@@ -204,6 +204,7 @@ class TMXGear extends Phaser.Physics.Matter.Image{
         this.name = name;        
         this.ready = true;
         this.target = {name: -1,type: -1, object: []};
+        this.resetSpring = false;
 
         this.rotation_constraint = Phaser.Physics.Matter.Matter.Constraint.create(
             {
@@ -216,9 +217,9 @@ class TMXGear extends Phaser.Physics.Matter.Image{
         this.scene.matter.world.add(this.rotation_constraint);
         if(properties){
             this.target.name = properties.targetName;
+            this.resetSpring = properties.resetSpring;
         }
         this.prevAng = 0;
-        
         this.debug = this.scene.add.text(this.x, this.y-16, 'plate', { fontSize: '10px', fill: '#00FF00', resolution: 2 }).setOrigin(0.5).setDepth(this.depth+1);  
     }
     attachDark(){
@@ -245,15 +246,28 @@ class TMXGear extends Phaser.Physics.Matter.Image{
     update(time, delta)
     {       
         let roc = ~~(this.angle - this.prevAng);
-        this.debug.setPosition(this.x, this.y-16);
-        this.debug.setText("Data:"+String(this.angle.toFixed(2))+'roc:'+String(roc));
+        this.debug.setPosition(this.x+32, this.y-32);
+        this.debug.setText("ANG: "+String(this.angle.toFixed(2))+'\n rot: '+String(this.rotation));
         if(this.darkAttached){
             this.setAngularVelocity(bright.body.angularVelocity*0.50); 
+        }else{
+            if(this.resetSpring){
+                                        
+                if(this.rotation > 1){
+                    this.setAngularVelocity(-0.15);
+                }else if(this.rotation < -1){
+                    this.setAngularVelocity(0.15);
+                }      
+                if(this.rotation < 1 && this.rotation > -1){
+                    this.setAngularVelocity(0);
+                    this.setRotation(0);
+                }      
+            }
         }
         if(roc > 1){
             this.triggerTarget(1);
         }else if(roc < -1){
-            this.triggerTarget(-1);            
+            this.triggerTarget(-1);
         }
         this.prevAng = this.angle
     }

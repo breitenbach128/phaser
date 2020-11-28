@@ -143,6 +143,7 @@ class Exit extends Phaser.Physics.Matter.Sprite{
         this.touchedBy[id] = false;
     }
     nextLevel(){
+        hud.unReady();
         this.scene.soundTheme.stop();
         //First, Save State
         this.scene.saveData();

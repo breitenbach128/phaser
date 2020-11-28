@@ -376,8 +376,8 @@
     <property name="targetMap" value="i1s4a"/>
    </properties>
   </object>
-  <object id="137" name="door1" type="entrance" x="897" y="48" width="32" height="32"/>
-  <object id="138" name="door1" type="exit" x="880" y="16" width="64" height="96">
+  <object id="137" name="door1" type="entrance" x="784" y="64" width="32" height="32"/>
+  <object id="138" name="door1" type="exit" x="768" y="32" width="64" height="96">
    <properties>
     <property name="manualTrigger" type="bool" value="true"/>
     <property name="targetExit" value="west1"/>

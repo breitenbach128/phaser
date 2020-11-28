@@ -44,6 +44,10 @@ class HudScene extends Phaser.Scene {
             this.hp_blips[h].destroy();
             this.bp_blips[h].destroy();
         }
+        for(var bb = 0;bb < this.boss_bar.length;bb++){
+            //Clear boss bar
+            this.boss_bar[bb].destroy();
+        }
     }
     setReady(){
         if(!this.ready){            

@@ -183,7 +183,7 @@ var Preloader = new Phaser.Class({
 		this.load.tilemapTiledJSON('i1s4a', 'assets/world/i1s4/i1s4a.json');
 		this.load.tilemapTiledJSON('i1s4b', 'assets/world/i1s4/i1s4b.json');
 		this.load.tilemapTiledJSON('i1s4c', 'assets/world/i1s4/i1s4c.json');
-		this.load.tilemapTiledJSON('i1s5', 'assets/world/i1s5/i1s5.json');
+		this.load.tilemapTiledJSON('i1s5a', 'assets/world/i1s5/i1s5a.json');
 		//Panic Maps
 		this.load.tilemapTiledJSON('panic1', 'assets/world/panic1.json');
 		//Map Assets - Game		
@@ -257,6 +257,7 @@ var Preloader = new Phaser.Class({
 		this.load.json('lvlcfg_i1s2', 'src/utility/leveldata/lvlcfg_i1s2.json');
 		this.load.json('lvlcfg_i1s3', 'src/utility/leveldata/lvlcfg_i1s3.json');
 		this.load.json('lvlcfg_i1s4', 'src/utility/leveldata/lvlcfg_i1s4.json');
+		this.load.json('lvlcfg_i1s5', 'src/utility/leveldata/lvlcfg_i1s5.json');
 
 		//Entity Assets
         this.load.spritesheet('slime1', 'assets/characters/slimemonster2.png', {frameWidth: 64, frameHeight: 37});    

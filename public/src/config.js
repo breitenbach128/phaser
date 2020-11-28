@@ -71,7 +71,7 @@
     //Tiles
     var map; 
     var mapTileSize = {tw:16,th:16};
-    var current_map = "i1s4c";
+    var current_map = "i1s5a";
     var current_exit = {solana: "west1", bright: "west1"};
     var world_backgrounds = [];
         
@@ -409,12 +409,14 @@
         let lvlcfgs_i1s2 = scene.cache.json.get('lvlcfg_i1s2');
         let lvlcfgs_i1s3 = scene.cache.json.get('lvlcfg_i1s3');
         let lvlcfgs_i1s4 = scene.cache.json.get('lvlcfg_i1s4');
+        let lvlcfgs_i1s5 = scene.cache.json.get('lvlcfg_i1s5');
 
         let allConfigs = [unsorted_cfgs,
                           lvlcfgs_i1s1,
                           lvlcfgs_i1s2,
                           lvlcfgs_i1s3,
-                          lvlcfgs_i1s4];
+                          lvlcfgs_i1s4,
+                          lvlcfgs_i1s5];
 
         for(let c=0;c<allConfigs.length;c++){
             let configs = allConfigs[c];

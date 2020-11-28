@@ -385,6 +385,7 @@ var GameScene = new Phaser.Class({
         speed = Phaser.Math.GetSpeed(300, 1);
        
         //Create Pathing layer
+        pathingNodes = [];
         let pathingLayer = map.getObjectLayer('pathing');
         pathingLayer.objects.forEach(e=>{
             pathingNodes.push(new PathingNode(e.name,e.polyline,e.x,e.y));
@@ -1733,9 +1734,11 @@ var GameScene = new Phaser.Class({
             //Parallax Background
             let paraMove = camMvdiff < 0 ? -1 : 1;
             for(let i=0;i < world_backgrounds.length;i++){
-                let mvVal = (0.10+(0.10*i))*paraMove;
+                let mvVal = (0.025+(0.025*i))*paraMove;
                 world_backgrounds[i].tilePositionX -= mvVal;
             }
+            this.bglayer3.x += (0.025+(0.025*world_backgrounds.length))*paraMove;
+            this.bglayer2.x += (0.025+(0.025*(world_backgrounds.length+1)))*paraMove;
            
         }   
 
@@ -2617,10 +2620,10 @@ function createAnimations(scene){
         repeat: -1
     });     
     scene.anims.create({
-        key: 'status-blink',
-        frames: scene.anims.generateFrameNumbers('statue', { frames:[0,1,2,3] }),
-        frameRate: 4,
-        repeat: -1
+        key: 'statue-attack',
+        frames: scene.anims.generateFrameNumbers('statue', { frames:[5,4,3,2,1,0] }),
+        frameRate: 6,
+        repeat: 0
     });    
     scene.anims.create({
         key: 'shadow-death',

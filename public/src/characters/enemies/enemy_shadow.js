@@ -158,8 +158,10 @@ class EnemyShadow extends Phaser.Physics.Matter.Sprite{
         this.active = false;        
         this.particles.destroy();
         this.fleeTimer.remove();
-        this.scene.tweens.killTweensOf(this);
-        this.scene.events.off("shutdown", this.remove, this);
+        if(this.scene != undefined){
+            this.scene.tweens.killTweensOf(this);
+            this.scene.events.off("shutdown", this.remove, this);
+        }
     }
     aim(target){
         //Aimed shot with weapon.
