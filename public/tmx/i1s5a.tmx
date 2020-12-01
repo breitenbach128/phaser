@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="246">
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="250">
  <editorsettings>
   <export target="../assets/world/i1s5/i1s5a.json" format="json"/>
  </editorsettings>
@@ -372,6 +372,14 @@
  <objectgroup id="13" name="spawns"/>
  <objectgroup id="12" name="exit">
   <object id="2" name="west1" type="entrance" x="432" y="96" width="32" height="32"/>
+  <object id="248" name="door1" type="entrance" x="1040" y="32" width="32" height="32"/>
+  <object id="249" name="door1" type="exit" x="1024" y="16" width="64" height="64">
+   <properties>
+    <property name="manualTrigger" type="bool" value="true"/>
+    <property name="targetExit" value="west1"/>
+    <property name="targetMap" value="i1s5"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="9" name="objects">
   <object id="89" name="soulcrystal0" type="soulcrystal" x="480" y="112" width="16" height="16">

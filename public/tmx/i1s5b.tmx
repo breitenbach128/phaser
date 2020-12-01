@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="227">
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="267">
  <editorsettings>
   <export target="../assets/world/i1s5/i1s5b.json" format="json"/>
  </editorsettings>
@@ -183,8 +183,16 @@
  <tileset firstgid="7745" name="tile_custom" tilewidth="16" tileheight="16" tilecount="4096" columns="64">
   <image source="../assets/world/tile_custom.png" width="1024" height="1024"/>
  </tileset>
- <layer id="4" name="bg3" width="100" height="22">
+ <layer id="4" name="bg3" width="100" height="30">
   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -209,8 +217,16 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="5" name="bg2" width="100" height="22">
+ <layer id="5" name="bg2" width="100" height="30">
   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -235,8 +251,16 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="6" name="bg" width="100" height="22">
+ <layer id="6" name="bg" width="100" height="30">
   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -261,8 +285,16 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="1" name="fg" width="100" height="22">
+ <layer id="1" name="fg" width="100" height="30">
   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -287,8 +319,16 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="7" name="collision" width="100" height="22">
+ <layer id="7" name="collision" width="100" height="30">
   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -313,8 +353,16 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="fg_hidden" width="100" height="22">
+ <layer id="2" name="fg_hidden" width="100" height="30">
   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -339,8 +387,16 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="3" name="fg_breakable" width="100" height="22">
+ <layer id="3" name="fg_breakable" width="100" height="30">
   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -367,218 +423,253 @@
  </layer>
  <objectgroup id="15" name="npcs"/>
  <objectgroup id="14" name="enemies">
-  <object id="167" name="shadow1" type="shadow" x="860" y="397" width="32" height="32"/>
-  <object id="197" name="blip1" type="blip" x="1119" y="547" width="16" height="16"/>
-  <object id="198" name="statue1" type="statue" x="768" y="288" width="48" height="48"/>
-  <object id="215" name="statue1" type="statue" x="596" y="531" width="48" height="48"/>
+  <object id="198" name="statue1" type="statue" x="768" y="336" width="48" height="48"/>
  </objectgroup>
  <objectgroup id="13" name="spawns"/>
  <objectgroup id="12" name="exit">
-  <object id="2" name="west1" type="entrance" x="213" y="508" width="32" height="32"/>
+  <object id="2" name="west1" type="entrance" x="512" y="240" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="9" name="objects">
-  <object id="89" name="soulcrystal0" type="soulcrystal" x="277" y="524" width="16" height="16">
+  <object id="193" name="sa1" type="solanchor" x="880" y="288" width="32" height="32"/>
+  <object id="194" name="sl1" type="sollink" x="736" y="288" width="32" height="32"/>
+  <object id="228" name="east1" type="entrance" x="1008" y="240" width="32" height="32"/>
+  <object id="229" name="east1" type="exit" x="1040" y="208" width="32" height="80">
+   <properties>
+    <property name="partner" value="east2"/>
+    <property name="targetExit" value="west1a"/>
+    <property name="targetMap" value="i1s1e"/>
+   </properties>
+  </object>
+  <object id="235" name="platfall1" type="platfall" gid="1092" x="400" y="288" width="16" height="16">
+   <properties>
+    <property name="tsName" value="PF_Caslte_1_0_mainlevbuild_A"/>
+   </properties>
+  </object>
+  <object id="236" name="platfall1" type="platfall" gid="1092" x="400" y="352" width="16" height="16">
+   <properties>
+    <property name="tsName" value="PF_Caslte_1_0_mainlevbuild_A"/>
+   </properties>
+  </object>
+  <object id="237" name="platfall1" type="platfall" gid="1092" x="400" y="224" width="16" height="16">
+   <properties>
+    <property name="tsName" value="PF_Caslte_1_0_mainlevbuild_A"/>
+   </properties>
+  </object>
+  <object id="238" name="platfall1" type="platfall" gid="1092" x="448" y="256" width="16" height="16">
+   <properties>
+    <property name="tsName" value="PF_Caslte_1_0_mainlevbuild_A"/>
+   </properties>
+  </object>
+  <object id="239" name="platfall1" type="platfall" gid="1092" x="448" y="320" width="16" height="16">
+   <properties>
+    <property name="tsName" value="PF_Caslte_1_0_mainlevbuild_A"/>
+   </properties>
+  </object>
+  <object id="263" name="soulcrystal0" type="soulcrystal" x="560" y="240" width="16" height="16">
    <properties>
     <property name="color" value="yellow"/>
     <property name="scid" type="int" value="0"/>
    </properties>
   </object>
-  <object id="179" name="crate" type="crate" x="294" y="283" width="16" height="16"/>
-  <object id="180" name="crate" type="crate" x="310" y="283" width="16" height="16"/>
-  <object id="181" name="crate" type="crate" x="326" y="283" width="16" height="16"/>
-  <object id="182" name="crate" type="crate" x="294" y="267" width="16" height="16"/>
-  <object id="183" name="crate" type="crate" x="310" y="267" width="16" height="16"/>
-  <object id="184" name="crate" type="crate" x="326" y="267" width="16" height="16"/>
-  <object id="185" name="rock" type="rock" x="1023" y="563" width="16" height="16"/>
-  <object id="186" name="rock" type="rock" x="1023" y="547" width="16" height="16"/>
-  <object id="187" name="rock" type="rock" x="1039" y="563" width="16" height="16"/>
-  <object id="188" name="rock" type="rock" x="1023" y="531" width="16" height="16"/>
-  <object id="189" name="rock" type="rock" x="1039" y="547" width="16" height="16"/>
-  <object id="190" name="rock" type="rock" x="943" y="563" width="16" height="16"/>
-  <object id="191" name="rock" type="rock" x="959" y="563" width="16" height="16"/>
-  <object id="192" name="rock" type="rock" x="959" y="547" width="16" height="16"/>
-  <object id="193" name="sa1" type="solanchor" x="655" y="483" width="32" height="32"/>
-  <object id="194" name="sl1" type="sollink" x="543" y="483" width="32" height="32"/>
-  <object id="195" name="line1" type="line" x="447" y="419">
-   <polyline points="0,0 70,9 195,10 245,34 264,31"/>
+  <object id="265" name="platfall1" type="platfall" gid="1092" x="448" y="192" width="16" height="16">
+   <properties>
+    <property name="tsName" value="PF_Caslte_1_0_mainlevbuild_A"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup id="10" name="triggers">
-  <object id="163" name="gate1" type="gate" x="848" y="112" width="16" height="128">
+  <object id="163" name="gate1" type="gate" x="912" y="160" width="16" height="128">
    <properties>
-    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:-128}"/>
+    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:-32}"/>
     <property name="source" value="lamp1"/>
    </properties>
   </object>
-  <object id="168" name="gate2" type="gate" x="1279" y="483" width="16" height="96">
-   <properties>
-    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:128}"/>
-    <property name="source" value="lever2"/>
-   </properties>
-  </object>
-  <object id="170" name="platform1" type="platform" x="1215" y="467" width="64" height="16">
+  <object id="170" name="platform1" type="platform" x="1040" y="384" width="64" height="16">
    <properties>
     <property name="autostart" type="bool" value="false"/>
     <property name="loop" type="int" value="0"/>
-    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:-192,&quot;y&quot;:0,&quot;t&quot;:6000,&quot;h&quot;:0}]"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:-64,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0}]"/>
     <property name="togglepath" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="171" name="lever2" type="lever" x="1311" y="435" width="32" height="32">
+  <object id="171" name="lever2" type="lever" x="864" y="416" width="32" height="32">
    <properties>
     <property name="targetName" value="gate2"/>
     <property name="targetType" value="gate"/>
    </properties>
   </object>
-  <object id="172" name="lamp1" type="crystallamp" x="1139" y="489" width="16" height="16">
+  <object id="172" name="lamp1" type="crystallamp" x="1168" y="64" width="16" height="16">
    <properties>
     <property name="alwaysOn" type="bool" value="false"/>
     <property name="brightness_max" type="int" value="128"/>
-    <property name="decayRate" type="float" value="0"/>
+    <property name="decayRate" type="float" value="0.5"/>
     <property name="targetName" value="platform1"/>
     <property name="targetType" value="platform"/>
    </properties>
   </object>
-  <object id="177" name="platform2" type="platform" x="751" y="547" width="48" height="16">
+  <object id="221" name="platform-death2" type="platform" x="400" y="320" width="64" height="64">
    <properties>
     <property name="autostart" type="bool" value="true"/>
+    <property name="frame" type="int" value="0"/>
+    <property name="hurt" type="int" value="5"/>
+    <property name="key" value="platform_32x32"/>
     <property name="loop" type="int" value="-1"/>
-    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:-128,&quot;t&quot;:3000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
-    <property name="togglepath" type="bool" value="false"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:112,&quot;t&quot;:6000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+    <property name="pathid" value="path_p1"/>
    </properties>
   </object>
-  <object id="178" name="zone1" type="zone" x="751" y="563" width="48" height="16">
-   <properties>
-    <property name="allowReset" type="bool" value="true"/>
-    <property name="resetDelay" type="int" value="300"/>
-    <property name="targetName" value=""/>
-    <property name="targetType" value=""/>
-    <property name="zoneType" value="hurt"/>
-    <property name="zoneValue" value="{&quot;damage&quot;:1}"/>
-   </properties>
-  </object>
-  <object id="207" name="zone3-climb" type="zone" x="309" y="460" width="32" height="112">
+  <object id="227" name="zone1-dialogue" type="zone" x="339" y="169" width="16" height="64">
    <properties>
     <property name="allowReset" type="bool" value="false"/>
     <property name="resetDelay" type="int" value="300"/>
-    <property name="targetName" value=""/>
-    <property name="targetType" value=""/>
-    <property name="zoneType" value="climb"/>
-    <property name="zoneValue" value="0"/>
+    <property name="zoneType" value="dialogue"/>
+    <property name="zoneValue">{
+    &quot;spkImageLeft&quot;:&quot;hud_solana_head&quot;,
+    &quot;spkImageRight&quot;:&quot;hud_bright_head&quot;,
+&quot;doPause&quot; : true,
+    &quot;speechdata&quot;: [
+        {
+            &quot;p&quot;: &quot;left&quot;,
+            &quot;dur&quot;: 3000,
+            &quot;txt&quot;: &quot;It looks like the castle security has been enabled.&quot;
+        },
+        {
+            &quot;p&quot;: &quot;left&quot;,
+            &quot;dur&quot;: 3000,
+            &quot;txt&quot;: &quot;I've never see that before&quot;
+        },
+        {
+            &quot;p&quot;: &quot;right&quot;,
+            &quot;dur&quot;: 3000,
+            &quot;txt&quot;: &quot;We'll have to be careful.&quot;
+        }
+    ]
+}</property>
    </properties>
   </object>
-  <object id="210" name="seesaw1" type="seesaw" x="181" y="396" width="80" height="16">
-   <properties>
-    <property name="balanceOffset" type="int" value="0"/>
-    <property name="frictionAir" type="float" value="0.001"/>
-   </properties>
-  </object>
-  <object id="212" name="lever1" type="lever" x="341" y="428" width="32" height="32">
-   <properties>
-    <property name="targetName" value="platform1"/>
-    <property name="targetType" value="platform"/>
-   </properties>
-  </object>
-  <object id="213" name="zone1" type="zone" x="732" y="477" width="160" height="16">
-   <properties>
-    <property name="allowReset" type="bool" value="true"/>
-    <property name="resetDelay" type="int" value="300"/>
-    <property name="targetName" value=""/>
-    <property name="targetType" value=""/>
-    <property name="zoneType" value="hurt"/>
-    <property name="zoneValue" value="{&quot;damage&quot;:1}"/>
-   </properties>
-  </object>
-  <object id="214" name="zone1" type="zone" x="930" y="466" width="160" height="16">
-   <properties>
-    <property name="allowReset" type="bool" value="true"/>
-    <property name="resetDelay" type="int" value="300"/>
-    <property name="targetName" value=""/>
-    <property name="targetType" value=""/>
-    <property name="zoneType" value="hurt"/>
-    <property name="zoneValue" value="{&quot;damage&quot;:1}"/>
-   </properties>
-  </object>
-  <object id="218" name="zone1" type="zone" x="1099" y="407" width="160" height="16">
-   <properties>
-    <property name="allowReset" type="bool" value="true"/>
-    <property name="resetDelay" type="int" value="300"/>
-    <property name="targetName" value=""/>
-    <property name="targetType" value=""/>
-    <property name="zoneType" value="hurt"/>
-    <property name="zoneValue" value="{&quot;damage&quot;:1}"/>
-   </properties>
-  </object>
-  <object id="219" name="platform-death2" type="platform" x="468" y="435" width="96" height="16">
-   <properties>
-    <property name="autostart" type="bool" value="true"/>
-    <property name="frame" type="int" value="11"/>
-    <property name="hurt" type="int" value="5"/>
-    <property name="loop" type="int" value="-1"/>
-    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:112,&quot;t&quot;:6000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
-   </properties>
-  </object>
-  <object id="220" name="platform-death2" type="platform" x="468" y="419" width="96" height="16">
-   <properties>
-    <property name="autostart" type="bool" value="true"/>
-    <property name="frame" type="int" value="10"/>
-    <property name="hurt" type="int" value="5"/>
-    <property name="loop" type="int" value="-1"/>
-    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:112,&quot;t&quot;:6000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
-   </properties>
-  </object>
-  <object id="211" name="platform1" type="platform" x="261" y="396" width="16" height="16">
+  <object id="252" name="platform2" type="platform" x="848" y="384" width="64" height="16">
    <properties>
     <property name="autostart" type="bool" value="false"/>
     <property name="loop" type="int" value="0"/>
-    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:64,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:-64,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0}]"/>
     <property name="togglepath" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="221" name="platform-death2" type="platform" x="400" y="272" width="64" height="64">
+  <object id="253" name="platform4" type="platform" x="480" y="384" width="64" height="16">
    <properties>
-    <property name="autostart" type="bool" value="true"/>
-    <property name="frame" type="int" value="11"/>
-    <property name="hurt" type="int" value="5"/>
-    <property name="loop" type="int" value="-1"/>
-    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:112,&quot;t&quot;:6000,&quot;h&quot;:0},{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:3000,&quot;h&quot;:0}]"/>
+    <property name="autostart" type="bool" value="false"/>
+    <property name="loop" type="int" value="0"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:-64,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0}]"/>
+    <property name="togglepath" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="222" name="path_p1" type="pathing" x="583" y="269">
-   <polyline points="-151,35 -151,-221 569,-221 569,35 -151,35"/>
+  <object id="254" name="platform3" type="platform" x="672" y="384" width="64" height="16">
+   <properties>
+    <property name="autostart" type="bool" value="false"/>
+    <property name="loop" type="int" value="0"/>
+    <property name="path" value="[{&quot;x&quot;:0,&quot;y&quot;:0,&quot;t&quot;:0,&quot;h&quot;:0},{&quot;x&quot;:-64,&quot;y&quot;:0,&quot;t&quot;:2000,&quot;h&quot;:0}]"/>
+    <property name="togglepath" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="255" name="gate3" type="gate" x="944" y="160" width="16" height="128">
+   <properties>
+    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:-32}"/>
+    <property name="source" value="lamp1"/>
+   </properties>
+  </object>
+  <object id="256" name="gate2" type="gate" x="928" y="160" width="16" height="128">
+   <properties>
+    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:-32}"/>
+    <property name="source" value="lamp1"/>
+   </properties>
+  </object>
+  <object id="257" name="lamp2" type="crystallamp" x="400" y="64" width="16" height="16">
+   <properties>
+    <property name="alwaysOn" type="bool" value="false"/>
+    <property name="brightness_max" type="int" value="128"/>
+    <property name="decayRate" type="float" value="0.5"/>
+    <property name="targetName" value="platform2"/>
+    <property name="targetType" value="platform"/>
+   </properties>
+  </object>
+  <object id="258" name="lever1" type="lever" x="1056" y="416" width="32" height="32">
+   <properties>
+    <property name="targetName" value="gate1"/>
+    <property name="targetType" value="gate"/>
+   </properties>
+  </object>
+  <object id="259" name="lever3" type="lever" x="688" y="416" width="32" height="32">
+   <properties>
+    <property name="targetName" value="gate3"/>
+    <property name="targetType" value="gate"/>
+   </properties>
+  </object>
+  <object id="260" name="lever4" type="lever" x="496" y="416" width="32" height="32">
+   <properties>
+    <property name="targetName" value="gate4"/>
+    <property name="targetType" value="gate"/>
+   </properties>
+  </object>
+  <object id="261" name="lamp3" type="crystallamp" x="1168" y="368" width="16" height="16">
+   <properties>
+    <property name="alwaysOn" type="bool" value="false"/>
+    <property name="brightness_max" type="int" value="128"/>
+    <property name="decayRate" type="float" value="0.5"/>
+    <property name="targetName" value="platform3"/>
+    <property name="targetType" value="platform"/>
+   </properties>
+  </object>
+  <object id="262" name="lamp4" type="crystallamp" x="400" y="368" width="16" height="16">
+   <properties>
+    <property name="alwaysOn" type="bool" value="false"/>
+    <property name="brightness_max" type="int" value="128"/>
+    <property name="decayRate" type="float" value="0.5"/>
+    <property name="targetName" value="platform4"/>
+    <property name="targetType" value="platform"/>
+   </properties>
+  </object>
+  <object id="264" name="gate4" type="gate" x="960" y="160" width="16" height="128">
+   <properties>
+    <property name="mvdir" value="{&quot;x&quot;:0,&quot;y&quot;:-32}"/>
+    <property name="source" value="lamp1"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup color="#00ff00" id="8" name="hulls">
-  <object id="5" type="hulls" x="388" y="595" width="48" height="48"/>
-  <object id="49" type="hulls" x="1359" y="339" width="16" height="112"/>
-  <object id="53" type="hulls" x="384" y="0" width="16" height="176"/>
-  <object id="54" type="hulls" x="277" y="396" width="64" height="16"/>
-  <object id="74" type="hulls" x="1359" y="451" width="16" height="128"/>
-  <object id="157" type="hulls" x="400" y="336" width="256" height="16"/>
-  <object id="158" type="hulls" x="1039" y="579" width="336" height="16"/>
-  <object id="159" type="hulls" x="464" y="240" width="272" height="32"/>
-  <object id="160" type="hulls" x="324" y="579" width="144" height="16"/>
-  <object id="165" type="hulls" x="975" y="579">
-   <polygon points="0,0 0,-80 24,-93 48,-80 48,0"/>
-  </object>
-  <object id="166" type="hulls" x="464" y="112" width="32" height="128"/>
-  <object id="169" type="hulls" x="1279" y="467" width="80" height="16"/>
-  <object id="199" type="hulls" x="384" y="176" width="16" height="176"/>
-  <object id="200" type="hulls" x="1184" y="0" width="16" height="176"/>
-  <object id="201" type="hulls" x="1184" y="176" width="16" height="176"/>
-  <object id="202" type="hulls" x="928" y="336" width="256" height="16"/>
-  <object id="203" type="hulls" x="656" y="336" width="272" height="16"/>
-  <object id="204" type="hulls" x="400" y="0" width="256" height="16"/>
-  <object id="205" type="hulls" x="928" y="0" width="256" height="16"/>
-  <object id="206" type="hulls" x="656" y="0" width="272" height="16"/>
-  <object id="208" type="hulls" x="341" y="364" width="48" height="48"/>
-  <object id="209" type="hulls" x="373" y="412" width="16" height="48"/>
-  <object id="216" type="hulls" x="596" y="595" width="48" height="48"/>
-  <object id="217" type="hulls" x="564" y="579" width="144" height="16"/>
-  <object id="223" type="hulls" x="464" y="80" width="272" height="32"/>
-  <object id="224" type="hulls" x="848" y="80" width="272" height="32"/>
-  <object id="225" type="hulls" x="848" y="240" width="272" height="32"/>
-  <object id="226" type="hulls" x="1072" y="112" width="48" height="128"/>
+  <object id="53" type="hulls" x="384" y="48" width="16" height="176"/>
+  <object id="157" type="hulls" x="400" y="384" width="80" height="16"/>
+  <object id="159" type="hulls" x="464" y="288" width="272" height="32"/>
+  <object id="166" type="hulls" x="464" y="160" width="48" height="128"/>
+  <object id="199" type="hulls" x="384" y="224" width="16" height="176"/>
+  <object id="200" type="hulls" x="1184" y="48" width="16" height="176"/>
+  <object id="201" type="hulls" x="1184" y="224" width="16" height="176"/>
+  <object id="202" type="hulls" x="912" y="384" width="128" height="16"/>
+  <object id="203" type="hulls" x="736" y="384" width="112" height="16"/>
+  <object id="204" type="hulls" x="400" y="48" width="256" height="16"/>
+  <object id="205" type="hulls" x="928" y="48" width="256" height="16"/>
+  <object id="206" type="hulls" x="656" y="48" width="272" height="16"/>
+  <object id="208" type="hulls" x="464" y="400" width="16" height="64"/>
+  <object id="209" type="hulls" x="544" y="400" width="16" height="64"/>
+  <object id="223" type="hulls" x="464" y="128" width="272" height="32"/>
+  <object id="224" type="hulls" x="912" y="128" width="208" height="32"/>
+  <object id="225" type="hulls" x="912" y="288" width="208" height="32"/>
+  <object id="226" type="hulls" x="1072" y="160" width="48" height="128"/>
+  <object id="240" type="hulls" x="480" y="448" width="64" height="16"/>
+  <object id="241" type="hulls" x="656" y="400" width="16" height="64"/>
+  <object id="242" type="hulls" x="736" y="400" width="16" height="64"/>
+  <object id="243" type="hulls" x="672" y="448" width="64" height="16"/>
+  <object id="244" type="hulls" x="832" y="400" width="16" height="64"/>
+  <object id="245" type="hulls" x="912" y="400" width="16" height="64"/>
+  <object id="246" type="hulls" x="848" y="448" width="64" height="16"/>
+  <object id="247" type="hulls" x="1024" y="400" width="16" height="64"/>
+  <object id="248" type="hulls" x="1104" y="400" width="16" height="64"/>
+  <object id="249" type="hulls" x="1040" y="448" width="64" height="16"/>
+  <object id="250" type="hulls" x="1104" y="384" width="80" height="16"/>
+  <object id="251" type="hulls" x="544" y="384" width="128" height="16"/>
  </objectgroup>
- <objectgroup id="16" name="pathing"/>
+ <objectgroup id="16" name="pathing">
+  <object id="222" name="path_p1" type="pathing" x="583" y="324">
+   <polyline points="-151,35 -151,-221 569,-221 569,35 -151,35"/>
+  </object>
+ </objectgroup>
 </map>
