@@ -1242,3 +1242,58 @@ class PowerCable{
 
     }
 }
+class Debris extends Phaser.Physics.Matter.Sprite{
+    constructor(scene,x,y) {
+        super(scene.matter.world, x, y, 'debris1', 0)
+        this.scene = scene;
+        scene.matter.world.add(this);
+        scene.add.existing(this); 
+        this.setActive(true);
+
+        const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+        const { width: w, height: h } = this;
+        const mainBody =  Bodies.circle(x,y,w*0.30,{isSensor:true});
+
+        const compoundBody = Body.create({
+            parts: [mainBody],
+            frictionStatic: 0,
+            frictionAir: 0.50,
+            friction: 1,//Was 0.1
+            label: 'DEBRIS'
+        });
+
+        
+        this
+        .setExistingBody(compoundBody)
+        .setCollisionCategory(CATEGORY.SOLID)
+        .setCollidesWith([ CATEGORY.BRIGHT, CATEGORY.SOLANA])
+        .setPosition(x, y);  
+
+        //Random Rotational Spin
+        this.setAngularVelocity(Phaser.Math.FloatBetween(-0.20,0.20));
+
+        this.scene.matterCollision.addOnCollideActive({
+            objectA: [this],
+            callback: eventData => {
+                const { bodyB, gameObjectB,bodyA,gameObjectA } = eventData;
+                
+                if (gameObjectB !== undefined && gameObjectB instanceof Solana) {
+                    //It hits Solana
+                }
+            }
+        });
+        //Up to date queue
+        this.scene.events.on("update", this.update, this);
+    }
+    setup(x,y, properties,name){
+        this.setActive(true); 
+        this.setPosition(x,y);
+        this.name = name;
+ 
+    }
+    update(time, delta)
+    {       
+        if(this.x > 2000){this.destroy};
+
+    }
+};

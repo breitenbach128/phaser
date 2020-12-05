@@ -445,6 +445,10 @@ var GameScene = new Phaser.Class({
                 // hud.initBossHealth();
                 if(props.bossid == 0){
                     boss = new BossSlime(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                }else if(props.bossid == 1){
+                    boss = new BossStatue(this,tmxObjRef.x+tmxObjRef.width/2,tmxObjRef.y+tmxObjRef.height/2);
+                    boss.setDepth(DEPTH_LAYERS.ENEMIES);
+                    boss.setScale(4);
                 }
 
             //SPIDER
@@ -1686,6 +1690,12 @@ var GameScene = new Phaser.Class({
             bodiesClicked.forEach(e=>{
                 this.debugDrag.push(e);
             });
+            //front object clicked restriction to make it easy to drag things around. Since you rarely want to move multiple objects at once.
+            this.debugDrag.sort((a, b) => (a.gameObject.depth > b.gameObject.depth) ? -1 : 1);//Sort desc (Front first)
+            this.debugDrag.splice(1,this.debugDrag.length-1);
+
+            console.log("sorted",this.debugDrag);
+
             this.worldGrid.setVisible(true);
         }else if(keyPad.checkMouseState('MB2') > 1){
             if(keyPad.checkKeyState('SHIFT') >= 1){

@@ -185,6 +185,7 @@ var Preloader = new Phaser.Class({
 		this.load.tilemapTiledJSON('i1s4c', 'assets/world/i1s4/i1s4c.json');
 		this.load.tilemapTiledJSON('i1s5a', 'assets/world/i1s5/i1s5a.json');
 		this.load.tilemapTiledJSON('i1s5b', 'assets/world/i1s5/i1s5b.json');
+		this.load.tilemapTiledJSON('i1s5Boss', 'assets/world/i1s5/i1s5Boss.json');
 		//Panic Maps
 		this.load.tilemapTiledJSON('panic1', 'assets/world/panic1.json');
 		//Map Assets - Game		
@@ -300,6 +301,7 @@ var Preloader = new Phaser.Class({
         this.load.spritesheet('minecart', 'assets/objects/minecart.png', {frameWidth: 96, frameHeight: 48});
 		this.load.spritesheet('minecart_wheel', 'assets/objects/minecart_wheel.png', {frameWidth: 13, frameHeight: 13});
 		this.load.image('seesaw', 'assets/objects/seesaw2.png');
+		this.load.spritesheet('debris1', 'assets/objects/debris.png', {frameWidth: 32, frameHeight: 32});
 		//Interactive Objects
 		//Light Bridge / Sollink		
         this.load.spritesheet('sollink', 'assets/objects/sollink.png', {frameWidth: 32, frameHeight: 32});
@@ -324,6 +326,7 @@ var Preloader = new Phaser.Class({
 		this.load.spritesheet('spider', 'assets/characters/spider_x2.png', {frameWidth: 64, frameHeight: 64});
 		this.load.spritesheet('boss_spiderhive', 'assets/characters/boss_spiderhive.png', {frameWidth: 128, frameHeight: 128});
 		this.load.spritesheet('boss_spideregg', 'assets/characters/boss_spiderhive_egg.png', {frameWidth: 32, frameHeight: 32});
+		this.load.spritesheet('boss_statue', 'assets/characters/boss/boss_statue.png', {frameWidth: 128, frameHeight: 272});
 		//Slime		
 		this.load.spritesheet('boss_slime_main', 'assets/characters/boss/boss_slime.png', {frameWidth: 256, frameHeight: 256});
 		this.load.spritesheet('boss_slime_column', 'assets/characters/boss/boss_slime_column.png', {frameWidth: 32, frameHeight: 32});
