@@ -158,17 +158,7 @@ var Preloader = new Phaser.Class({
 		
 		this.load.spritesheet('button_yellow','assets/ui/button_yellow.png',{frameWidth: 190, frameHeight: 49})
 
-        //Map Assets  
-		this.load.tilemapTiledJSON('map1', 'assets/world/map1_32ts.json'); 
-		this.load.tilemapTiledJSON('map1a', 'assets/world/map1a_32ts.json'); 
-		this.load.tilemapTiledJSON('map2', 'assets/world/map2_32ts.json'); 
-		this.load.tilemapTiledJSON('map3', 'assets/world/map3_32ts.json');  
-		this.load.tilemapTiledJSON('map4', 'assets/world/map4_32ts.json');  
-		this.load.tilemapTiledJSON('map5', 'assets/world/map5_32ts.json');  
-		this.load.tilemapTiledJSON('map6', 'assets/world/map6_32ts.json');
-		this.load.tilemapTiledJSON('map7', 'assets/world/map7_32ts.json');
-		this.load.tilemapTiledJSON('map8', 'assets/world/map8_32ts.json');
-		//Map Assets - Intro levels
+  		//Map Assets - Intro levels
 		//i1s1/
 		this.load.tilemapTiledJSON('i1s1a', 'assets/world/i1s1/i1s1a.json');
 		this.load.tilemapTiledJSON('i1s1b', 'assets/world/i1s1/i1s1b.json');
@@ -186,6 +176,7 @@ var Preloader = new Phaser.Class({
 		this.load.tilemapTiledJSON('i1s5a', 'assets/world/i1s5/i1s5a.json');
 		this.load.tilemapTiledJSON('i1s5b', 'assets/world/i1s5/i1s5b.json');
 		this.load.tilemapTiledJSON('i1s5Boss', 'assets/world/i1s5/i1s5Boss.json');
+		this.load.tilemapTiledJSON('a2s1a', 'assets/world/a2/a2s1a.json');
 		//Panic Maps
 		this.load.tilemapTiledJSON('panic1', 'assets/world/panic1.json');
 		//Map Assets - Game		
@@ -260,6 +251,7 @@ var Preloader = new Phaser.Class({
 		this.load.json('lvlcfg_i1s3', 'src/utility/leveldata/lvlcfg_i1s3.json');
 		this.load.json('lvlcfg_i1s4', 'src/utility/leveldata/lvlcfg_i1s4.json');
 		this.load.json('lvlcfg_i1s5', 'src/utility/leveldata/lvlcfg_i1s5.json');
+		this.load.json('lvlcfg_a2s1', 'src/utility/leveldata/lvlcfg_a2s1.json');
 
 		//Entity Assets
         this.load.spritesheet('slime1', 'assets/characters/slimemonster2.png', {frameWidth: 64, frameHeight: 37});    

@@ -118,8 +118,8 @@
                  "type":"shadow",
                  "visible":true,
                  "width":32,
-                 "x":1088,
-                 "y":256
+                 "x":1106,
+                 "y":215
                 }, 
                 {
                  "height":16,
@@ -163,7 +163,7 @@
                 {
                  "height":32,
                  "id":241,
-                 "name":"shadow1",
+                 "name":"shadow2",
                  "rotation":0,
                  "type":"shadow",
                  "visible":true,
@@ -201,7 +201,7 @@
                  "type":"entrance",
                  "visible":true,
                  "width":32,
-                 "x":400,
+                 "x":112,
                  "y":880
                 }],
          "opacity":1,
@@ -234,7 +234,7 @@
                  "type":"soulcrystal",
                  "visible":true,
                  "width":16,
-                 "x":480,
+                 "x":160,
                  "y":896
                 }, 
                 {
@@ -389,6 +389,204 @@
                  "width":0,
                  "x":1313,
                  "y":319
+                }, 
+                {
+                 "gid":1092,
+                 "height":16,
+                 "id":250,
+                 "name":"platfall1",
+                 "properties":[
+                        {
+                         "name":"tsName",
+                         "type":"string",
+                         "value":"PF_Caslte_1_0_mainlevbuild_A"
+                        }],
+                 "rotation":0,
+                 "type":"platfall",
+                 "visible":true,
+                 "width":16,
+                 "x":448,
+                 "y":912
+                }, 
+                {
+                 "gid":1092,
+                 "height":16,
+                 "id":251,
+                 "name":"platfall1",
+                 "properties":[
+                        {
+                         "name":"tsName",
+                         "type":"string",
+                         "value":"PF_Caslte_1_0_mainlevbuild_A"
+                        }],
+                 "rotation":0,
+                 "type":"platfall",
+                 "visible":true,
+                 "width":16,
+                 "x":496,
+                 "y":880
+                }, 
+                {
+                 "gid":1092,
+                 "height":16,
+                 "id":252,
+                 "name":"platfall1",
+                 "properties":[
+                        {
+                         "name":"tsName",
+                         "type":"string",
+                         "value":"PF_Caslte_1_0_mainlevbuild_A"
+                        }],
+                 "rotation":0,
+                 "type":"platfall",
+                 "visible":true,
+                 "width":16,
+                 "x":544,
+                 "y":848
+                }, 
+                {
+                 "gid":1092,
+                 "height":16,
+                 "id":253,
+                 "name":"platfall1",
+                 "properties":[
+                        {
+                         "name":"tsName",
+                         "type":"string",
+                         "value":"PF_Caslte_1_0_mainlevbuild_A"
+                        }],
+                 "rotation":0,
+                 "type":"platfall",
+                 "visible":true,
+                 "width":16,
+                 "x":560,
+                 "y":848
+                }, 
+                {
+                 "gid":1092,
+                 "height":16,
+                 "id":254,
+                 "name":"platfall1",
+                 "properties":[
+                        {
+                         "name":"tsName",
+                         "type":"string",
+                         "value":"PF_Caslte_1_0_mainlevbuild_A"
+                        }],
+                 "rotation":0,
+                 "type":"platfall",
+                 "visible":true,
+                 "width":16,
+                 "x":576,
+                 "y":848
+                }, 
+                {
+                 "gid":1092,
+                 "height":16,
+                 "id":255,
+                 "name":"platfall1",
+                 "properties":[
+                        {
+                         "name":"tsName",
+                         "type":"string",
+                         "value":"PF_Caslte_1_0_mainlevbuild_A"
+                        }],
+                 "rotation":0,
+                 "type":"platfall",
+                 "visible":true,
+                 "width":16,
+                 "x":592,
+                 "y":848
+                }, 
+                {
+                 "gid":1092,
+                 "height":16,
+                 "id":256,
+                 "name":"platfall1",
+                 "properties":[
+                        {
+                         "name":"tsName",
+                         "type":"string",
+                         "value":"PF_Caslte_1_0_mainlevbuild_A"
+                        }],
+                 "rotation":0,
+                 "type":"platfall",
+                 "visible":true,
+                 "width":16,
+                 "x":672,
+                 "y":848
+                }, 
+                {
+                 "gid":1092,
+                 "height":16,
+                 "id":257,
+                 "name":"platfall1",
+                 "properties":[
+                        {
+                         "name":"tsName",
+                         "type":"string",
+                         "value":"PF_Caslte_1_0_mainlevbuild_A"
+                        }],
+                 "rotation":0,
+                 "type":"platfall",
+                 "visible":true,
+                 "width":16,
+                 "x":656,
+                 "y":848
+                }, 
+                {
+                 "gid":1092,
+                 "height":16,
+                 "id":258,
+                 "name":"platfall1",
+                 "properties":[
+                        {
+                         "name":"tsName",
+                         "type":"string",
+                         "value":"PF_Caslte_1_0_mainlevbuild_A"
+                        }],
+                 "rotation":0,
+                 "type":"platfall",
+                 "visible":true,
+                 "width":16,
+                 "x":688,
+                 "y":848
+                }, 
+                {
+                 "gid":1092,
+                 "height":16,
+                 "id":259,
+                 "name":"platfall1",
+                 "properties":[
+                        {
+                         "name":"tsName",
+                         "type":"string",
+                         "value":"PF_Caslte_1_0_mainlevbuild_A"
+                        }],
+                 "rotation":0,
+                 "type":"platfall",
+                 "visible":true,
+                 "width":16,
+                 "x":736,
+                 "y":880
+                }, 
+                {
+                 "gid":1092,
+                 "height":16,
+                 "id":260,
+                 "name":"platfall1",
+                 "properties":[
+                        {
+                         "name":"tsName",
+                         "type":"string",
+                         "value":"PF_Caslte_1_0_mainlevbuild_A"
+                        }],
+                 "rotation":0,
+                 "type":"platfall",
+                 "visible":true,
+                 "width":16,
+                 "x":768,
+                 "y":912
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -414,7 +612,7 @@
                         {
                          "name":"source",
                          "type":"string",
-                         "value":"lamp1"
+                         "value":"level2"
                         }],
                  "rotation":0,
                  "type":"gate",
@@ -436,7 +634,7 @@
                         {
                          "name":"source",
                          "type":"string",
-                         "value":"lever2"
+                         "value":"plate1"
                         }],
                  "rotation":0,
                  "type":"gate",
@@ -863,6 +1061,223 @@
                  "width":96,
                  "x":400,
                  "y":512
+                }, 
+                {
+                 "height":128,
+                 "id":245,
+                 "name":"boss_gate",
+                 "properties":[
+                        {
+                         "name":"autostart",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"loop",
+                         "type":"int",
+                         "value":0
+                        }, 
+                        {
+                         "name":"path",
+                         "type":"string",
+                         "value":"[{\"x\":0,\"y\":0,\"t\":0,\"h\":0},{\"x\":0,\"y\":-128,\"t\":3000,\"h\":0}]"
+                        }, 
+                        {
+                         "name":"togglepath",
+                         "type":"bool",
+                         "value":false
+                        }],
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":48,
+                 "x":336,
+                 "y":816
+                }, 
+                {
+                 "height":128,
+                 "id":247,
+                 "name":"boss_gate",
+                 "properties":[
+                        {
+                         "name":"autostart",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"loop",
+                         "type":"int",
+                         "value":0
+                        }, 
+                        {
+                         "name":"path",
+                         "type":"string",
+                         "value":"[{\"x\":0,\"y\":0,\"t\":0,\"h\":0},{\"x\":0,\"y\":128,\"t\":3000,\"h\":0}]"
+                        }, 
+                        {
+                         "name":"togglepath",
+                         "type":"bool",
+                         "value":false
+                        }],
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":16,
+                 "x":384,
+                 "y":816
+                }, 
+                {
+                 "height":128,
+                 "id":248,
+                 "name":"boss_gate",
+                 "properties":[
+                        {
+                         "name":"autostart",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"loop",
+                         "type":"int",
+                         "value":0
+                        }, 
+                        {
+                         "name":"path",
+                         "type":"string",
+                         "value":"[{\"x\":0,\"y\":0,\"t\":0,\"h\":0},{\"x\":0,\"y\":128,\"t\":3000,\"h\":0}]"
+                        }, 
+                        {
+                         "name":"togglepath",
+                         "type":"bool",
+                         "value":false
+                        }],
+                 "rotation":0,
+                 "type":"platform",
+                 "visible":true,
+                 "width":16,
+                 "x":320,
+                 "y":816
+                }, 
+                {
+                 "height":16,
+                 "id":249,
+                 "name":"zone1",
+                 "properties":[
+                        {
+                         "name":"allowReset",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"resetDelay",
+                         "type":"int",
+                         "value":300
+                        }, 
+                        {
+                         "name":"targetName",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
+                         "name":"targetType",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
+                         "name":"zoneType",
+                         "type":"string",
+                         "value":"hurt"
+                        }, 
+                        {
+                         "name":"zoneValue",
+                         "type":"string",
+                         "value":"{\"damage\":1}"
+                        }],
+                 "rotation":0,
+                 "type":"zone",
+                 "visible":true,
+                 "width":80,
+                 "x":464,
+                 "y":928
+                }, 
+                {
+                 "height":16,
+                 "id":261,
+                 "name":"plate1",
+                 "properties":[
+                        {
+                         "name":"allowReset",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"state",
+                         "type":"int",
+                         "value":0
+                        }, 
+                        {
+                         "name":"targetName",
+                         "type":"string",
+                         "value":"gate2"
+                        }, 
+                        {
+                         "name":"targetType",
+                         "type":"string",
+                         "value":"gate"
+                        }],
+                 "rotation":0,
+                 "type":"plate",
+                 "visible":true,
+                 "width":32,
+                 "x":880,
+                 "y":816
+                }, 
+                {
+                 "height":128,
+                 "id":262,
+                 "name":"zone2-trigger",
+                 "properties":[
+                        {
+                         "name":"allowReset",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"enabled",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"resetDelay",
+                         "type":"int",
+                         "value":1
+                        }, 
+                        {
+                         "name":"targetName",
+                         "type":"string",
+                         "value":"boss_gate"
+                        }, 
+                        {
+                         "name":"targetType",
+                         "type":"string",
+                         "value":"gate"
+                        }, 
+                        {
+                         "name":"zoneType",
+                         "type":"string",
+                         "value":"target"
+                        }, 
+                        {
+                         "name":"zoneValue",
+                         "type":"string",
+                         "value":"0"
+                        }],
+                 "rotation":0,
+                 "type":"zone",
+                 "visible":true,
+                 "width":16,
+                 "x":272,
+                 "y":816
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1125,31 +1540,31 @@
                  "rotation":0,
                  "type":"hulls",
                  "visible":true,
-                 "width":16,
-                 "x":384,
+                 "width":64,
+                 "x":336,
                  "y":528
                 }, 
                 {
-                 "height":120,
+                 "height":96,
                  "id":233,
                  "name":"",
                  "rotation":0,
                  "type":"hulls",
                  "visible":true,
-                 "width":16,
-                 "x":384,
+                 "width":64,
+                 "x":336,
                  "y":704
                 }, 
                 {
-                 "height":136,
+                 "height":144,
                  "id":234,
                  "name":"",
                  "rotation":0,
                  "type":"hulls",
                  "visible":true,
                  "width":16,
-                 "x":384,
-                 "y":824
+                 "x":80,
+                 "y":800
                 }, 
                 {
                  "height":48,
@@ -1183,6 +1598,28 @@
                  "width":336,
                  "x":848,
                  "y":352
+                }, 
+                {
+                 "height":16,
+                 "id":243,
+                 "name":"",
+                 "rotation":0,
+                 "type":"hulls",
+                 "visible":true,
+                 "width":320,
+                 "x":80,
+                 "y":944
+                }, 
+                {
+                 "height":16,
+                 "id":244,
+                 "name":"",
+                 "rotation":0,
+                 "type":"hulls",
+                 "visible":true,
+                 "width":303,
+                 "x":97,
+                 "y":800
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1202,7 +1639,7 @@
          "y":0
         }],
  "nextlayerid":17,
- "nextobjectid":243,
+ "nextobjectid":263,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.1",

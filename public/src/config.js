@@ -61,7 +61,7 @@
     
     //Globals
     //Global Game Access
-    var buildVersion = "a-10-30-2020";
+    var buildVersion = "a-12-12-2020";
     var game;
     var hud;
     var playScene;
@@ -71,7 +71,7 @@
     //Tiles
     var map; 
     var mapTileSize = {tw:16,th:16};
-    var current_map = "i1s5Boss";
+    var current_map = "a2s1a";
     var current_exit = {solana: "west1", bright: "west1"};
     var world_backgrounds = [];
         
@@ -410,13 +410,16 @@
         let lvlcfgs_i1s3 = scene.cache.json.get('lvlcfg_i1s3');
         let lvlcfgs_i1s4 = scene.cache.json.get('lvlcfg_i1s4');
         let lvlcfgs_i1s5 = scene.cache.json.get('lvlcfg_i1s5');
+        let lvlcfgs_a2s1 = scene.cache.json.get('lvlcfg_a2s1');//Area 2 - Mines/Caves
+        
 
         let allConfigs = [unsorted_cfgs,
                           lvlcfgs_i1s1,
                           lvlcfgs_i1s2,
                           lvlcfgs_i1s3,
                           lvlcfgs_i1s4,
-                          lvlcfgs_i1s5];
+                          lvlcfgs_i1s5,
+                          lvlcfgs_a2s1];
 
         for(let c=0;c<allConfigs.length;c++){
             let configs = allConfigs[c];

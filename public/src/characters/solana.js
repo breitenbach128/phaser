@@ -183,11 +183,15 @@ class Solana extends Phaser.Physics.Matter.Sprite{
                     if(this.jumpCount > 0 && !sb_1_owned || this.jumpCount > 1 && sb_1_owned){
                         this.jumpReady = false;
                     }
-                    //If Jump is held and the body is going up, extend the jump power and time
-                    if(control_jumphold && this.body.velocity.y < 0){
-                        this.applyForce({x:0,y:-this.jump_speed*0.025});
-                    }
+
                 }
+                //If Jump is held and the body is going up, extend the jump power and time
+                if(control_jumphold && this.body.velocity.y < 0){
+                    //this is being trigged during single player when bright/dark holds jump//BUG ALERT
+                    console.log("jumphold");
+                    this.applyForce({x:0,y:-this.jump_speed*0.025});
+                }
+
                 //Update Jump Data for Wallkicks
                 if(this.jumpReady){
                     this.jumpData = {left:(this.touching.left > 0),right:(this.touching.right > 0),down:this.onGround};
@@ -528,45 +532,33 @@ class Solana extends Phaser.Physics.Matter.Sprite{
     }
     jump(jumpVel,mvVel){
         let sb_2_owned = checkSolbitOwned(1); //Allow Wall kick
-
+        
         //Reduce Downwards force to zero, if it exists. Keeps platforms from stealing the jump
         if(this.body.velocity.y != 0){ // Was >
             this.setVelocityY(0);
         }
         let jXv = 0;
-        let jYv = 0;       
-        if(this.jumpData.left && !this.jumpData.down && sb_2_owned){
-            //console.log("c1");
+        let jYv = -jumpVel;
+        //Setup Boolean Combinations for checking
+        let LeftOrRight =  (this.jumpData.right || this.jumpData.left);
+        
+        //Allow Wall Kicks if you have Solbit #2
+        if(sb_2_owned && LeftOrRight){
+            if(this.jumpData.left){
+                jXv = mvVel*4.2;
+            }else if(this.jumpData.right){
+                jXv = -mvVel*4.2;
+            }            
+            if(!this.jumpData.down){               
+                jYv = -jumpVel*0.5;//Reduce it by half it not touching down
+            }   
             this.setMaxMoveSpeed(-6,6,-6,6);
-            jXv = mvVel*4.2;
-            jYv = -jumpVel*0.5;
             this.jumpLock = true;
             this.kickOff = mvVel;
-            this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
+            this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });         
         }
-        if(this.jumpData.right && !this.jumpData.down && sb_2_owned){  
-            //console.log("c2");          
-            this.setMaxMoveSpeed(-6,6,-6,6);
-            jXv = -mvVel*4.2;
-            jYv = -jumpVel*0.5;
-            this.jumpLock = true;
-            this.kickOff = -mvVel;
-            this.jumpLockTimer = this.scene.time.addEvent({ delay: 200, callback: this.jumpLockReset, callbackScope: this, loop: false });
-            
-        }else if((this.jumpData.right || this.jumpData.left) && !this.jumpData.down && !sb_2_owned){
-            //console.log("c3");
-            jYv = 0;
-        }else if((this.jumpData.right || this.jumpData.left) && !this.jumpData.down && sb_2_owned){
-            //console.log("c4");
-            jYv = -jumpVel;//*1.65;//1.2 works at 0.1 friction on hull
-        }else if(this.jumpData.down){
-            //console.log("c5");
-            jYv = -jumpVel;
-        }
-
+        //console.log(jYv)//DEBUG
         this.applyForce({x:jXv,y:jYv});
-        //DEBUG//
-        //console.log("jump force",jXv,jYv);
 
         this.soundJump.play("",{volume:.025});
         if(this.jumpCount > 0){

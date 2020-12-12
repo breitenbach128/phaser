@@ -344,8 +344,8 @@ class Bright extends Phaser.Physics.Matter.Sprite{
                     if(!control_left && !control_right){
                         this.sprite.anims.play('dark-idle', true);//Idle
                     }
-
                     if(control_dash && this.darkdashReady){
+                        
                         //Is the ability unlocked?
                         if(checkSolbitOwned(1)){
                             this.darkdashTimer = this.scene.time.addEvent({ delay: 500, callback: this.resetDarkDask, callbackScope: this, loop: false });
